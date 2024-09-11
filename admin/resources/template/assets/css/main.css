@@ -1,0 +1,18 @@
+/* your styles go here */
+#loading-ajax{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	display: none;
+	z-index: 9999;
+}
+
+#loading-ajax img{
+	width: 60px;
+}
+
+.title-content{
+	text-align: center;
+}
