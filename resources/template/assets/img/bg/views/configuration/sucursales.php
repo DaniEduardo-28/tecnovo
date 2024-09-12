@@ -9,7 +9,7 @@
   <head>
 
     <?php include("views/overall/header.php"); ?>
-    <title>Sucursales | <?=APP_TITLE;?> </title>
+    <title>Fundos | <?=APP_TITLE;?> </title>
 
   </head>
   <body>
@@ -24,7 +24,7 @@
         <div class="page-header">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Sucursales</h4>
+              <h4>Fundos</h4>
             </div>
             <div class="col-sm-6" id="panelOptions" name="panelOptions">
               <?php

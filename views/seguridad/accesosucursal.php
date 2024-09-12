@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Acceso a Sucursales | <?=APP_TITLE;?> </title>
+    <title>Acceso a Fundos | <?=APP_TITLE;?> </title>
     <style media="screen">
 
     .container-label {
@@ -24,6 +24,14 @@
       -ms-user-select: none;
       user-select: none;
     }
+
+    /* Estilo adicional para centrar el combobox */
+    .center-combobox {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
 
         /* Hide the browser's default checkbox */
       .container-label input {
@@ -123,10 +131,10 @@
                                       <a href="?view=home"><i class="ti ti-home"></i></a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                      Seguridad
+                                      Fundos por clientes
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Acceso a Sucursales
+                                      Acceso a Fundos
                                     </li>
                                   </ol>
                                 </nav>
@@ -143,7 +151,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Acceso Sucursales</h4>
+                                        <h4 class="card-title">Acceso Fundos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -151,7 +159,7 @@
                                   <div class="row">
 
                                     <div class="form-group col-sm-8">
-                                      <label for="cboTrabajador" class="label-control">Trabajador</label>
+                                      <label for="cboTrabajador" class="label-control">Seleccionar Trabajador</label>
                                       <select class="form-control" name="cboTrabajador" id="cboTrabajador">
                                         <?php
                                             $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("accesosucursal"));
@@ -171,7 +179,7 @@
                                          ?>
                                       </select>
                                     </div>
-
+<!-- 
                                     <div class="col-sm-4">
                                       <br><br>
                                       <label class="container-label"> &nbsp;&nbsp;Marcar Todos
@@ -179,7 +187,7 @@
                                         <span class="checkmark"></span>
                                       </label>
                                     </div>
-
+ -->
                                   </div>
 
                                   <div class="row">
@@ -192,8 +200,8 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id</th>
-                                                <th>Sucursal</th>
-                                                <th style="width:40px; text-align: center;">Acceso</th>
+                                                <th>Fundo</th>
+                                                <th style="width:40px; text-align: center;">Cantidad HC</th>
                                               </tr>
                                             </thead>
                                             <tbody>
@@ -208,8 +216,11 @@
                                                           <td><?=$num;?></td>
                                                           <td><?=$key['id_sucursal'];?></td>
                                                           <td><?=strtoupper($key['nombre']);?></td>
-                                                          <td><label class="container-label"><input type="checkbox"><span class="checkmark"></span></label></td>
-                                                        </tr>
+<!--                                                           <td><label class="container-label"><input type="checkbox"><span class="checkmark"></span></label></td> -->
+                                                          <td>
+                                                              <input type="number" min="0" class="form-control" name="cantidad_hc_<?=$key['id_sucursal'];?>" value="0" style="width: 80px; text-align: center;">
+                                                          </td>
+                                                         </tr>
                                                       <?php
                                                       $num++;
                                                     }

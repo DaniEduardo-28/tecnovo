@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 
 			try {
 				$valor = "%$valor%";
@@ -73,7 +73,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 
 			try {
 				$valor = "%$valor%";
@@ -135,7 +135,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 
 			try {
 				$sql = "SELECT p.*,c.id_cliente,c.name_user,
@@ -178,7 +178,7 @@
 		public function insert($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 			try {
 
 				$conexion->beginTransaction();
@@ -306,7 +306,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= null;
 
 			try {
 				$sql = "SELECT p.*,c.id_cliente,c.name_user,
@@ -349,7 +349,7 @@
 		public function update($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= null;
 			try {
 
 				$conexion->beginTransaction();
@@ -445,7 +445,7 @@
 		public function delete($id_cliente) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= null;
 			try {
 				$conexion->beginTransaction();
 
@@ -487,7 +487,7 @@
 		public function addPromocion($id_cliente,$titulo,$descripcion,$fecha_inicio,$fecha_fin,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 			try {
 
 				$conexion->beginTransaction();
@@ -522,7 +522,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 
 			try {
 
@@ -563,7 +563,7 @@
 		public function deletePromocion($id_promocion) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = null;
 
 			try {
 

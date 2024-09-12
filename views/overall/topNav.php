@@ -28,7 +28,7 @@
                 <ul class="navbar-nav nav-left">
                   <li class="nav-item">
                     <a href="#" class="nav-link expand">
-                      <h4><?=strtoupper($_SESSION['nombre_sucursal']);?></h4>
+                      <h4>BIENVENIDO <?=strtoupper($_SESSION['nombres']);?></h4>
                     </a>
                   </li>
                 </ul>

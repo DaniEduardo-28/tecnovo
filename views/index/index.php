@@ -59,7 +59,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <div class="form-group">
+<!--                                                     <div class="form-group">
                                                         <label class="control-label">Sucursal*</label>
                                                         <select class="form-control" name="id_sucursal" id="id_sucursal" required>
                                                           <option value="">Selecione</option>
@@ -74,7 +74,7 @@
                                                           ?>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-12">
                                                     <div class="d-block d-sm-flex  align-items-center">
                                                         <div class="form-check">
