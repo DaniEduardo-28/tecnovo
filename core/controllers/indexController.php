@@ -1,5 +1,3 @@
 <?php
-
-  include('views/pages/index.php');
-
+	require("views/index/index.php");
  ?>

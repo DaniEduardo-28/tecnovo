@@ -1,32 +1,40 @@
 <?php
 
   session_start();
+  date_default_timezone_set('America/Lima');
+  setlocale(LC_ALL,"es_ES");
 
   //NUCLEO DE LA APP
-  define('HTML_DIR','views/');
-  define('APP_TITLE','PetSpace | Sistema para clínicas veterinarias ');
-  define('APP_COPY','Copyright © ' . date('Y',time()));
-  define('AUTOR','Zhaúl Valdera');
-  define('APP_VERSION','1.0.0.2');
-  //define('APP_URL','http://clinicaveterinaria.test:8080/');
-  define('APP_URL','https://veterinaria.tecnovoperu.com/');
-  define('CORREO_RECIBE','zhaulvaldera.sistemas@hotmail.com');
+  define('APP_URL','http://syscos.test/');
+  // define('APP_URL','https://syscos.oxerva.com.pe/');
+  define('APP_TITLE','SysCos | Sistema para gestión de cosechas ');
+  define('APP_COPY','Copyright © ' . date('Y',time()) . ' <a href="https://www.oxerva.com.pe" target="_blank">Oxerva SRL</a>');
+  define('APP_VERSION','1.0.0.1');
+  define('AUTOR','-');
+  define('DESCRIPTION_SYSTEM','Esto es una breve descripción del sistema....');
+  define('AUTOR_URL','https://www.oxerva.com.pe');
+  define('CREATION',2024);
+  define('SRC_GLOBAL',$_SERVER['DOCUMENT_ROOT']);
   define('ID_EMPRESA',1);
 
-  /*define('HOST_DB','localhost');
-  define('USER_DB','root');
-  define('DB','mican');
-  define('PASS_DB','');
-  define('CHARSET','utf8');*/
+  //CONSTANTES BASE DE CONEXIÓN
 
-  define('HOST_DB','db5000108902.hosting-data.io');
-  define('USER_DB','dbu152091');
-  define('DB','dbs103397');
-  define('PASS_DB','Veterin@ria123');
+  define('HOST_DB','localhost');
+  define('USER_DB','root');
+  define('DB','syscos');
+  define('PASS_DB','');
   define('CHARSET','utf8');
 
-  require('admin/core/models/Conexion.php');
-  require('admin/core/functions/overall.php');
-  require('admin/core/functions/encript.php');
+  // define('HOST_DB','db5000108902.hosting-data.io');
+  // define('USER_DB','dbu152091');
+  // define('DB','dbs103397');
+  // define('PASS_DB','Veterin@ria123');
+  // define('CHARSET','utf8');
+
+  //CLASES GLOBALES
+  require('core/models/Conexion.php');
+  require('core/functions/encript.php');
+  require('core/functions/overall.php');
+  require('core/functions/PermitsOptions.php');
 
  ?>
