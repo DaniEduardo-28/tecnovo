@@ -243,7 +243,7 @@
                                             ?>
                                             <button type="button" name="btnSave" id="btnSave"
                                              class="btn btn-primary" style="color:#fff;">
-                                              Guardar Cambios
+                                              GRABAR
                                             </button>
                                             <?php
                                           }

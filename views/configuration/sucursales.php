@@ -146,21 +146,6 @@
                                                 <label for="estado" class="form-check-label">Activo</label>
                                               </div>
                                             </div>
-<!--                                             <div class="form-group col-sm-6">
-                                              <label for="ruta" class="label-control">Ruta</label>
-                                              <input id="ruta" type="text" name="ruta" class="form-control"
-                                              autocomplete="off" data-msg="Campo obligatorio...">
-                                            </div>
-                                            <div class="form-group col-sm-6">
-                                              <label for="token" class="label-control">Token</label>
-                                              <input id="token" type="text" name="token" class="form-control"
-                                              autocomplete="off" data-msg="Campo obligatorio...">
-                                            </div>
-                                            <div class="form-group col-md-12 d-none">
-                                              <label for="mapa" class="label-control">Mapa</label>
-                                              <input id="mapa" type="text" name="mapa" class="form-control"
-                                              autocomplete="off" data-msg="Campo obligatorio...">
-                                            </div> -->
 
                                             <div class="form-group col-md-12">
                                               <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar</button>
@@ -185,10 +170,7 @@
                                                 <th style="width:30px; text-align: center;">Código Ubigeo</th>
                                                 <th>Dirección</th>
                                                 <th>Teléfono</th>
-                                              <!--   <th>Mapa</th> -->
                                                 <th style="width:30px; text-align: center;">Estado</th>
-<!--                                                 <th>Token</th>
-                                                <th>Ruta</th> -->
                                                 <th style="width:90px;">Opciones</th>
                                               </tr>
                                             </thead>
