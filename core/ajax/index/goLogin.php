@@ -85,7 +85,7 @@
     $_SESSION['name_grupo'] = $result[0]["name_grupo"];
     $_SESSION['name_especialidad'] = $result[0]["name_especialidad"];
     $_SESSION['src_image'] = $srcImg;
-/*     $_SESSION["id_sucursal"] = $resultSucursal[0]["id_sucursal"];
+    /* $_SESSION["id_sucursal"] = $resultSucursal[0]["id_sucursal"];
     $_SESSION["id_empresa"] = $resultSucursal[0]["id_empresa"];
     $_SESSION["nombre_sucursal"] = $resultSucursal[0]["nombre"]; */
 

@@ -12,6 +12,26 @@
     <title>Acceso a Fundos | <?=APP_TITLE;?> </title>
     <style media="screen">
 
+
+    .search-results {
+      border: 1px solid #ddd;
+      max-height: 200px;
+      overflow-y: auto;
+      background-color: #fff;
+      position: absolute;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .search-results div {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .search-results div:hover {
+      background-color: #f0f0f0;
+    }
+
     .container-label {
       display: block;
       position: relative;
@@ -179,7 +199,6 @@
                                          ?>
                                       </select>
                                     </div>
-
                                   </div>
 
                                   <div class="row">
