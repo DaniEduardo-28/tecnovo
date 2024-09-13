@@ -131,6 +131,48 @@
 			return $VD;
 		}
 
+
+		public function listarClientes() {
+
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = null;
+
+			try {
+
+				$sql = "SELECT * FROM vw_clientes ORDER BY apellidos_clientes ASC";
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute([]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				if (count($result)==0) {
+					throw new Exception("No se encontraron datos.");
+				}
+
+				$VD1['error'] = "NO";
+				$VD1['message'] = "Success";
+				$VD1['data'] = $result;
+				$VD = $VD1;
+
+			} catch(PDOException $e) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
+				$VD = $VD1;
+
+			} catch (Exception $exception) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $exception->getMessage();
+				$VD = $VD1;
+
+    	} finally {
+				$conexionClass->Close();
+			}
+
+			return $VD;
+		}
+
 		public function getDataEditCliente($id_cliente) {
 
 			$conexionClass = new Conexion();

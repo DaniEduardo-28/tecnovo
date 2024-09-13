@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Fundos | <?=APP_TITLE;?> </title>
+    <title>Sucursales | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -146,7 +146,6 @@
                                                 <label for="estado" class="form-check-label">Activo</label>
                                               </div>
                                             </div>
-
                                             <div class="form-group col-md-12">
                                               <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar</button>
                                               <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-close"></span> Cancelar</button>

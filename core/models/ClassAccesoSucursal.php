@@ -37,21 +37,21 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function getPermisosSucursal($id_trabajador) {
+	public function getPermisosSucursal($id_cliente) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
-			$sql = "SELECT  * FROM tb_trabajador_sucursal WHERE id_trabajador = ?";
+			$sql = "SELECT  * FROM tb_cliente_fundo WHERE id_cliente = ?";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_trabajador]);
+			$stmt->execute([$id_cliente]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result)==0) {
-				throw new Exception("No tiene accesos a sucursales.");
+				throw new Exception("No tiene accesos a fundos.");
 			}
 
 			$VD1['error'] = "NO";
@@ -79,27 +79,27 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function getAccesoTrabajadorSucursal($id_sucursal) {
+	public function getAccesoTrabajadorFundo($id_sucursal) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
-			$sql = "SELECT T.id_trabajador,T.nombres_trabajador,T.apellidos_trabajador,E.name_especialidad,
+			$sql = "SELECT T.id_trabajador,T.nombres_cliente,T.apellidos_cliente,E.name_especialidad,
 										 T.flag_medico
-							FROM tb_trabajador_sucursal TS
-							INNER JOIN vw_trabajadores T ON T.id_trabajador = TS.id_trabajador
+							FROM tb_cliente_fundo TS
+							INNER JOIN vw_clientes T ON T.id_cliente = TS.id_cliente
 							INNER JOIN tb_especialidad E ON E.id_especialidad = T.id_especialidad
 							WHERE TS.id_sucursal = ? AND T.flag_medico = '1' AND T.estado = 'activo'
-							ORDER BY T.apellidos_trabajador ASC";
+							ORDER BY T.apellidos_cliente ASC";
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_sucursal]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result)==0) {
-				throw new Exception("No tiene accesos a sucursales.");
+				throw new Exception("No tiene accesos a fundos.");
 			}
 
 			$VD1['error'] = "NO";
@@ -127,22 +127,22 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function updateAccesoSucursal($id_trabajador,$datos) {
+	public function updateAccesoSucursal($id_cliente,$datos) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 		try {
 
 			$conexion->beginTransaction();
 
-			$stmt = $conexion->prepare("DELETE FROM tb_trabajador_sucursal WHERE id_trabajador = ?");
-			$stmt->execute([$id_trabajador]);
+			$stmt = $conexion->prepare("DELETE FROM tb_cliente_fundo WHERE id_cliente = ?");
+			$stmt->execute([$id_cliente]);
 
 			if ($datos != null) {
 				foreach ($datos as $key) {
 		      foreach ($key as $key1) {
-						$stmt = $conexion->prepare("INSERT INTO tb_trabajador_sucursal (id_sucursal, id_trabajador) VALUES (?,?)");
-						if ($stmt->execute([$key1->id_sucursal,$id_trabajador])==false) {
+						$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_sucursal, id_cliente) VALUES (?,?)");
+						if ($stmt->execute([$key1->id_sucursal,$id_cliente])==false) {
 							throw new Exception("Error al actualizar los permisos.");
 						}
 		      }

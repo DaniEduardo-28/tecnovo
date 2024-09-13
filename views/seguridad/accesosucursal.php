@@ -159,18 +159,18 @@
                                   <div class="row">
 
                                     <div class="form-group col-sm-8">
-                                      <label for="cboTrabajador" class="label-control">Seleccionar Trabajador</label>
-                                      <select class="form-control" name="cboTrabajador" id="cboTrabajador">
+                                      <label for="cboCliente" class="label-control">Seleccionar Cliente</label>
+                                      <select class="form-control" name="cboCliente" id="cboCliente">
                                         <?php
                                             $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("accesosucursal"));
                                             if ($access_options[0]['error']=="NO") {
                                               if ($access_options[0]['flag_editar']) {
-                                                require("core/models/ClassTrabajador.php");
-                                                $dataTrabajador = $OBJ_TRABAJADOR->listarTrabajadores();
-                                                if ($dataTrabajador['error']=="NO") {
-                                                  foreach ($dataTrabajador['data'] as $key) {
+                                                require("core/models/ClassCliente.php");
+                                                $dataCliente = $OBJ_CLIENTE->listarClientes();
+                                                if ($dataCliente['error']=="NO") {
+                                                  foreach ($dataCliente['data'] as $key) {
                                                     ?>
-                                                      <option value="<?=$key['id_trabajador'];?>"><?=$key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] . ' - ' . $key['name_documento_trabajador'] . ' ' . $key['num_documento'];?></option>
+                                                      <option value="<?=$key['id_cliente'];?>"><?=$key['apellidos_cliente'] . ' ' . $key['nombres_cliente'] . ' - ' . $key['name_documento_cliente'] . ' ' . $key['num_documento'];?></option>
                                                     <?php
                                                   }
                                                 }
@@ -179,15 +179,7 @@
                                          ?>
                                       </select>
                                     </div>
-<!-- 
-                                    <div class="col-sm-4">
-                                      <br><br>
-                                      <label class="container-label"> &nbsp;&nbsp;Marcar Todos
-                                        <input type="checkbox" id="chkMarcarTodos">
-                                        <span class="checkmark"></span>
-                                      </label>
-                                    </div>
- -->
+
                                   </div>
 
                                   <div class="row">
@@ -216,7 +208,6 @@
                                                           <td><?=$num;?></td>
                                                           <td><?=$key['id_sucursal'];?></td>
                                                           <td><?=strtoupper($key['nombre']);?></td>
-<!--                                                           <td><label class="container-label"><input type="checkbox"><span class="checkmark"></span></label></td> -->
                                                           <td>
                                                               <input type="number" min="0" class="form-control" name="cantidad_hc_<?=$key['id_sucursal'];?>" value="0" style="width: 80px; text-align: center;">
                                                           </td>
