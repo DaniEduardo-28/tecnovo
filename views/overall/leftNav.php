@@ -160,57 +160,6 @@
 
           <?php endif; ?>
 
-<!-- 
-          <?php
-
-            $flag_mostar_menu = false;
-            $flag_webcabezera = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webcabezera"));
-            $flag_webredessociales = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webredessociales"));
-            $flag_webgaleria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webgaleria"));
-            $flag_websocio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("websocio"));
-            $flag_webtestimonio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webtestimonio"));
-            $flag_webcontacto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webcontacto"));
-            if ($flag_webcabezera || $flag_webredessociales || $flag_webgaleria || $flag_websocio || $flag_webtestimonio || $flag_webcontacto) {
-          		$flag_mostar_menu = true;
-          	}else{
-          		$flag_mostar_menu = false;
-          	}
-
-          ?>
-
-          <?php if ($flag_mostar_menu): ?>
-
-            <li id="menupaginaweb">
-                <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                  <i class="nav-icon fa fa-globe"></i>
-                  <span class="nav-title">Página Web</span>
-                </a>
-                <ul aria-expanded="false">
-                    <?php if ($flag_webcabezera): ?>
-                      <li id="menuwebcabezera"> <a href="?view=webcabezera">Cabezera</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_webredessociales): ?>
-                      <li id="menuwebredessociales"> <a href="?view=webredessociales">Redes Sociales</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_webgaleria): ?>
-                      <li id="menuwebgaleria"> <a href="?view=webgaleria">Galeria</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_websocio): ?>
-                      <li id="menuwebsocio"> <a href="?view=websocio">Socios</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_webtestimonio): ?>
-                      <li id="menuwebtestimonio"> <a href="?view=webtestimonio">Testimonios</a> </li>
-                    <?php endif; ?>
-                    <?php if ($flag_webcontacto): ?>
-                      <li id="menuwebcontacto"> <a href="?view=webcontacto">Datos de Contacto</a></li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-
-          <?php endif; ?>
- -->
-
-
           <?php
 
             $flag_mostar_menu = false;
