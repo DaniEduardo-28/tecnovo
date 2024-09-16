@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Sucursales | <?=APP_TITLE;?> </title>
+    <title>Fundos | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -169,7 +169,10 @@
                                                 <th style="width:30px; text-align: center;">Código Ubigeo</th>
                                                 <th>Dirección</th>
                                                 <th>Teléfono</th>
+                                                <th>Mapa</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
+                                                <th>Token</th>
+                                                <th>Ruta</th>
                                                 <th style="width:90px;">Opciones</th>
                                               </tr>
                                             </thead>

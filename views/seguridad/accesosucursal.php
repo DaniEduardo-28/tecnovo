@@ -12,26 +12,6 @@
     <title>Acceso a Fundos | <?=APP_TITLE;?> </title>
     <style media="screen">
 
-
-    .search-results {
-      border: 1px solid #ddd;
-      max-height: 200px;
-      overflow-y: auto;
-      background-color: #fff;
-      position: absolute;
-      width: 100%;
-      z-index: 1000;
-    }
-
-    .search-results div {
-      padding: 10px;
-      cursor: pointer;
-    }
-
-    .search-results div:hover {
-      background-color: #f0f0f0;
-    }
-
     .container-label {
       display: block;
       position: relative;
@@ -44,14 +24,6 @@
       -ms-user-select: none;
       user-select: none;
     }
-
-    /* Estilo adicional para centrar el combobox */
-    .center-combobox {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
-      }
 
         /* Hide the browser's default checkbox */
       .container-label input {
@@ -106,6 +78,34 @@
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
       }
+      
+      /* Estilo para el nuevo input de búsqueda */
+      .search-input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      /* Estilo para los resultados de la búsqueda */
+      .search-results {
+        position: absolute;
+        width: 100%;
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: white;
+        z-index: 1000;
+      }
+
+      .search-result-item {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .search-result-item:hover {
+        background-color: #f0f0f0;
+      }
+
+
     </style>
   </head>
 
@@ -178,19 +178,25 @@
 
                                   <div class="row">
 
-                                    <div class="form-group col-sm-8">
-                                      <label for="cboCliente" class="label-control">Seleccionar Cliente</label>
-                                      <select class="form-control" name="cboCliente" id="cboCliente">
+                                  <div class="form-group col-sm-6">
+                                      <label for="searchCliente" class="label-control">Buscar Cliente</label>
+                                      <input type="text" class="form-control search-input" id="searchCliente" placeholder="Buscar cliente...">
+                                        <div id="searchResults" class="search-results"></div>
+                                  </div>
+                                  
+                                  <div class="form-group col-sm-6">
+                                      <label for="cboCliente" class="label-control">Cliente</label>
+                                        <select class="form-control" name="cboCliente" id="cboCliente">
                                         <?php
                                             $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("accesosucursal"));
                                             if ($access_options[0]['error']=="NO") {
                                               if ($access_options[0]['flag_editar']) {
                                                 require("core/models/ClassCliente.php");
-                                                $dataCliente = $OBJ_CLIENTE->listarClientes();
-                                                if ($dataCliente['error']=="NO") {
-                                                  foreach ($dataCliente['data'] as $key) {
+                                                $dataTrabajador = $OBJ_CLIENTE->listarClientes();
+                                                if ($dataTrabajador['error']=="NO") {
+                                                  foreach ($dataTrabajador['data'] as $key) {
                                                     ?>
-                                                      <option value="<?=$key['id_cliente'];?>"><?=$key['apellidos_cliente'] . ' ' . $key['nombres_cliente'] . ' - ' . $key['name_documento_cliente'] . ' ' . $key['num_documento'];?></option>
+                                                      <option value="<?=$key['id_cliente'];?>"><?=$key['apellidos_cliente'] . ' ' . $key['nombres_cliente'] . ' - ' . $key['name_documento'] . ' ' . $key['num_documento'];?></option>
                                                     <?php
                                                   }
                                                 }
@@ -200,6 +206,9 @@
                                       </select>
                                     </div>
                                   </div>
+
+                                </div>
+                                </div>
 
                                   <div class="row">
 
@@ -227,10 +236,8 @@
                                                           <td><?=$num;?></td>
                                                           <td><?=$key['id_sucursal'];?></td>
                                                           <td><?=strtoupper($key['nombre']);?></td>
-                                                          <td>
-                                                              <input type="number" min="0" class="form-control" name="cantidad_hc_<?=$key['id_sucursal'];?>" value="0" style="width: 80px; text-align: center;">
-                                                          </td>
-                                                         </tr>
+                                                          <td><input type="number" class="form-control" min="0" step="1"></td>
+                                                          </tr>
                                                       <?php
                                                       $num++;
                                                     }
@@ -295,3 +302,40 @@
   </body>
 
 </html>
+
+<script>
+  // Código JavaScript para la funcionalidad de búsqueda
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchCliente');
+    const searchResults = document.getElementById('searchResults');
+    const cboCliente = document.getElementById('cboCliente');
+
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const options = cboCliente.options;
+      
+      searchResults.innerHTML = '';
+      
+      for (let i = 0; i < options.length; i++) {
+        if (options[i].text.toLowerCase().includes(searchTerm)) {
+          const div = document.createElement('div');
+          div.className = 'search-result-item';
+          div.textContent = options[i].text;
+          div.addEventListener('click', function() {
+            cboCliente.value = options[i].value;
+            searchInput.value = options[i].text;
+            searchResults.innerHTML = '';
+          });
+          searchResults.appendChild(div);
+        }
+      }
+    });
+
+    // Cerrar resultados de búsqueda al hacer clic fuera
+    document.addEventListener('click', function(e) {
+      if (e.target !== searchInput && e.target !== searchResults) {
+        searchResults.innerHTML = '';
+      }
+    });
+  });
+</script>
