@@ -23,7 +23,8 @@
             $flag_monedas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("monedas"));
             $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("identitydocuments"));
             $flag_tiposervicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
-           if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio|| $flag_tipocambio) {
+            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
+            if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio || $flag_tipocosecha) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -54,6 +55,9 @@
                   <?php if ($flag_tiposervicio): ?>
                     <li id="menutiposervicio"> <a href="?view=tiposervicio">Tipos de Servicio</a> </li>
                   <?php endif; ?>
+                  <?php if ($flag_tipocosecha): ?>
+                    <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
+                  <?php endif; ?>
                 </ul>
             </li>
 
@@ -66,7 +70,8 @@
             $flag_cliente = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("cliente"));
             $flag_proveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("proveedor"));
             $flag_servicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("servicio"));
-            if ($flag_proveedor || $flag_cliente || $flag_servicio) {
+            $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("operador"));
+            if ($flag_proveedor || $flag_cliente || $flag_servicio || $flag_operador) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -90,6 +95,9 @@
                     <?php endif; ?>
                     <?php if ($flag_servicio): ?>
                       <li id="menuservicio"> <a href="?view=servicio">Servicios</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_operador): ?>
+                      <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
                     <?php endif; ?>
                 </ul>
             </li>

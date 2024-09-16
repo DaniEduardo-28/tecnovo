@@ -11,7 +11,7 @@ class ClassAccesoOpcion extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = null;
+		$VD;
 
 		try {
 
@@ -72,7 +72,7 @@ class ClassAccesoOpcion extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = null;
+		$VD;
 
 		try {
 
@@ -120,7 +120,7 @@ class ClassAccesoOpcion extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = null;
+		$VD;
 
 		try {
 
@@ -161,7 +161,7 @@ class ClassAccesoOpcion extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = null;
+		$VD;
 
 		try {
 
@@ -210,7 +210,7 @@ class ClassAccesoOpcion extends Conexion {
 	public function updatePermisos($id_grupo,$datos) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = null;
+		$VD;
 		try {
 
 			$conexion->beginTransaction();
