@@ -48,6 +48,9 @@
         case 'metodoenvio':
           $VD = 114;
           break;
+          case 'tipocosecha':
+            $VD = 115;
+            break;
         case 'cliente':
           $VD = 201;
           break;

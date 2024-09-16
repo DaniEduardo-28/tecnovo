@@ -80,4 +80,65 @@
 			}
 			return $VD;
 		}
+
+        public function update($codigo,$descripcion,$estado) {
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD;
+			try {
+
+				$conexion->beginTransaction();
+				$stmt = $conexion->prepare("UPDATE tb_tipo_cosecha SET descripcion = ?, estado = ? WHERE codigo = ?");
+				$stmt->execute([$descripcion,$estado,$codigo]);
+				if ($stmt->rowCount()==0) {
+					throw new Exception("Error al actualizar los datos.");
+				}
+
+				$VD = "OK";
+				$conexion->commit();
+
+			} catch(PDOException $e) {
+				$conexion->rollBack();
+				$VD = $e->getMessage();
+			} catch (Exception $exception) {
+				$conexion->rollBack();
+				$VD = $exception->getMessage();
+    	} finally {
+				$conexionClass->Close();
+			}
+			return $VD;
+		}
+
+        public function delete($codigo) {
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD;
+			try {
+				$conexion->beginTransaction();
+
+				$stmt = $conexion->prepare("DELETE FROM tb_tipo_cosecha WHERE codigo = ?");
+				$stmt->execute([$codigo]);
+				if ($stmt->rowCount()==0) {
+					throw new Exception("Ocurrió un error al eliminar el registro.");
+				}
+
+				$VD = "OK";
+				$conexion->commit();
+
+			} catch(PDOException $e) {
+				$conexion->rollBack();
+				$VD = $e->getMessage();
+			} catch (Exception $exception) {
+				$conexion->rollBack();
+				$VD = $exception->getMessage();
+    	} finally {
+				$conexionClass->Close();
+			}
+			return $VD;
+		}
+
     }
+
+    $OBJ_TIPO_COSECHA = new ClassTipoCosecha();
+
+?>

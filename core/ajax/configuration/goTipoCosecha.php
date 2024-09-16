@@ -4,12 +4,12 @@
 
   $codigo = isset($_POST["codigo"]) ? $_POST["codigo"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;
-  $name_tipo = isset($_POST["name_tipo"]) ? $_POST["name_tipo"] : "";
+  $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
   try {
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
     if ($access_options[0]['error']=="NO") {
       switch ($accion) {
         case 'add':
@@ -30,18 +30,18 @@
       throw new Exception("Error al verificar los permisos.");
     }
 
-    if (empty(trim($name_tipo))) {
-      throw new Exception("Campo Obligatorio : Nombre de Tipo de Servicio.");
+    if (empty(trim($descripcion))) {
+      throw new Exception("Campo Obligatorio : Nombre de Tipo de Cosecha.");
     }
 
-    require_once "core/models/ClassTipoServicio.php";
+    require_once "core/models/ClassTipoCosecha.php";
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_TIPO_SERVICIO->insert($name_tipo,$estado);
+        $VD = $OBJ_TIPO_COSECHA->insert($descripcion,$estado);
         break;
       case 'edit':
-        $VD = $OBJ_TIPO_SERVICIO->update($id_tipo_servicio,$name_tipo,$estado);
+        $VD = $OBJ_TIPO_COSECHA->update($codigo,$descripcion,$estado);
         break;
       default:
         $VD = "Error de operación";
