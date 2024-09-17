@@ -23,8 +23,7 @@
             $flag_monedas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("monedas"));
             $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("identitydocuments"));
             $flag_tiposervicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
-            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
-            if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio || $flag_tipocosecha) {
+            if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -55,13 +54,42 @@
                   <?php if ($flag_tiposervicio): ?>
                     <li id="menutiposervicio"> <a href="?view=tiposervicio">Tipos de Servicio</a> </li>
                   <?php endif; ?>
-                  <?php if ($flag_tipocosecha): ?>
-                    <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
-                  <?php endif; ?>
                 </ul>
             </li>
 
           <?php endif; ?>
+
+          
+          <?php
+          /* var_dump($_SESSION['id_grupo']);
+          var_dump(printCodeOption("tipocosecha"));
+          var_dump($OBJ_ACCESO_OPCION);
+          var_dump($flag_mostar_menu); */
+            $flag_mostar_menu = false;
+            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipocosecha"));
+            if ($flag_tipocosecha) {
+          		$flag_mostar_menu = true;
+          	}else{
+          		$flag_mostar_menu = false;
+          	}
+
+          ?>
+
+<?php if ($flag_mostar_menu): ?>
+
+<li id="menuoperadores">
+    <a class="has-arrow" href="#" aria-expanded="false">
+      <i class="nav-icon fa fa-cog"></i>
+      <span class="nav-title">Operadores</span>
+    </a>
+    <ul aria-expanded="false">
+      <?php if ($flag_tipocosecha): ?>
+        <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
+      <?php endif; ?>
+    </ul>
+</li>
+
+<?php endif; ?>
 
 
           <?php
