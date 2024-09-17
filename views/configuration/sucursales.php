@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Fundos | <?=APP_TITLE;?> </title>
+    <title>Sucursales | <?=APP_TITLE;?> </title>
 
   </head>
 
