@@ -22,11 +22,11 @@
         cursor: pointer;
       }
       .pagination li.active {
-        background-color: #9e61da;
+        background-color: #07ac41;
         color: white;
       }
       .pagination li:hover:not(.active) {
-        background-color: #ddd;
+        background-color: #ccd0cb;
       }
     </style>
   </head>
