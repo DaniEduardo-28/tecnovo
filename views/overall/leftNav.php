@@ -1,7 +1,7 @@
 <aside class="app-navbar">
   <div class="sidebar-nav scrollbar scroll_light">
       <ul class="metismenu " id="sidebarNav">
-          <li class="nav-static-title" style="color:#15b0ef;">Menú de Navegación</li>
+          <li class="nav-static-title" style="color:#06d809;">Menú de Navegación</li>
           <br>
           <li id="menuinicio">
               <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -59,47 +59,14 @@
 
           <?php endif; ?>
 
-          
-          <?php
-          /* var_dump($_SESSION['id_grupo']);
-          var_dump(printCodeOption("tipocosecha"));
-          var_dump($OBJ_ACCESO_OPCION);
-          var_dump($flag_mostar_menu); */
-            $flag_mostar_menu = false;
-            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipocosecha"));
-            if ($flag_tipocosecha) {
-          		$flag_mostar_menu = true;
-          	}else{
-          		$flag_mostar_menu = false;
-          	}
-
-          ?>
-
-<?php if ($flag_mostar_menu): ?>
-
-<li id="menuoperadores">
-    <a class="has-arrow" href="#" aria-expanded="false">
-      <i class="nav-icon fa fa-cog"></i>
-      <span class="nav-title">Operadores</span>
-    </a>
-    <ul aria-expanded="false">
-      <?php if ($flag_tipocosecha): ?>
-        <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
-      <?php endif; ?>
-    </ul>
-</li>
-
-<?php endif; ?>
-
 
           <?php
 
             $flag_mostar_menu = false;
             $flag_cliente = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("cliente"));
-            $flag_proveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("proveedor"));
             $flag_servicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("servicio"));
             $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("operador"));
-            if ($flag_proveedor || $flag_cliente || $flag_servicio || $flag_operador) {
+            if ($flag_cliente || $flag_servicio || $flag_operador) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -118,13 +85,13 @@
                     <?php if ($flag_cliente): ?>
                       <li id="menucliente"> <a href="?view=cliente">Clientes</a> </li>
                     <?php endif; ?>
-                    <?php if ($flag_proveedor): ?>
+                    <!-- <?php if ($flag_proveedor): ?>
                       <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
-                    <?php endif; ?>
+                    <?php endif; ?> -->
                     <?php if ($flag_servicio): ?>
                       <li id="menuservicio"> <a href="?view=servicio">Servicios</a> </li>
                     <?php endif; ?>
-                    <?php if ($flag_operador): ?>
+                     <?php if ($flag_operador): ?>
                       <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
                     <?php endif; ?>
                 </ul>

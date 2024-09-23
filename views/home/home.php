@@ -141,7 +141,7 @@
                             <div class="col-xs-12">
                               <div class="card card-statistics">
                                 <div class="card-header d-flex justify-content-between">
-                                  <div class="card-heading">
+                                  <!-- <div class="card-heading">
                                     <h4 class="card-title">Resumen de Compras</h4>
                                   </div>
                                 </div>
@@ -173,7 +173,7 @@
                                         }
                                       ?>
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
                             </div>
 
@@ -183,7 +183,7 @@
 
                           <div class="col-md-8">
                             <div class="card card-statistics">
-                                <div class="card-header">
+                                <!-- <div class="card-header">
                                     <h4 class="card-title">Medicamentos y Articulos Stock Mínimo</h4>
                                 </div>
                                 <div class="card-body">
@@ -217,11 +217,11 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                           </div>
 
-                          <?php
+                          <!-- <?php
                             $Resultado = $OBJ_OVERALL->getTotalesReporte( $_SESSION['id_fundo']);
                             if ($Resultado['error']=="NO") {
                               ?>
@@ -275,7 +275,7 @@
                               </div>
                               <?php
                             }
-                          ?>
+                          ?> -->
 
                         </div>
 

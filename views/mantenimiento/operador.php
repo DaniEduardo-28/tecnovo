@@ -75,7 +75,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Clientes
+                                      Operadores
                                     </li>
                                   </ol>
                                 </nav>
@@ -83,7 +83,7 @@
 
                               <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions" name="panelOptions">
                                 <?php
-                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("operador"));
+                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("cliente"));
                                     if ($access_options[0]['error']=="NO") {
 
                                       if ($access_options[0]['flag_agregar']) {
@@ -110,7 +110,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Clientes</h4>
+                                        <h4 class="card-title">Operadores</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -121,7 +121,7 @@
                                       <div class="ser-block block">
                                         <form id="frmDatos" name="frmDatos" enctype="multipart/form-data">
 
-                                          <input type="hidden" name="id_cliente" id="id_cliente" value="0">
+                                          <input type="hidden" name="id_operador" id="id_operador" value="0">
                                           <input type="hidden" name="id_persona" id="id_persona" value="0">
                                           <input type="hidden" name="flag_imagen" id="flag_imagen" value="0">
                                           <input type="hidden" name="pass_user_old" id="pass_user_old" value="">
@@ -135,10 +135,10 @@
 
                                             <div class="form-group col-sm-4">
                                               <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                              alt="Logo / Imagen Cliente" class="img-fluid rounded-circle"
+                                              alt="Logo / Imagen Operador" class="img-fluid rounded-circle"
                                               style="width:200px;height:200px;">
                                               <br>
-                                              <label for="">Logo / Imagen Cliente</label>
+                                              <label for="">Logo / Imagen Operador</label>
                                               <br>
                                               <div class="form-group">
                                                 <input type="file" name="src_imagen" id="src_imagen" accept="image/jpeg"
