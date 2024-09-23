@@ -254,7 +254,7 @@
 
             <li id="menuoperaciones">
                 <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                  <i class="nav-icon fa fa-paw"></i>
+                  <i class="nav-icon fa fa-cog"></i>
                   <span class="nav-title">Operaciones</span>
                 </a>
                 <ul aria-expanded="false">
