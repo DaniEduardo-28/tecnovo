@@ -222,7 +222,7 @@
                           </div>
 
                           <?php
-                            $Resultado = $OBJ_OVERALL->getTotalesReporte( $_SESSION['id_sucursal']);
+                            $Resultado = $OBJ_OVERALL->getTotalesReporte( $_SESSION['id_fundo']);
                             if ($Resultado['error']=="NO") {
                               ?>
                               <div class="col-md-4">

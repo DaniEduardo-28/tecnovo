@@ -29,7 +29,7 @@
         $estado = ($key['estado']=="1") ? '<label class="badge badge-success">Activo</label>' : '<label class="badge badge-danger">Inactivo</label>' ;
         $retorno_array[] =array(
           "num" => "$count",
-          "id_sucursal" => $key['id_sucursal'],
+          "id_fundo" => $key['id_fundo'],
           "id_empresa" => $key['id_empresa'],
           "nombre" => $key['nombre'],
           "cod_ubigeo" => $key['cod_ubigeo'],

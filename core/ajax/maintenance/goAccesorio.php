@@ -12,7 +12,7 @@
   $flag_imagen = isset($_POST["flag_imagen"]) ? $_POST["flag_imagen"] : 0;
   $src_imagen = "resources/global/images/sin_imagen.png";
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
-  $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : 0;
+  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : 0;
   $id_unidad_medida = isset($_POST["id_unidad_medida"]) ? $_POST["id_unidad_medida"] : 0;
   $id_moneda = isset($_POST["id_moneda"]) ? $_POST["id_moneda"] : 0;
   $flag_igv = isset($_POST["flag_igv"]) ? 1 : 0;
@@ -44,7 +44,7 @@
       throw new Exception("Campo obligatorio : Categoria de Accesorio.");
     }
 
-    if (empty(trim($id_sucursal))) {
+    if (empty(trim($id_fundo))) {
       throw new Exception("Campo obligatorio : Sucursal.");
     }
 
@@ -100,10 +100,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ACCESORIO->insert($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv);
+        $VD = $OBJ_ACCESORIO->insert($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_fundo,$id_unidad_medida,$id_moneda,$flag_igv);
         break;
       case 'edit':
-        $VD = $OBJ_ACCESORIO->update($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv);
+        $VD = $OBJ_ACCESORIO->update($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_fundo,$id_unidad_medida,$id_moneda,$flag_igv);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

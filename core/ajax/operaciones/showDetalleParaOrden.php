@@ -5,7 +5,7 @@
     // obtiene los valores para realizar la paginacion
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 10;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
-    $id_sucursal = isset($_POST["id_sucursal"])	? $_POST["id_sucursal"]	: 0;
+    $id_fundo = isset($_POST["id_fundo"])	? $_POST["id_fundo"]	: 0;
     $id_moneda = isset($_POST["id_moneda"])	? $_POST["id_moneda"]	: 0;
     $tipo = isset($_POST["tipo"])	? $_POST["tipo"]	: "";
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
@@ -22,12 +22,12 @@
 
     require_once "core/models/ClassOrdenVenta.php";
     require_once "core/models/ClassMoneda.php";
-    $DataCantidad = $OBJ_ORDEN_VENTA->getCountDetalleParaOrden($id_sucursal,$tipo,$valor);
+    $DataCantidad = $OBJ_ORDEN_VENTA->getCountDetalleParaOrden($id_fundo,$tipo,$valor);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_VENTA->showDetalleParaOrden($id_sucursal,$tipo,$valor,$offset,$limit);
+      $Resultado = $OBJ_ORDEN_VENTA->showDetalleParaOrden($id_fundo,$tipo,$valor,$offset,$limit);
 
       $count = 1 + $offset;
       $tipo_cambio_moneda_a_convertir = 1;

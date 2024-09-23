@@ -234,7 +234,7 @@
                                                       ?>
                                                         <tr>
                                                           <td><?=$num;?></td>
-                                                          <td><?=$key['id_sucursal'];?></td>
+                                                          <td><?=$key['id_fundo'];?></td>
                                                           <td><?=strtoupper($key['nombre']);?></td>
                                                           <td><input type="number" class="form-control" min="0" step="1"></td>
                                                           </tr>

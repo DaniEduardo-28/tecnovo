@@ -1,6 +1,6 @@
 <?php
 
-  $id_sucursal = isset($_POST['id_sucursal']) ? $_POST['id_sucursal'] : 0;
+  $id_fundo = isset($_POST['id_fundo']) ? $_POST['id_fundo'] : 0;
 
   try {
 
@@ -9,7 +9,7 @@
     }
 
     require_once "admin/core/models/ClassAccesoSucursal.php";
-    $Resultado = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($id_sucursal);
+    $Resultado = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($id_fundo);
 
     if ($Resultado["error"]=="NO") {
       foreach ($Resultado["data"] as $key) {

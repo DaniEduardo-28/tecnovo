@@ -7,7 +7,7 @@
 
 		}
 
-		public function showCitas($id_trabajador,$id_documento,$valor,$id_sucursal) {
+		public function showCitas($id_trabajador,$id_documento,$valor,$id_fundo) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -25,12 +25,12 @@
 								INNER JOIN tb_cita C ON C.id_mascota = M.id_mascota
 								INNER JOIN vw_trabajadores T on T.id_trabajador = C.id_trabajador
 								INNER JOIN tb_servicio S ON S.id_servicio = C.id_servicio
-								WHERE (M.num_documento LIKE ? OR M.nombres LIKE ? OR M.apellidos LIKE ? ) AND C.id_sucursal = ?";
+								WHERE (M.num_documento LIKE ? OR M.nombres LIKE ? OR M.apellidos LIKE ? ) AND C.id_fundo = ?";
 
 				$parametros[] = $valor;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($id_documento!="all") {
 					$sql .= " AND M.id_documento = ? ";
@@ -74,7 +74,7 @@
 			return $VD;
 		}
 
-		public function showCitasTrabajador($id_sucursal,$id_trabajador) {
+		public function showCitasTrabajador($id_fundo,$id_trabajador) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -89,9 +89,9 @@
 								INNER JOIN tb_cita C ON C.id_mascota = M.id_mascota
 								INNER JOIN vw_trabajadores T on T.id_trabajador = C.id_trabajador
 								INNER JOIN tb_servicio S ON S.id_servicio = C.id_servicio
-								WHERE C.id_trabajador = ? AND C.id_sucursal = ? AND (C.estado = 'aceptada' OR C.estado = 'registrada')";
+								WHERE C.id_trabajador = ? AND C.id_fundo = ? AND (C.estado = 'aceptada' OR C.estado = 'registrada')";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_trabajador,$id_sucursal]);
+				$stmt->execute([$id_trabajador,$id_fundo]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				if (count($result)==0) {
@@ -122,7 +122,7 @@
 			return $VD;
 		}
 
-		public function registrarCitaCliente($id_mascota,$id_trabajador,$id_cliente,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_sucursal) {
+		public function registrarCitaCliente($id_mascota,$id_trabajador,$id_cliente,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_fundo) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -140,13 +140,13 @@
 					throw new Exception("No tienes permisos para registrar cita, con esta mascota.", 1);
 				}
 
-				$sql = "INSERT INTO tb_cita (`id_cita`, `id_trabajador`, `id_servicio`, `id_mascota`, `fecha_registro`, `fecha_cita`, `fecha_termino`, `sintoma`, `estado`, `id_sucursal`) VALUES ";
+				$sql = "INSERT INTO tb_cita (`id_cita`, `id_trabajador`, `id_servicio`, `id_mascota`, `fecha_registro`, `fecha_cita`, `fecha_termino`, `sintoma`, `estado`, `id_fundo`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(a.id_cita) WHEN 0 THEN 1 ELSE (MAX(a.id_cita) + 1) end FROM `tb_cita` a),";
 				$sql .= "?,?,?,now(),?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_trabajador,$id_servicio,$id_mascota,$fecha_1,$fecha_2,$sintomas,"registrada",$id_sucursal]);
+				$stmt->execute([$id_trabajador,$id_servicio,$id_mascota,$fecha_1,$fecha_2,$sintomas,"registrada",$id_fundo]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al realizar el registro en la base de datos.");
 				}
@@ -177,7 +177,7 @@
 			return $VD;
 		}
 
-		public function registrarCitaAdmin($id_mascota,$id_trabajador,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_sucursal) {
+		public function registrarCitaAdmin($id_mascota,$id_trabajador,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_fundo) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -187,13 +187,13 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_cita (`id_cita`, `id_trabajador`, `id_servicio`, `id_mascota`, `fecha_registro`, `fecha_cita`, `fecha_termino`, `sintoma`, `estado`, `id_sucursal`) VALUES ";
+				$sql = "INSERT INTO tb_cita (`id_cita`, `id_trabajador`, `id_servicio`, `id_mascota`, `fecha_registro`, `fecha_cita`, `fecha_termino`, `sintoma`, `estado`, `id_fundo`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(a.id_cita) WHEN 0 THEN 1 ELSE (MAX(a.id_cita) + 1) end FROM `tb_cita` a),";
 				$sql .= "?,?,?,now(),?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_trabajador,$id_servicio,$id_mascota,$fecha_1,$fecha_2,$sintomas,"registrada",$id_sucursal]);
+				$stmt->execute([$id_trabajador,$id_servicio,$id_mascota,$fecha_1,$fecha_2,$sintomas,"registrada",$id_fundo]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al realizar el registro en la base de datos.");
 				}

@@ -114,7 +114,7 @@
 
                                         <form class="form-validate" action="#" method="post" id="frmDatos" name="frmDatos">
 
-                                          <input type="hidden" name="id_sucursal" id="id_sucursal" value="">
+                                          <input type="hidden" name="id_fundo" id="id_fundo" value="">
                                           <input type="hidden" name="accion" id="accion" value="add">
 
                                           <div class="row">

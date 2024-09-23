@@ -61,14 +61,14 @@
                                                 <div class="col-12">
 <!--                                                     <div class="form-group">
                                                         <label class="control-label">Sucursal*</label>
-                                                        <select class="form-control" name="id_sucursal" id="id_sucursal" required>
+                                                        <select class="form-control" name="id_fundo" id="id_fundo" required>
                                                           <option value="">Selecione</option>
                                                           <?php
                                                             include("core/models/ClassSucursal.php");
                                                             $dataSucursal = $OBJ_SUCURSAL->show(ID_EMPRESA,"1");
                                                             if ($dataSucursal["error"]=="NO") {
                                                               foreach ($dataSucursal["data"] as $key) {
-                                                                echo '<option value="' . $key['id_sucursal'] . '">' . $key['nombre'] . '</option>';
+                                                                echo '<option value="' . $key['id_fundo'] . '">' . $key['nombre'] . '</option>';
                                                               }
                                                             }
                                                           ?>

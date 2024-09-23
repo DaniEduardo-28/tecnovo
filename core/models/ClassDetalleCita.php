@@ -15,7 +15,7 @@
 
 			try {
 
-				$sql = "SELECT M.*,C.id_cita,C.id_sucursal,C.id_trabajador,C.id_servicio,
+				$sql = "SELECT M.*,C.id_cita,C.id_fundo,C.id_trabajador,C.id_servicio,
 									   C.fecha_registro,C.fecha_cita,C.fecha_termino,C.sintoma,C.observaciones,
 								       C.mensaje_cita,C.estado AS estado_cita,DC.name_servicio as detalle_name_servicio,
 								       DC.motivo as detalle_motivo,DC.sintomas as detalle_sintomas,
@@ -62,7 +62,7 @@
 
 			try {
 
-				$sql = "SELECT M.*,C.id_cita,C.id_sucursal,C.id_trabajador,C.id_servicio,
+				$sql = "SELECT M.*,C.id_cita,C.id_fundo,C.id_trabajador,C.id_servicio,
 									   C.fecha_registro,C.fecha_cita,C.fecha_termino,C.sintoma,C.observaciones,
 								       C.mensaje_cita,C.estado AS estado_cita,DC.name_servicio as detalle_name_servicio,
 								       DC.motivo as detalle_motivo,DC.sintomas as detalle_sintomas,

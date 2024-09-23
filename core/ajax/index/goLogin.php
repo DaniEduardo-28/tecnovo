@@ -3,7 +3,7 @@
   $name_user = isset($_POST["login-username"]) ? $_POST["login-username"] : "";
   $pass_user  = isset($_POST["login-password"]) ? encript($_POST["login-password"]) : "";
   $recordar  = isset($_POST["chkRemember"]) ? $_POST["chkRemember"] : "";
-/*   $id_sucursal  = isset($_POST["id_sucursal"]) ? $_POST["id_sucursal"] : "";
+/*   $id_fundo  = isset($_POST["id_fundo"]) ? $_POST["id_fundo"] : "";
  */
   try {
 
@@ -15,7 +15,7 @@
       throw new Exception("Campo contraseña, obligatorio.");
     }
 
-/*     if (empty($id_sucursal)) {
+/*     if (empty($id_fundo)) {
       throw new Exception("Seleccionar una sucursal.");
     } */
 
@@ -62,13 +62,13 @@
 
 /*     $id_trabajador = $result[0]["id_trabajador"];
     require_once "core/models/ClassAccesoSucursal.php";
-    $flag_permiso = $OBJ_ACCESO_SUCURSAL->verificarPermiso($id_trabajador,$id_sucursal);
+    $flag_permiso = $OBJ_ACCESO_SUCURSAL->verificarPermiso($id_trabajador,$id_fundo);
     if ($flag_permiso==false) {
       throw new Exception("No tienes permiso para acceder a esta sucursal.");
     }
 
     require_once "core/models/ClassSucursal.php";
-    $ResultadoSucursal = $OBJ_SUCURSAL->getSucursalForId($id_sucursal);
+    $ResultadoSucursal = $OBJ_SUCURSAL->getSucursalForId($id_fundo);
     if ($ResultadoSucursal["error"]=="SI") {
       throw new Exception($ResultadoSucursal["message"]);
     }
@@ -85,7 +85,7 @@
     $_SESSION['name_grupo'] = $result[0]["name_grupo"];
     $_SESSION['name_especialidad'] = $result[0]["name_especialidad"];
     $_SESSION['src_image'] = $srcImg;
-    /* $_SESSION["id_sucursal"] = $resultSucursal[0]["id_sucursal"];
+    /* $_SESSION["id_fundo"] = $resultSucursal[0]["id_fundo"];
     $_SESSION["id_empresa"] = $resultSucursal[0]["id_empresa"];
     $_SESSION["nombre_sucursal"] = $resultSucursal[0]["nombre"]; */
 

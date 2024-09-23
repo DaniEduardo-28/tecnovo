@@ -22,7 +22,7 @@
   $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
   $detalle_venta = json_decode($array_detalle);
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : 0;
-  $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : 0;
+  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : 0;
 
   $monto_recibido = isset($_POST["monto_recibido"]) ? $_POST["monto_recibido"] : 0;
   $vuelto = isset($_POST["vuelto"]) ? $_POST["vuelto"] : 0;
@@ -119,10 +119,10 @@
     $VD;
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_VENTA->insert_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio);
+        $VD = $OBJ_ORDEN_VENTA->insert_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_VENTA->update_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio);
+        $VD = $OBJ_ORDEN_VENTA->update_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
         break;
       default:
         $VD1['error'] = "SI";

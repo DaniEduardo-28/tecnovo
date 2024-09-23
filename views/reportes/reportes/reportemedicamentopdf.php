@@ -11,7 +11,7 @@
 
     $valor = isset($_GET["valor"])	? $_GET["valor"]	: "";
     $id_tipo_medicamento = isset($_GET["id_tipo_medicamento"])	? $_GET["id_tipo_medicamento"]	: "";
-    $id_sucursal = isset($_SESSION["id_sucursal"])	? $_SESSION["id_sucursal"]	: 0;
+    $id_fundo = isset($_SESSION["id_fundo"])	? $_SESSION["id_fundo"]	: 0;
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("vistareportemedicamentos"));
 
@@ -31,7 +31,7 @@
     $empresa = $ResultadoEmpresa["data"];
 
     require_once "core/models/ClassMedicamento.php";
-    $Resultado = $OBJ_MEDICAMENTO->showReporte("all",$id_tipo_medicamento,$valor,$id_sucursal);
+    $Resultado = $OBJ_MEDICAMENTO->showReporte("all",$id_tipo_medicamento,$valor,$id_fundo);
     if ($Resultado["error"]=="SI") {
       throw new Exception($Resultado["message"]);
     }

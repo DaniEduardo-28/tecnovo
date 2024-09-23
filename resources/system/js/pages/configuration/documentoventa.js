@@ -5,7 +5,7 @@ var table = $('#example').DataTable({
   columns: [
     { 'data': 'num' },
     { 'data': 'id_documento_venta' },
-    { 'data': 'id_sucursal' },
+    { 'data': 'id_fundo' },
     { 'data': 'nombre' },
     { 'data': 'nombre_corto' },
     { 'data': 'cod_sunat' },
@@ -165,7 +165,7 @@ function showData(){
             table.row.add({
               "num": o[i].num,
               "id_documento_venta": o[i].id_documento_venta,
-              "id_sucursal": o[i].id_sucursal,
+              "id_fundo": o[i].id_fundo,
               "nombre": o[i].nombre,
               "nombre_corto": o[i].nombre_corto,
               "cod_sunat": o[i].cod_sunat,

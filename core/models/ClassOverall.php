@@ -408,7 +408,7 @@
 			return $VD;
 		}
 
-		public function getTotalesReporte($id_sucursal) {
+		public function getTotalesReporte($id_fundo) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -418,9 +418,9 @@
 				$stmt = $conexion->prepare("SELECT
 																		(SELECT COUNT(*) FROM tb_trabajador t) as total_trabajadores,
 																	  (SELECT COUNT(*) FROM tb_cliente c) as total_clientes,
-																	  (SELECT COUNT(*) FROM tb_accesorio a WHERE a.id_sucursal = ?) as total_accesorios,
-																	  (SELECT COUNT(*) FROM tb_medicamento m WHERE m.id_sucursal = ?) as total_medicamentos");
-				$stmt->execute([$id_sucursal,$id_sucursal]);
+																	  (SELECT COUNT(*) FROM tb_accesorio a WHERE a.id_fundo = ?) as total_accesorios,
+																	  (SELECT COUNT(*) FROM tb_medicamento m WHERE m.id_fundo = ?) as total_medicamentos");
+				$stmt->execute([$id_fundo,$id_fundo]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				if (count($result)==0) {

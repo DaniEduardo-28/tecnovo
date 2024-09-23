@@ -664,7 +664,7 @@ function showListaAgregarDetalle(){
 
 function get_data_callback_detalle(){
   table_detalle_modal.clear().draw();
-  var id_sucursal = $("#sucursal_buscar").val();
+  var id_fundo = $("#sucursal_buscar").val();
   var id_moneda = $("#codigo_moneda").val();
   var valor = $("#txtBuscarDetalle").val();
   var tipo = $('input:radio[name=opcion_busqueda]:checked').val();
@@ -673,7 +673,7 @@ function get_data_callback_detalle(){
 		data:{
   		limit: itemsPorPagina,
   		offset: desde,
-      id_sucursal: id_sucursal,
+      id_fundo: id_fundo,
       id_moneda: id_moneda,
       valor: valor,
       tipo: tipo

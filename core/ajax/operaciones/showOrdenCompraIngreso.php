@@ -9,7 +9,7 @@
     $fecha_inicio = isset($_POST["fecha_inicio"])	? $_POST["fecha_inicio"]	: "";
     $fecha_fin = isset($_POST["fecha_fin"])	? $_POST["fecha_fin"]	: "";
     $tipo_busqueda = isset($_POST["tipo_busqueda"])	? $_POST["tipo_busqueda"]	: "";
-    $id_sucursal = isset($_SESSION["id_sucursal"])	? $_SESSION["id_sucursal"]	: "";
+    $id_fundo = isset($_SESSION["id_fundo"])	? $_SESSION["id_fundo"]	: "";
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ingreso"));
 
@@ -22,12 +22,12 @@
     }
 
     require_once "core/models/ClassOrdenCompra.php";
-    $DataCantidad = $OBJ_ORDEN_COMPRA->getCount1($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda);
+    $DataCantidad = $OBJ_ORDEN_COMPRA->getCount1($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_COMPRA->show1($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit);
+      $Resultado = $OBJ_ORDEN_COMPRA->show1($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit);
       $count = 1;
 
       foreach ($Resultado["data"] as $key) {

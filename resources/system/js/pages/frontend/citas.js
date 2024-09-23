@@ -83,7 +83,7 @@ function crearCalendario(){
 
   $('#calendario').fullCalendar('destroy');
   var id_medico = $('#cboMedicoBuscar').val();
-  var id_sucursal = $('#cboSucursalBuscar').val();
+  var id_fundo = $('#cboSucursalBuscar').val();
   var calendario = $('#calendario').fullCalendar({  // assign calendar
     defaultView: 'agendaWeek',
     editable: true,
@@ -140,7 +140,7 @@ function crearCalendario(){
         type: 'POST',
         data: {
           id_medico: id_medico,
-          id_sucursal: id_sucursal
+          id_fundo: id_fundo
         },
         error: function(e) {
           console.log(e);
@@ -534,7 +534,7 @@ function cargarServicios(){
 function registrarCita(){
 
   $('#id_trabajador').val($('#cboMedicoBuscar').val());
-  $('#id_sucursal').val($('#cboSucursalBuscar').val());
+  $('#id_fundo').val($('#cboSucursalBuscar').val());
   $('#name_sucursal').val($('select[name="cboSucursalBuscar"] option:selected').text());
 
   Swal.fire({
@@ -591,12 +591,12 @@ function registrarCita(){
 function cargarMedicos(){
   $('#cboMedicoBuscar').empty();
   $('#id_servicio').empty();
-  var id_sucursal = $("#cboSucursalBuscar").val();
+  var id_fundo = $("#cboSucursalBuscar").val();
   $.ajax({
     url: "ajax.php?accion=showMedicosSucursal",
     type: "POST",
     data:{
-      id_sucursal: id_sucursal
+      id_fundo: id_fundo
     },
     success : function(data) {
       try {

@@ -12,7 +12,7 @@
     }
 
     require_once "core/models/ClassDocumentoVenta.php";
-    $Resultado = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'],"all");
+    $Resultado = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_fundo'],"all");
 
     if ($Resultado["error"]=="NO") {
 
@@ -31,7 +31,7 @@
         $retorno_array[] =array(
           "num" => "$count",
           "id_documento_venta" => $key['id_documento_venta'],
-          "id_sucursal" => $key['id_sucursal'],
+          "id_fundo" => $key['id_fundo'],
           "nombre" => $key['nombre'],
           "nombre_corto" => $key['nombre_corto'],
           "cod_sunat" => $key['cod_sunat'],

@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
+		public function getCount($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -21,11 +21,11 @@
 				$parametros = null;
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_compra` o
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
+								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -78,7 +78,7 @@
 			return $VD;
 		}
 
-		public function show($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
+		public function show($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -98,11 +98,11 @@
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
 								INNER JOIN tb_metodo_envio m ON m.id_metodo_envio = o.id_metodo_envio
-								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
+								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -154,7 +154,7 @@
 			return $VD;
 		}
 
-		public function getCount1($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
+		public function getCount1($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -169,11 +169,11 @@
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_compra` o
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.estado in ('0','1')
-								AND o.id_sucursal = ? ";
+								AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -226,7 +226,7 @@
 			return $VD;
 		}
 
-		public function show1($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
+		public function show1($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -247,11 +247,11 @@
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
 								INNER JOIN tb_metodo_envio m ON m.id_metodo_envio = o.id_metodo_envio
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.estado in ('0','1')
-								AND o.id_sucursal = ? ";
+								AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -394,7 +394,7 @@
 			return $VD;
 		}
 
-		public function getCountDetalleParaOrden($id_sucursal,$tipo,$valor) {
+		public function getCountDetalleParaOrden($id_fundo,$tipo,$valor) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -407,13 +407,13 @@
 				$parametros = null;
 				switch ($tipo) {
 					case 'medicamento':
-						$sql .= "SELECT count(*) as cantidad FROM tb_medicamento WHERE id_sucursal = ? AND name_medicamento LIKE ? ";
-						$parametros[] = $id_sucursal;
+						$sql .= "SELECT count(*) as cantidad FROM tb_medicamento WHERE id_fundo = ? AND name_medicamento LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					case 'accesorio':
-						$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? ";
-						$parametros[] = $id_sucursal;
+						$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_fundo = ? AND name_accesorio LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					default:
@@ -549,7 +549,7 @@
 			return $VD;
 		}
 
-		public function showDetalleParaOrden($id_sucursal,$tipo,$valor,$offset,$limit) {
+		public function showDetalleParaOrden($id_fundo,$tipo,$valor,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -564,15 +564,15 @@
 					case 'medicamento':
 						$sql .= "SELECT name_medicamento as descripcion,id_medicamento as cod_producto,
 										id_moneda,precio_compra as precio_unitario, src_imagen, stock
-										FROM tb_medicamento WHERE id_sucursal = ? AND name_medicamento LIKE ? ";
-						$parametros[] = $id_sucursal;
+										FROM tb_medicamento WHERE id_fundo = ? AND name_medicamento LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					case 'accesorio':
 						$sql .= "SELECT name_accesorio as descripcion,id_accesorio as cod_producto,
 										id_moneda,precio_compra as precio_unitario, src_imagen, stock
-										FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? ";
-						$parametros[] = $id_sucursal;
+										FROM tb_accesorio WHERE id_fundo = ? AND name_accesorio LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					default:
@@ -614,7 +614,7 @@
 			return $VD;
 		}
 
-		public function insert($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
+		public function insert($id_fundo,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -623,13 +623,13 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_orden_compra (`id_orden_compra`, `id_sucursal`, `id_metodo_envio`, `id_proveedor`, `id_trabajador`, `fecha_orden`, `fecha_entrega`, `observaciones`, `estado`, `id_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_orden_compra (`id_orden_compra`, `id_fundo`, `id_metodo_envio`, `id_proveedor`, `id_trabajador`, `fecha_orden`, `fecha_entrega`, `observaciones`, `estado`, `id_moneda`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(o.id_orden_compra) WHEN 0 THEN 1 ELSE (MAX(o.id_orden_compra) + 1) end FROM `tb_orden_compra` o),";
 				$sql .= "?,?,?,?,NOW(),?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_sucursal,$id_metodo_envio,$id_proveedor,$id_trabajador,$fecha_entrega,$observaciones,'0',$codigo_moneda]);
+				$stmt->execute([$id_fundo,$id_metodo_envio,$id_proveedor,$id_trabajador,$fecha_entrega,$observaciones,'0',$codigo_moneda]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Error al registrar la orden de compra en la base de datos.");
 				}
@@ -664,7 +664,7 @@
 			return $VD;
 		}
 
-		public function update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
+		public function update($id_fundo,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;

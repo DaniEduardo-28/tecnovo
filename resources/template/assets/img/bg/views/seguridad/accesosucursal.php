@@ -160,7 +160,7 @@
                                     ?>
                                       <tr>
                                         <td><?=$num;?></td>
-                                        <td><?=$key['id_sucursal'];?></td>
+                                        <td><?=$key['id_fundo'];?></td>
                                         <td><?=strtoupper($key['nombre']);?></td>
                                         <td><label class="container-label"><input type="checkbox"><span class="checkmark"></span></label></td>
                                       </tr>

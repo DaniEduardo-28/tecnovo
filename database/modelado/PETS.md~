@@ -1778,7 +1778,7 @@
 		    (object ClassAttribute "flag_enviado"
 			quid       	"5D263461009F"
 			exportControl 	"Public")))
-	    (object Class "tb_sucursal"
+	    (object Class "tb_fundo"
 		quid       	"5D24BA7C03C4"
 		class_attributes 	(list class_attribute_list
 		    (object ClassAttribute "id_sucursal"
@@ -2585,7 +2585,7 @@
 		roles      	(list role_list
 		    (object Role "$UNNAMED$154"
 			quid       	"5D24BBCF0326"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4"
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$155"
@@ -2602,7 +2602,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$158"
 			quid       	"5D24BD2B0383"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$159"
 		quid       	"5D24BD2E0359"
@@ -2614,7 +2614,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$161"
 			quid       	"5D24BD2F029B"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$162"
 		quid       	"5D24BDF002A2"
@@ -2626,7 +2626,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$164"
 			quid       	"5D24BDF10283"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$165"
 		quid       	"5D24BDF80149"
@@ -2650,7 +2650,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$170"
 			quid       	"5D24C27B0248"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$171"
 		quid       	"5D24C28C03B7"
@@ -2662,7 +2662,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$173"
 			quid       	"5D24C28D0227"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$174"
 		quid       	"5D24D2CC031A"
@@ -2722,7 +2722,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$188"
 			quid       	"5D253564039E"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$189"
 		quid       	"5D2542D202DA"
@@ -2842,7 +2842,7 @@
 			is_navigable 	TRUE)
 		    (object Role "$UNNAMED$218"
 			quid       	"5D814AB30002"
-			supplier   	"Logical View::tb_sucursal"
+			supplier   	"Logical View::tb_fundo"
 			quidu      	"5D24BA7C03C4")))
 	    (object Association "$UNNAMED$219"
 		quid       	"5D814CEB019B"
@@ -5813,7 +5813,7 @@
 			height     	706
 			annotation 	8
 			autoResize 	TRUE)
-		    (object ClassView "Class" "Logical View::tb_sucursal" @135
+		    (object ClassView "Class" "Logical View::tb_fundo" @135
 			ShowCompartmentStereotypes 	TRUE
 			IncludeAttribute 	TRUE
 			IncludeOperation 	TRUE
@@ -5834,7 +5834,7 @@
 			    nlines     	1
 			    max_width  	268
 			    justify    	0
-			    label      	"tb_sucursal")
+			    label      	"tb_fundo")
 			icon_style 	"Icon"
 			line_color 	3342489
 			fill_color 	8454016
@@ -7568,7 +7568,7 @@
 			    label      	
 |This Diagram defines the typical physical network configurations, including those typically used by end users, as well as special configurations used for development and test.
 |
-|· Allocate processes to the various nodes. Allocation takes into account the capacity of the nodes (in terms of
+|ï¿½ Allocate processes to the various nodes. Allocation takes into account the capacity of the nodes (in terms of
 |both memory and processing), bandwidth of the communication medium (bus, LANs, WANs), and the
 |availability of the hardware and communication links, rerouting, and so on.
 |

@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
+		public function getCount($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -22,11 +22,11 @@
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_ingreso` i
 								INNER JOIN tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
+								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -79,7 +79,7 @@
 			return $VD;
 		}
 
-		public function show($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
+		public function show($id_fundo,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -99,11 +99,11 @@
 								INNER JOIN tb_documento_venta td ON td.id_documento_venta = i.id_tipo_docu
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
+								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -342,7 +342,7 @@
 			return $VD;
 		}
 
-		public function insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$detalle_compra) {
+		public function insert($id_fundo,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$detalle_compra) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -372,13 +372,13 @@
 					}
 				}
 
-				$sql = "INSERT INTO tb_ingreso (`id_ingreso`, `id_orden_compra`, `id_sucursal`, `id_trabajador`, `id_tipo_docu`, `num_documento`, `fecha`, `observaciones`, `estado`) VALUES ";
+				$sql = "INSERT INTO tb_ingreso (`id_ingreso`, `id_orden_compra`, `id_fundo`, `id_trabajador`, `id_tipo_docu`, `num_documento`, `fecha`, `observaciones`, `estado`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(i.id_ingreso) WHEN 0 THEN 1 ELSE (MAX(i.id_ingreso) + 1) end FROM `tb_ingreso` i),";
 				$sql .= "?,?,?,?,?,NOW(),?,'1'";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_orden_compra,$id_sucursal,$id_trabajador,$id_tipo_docu,$num_documento,$observaciones]);
+				$stmt->execute([$id_orden_compra,$id_fundo,$id_trabajador,$id_tipo_docu,$num_documento,$observaciones]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Error al registrar el ingreso en la base de datos.");
 				}

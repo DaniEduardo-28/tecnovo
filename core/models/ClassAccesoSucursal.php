@@ -7,7 +7,7 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function verificarPermiso($id_trabajador,$id_sucursal) {
+	public function verificarPermiso($id_trabajador,$id_fundo) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -15,9 +15,9 @@ class ClassAccesoSucursal extends Conexion {
 
 		try {
 
-			$sql = "SELECT * FROM tb_trabajador_sucursal WHERE id_trabajador = ? AND id_sucursal = ?";
+			$sql = "SELECT * FROM tb_trabajador_sucursal WHERE id_trabajador = ? AND id_fundo = ?";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_trabajador,$id_sucursal]);
+			$stmt->execute([$id_trabajador,$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result)==0) {
 				throw new Exception("No tienes permiso");
@@ -79,7 +79,7 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function getAccesoTrabajadorSucursal($id_sucursal) {
+	public function getAccesoTrabajadorSucursal($id_fundo) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -92,10 +92,10 @@ class ClassAccesoSucursal extends Conexion {
 							FROM tb_trabajador_sucursal TS
 							INNER JOIN vw_trabajadores T ON T.id_trabajador = TS.id_trabajador
 							INNER JOIN tb_especialidad E ON E.id_especialidad = T.id_especialidad
-							WHERE TS.id_sucursal = ? AND T.flag_medico = '1' AND T.estado = 'activo'
+							WHERE TS.id_fundo = ? AND T.flag_medico = '1' AND T.estado = 'activo'
 							ORDER BY T.apellidos_trabajador ASC";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_sucursal]);
+			$stmt->execute([$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result)==0) {
@@ -141,8 +141,8 @@ class ClassAccesoSucursal extends Conexion {
 			if ($datos != null) {
 				foreach ($datos as $key) {
 		      foreach ($key as $key1) {
-						$stmt = $conexion->prepare("INSERT INTO tb_trabajador_sucursal (id_sucursal, id_trabajador) VALUES (?,?)");
-						if ($stmt->execute([$key1->id_sucursal,$id_trabajador])==false) {
+						$stmt = $conexion->prepare("INSERT INTO tb_trabajador_sucursal (id_fundo, id_trabajador) VALUES (?,?)");
+						if ($stmt->execute([$key1->id_fundo,$id_trabajador])==false) {
 							throw new Exception("Error al actualizar los permisos.");
 						}
 		      }

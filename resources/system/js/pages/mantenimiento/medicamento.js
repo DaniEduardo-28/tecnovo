@@ -269,7 +269,7 @@ function getDataEdit(id_medicamento){
           var o = data1["data"];
           $("#id_medicamento").val(o[0].id_medicamento);
           $("#id_tipo_medicamento").val(o[0].id_tipo_medicamento);
-          $("#id_sucursal").val(o[0].id_sucursal);
+          $("#id_fundo").val(o[0].id_fundo);
           $("#id_moneda").val(o[0].id_moneda);
           $("#id_unidad_medida").val(o[0].id_unidad_medida);
           $("#name_medicamento").val(o[0].name_medicamento);

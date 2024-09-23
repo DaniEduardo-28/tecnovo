@@ -1338,7 +1338,7 @@ INSERT INTO `tb_servicio` (`id_servicio`, `id_tipo_servicio`, `name_servicio`, `
 -- Table structure for table `tb_sucursal`
 --
 
-CREATE TABLE `tb_sucursal` (
+CREATE TABLE `tb_fundo` (
   `id_sucursal` int(11) NOT NULL,
   `id_empresa` bigint(20) UNSIGNED NOT NULL,
   `nombre` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1355,7 +1355,7 @@ CREATE TABLE `tb_sucursal` (
 -- Dumping data for table `tb_sucursal`
 --
 
-INSERT INTO `tb_sucursal` (`id_sucursal`, `id_empresa`, `nombre`, `cod_ubigeo`, `direccion`, `telefono`, `mapa`, `estado`, `token`, `ruta`) VALUES
+INSERT INTO `tb_fundo` (`id_sucursal`, `id_empresa`, `nombre`, `cod_ubigeo`, `direccion`, `telefono`, `mapa`, `estado`, `token`, `ruta`) VALUES
 (1, 1, 'LOCAL PRINCIPAL', '150302', 'JR. TOMÁS GUIDO N 239 - OF. 302 - LINCE', '98765432', '', '1', 'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc', 'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4');
 
 -- --------------------------------------------------------
@@ -2054,7 +2054,7 @@ ALTER TABLE `tb_servicio`
 --
 -- Indexes for table `tb_sucursal`
 --
-ALTER TABLE `tb_sucursal`
+ALTER TABLE `tb_fundo`
   ADD PRIMARY KEY (`id_sucursal`),
   ADD KEY `id_empresa` (`id_empresa`);
 
@@ -2292,7 +2292,7 @@ ALTER TABLE `tb_servicio`
 --
 -- AUTO_INCREMENT for table `tb_sucursal`
 --
-ALTER TABLE `tb_sucursal`
+ALTER TABLE `tb_fundo`
   MODIFY `id_sucursal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --

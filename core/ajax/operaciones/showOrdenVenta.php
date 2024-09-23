@@ -9,7 +9,7 @@
     $id_doc_venta = isset($_POST["id_doc_venta"])	? $_POST["id_doc_venta"]	: "";
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $estado = isset($_POST["estado"])	? $_POST["estado"]	: "all";
-    $id_sucursal = isset($_SESSION['id_sucursal']) ? $_SESSION['id_sucursal'] : 0;
+    $id_fundo = isset($_SESSION['id_fundo']) ? $_SESSION['id_fundo'] : 0;
     $id_trabajador = isset($_SESSION['id_trabajador']) ? $_SESSION['id_trabajador'] : "0";
     $fecha_inicio = isset($_POST["fecha_inicio"])	? $_POST["fecha_inicio"]	: date("Y-m-d");
     $fecha_fin = isset($_POST["fecha_fin"])	? $_POST["fecha_fin"]	: date("Y-m-d");
@@ -28,12 +28,12 @@
     }
 
     require_once "core/models/ClassOrdenVenta.php";
-    $DataCantidad = $OBJ_ORDEN_VENTA->getCount($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin);
+    $DataCantidad = $OBJ_ORDEN_VENTA->getCount($id_fundo,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_VENTA->show($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$offset,$limit,$fecha_inicio,$fecha_fin);
+      $Resultado = $OBJ_ORDEN_VENTA->show($id_fundo,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$offset,$limit,$fecha_inicio,$fecha_fin);
 
       $count = 1 + $offset;
       foreach ($Resultado["data"] as $key) {
@@ -77,7 +77,7 @@
         $retorno_array[] =array(
           "num" => "$count",
           "id_venta" => $key['id_venta'],
-          "id_sucursal" => $key['id_sucursal'],
+          "id_fundo" => $key['id_fundo'],
           "id_trabajador" => $key['id_trabajador'],
           "name_documento_venta" => $key['name_documento_venta'],
           "codigo_documento_venta" => $key['codigo_documento_venta'],

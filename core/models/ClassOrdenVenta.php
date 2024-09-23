@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin) {
+		public function getCount($id_fundo,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -17,11 +17,11 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT COUNT(*) as cantidad FROM tb_venta WHERE id_sucursal = ? AND
+				$sql = "SELECT COUNT(*) as cantidad FROM tb_venta WHERE id_fundo = ? AND
 				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_cliente LIKE ? OR
 				cliente LIKE ?) AND fecha BETWEEN ? AND ? ";
 
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
@@ -84,7 +84,7 @@
 			return $VD;
 		}
 
-		public function show($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$offset,$limit,$fecha_inicio,$fecha_fin) {
+		public function show($id_fundo,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$offset,$limit,$fecha_inicio,$fecha_fin) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -94,11 +94,11 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT * FROM tb_venta WHERE id_sucursal = ? AND
+				$sql = "SELECT * FROM tb_venta WHERE id_fundo = ? AND
 				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_cliente LIKE ? OR
 				cliente LIKE ?) AND fecha BETWEEN ? AND ? ";
 
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
@@ -161,7 +161,7 @@
 			return $VD;
 		}
 
-		public function showReporte($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin) {
+		public function showReporte($id_fundo,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -171,11 +171,11 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT * FROM tb_venta WHERE id_sucursal = ? AND
+				$sql = "SELECT * FROM tb_venta WHERE id_fundo = ? AND
 				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_cliente LIKE ? OR
 				cliente LIKE ?) AND fecha BETWEEN ? AND ? ";
 
-				$parametros[] = $id_sucursal;
+				$parametros[] = $id_fundo;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
@@ -236,7 +236,7 @@
 			return $VD;
 		}
 
-		public function getCountDetalleParaOrden($id_sucursal,$tipo,$valor) {
+		public function getCountDetalleParaOrden($id_fundo,$tipo,$valor) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -249,13 +249,13 @@
 				$parametros = null;
 				switch ($tipo) {
 					case 'medicamento':
-						$sql .= "SELECT count(*) as cantidad FROM tb_medicamento WHERE id_sucursal = ? AND name_medicamento LIKE ? ";
-						$parametros[] = $id_sucursal;
+						$sql .= "SELECT count(*) as cantidad FROM tb_medicamento WHERE id_fundo = ? AND name_medicamento LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					case 'accesorio':
-						$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? ";
-						$parametros[] = $id_sucursal;
+						$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_fundo = ? AND name_accesorio LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					case 'servicio':
@@ -303,7 +303,7 @@
 			return $VD;
 		}
 
-		public function showDetalleParaOrden($id_sucursal,$tipo,$valor,$offset,$limit) {
+		public function showDetalleParaOrden($id_fundo,$tipo,$valor,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -318,15 +318,15 @@
 					case 'medicamento':
 						$sql .= "SELECT name_medicamento as descripcion,id_medicamento as cod_producto,
 										id_moneda,precio_venta as precio_unitario
-										FROM tb_medicamento WHERE id_sucursal = ? AND name_medicamento LIKE ? ";
-						$parametros[] = $id_sucursal;
+										FROM tb_medicamento WHERE id_fundo = ? AND name_medicamento LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					case 'accesorio':
 						$sql .= "SELECT name_accesorio as descripcion,id_accesorio as cod_producto,
 										id_moneda,precio_venta as precio_unitario
-										FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? ";
-						$parametros[] = $id_sucursal;
+										FROM tb_accesorio WHERE id_fundo = ? AND name_accesorio LIKE ? ";
+						$parametros[] = $id_fundo;
 						$parametros[] = $valor;
 						break;
 					case 'servicio':
@@ -374,7 +374,7 @@
 			return $VD;
 		}
 
-		public function insert($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio) {
+		public function insert($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -601,8 +601,8 @@
 					// code...
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_sucursal` WHERE id_sucursal = ?");
-				$stmt->execute([$id_sucursal]);
+				$stmt = $conexion->prepare("SELECT * FROM `tb_fundo` WHERE id_fundo = ?");
+				$stmt->execute([$id_fundo]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de sucursal.");
@@ -623,7 +623,7 @@
 				$signo_moneda = $result[0]['signo'];
 				$abreviatura_moneda = $result[0]['abreviatura'];
 
-				$sql = "INSERT INTO tb_venta (`id_venta`, `id_sucursal`, `id_trabajador`, `id_documento_venta`,
+				$sql = "INSERT INTO tb_venta (`id_venta`, `id_fundo`, `id_trabajador`, `id_documento_venta`,
 								`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
 								`id_documento_cliente`,`name_documento_cliente`, `codigo_documento_cliente`,
 								`numero_documento_cliente`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
@@ -636,7 +636,7 @@
 				$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,null,?,?,?,?,1,?,?,?,?,?,?,?,?,?,?,?,?,0,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_sucursal,$id_trabajador,$id_documento_venta,$name_documento_venta,
+				$stmt->execute([$id_fundo,$id_trabajador,$id_documento_venta,$name_documento_venta,
 												$codigo_documento_venta,$serie,$correlativo,$id_documento_cliente,
 											  $name_documento_cliente,$codigo_documento_cliente,$numero_documento_cliente,
 											  $id_forma_pago,$codigo_forma_pago,$name_forma_pago,$cliente,$direccion,
@@ -715,7 +715,7 @@
 			return $VD;
 		}
 
-		public function update($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio) {
+		public function update($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;
@@ -951,8 +951,8 @@
 					// code...
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_sucursal` WHERE id_sucursal = ?");
-				$stmt->execute([$id_sucursal]);
+				$stmt = $conexion->prepare("SELECT * FROM `tb_fundo` WHERE id_fundo = ?");
+				$stmt->execute([$id_fundo]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de sucursal.");
@@ -973,7 +973,7 @@
 				$signo_moneda = $result[0]['signo'];
 				$abreviatura_moneda = $result[0]['abreviatura'];
 
-				$sql = "UPDATE `tb_venta` SET `id_sucursal` = ?,
+				$sql = "UPDATE `tb_venta` SET `id_fundo` = ?,
 											`id_trabajador` = ?,
 											`id_documento_venta` = ?,
 											`name_documento_venta` = ?,
@@ -1011,7 +1011,7 @@
 											`monto_tipo_cambio` = ?
 								WHERE id_venta = ?";
 				$stmt = $conexion->prepare($sql);
-				$flag_update = $stmt->execute([$id_sucursal,$id_trabajador,$id_documento_venta,$name_documento_venta,
+				$flag_update = $stmt->execute([$id_fundo,$id_trabajador,$id_documento_venta,$name_documento_venta,
 												$codigo_documento_venta,$serie,$correlativo,$id_documento_cliente,
 											  $name_documento_cliente,$codigo_documento_cliente,$numero_documento_cliente,
 											  $id_forma_pago,$codigo_forma_pago,$name_forma_pago,$cliente,$direccion,
@@ -1151,7 +1151,7 @@
 			return $VD;
 		}
 
-		public function insert_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio) {
+		public function insert_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -1370,8 +1370,8 @@
 				}
 
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_sucursal` WHERE id_sucursal = ?");
-				$stmt->execute([$id_sucursal]);
+				$stmt = $conexion->prepare("SELECT * FROM `` WHERE id_fundo = ?");
+				$stmt->execute([$id_fundo]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de sucursal.");
@@ -1554,7 +1554,7 @@
 
 				}
 
-				$sql = "INSERT INTO tb_venta (`id_venta`, `id_sucursal`, `id_trabajador`, `id_documento_venta`,
+				$sql = "INSERT INTO tb_venta (`id_venta`, `id_fundo`, `id_trabajador`, `id_documento_venta`,
 								`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
 								`id_documento_cliente`,`name_documento_cliente`, `codigo_documento_cliente`,
 								`numero_documento_cliente`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
@@ -1567,8 +1567,8 @@
 				$sql .= "(SELECT CASE COUNT(o.id_venta) WHEN 0 THEN 1 ELSE (MAX(o.id_venta) + 1) end FROM `tb_venta` o),";
 				$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,null,?,?,?,?,2,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
 				$sql .= ")";
-				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_sucursal,$id_trabajador,$id_documento_venta,$name_documento_venta,
+				$stmt = $conexion->prepare(query: $sql);
+				$stmt->execute([$id_fundo,$id_trabajador,$id_documento_venta,$name_documento_venta,
 												$codigo_documento_venta,$serie,$correlativo,$id_documento_cliente,
 											  $name_documento_cliente,$codigo_documento_cliente,$numero_documento_cliente,
 											  $id_forma_pago,$codigo_forma_pago,$name_forma_pago,$cliente,$direccion,
@@ -1668,7 +1668,7 @@
 			return $VD;
 		}
 
-		public function update_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio) {
+		public function update_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;
@@ -1895,8 +1895,8 @@
 					$cliente = $nombres;
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_sucursal` WHERE id_sucursal = ?");
-				$stmt->execute([$id_sucursal]);
+				$stmt = $conexion->prepare("SELECT * FROM `tb_fundo` WHERE id_fundo = ?");
+				$stmt->execute([$id_fundo]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de sucursal.");
@@ -2078,7 +2078,7 @@
 
 				}
 
-				$sql = "UPDATE `tb_venta` SET `id_sucursal` = ?,
+				$sql = "UPDATE `tb_venta` SET `id_fundo` = ?,
 											`id_trabajador` = ?,
 											`id_documento_venta` = ?,
 											`name_documento_venta` = ?,
@@ -2119,7 +2119,7 @@
 											`monto_tipo_cambio` = ?
 								WHERE id_venta = ?";
 				$stmt = $conexion->prepare($sql);
-				$flag_update = $stmt->execute([$id_sucursal,$id_trabajador,$id_documento_venta,$name_documento_venta,
+				$flag_update = $stmt->execute([$id_fundo,$id_trabajador,$id_documento_venta,$name_documento_venta,
 												$codigo_documento_venta,$serie,$correlativo,$id_documento_cliente,
 											  $name_documento_cliente,$codigo_documento_cliente,$numero_documento_cliente,
 											  $id_forma_pago,$codigo_forma_pago,$name_forma_pago,$cliente,$direccion,

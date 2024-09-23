@@ -7,7 +7,7 @@ class ClassAccesoFundo extends Conexion {
 
 	}
 
-	public function verificarPermiso($id_cliente,$id_sucursal) {
+	public function verificarPermiso($id_cliente,$id_fundo) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -15,9 +15,9 @@ class ClassAccesoFundo extends Conexion {
 
 		try {
 
-			$sql = "SELECT * FROM tb_cliente_fundo WHERE id_cliente = ? AND id_sucursal = ?";
+			$sql = "SELECT * FROM tb_cliente_fundo WHERE id_cliente = ? AND id_fundo = ?";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_cliente,$id_sucursal]);
+			$stmt->execute([$id_cliente,$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result)==0) {
 				throw new Exception("No tienes permiso");
@@ -79,7 +79,7 @@ class ClassAccesoFundo extends Conexion {
 
 	}
 
-	public function getAccesoClienteFundo($id_sucursal) {
+	public function getAccesoClienteFundo($id_fundo) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -90,10 +90,10 @@ class ClassAccesoFundo extends Conexion {
 			$sql = "SELECT T.id_cliente,T.nombres_cliente,T.apellidos_cliente
 							FROM tb_cliente_fundo TS
 							INNER JOIN vw_clientes T ON T.id_cliente = TS.id_cliente
-							WHERE TS.id_sucursal = ? AND T.estado = 'activo'
+							WHERE TS.id_fundo = ? AND T.estado = 'activo'
 							ORDER BY T.apellidos_cliente ASC";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_sucursal]);
+			$stmt->execute([$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result)==0) {
@@ -139,8 +139,8 @@ class ClassAccesoFundo extends Conexion {
 			if ($datos != null) {
 				foreach ($datos as $key) {
 		      foreach ($key as $key1) {
-						$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_sucursal, id_cliente) VALUES (?,?)");
-						if ($stmt->execute([$key1->id_sucursal,$id_cliente])==false) {
+						$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_fundo, id_cliente) VALUES (?,?)");
+						if ($stmt->execute([$key1->id_fundo,$id_cliente])==false) {
 							throw new Exception("Error al actualizar los permisos.");
 						}
 		      }

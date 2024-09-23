@@ -7,7 +7,7 @@
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $id_tipo_medicamento = isset($_POST["id_tipo_medicamento"])	? $_POST["id_tipo_medicamento"]	: "";
-    $id_sucursal = isset($_SESSION["id_sucursal"])	? $_SESSION["id_sucursal"]	: 0;
+    $id_fundo = isset($_SESSION["id_fundo"])	? $_SESSION["id_fundo"]	: 0;
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("medicamento"));
 
@@ -20,12 +20,12 @@
     }
 
     require_once "core/models/ClassMedicamento.php";
-    $DataCantidad = $OBJ_MEDICAMENTO->getCount("all",$id_tipo_medicamento,$valor,$id_sucursal);
+    $DataCantidad = $OBJ_MEDICAMENTO->getCount("all",$id_tipo_medicamento,$valor,$id_fundo);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_MEDICAMENTO->show("all",$id_tipo_medicamento,$valor,$offset,$limit,$id_sucursal);
+      $Resultado = $OBJ_MEDICAMENTO->show("all",$id_tipo_medicamento,$valor,$offset,$limit,$id_fundo);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {

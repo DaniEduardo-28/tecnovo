@@ -55,16 +55,16 @@
                       <label for="login-password" class="label-material">Contraseña</label>
                     </div>
                     <div class="form-group">
-                      <label for="id_sucursal">Sucursal</label>
-                      <select id="id_sucursal" required class="form-control mb-3 mb-3"
-                        data-msg="Por favor seleccione una sucursal." name="id_sucursal">
+                      <label for="id_fundo">Sucursal</label>
+                      <select id="id_fundo" required class="form-control mb-3 mb-3"
+                        data-msg="Por favor seleccione una sucursal." name="id_fundo">
                         <option value="">Seleccione...</option>
                         <?php
                           include("core/models/ClassSucursal.php");
                           $dataSucursal = $OBJ_SUCURSAL->show(ID_EMPRESA,"1");
                           if ($dataSucursal["error"]=="NO") {
                             foreach ($dataSucursal["data"] as $key) {
-                              echo '<option value="' . $key['id_sucursal'] . '">' . $key['nombre'] . '</option>';
+                              echo '<option value="' . $key['id_fundo'] . '">' . $key['nombre'] . '</option>';
                             }
                           }
                         ?>

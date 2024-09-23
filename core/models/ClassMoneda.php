@@ -297,9 +297,9 @@
 
 				$sql = "SELECT (SELECT SUM(v.total) FROM vw_orden_compra v WHERE
 								v.estado_int <> '3' AND MONTH(v.fecha_orden) = ? AND
-								YEAR(v.fecha_orden) = ? and v.id_moneda = ? AND v.id_sucursal = ? ) as total";
+								YEAR(v.fecha_orden) = ? and v.id_moneda = ? AND v.id_fundo = ? ) as total";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$mes,$anio,$id_moneda,$_SESSION['id_sucursal']]);
+				$stmt->execute([$mes,$anio,$id_moneda,$_SESSION['id_fundo']]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				return $result == null || $result == "" ? 0 : $result[0]['total'];

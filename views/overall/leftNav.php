@@ -1,7 +1,7 @@
 <aside class="app-navbar">
   <div class="sidebar-nav scrollbar scroll_light">
       <ul class="metismenu " id="sidebarNav">
-          <li class="nav-static-title" style="color:#f2dff0;">Menú de Navegación</li>
+          <li class="nav-static-title" style="color:#15b0ef;">Menú de Navegación</li>
           <br>
           <li id="menuinicio">
               <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">

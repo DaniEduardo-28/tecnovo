@@ -128,7 +128,7 @@
                                             <option value="">Todos</option>
                                             <?php
                                               include("core/models/ClassDocumentoVenta.php");
-                                              $dataDocuCompra = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'],"all");
+                                              $dataDocuCompra = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_fundo'],"all");
                                               if ($dataDocuCompra["error"]=="NO") {
                                                 foreach ($dataDocuCompra["data"] as $key) {
                                                   if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {

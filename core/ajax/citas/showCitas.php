@@ -2,7 +2,7 @@
 
   $id_trabajador = isset($_POST['id_medico']) ? $_POST['id_medico'] : "all";
   $id_documento = isset($_POST['id_documento']) ? $_POST['id_documento'] : "all";
-  $id_sucursal = isset($_SESSION['id_sucursal']) ? $_SESSION['id_sucursal'] : 0;
+  $id_fundo = isset($_SESSION['id_fundo']) ? $_SESSION['id_fundo'] : 0;
   $valor = isset($_POST['valor']) ? $_POST['valor'] : "";
 
   try {
@@ -17,7 +17,7 @@
     }
 
     require_once "core/models/ClassCita.php";
-    $Resultado = $OBJ_CITA->showCitas($id_trabajador,$id_documento,$valor,$id_sucursal);
+    $Resultado = $OBJ_CITA->showCitas($id_trabajador,$id_documento,$valor,$id_fundo);
 
     if ($Resultado["error"]=="SI") {
       throw new Exception($Resultado["message"]);

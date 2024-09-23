@@ -80,7 +80,7 @@
                               <option value="all">Todos</option>
                               <?php
                                 include("core/models/ClassAccesoSucursal.php");
-                                $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
+                                $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_fundo']);
                                 if ($dataMedico["error"]=="NO") {
                                    foreach ($dataMedico["data"] as $key) {
                                     ?>
@@ -170,7 +170,7 @@
                    <label for="id_trabajador">Médico</label>
                    <select class="form-control" id="id_trabajador" name="id_trabajador">
                       <?php
-                      $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
+                      $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_fundo']);
                       if ($dataMedico["error"]=="NO") {
                          foreach ($dataMedico["data"] as $key) {
                           ?>

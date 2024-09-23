@@ -9,7 +9,7 @@ var table = $('#example').DataTable({
   info: false,
   columns: [
     { 'data': 'num' },
-    { 'data': 'id_sucursal' },
+    { 'data': 'id_fundo' },
     { 'data': 'nombre' },
     { 'data': 'flag_check' },
   ],
@@ -83,9 +83,9 @@ function showPermisos(){
             var num = 1;
             $('#example > tbody  > tr').each(function(){
               var data = table.row($(this)).data();
-              var id_sucursal = data['id_sucursal'];
+              var id_fundo = data['id_fundo'];
               for (var i = 0; i < o.length; i++) {
-                if (id_sucursal == o[i].id_sucursal) {
+                if (id_fundo == o[i].id_fundo) {
                   table.cell(num-1,3).data(o[i].opcion).draw();
                 }
               }
@@ -140,7 +140,7 @@ function saveOperation(){
           var flag_agregar = $(this).find("td").eq(2).find("input").prop('checked') ? true : false;
           if (flag_agregar) {
             datos.push({
-              "id_sucursal" : data["id_sucursal"],
+              "id_fundo" : data["id_fundo"],
             });
           }
         });

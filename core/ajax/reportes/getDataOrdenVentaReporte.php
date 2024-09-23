@@ -26,7 +26,7 @@
       foreach ($Resultado["data"] as $key) {
         $retorno_array[] =array(
           "id_venta" => $key['id_venta'],
-          "id_sucursal" => $key['id_sucursal'],
+          "id_fundo" => $key['id_fundo'],
           "id_trabajador" => $key['id_trabajador'],
           "id_documento_venta" => $key['id_documento_venta'],
           "name_documento_venta" => $key['name_documento_venta'],
