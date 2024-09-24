@@ -85,9 +85,6 @@
                     <?php if ($flag_cliente): ?>
                       <li id="menucliente"> <a href="?view=cliente">Clientes</a> </li>
                     <?php endif; ?>
-                    <!-- <?php if ($flag_proveedor): ?>
-                      <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
-                    <?php endif; ?> -->
                     <?php if ($flag_servicio): ?>
                       <li id="menuservicio"> <a href="?view=servicio">Servicios</a> </li>
                     <?php endif; ?>
@@ -204,12 +201,12 @@
           <?php
 
             $flag_mostar_menu = false;
-            $flag_fichamascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("fichamascota"));
-            $flag_ordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("ordenventa"));
+/*             $flag_fichamascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("fichamascota"));
+ */         $flag_ordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("ordenventa"));
             $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("ordencompra"));
             $flag_promocion = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("promocion"));
             $flag_ingreso = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("ingreso"));
-            if ($flag_fichamascota || $flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso) {
+            if ($flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -225,9 +222,9 @@
                   <span class="nav-title">Operaciones</span>
                 </a>
                 <ul aria-expanded="false">
-                  <?php if ($flag_fichamascota): ?>
+                  <!-- <?php if ($flag_fichamascota): ?>
                     <li id="submenufichamascota"><a href="?view=fichamascota">Ficha de Mascotas y Vacunas</a></li>
-                  <?php endif; ?>
+                  <?php endif; ?> -->
                   <?php if ($flag_ordencompra): ?>
                     <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
                   <?php endif; ?>

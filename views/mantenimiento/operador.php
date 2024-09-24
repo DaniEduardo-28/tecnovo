@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Clientes | <?=APP_TITLE;?> </title>
+    <title>Operadores | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -215,18 +215,6 @@
                                               <input id="correo" type="email" name="correo" class="form-control"
                                               autocomplete="off">
                                             </div>
-
-<!--                                             <div class="form-group col-md-6">
-                                              <label for="name_user" class="label-control">Usuario</label>
-                                              <input id="name_user" type="text" name="name_user" class="form-control"
-                                              autocomplete="off" required data-msg="Campo obligatorio...">
-                                            </div>
-
-                                            <div class="form-group col-md-6">
-                                              <label for="pass_user" class="label-control">Contraseña</label>
-                                              <input id="pass_user" type="password" name="pass_user" class="form-control"
-                                              autocomplete="off" required data-msg="Campo obligatorio...">
-                                            </div> -->
 
                                             <div class="form-group col-md-4 col-sm-6">
                                               <label for="fecha_nacimiento" class="label-control" id="lblFechaNacimiento">Fecha Nacimiento</label>
@@ -451,7 +439,7 @@
                                                       </g>
                                               </svg>
                                               <h3 class="m-t-30">No se encontraron datos</h3>
-                                              <p>Posiblemente no tiene ningún cliente registrado con los parametros de busqueda</p>
+                                              <p>Posiblemente no tiene ningún operador registrado con los parametros de busqueda</p>
                                             </div>
                                           </div>
                                         </div>
