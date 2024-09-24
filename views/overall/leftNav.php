@@ -23,7 +23,8 @@
             $flag_monedas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("monedas"));
             $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("identitydocuments"));
             $flag_tiposervicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
-            if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio) {
+            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
+            if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio || $flag_tipocosecha) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -53,6 +54,9 @@
                   <?php endif; ?>
                   <?php if ($flag_tiposervicio): ?>
                     <li id="menutiposervicio"> <a href="?view=tiposervicio">Tipos de Servicio</a> </li>
+                  <?php endif; ?>
+                  <?php if ($flag_tipocosecha): ?>
+                    <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
                   <?php endif; ?>
                 </ul>
             </li>
@@ -247,9 +251,8 @@
             $flag_vistareporteordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vistareporteordencompra"));
             $flag_vistareporteordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vistareporteordenventa"));
             $flag_vistareporteaccesorios = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vistareporteaccesorios"));
-            $flag_vistareportemedicamentos = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vistareportemedicamentos"));
             $flag_observacionesproveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("observacionesproveedor"));
-            if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor) {
+            if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_observacionesproveedor) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -273,9 +276,6 @@
                   <?php endif; ?>
                   <?php if ($flag_vistareporteaccesorios): ?>
                     <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Accesorios</a></li>
-                  <?php endif; ?>
-                  <?php if ($flag_vistareportemedicamentos): ?>
-                    <li id="submenureportemedicamentos"><a href="?view=vistareportemedicamentos">Medicamentos</a></li>
                   <?php endif; ?>
                   <?php if ($flag_observacionesproveedor): ?>
                     <li id="submenuobservacionesproveedor"><a href="?view=observacionesproveedor">Observaciones de Proveedor</a></li>

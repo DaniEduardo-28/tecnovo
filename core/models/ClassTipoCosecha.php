@@ -60,7 +60,7 @@
 			try {
 
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("INSERT INTO tb_tipo_cosecha (codigo, descripcion, estado) VALUES ((SELECT CASE COUNT(t.id_tipo_servicio) WHEN 0 THEN 1 ELSE (MAX(t.id_tipo_servicio) + 1) end FROM `tb_tipo_servicio` t),?,?)");
+				$stmt = $conexion->prepare("INSERT INTO tb_tipo_cosecha (id_tipo_cosecha, descripcion, estado) VALUES ((SELECT CASE COUNT(t.id_tipo_cosecha) WHEN 0 THEN 1 ELSE (MAX(t.id_tipo_cosecha) + 1) end FROM `tb_tipo_cosecha` t),?,?)");
 				$stmt->execute([$descripcion,$estado]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Ocurrió un error al insertar el registro.");
@@ -81,15 +81,15 @@
 			return $VD;
 		}
 
-        public function update($codigo,$descripcion,$estado) {
+        public function update($id_tipo_cosecha,$descripcion,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;
 			try {
 
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("UPDATE tb_tipo_cosecha SET descripcion = ?, estado = ? WHERE codigo = ?");
-				$stmt->execute([$descripcion,$estado,$codigo]);
+				$stmt = $conexion->prepare("UPDATE tb_tipo_cosecha SET descripcion = ?, estado = ? WHERE id_tipo_cosecha = ?");
+				$stmt->execute([$descripcion,$estado,$id_tipo_cosecha]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al actualizar los datos.");
 				}
@@ -109,15 +109,15 @@
 			return $VD;
 		}
 
-        public function delete($codigo) {
+        public function delete($id_tipo_cosecha) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;
 			try {
 				$conexion->beginTransaction();
 
-				$stmt = $conexion->prepare("DELETE FROM tb_tipo_cosecha WHERE codigo = ?");
-				$stmt->execute([$codigo]);
+				$stmt = $conexion->prepare("DELETE FROM tb_tipo_cosecha WHERE id_tipo_cosecha= ?");
+				$stmt->execute([$id_tipo_cosecha]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Ocurrió un error al eliminar el registro.");
 				}

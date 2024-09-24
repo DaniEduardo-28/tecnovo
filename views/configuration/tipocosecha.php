@@ -113,7 +113,7 @@
                                       <div class="ser-block block">
                                         <form action="#" method="post" id="frmDatos" name="frmDatos">
 
-                                          <input type="hidden" name="codigo" id="codigo" value="">
+                                          <input type="hidden" name="id_tipo_cosecha" id="codigo" value="">
                                           <input type="hidden" name="accion" id="accion" value="add">
 
                                           <div class="row">

@@ -2,7 +2,7 @@
 
   sleep(1);
 
-  $codigo = isset($_POST["codigo"]) ? $_POST["codigo"] : "";
+  $id_tipo_cosecha = isset($_POST["id_tipo_cosecha"]) ? $_POST["id_tipo_cosecha"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;
   $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
@@ -41,7 +41,7 @@
         $VD = $OBJ_TIPO_COSECHA->insert($descripcion,$estado);
         break;
       case 'edit':
-        $VD = $OBJ_TIPO_COSECHA->update($codigo,$descripcion,$estado);
+        $VD = $OBJ_TIPO_COSECHA->update($id_tipo_cosecha,$descripcion,$estado);
         break;
       default:
         $VD = "Error de operación";

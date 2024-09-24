@@ -2,7 +2,7 @@
 
   sleep(1);
 
-  $codigo = isset($_POST["codigo"]) ? $_POST["codigo"] : "";
+  $id_tipo_cosecha = isset($_POST["id_tipo_cosecha"]) ? $_POST["id_tipo_cosecha"] : "";
 
   try {
 
@@ -15,12 +15,12 @@
       throw new Exception("Error al válidar los permisos.");
     }
 
-    if (empty($codigo)) {
+    if (empty($id_tipo_cosecha)) {
         throw new Exception("No se recibió el campo id tipo de cosecha.");
     }
 
     require_once "core/models/ClassTipoCosecha.php";
-    $VD = $OBJ_TIPO_COSECHA->delete($codigo);
+    $VD = $OBJ_TIPO_COSECHA->delete($id_tipo_cosecha);
 
     if ($VD!="OK") {
       throw new Exception($VD);

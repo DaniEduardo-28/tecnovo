@@ -215,7 +215,7 @@
                                               <label for="id_especialidad" class="label-control">Especialidad</label>
                                               <select name="id_especialidad" id="id_especialidad" class="form-control" required>
                                                 <option value="">Seleccione</option>
-                                                <?php
+                                                <!-- <?php
                                                   include("core/models/ClassEspecialidad.php");
                                                   $dataEspecialidad = $OBJ_ESPECIALIDAD->show("activo");
                                                   if ($dataEspecialidad["error"]=="NO") {
@@ -223,7 +223,7 @@
                                                       echo '<option value="' . $key['id_especialidad'] . '">' . $key['name_especialidad'] . '</option>';
                                                     }
                                                   }
-                                                 ?>
+                                                 ?> -->
                                               </select>
                                             </div>
 

@@ -418,6 +418,7 @@
 				$stmt = $conexion->prepare("SELECT
 																		(SELECT COUNT(*) FROM tb_trabajador t) as total_trabajadores,
 																	  (SELECT COUNT(*) FROM tb_cliente c) as total_clientes,
+																	  (SELECT COUNT(*) FROM tb_operador c) as total_operadores,
 																	  (SELECT COUNT(*) FROM tb_accesorio a WHERE a.id_fundo = ?) as total_accesorios,
 																	  (SELECT COUNT(*) FROM tb_medicamento m WHERE m.id_fundo = ?) as total_medicamentos");
 				$stmt->execute([$id_fundo,$id_fundo]);
