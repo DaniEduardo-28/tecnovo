@@ -136,6 +136,22 @@
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/maintenance/getDataEditCliente.php");
           break;
+          case 'showOperador':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/showOperador.php");
+            break;
+          case 'goOperador':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/goOperador.php");
+            break;
+          case 'deleteOperador':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/deleteOperador.php");
+            break;
+          case 'getDataEditOperador':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/getDataEditOperador.php");
+            break;
         case 'showTrabajador':
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/maintenance/showTrabajador.php");

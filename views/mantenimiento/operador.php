@@ -83,7 +83,7 @@
 
                               <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions" name="panelOptions">
                                 <?php
-                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("cliente"));
+                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("operador"));
                                     if ($access_options[0]['error']=="NO") {
 
                                       if ($access_options[0]['flag_agregar']) {
@@ -477,7 +477,7 @@
     <script src="resources/system/js/pages/mantenimiento/cliente.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#menumantenimiento").addClass('active');
-      $("#menucliente").addClass('active');
+      $("#menuoperador").addClass('active');
     </script>
 
   </body>

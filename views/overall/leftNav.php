@@ -160,7 +160,7 @@
 
           <?php endif; ?>
 
-          <?php
+          <!-- <?php
 
             $flag_mostar_menu = false;
             $flag_citas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("citas"));
@@ -172,9 +172,9 @@
           		$flag_mostar_menu = false;
           	}
 
-          ?>
+          ?> -->
 
-          <?php if ($flag_mostar_menu): ?>
+          <!-- <?php if ($flag_mostar_menu): ?>
 
             <li id="menucitas">
                 <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -195,7 +195,7 @@
             </li>
 
           <?php endif; ?>
-
+ -->
 
 
           <?php
@@ -222,9 +222,6 @@
                   <span class="nav-title">Operaciones</span>
                 </a>
                 <ul aria-expanded="false">
-                  <!-- <?php if ($flag_fichamascota): ?>
-                    <li id="submenufichamascota"><a href="?view=fichamascota">Ficha de Mascotas y Vacunas</a></li>
-                  <?php endif; ?> -->
                   <?php if ($flag_ordencompra): ?>
                     <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
                   <?php endif; ?>
