@@ -1,7 +1,7 @@
 <?php
 
 	require("core/models/ClassAccesoOpcion.php");
-	$flag = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
+	$flag = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
 	if ($flag) {
 		require("views/configuration/tipocosecha.php");
 	}else{
