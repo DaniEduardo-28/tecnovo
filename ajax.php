@@ -152,6 +152,19 @@
             require("core/models/ClassAccesoOpcion.php");
             require("core/ajax/maintenance/getDataEditOperador.php");
             break;
+
+            case 'showMaquinaria':
+              require("core/models/ClassAccesoOpcion.php");
+              require("core/ajax/configuration/showMaquinaria.php");
+              break;
+            case 'goMaquinaria':
+              require("core/models/ClassAccesoOpcion.php");
+              require("core/ajax/configuration/goMaquinaria.php");
+              break;
+            case 'deleteMaquinaria':
+              require("core/models/ClassAccesoOpcion.php");
+              require("core/ajax/configuration/deleteMaquinaria.php");
+              break;
         case 'showTrabajador':
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/maintenance/showTrabajador.php");

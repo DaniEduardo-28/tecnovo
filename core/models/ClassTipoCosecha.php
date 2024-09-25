@@ -15,35 +15,28 @@
 
             try{
 
-                $parametros = null;
-                $sql = "SELECT * FROM 'tb_tipo_cosecha' t WHERE 1 = 1";
+                $parametros = [];
+                $sql = "SELECT * FROM `tb_tipo_cosecha` t WHERE 1 = 1";
                 if($estado!="all"){
                     $sql .= " AND t.estado = ?";
                     $parametros[] = $estado;
                 }
                 $stmt = $conexion->prepare($sql);
                 $stmt->execute($parametros);
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                if(count($result)==0) {
-                    throw new Exception("No se encontraron datos.");
-                }
-
+                if (!$result || count($result) == 0) {
+					throw new Exception("No se encontraron datos.");
+				}
+				
                 $VD1['error'] = "NO";
                 $VD1['message'] = "Success";
                 $VD1['data'] = $result;
                 $VD = $VD1;
 
-            } catch(Exception $e){
-
-                $VD1['error'] = "SI";
-                $VD1['message'] = $e->getMessage();
-                $VD = $VD1;
-            
-            } catch (Exception $exception) {
-
-                $VD1['error'] = "SI";
-                $VD1['message'] = $exception->getMessage();
+            } catch(Exception $e) {
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
 				$VD = $VD1;
 
         } finally {

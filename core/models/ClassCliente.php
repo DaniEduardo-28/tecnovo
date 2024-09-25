@@ -251,8 +251,8 @@
 						}
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
-					$stmt->execute([$id_persona,$name_user]);
+					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ?");
+					$stmt->execute([$id_persona]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result)>0) {
 						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, ingrese otro nombre de usuario.");
@@ -421,8 +421,8 @@
 					}
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_cliente != ? AND name_user = ? ");
-				$stmt->execute([$id_cliente,$name_user]);
+				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_cliente != ?");
+				$stmt->execute([$id_cliente]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result)>0) {
 					throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, por favor ingrese otro nombre de usuario.");

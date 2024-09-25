@@ -75,6 +75,12 @@
         case 'proveedor':
           $VD = 208;
           break;
+        case 'operador':
+          $VD = 209;
+          break;
+        case 'maquinaria':
+          $VD = 210;
+          break;
         case 'grupousuario':
           $VD = 301;
           break;

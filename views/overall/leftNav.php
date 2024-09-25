@@ -24,7 +24,7 @@
             $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("identitydocuments"));
             $flag_tiposervicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
             //PUNTO DE OBSERVACIÓN
-            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tiposervicio"));
+            $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
             if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio || $flag_tipocosecha) {
           		$flag_mostar_menu = true;
           	}else{
@@ -73,7 +73,7 @@
             //PUNTO DE OBSERVACIÓN
             $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("cliente"));
             $flag_maquinaria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("maquinaria"));
-            if ($flag_cliente || $flag_servicio || $flag_operador) {
+            if ($flag_cliente || $flag_servicio || $flag_operador || $flag_maquinaria) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -97,6 +97,9 @@
                     <?php endif; ?>
                      <?php if ($flag_operador): ?>
                       <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_maquinaria): ?>
+                      <li id="menumaquinaria"> <a href="?view=maquinaria">Maquinarias</a> </li>
                     <?php endif; ?>
                 </ul>
             </li>

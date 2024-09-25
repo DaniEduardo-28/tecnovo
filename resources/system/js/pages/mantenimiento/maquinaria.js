@@ -4,8 +4,9 @@ var table = $('#example').DataTable({
     destroy : true,
     columns: [
       { 'data': 'num' },
-      { 'data': 'id_tipo_cosecha' },
+      { 'data': 'id_maquinaria' },
       { 'data': 'descripcion' },
+      { 'data': 'observaciones' },
       { 'data': 'estado' },
       { 'data': 'options' }
     ],
@@ -27,9 +28,10 @@ var table = $('#example').DataTable({
     });
   
     $('#btnAdd').click(function(){
-      $("#id_tipo_cosecha").val("0");
+      $("#id_maquinaria").val("0");
       $("#accion").val("add");
       $("#descripcion").val("");
+      $("#observaciones").val("");
       addClassDiv();
     });
   
@@ -40,18 +42,20 @@ var table = $('#example').DataTable({
   
     $('#btnCancel').click(function(){
       removeClassDiv();
-      $("#id_tipo_cosecha").val("0");
+      $("#id_maquinaria").val("0");
       $("#accion").val("add");
       $("#descripcion").val("");
+      $("#observaciones").val("");
       $("#estado").prop('checked', false);
     });
   
     $('#example tbody').on( 'click', '#btnEdit', function () {
       try {
         var data = table.row( $(this).parents('tr') ).data();
-        $("#id_tipo_cosecha").val(data["id_tipo_cosecha"]);
+        $("#id_maquinaria").val(data["id_maquinaria"]);
         $("#accion").val("edit");
         $("#descripcion").val(data["descripcion"]);
+        $("#observaciones").val(data["observaciones"]);
         if ('<label class="badge badge-success">Activo</label>'==data["estado"]) {
           $("#estado").prop('checked', true);
         }else {
@@ -67,14 +71,14 @@ var table = $('#example').DataTable({
       try {
   
         var data = table.row( $(this).parents('tr') ).data();
-        var id_tipo_cosecha = data["id_tipo_cosecha"];
+        var id_maquinaria = data["id_maquinaria"];
         var descripcion = data["descripcion"];
         var parametros = {
-          "id_tipo_cosecha" : id_tipo_cosecha
+          "id_maquinaria" : id_maquinaria
         };
   
         Swal.fire({
-          title: '¿Seguro de eliminar el tipo de cosecha : ' + descripcion + '?',
+          title: '¿Seguro de eliminar el registro de maquinaria : ' + descripcion + '?',
           text: "No podrás revertir esta operación.",
           type: 'warning',
           showCancelButton: true,
@@ -85,7 +89,7 @@ var table = $('#example').DataTable({
           if (result.value) {
             $.ajax({
               type: "POST",
-              url: "ajax.php?accion=deleteTipoCosecha",
+              url: "ajax.php?accion=deleteMaquinaria",
               datatype: "json",
               data: parametros,
               success: function(data){
@@ -133,12 +137,13 @@ var table = $('#example').DataTable({
     $("#panelForm").addClass("d-none");
     $("#panelTabla").removeClass("d-none");
     $("#panelOptions").removeClass("d-none");
-    $("#name_tipo").val("");
+    $("#descripcion").val("");
+    $("#observaciones").val("");
   }
   
   function showData(){
     $.ajax({
-      url: "ajax.php?accion=showTipoCosecha",
+      url: "ajax.php?accion=showMaquinaria",
       success : function(data) {
         table.clear().draw();
         try {
@@ -148,8 +153,9 @@ var table = $('#example').DataTable({
             for (var i = 0; i < o.length; i++) {
               table.row.add({
                 "num": o[i].num,
-                "id_tipo_cosecha": o[i].id_tipo_cosecha,
+                "id_maquinaria": o[i].id_maquinaria,
                 "descripcion": o[i].descripcion,
+                "observaciones": o[i].observaciones,
                 "estado": o[i].estado,
                 "options": o[i].options
               }).draw();
@@ -189,7 +195,7 @@ var table = $('#example').DataTable({
       if (result.value) {
         $.ajax({
           type: "POST",
-          url: "ajax.php?accion=goTipoCosecha",
+          url: "ajax.php?accion=goMaquinaria",
           datatype: "json",
           data: $("#frmDatos").serialize(),
           success: function(data){

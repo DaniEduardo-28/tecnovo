@@ -2,14 +2,15 @@
 
   sleep(1);
 
-  $id_tipo_cosecha = isset($_POST["id_tipo_cosecha"]) ? $_POST["id_tipo_cosecha"] : "";
+  $id_maquinaria = isset($_POST["id_maquinaria"]) ? $_POST["id_maquinaria"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;
   $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
+  $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
   try {
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tipocosecha"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("maquinaria"));
     if ($access_options[0]['error']=="NO") {
       switch ($accion) {
         case 'add':
@@ -24,23 +25,24 @@
           break;
         default:
           throw new Exception("Acción no recibida.");
+          break;
       }
     }else {
       throw new Exception("Error al verificar los permisos.");
     }
 
     if (empty(trim($descripcion))) {
-      throw new Exception("Campo Obligatorio : Nombre de Tipo de Cosecha.");
+      throw new Exception("Campo Obligatorio : Nombre de Maquinaria.");
     }
 
-    require_once "core/models/ClassTipoCosecha.php";
+    require_once "core/models/ClassMaquinaria.php";
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_TIPO_COSECHA->insert($descripcion,$estado);
+        $VD = $OBJ_MAQUINARIA->insert($descripcion,$observaciones,$estado);
         break;
       case 'edit':
-        $VD = $OBJ_TIPO_COSECHA->update($id_tipo_cosecha,$descripcion,$estado);
+        $VD = $OBJ_MAQUINARIA->update($id_maquinaria,$descripcion,$observaciones, $estado);
         break;
       default:
         $VD = "Error de operación";
@@ -48,21 +50,21 @@
     }
 
     if ($VD!="OK") {
-        throw new Exception($VD);
-      }
-  
-      $data["error"]="NO";
-      $data["message"]="Operación realizada correctamente.";
-      $data["data"] = null;
-      echo json_encode($data);
-  
-    } catch (\Exception $e) {
-  
-      $data["error"]="SI";
-      $data["message"]=$e->getMessage();
-      $data["data"] = null;
-      echo json_encode($data);
-  
+      throw new Exception($VD);
     }
-  
-   ?>
+
+    $data["error"]="NO";
+    $data["message"]="Operación realizada correctamente.";
+    $data["data"] = null;
+    echo json_encode($data);
+
+  } catch (\Exception $e) {
+
+    $data["error"]="SI";
+    $data["message"]=$e->getMessage();
+    $data["data"] = null;
+    echo json_encode($data);
+
+  }
+
+ ?>
