@@ -34,16 +34,9 @@
 				$VD1['data'] = $result;
 				$VD = $VD1;
 
-			} catch(PDOException $e) {
-
+			} catch(Exception $e) {
 				$VD1['error'] = "SI";
 				$VD1['message'] = $e->getMessage();
-				$VD = $VD1;
-
-			} catch (Exception $exception) {
-
-				$VD1['error'] = "SI";
-				$VD1['message'] = $exception->getMessage();
 				$VD = $VD1;
 
     	} finally {

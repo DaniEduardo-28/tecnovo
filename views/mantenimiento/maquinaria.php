@@ -55,7 +55,7 @@
                                       <a href="?view=home"><i class="ti ti-home"></i></a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                      Configuración
+                                      Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
                                       Maquinarias
@@ -190,7 +190,7 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/configuration/maquinaria.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/mantenimiento/maquinaria.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#menumantenimiento").addClass('active');
       $("#menumaquinaria").addClass('active');
