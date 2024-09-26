@@ -53,7 +53,7 @@
 			try {
 
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("INSERT INTO tb_maquinaria (id_maquinaria, descripcion, observaciones, estado) VALUES ((SELECT CASE COUNT(t.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(t.id_maquinaria) + 1) end FROM `tb_maquinaria` t),?,?)");
+				$stmt = $conexion->prepare("INSERT INTO tb_maquinaria (id_maquinaria, descripcion, observaciones, estado) VALUES ((SELECT CASE COUNT(t.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(t.id_maquinaria) + 1) end FROM `tb_maquinaria` t),?,?,?)");
 				$stmt->execute([$descripcion, $observaciones,$estado]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Ocurrió un error al insertar el registro.");
@@ -81,7 +81,7 @@
 			try {
 
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ? WHERE idmaquinaria = ?");
+				$stmt = $conexion->prepare("UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ? WHERE id_maquinaria = ?");
 				$stmt->execute([$descripcion,$observaciones,$estado,$id_maquinaria]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al actualizar los datos.");
@@ -108,14 +108,6 @@
 			$VD;
 			try {
 				$conexion->beginTransaction();
-
-				/* $stmt = $conexion->prepare("SELECT * FROM `tb_maquinaria` WHERE id_maquinaria = ?");
-				$stmt->execute([$id_maquinaria]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				if (count($result)>0) {
-					throw new Exception("No se puede eliminar este registro.");
-				} */
 
 				$stmt = $conexion->prepare("DELETE FROM tb_maquinaria WHERE id_maquinaria = ?");
 				$stmt->execute([$id_maquinaria]);
