@@ -36,6 +36,12 @@
         case 'maquinaria':
           $VD = 210;
           break;
+          case 'tipogasto':
+            $VD = 211;
+            break;
+        case 'gasto':
+          $VD = 212;
+          break;
         case 'grupousuario':
           $VD = 301;
           break;

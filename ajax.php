@@ -83,6 +83,19 @@
           require("core/ajax/configuration/deleteTipoServicio.php");
           break;
 
+          case 'showTipoGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/showTipoGasto.php");
+            break;
+          case 'goTipoGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/goTipoGasto.php");
+            break;
+          case 'deleteTipoGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/deleteTipoGasto.php");
+            break;
+
           case 'showTipoCosecha':
             require("core/models/ClassAccesoOpcion.php");
             require("core/ajax/configuration/showTipoCosecha.php");
@@ -205,6 +218,22 @@
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/maintenance/getDataEditServicio.php");
           break;
+          case 'showGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/showGasto.php");
+            break;
+          case 'goGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/goGasto.php");
+            break;
+          case 'deleteGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/deleteGasto.php");
+            break;
+          case 'getDataEditGasto':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/maintenance/getDataEditGasto.php");
+            break;
         case 'showAccesorio':
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/maintenance/showAccesorio.php");

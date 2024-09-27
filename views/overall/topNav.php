@@ -44,7 +44,7 @@
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="mr-1">
                                         <h4 class="text-white mb-0"><?=$_SESSION['nombres'];?></h4>
-                                        <small class="text-white"><?=strtoupper($_SESSION['name_grupo']) . ' - ' . strtoupper($_SESSION['name_especialidad']);?></small>
+                                        <small class="text-white"><?=strtoupper($_SESSION['name_grupo']) /* . ' - ' . strtoupper($_SESSION['name_especialidad']) */;?></small>
                                     </div>
                                     <a href="?view=logout" class="text-white font-20 tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="" data-original-title="Cerrar Sesión"> <i
                                       class="zmdi zmdi-power"></i></a>

@@ -72,6 +72,8 @@
             //PUNTO DE OBSERVACIÓN
             $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("operador"));
             $flag_maquinaria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("maquinaria"));
+            $flag_tipogasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("tipogasto"));
+            $flag_gasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("gasto"));
             if ($flag_cliente || $flag_servicio || $flag_operador || $flag_maquinaria) {
           		$flag_mostar_menu = true;
           	}else{
@@ -99,6 +101,12 @@
                     <?php endif; ?>
                     <?php if ($flag_maquinaria): ?>
                       <li id="menumaquinaria"> <a href="?view=maquinaria">Maquinarias</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_tipogasto): ?>
+                      <li id="menutipogasto"> <a href="?view=tipogasto">Tipos de gastos</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_gasto): ?>
+                      <li id="menugasto"> <a href="?view=gasto">Gastos</a> </li>
                     <?php endif; ?>
                 </ul>
             </li>

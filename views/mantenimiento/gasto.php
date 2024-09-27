@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Operadores | <?=APP_TITLE;?> </title>
+    <title>Gastos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -22,11 +22,11 @@
         cursor: pointer;
       }
       .pagination li.active {
-        background-color: #07ac41;
+        background-color: #9e61da;
         color: white;
       }
       .pagination li:hover:not(.active) {
-        background-color: #ccd0cb;
+        background-color: #ddd;
       }
     </style>
   </head>
@@ -75,7 +75,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Operadores
+                                      Gastos
                                     </li>
                                   </ol>
                                 </nav>
@@ -83,7 +83,7 @@
 
                               <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions" name="panelOptions">
                                 <?php
-                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("operador"));
+                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("gasto"));
                                     if ($access_options[0]['error']=="NO") {
 
                                       if ($access_options[0]['flag_agregar']) {
@@ -110,7 +110,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Operadores</h4>
+                                        <h4 class="card-title">Gastos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -121,10 +121,8 @@
                                       <div class="ser-block block">
                                         <form id="frmDatos" name="frmDatos" enctype="multipart/form-data">
 
-                                          <input type="hidden" name="id_operador" id="id_operador" value="0">
-                                          <input type="hidden" name="id_persona" id="id_persona" value="0">
+                                          <input type="hidden" name="id_gasto" id="id_gasto" value="0">
                                           <input type="hidden" name="flag_imagen" id="flag_imagen" value="0">
-                                          <input type="hidden" name="pass_user_old" id="pass_user_old" value="">
                                           <input type="hidden" name="accion" id="accion" value="add">
 
                                           <div class="row">
@@ -133,35 +131,18 @@
                                               &nbsp;
                                             </div>
 
-                                            <div class="form-group col-sm-4">
-                                              <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                              alt="Logo / Imagen Operador" class="img-fluid rounded-circle"
-                                              style="width:200px;height:200px;">
-                                              <br>
-                                              <label for="">Logo / Imagen Operador</label>
-                                              <br>
-                                              <div class="form-group">
-                                                <input type="file" name="src_imagen" id="src_imagen" accept="image/jpeg"
-                                                class="is-valid" aria-invalid="false">
-                                              </div>
-                                            </div>
-
-                                            <div class="form-group col-sm-1">
-                                              &nbsp;
-                                            </div>
-
                                             <div class="form-group col-sm-6">
 
                                               <div class="form-group col-xs-12">
-                                                <label for="id_documento" class="label-material">Tipo Documento</label>
-                                                <select name="id_documento" id="id_documento" class="form-control" required>
-                                                  <option value="">Seleccione</option>
+                                                <label for="id_tipo_gasto" class="label-control">Tipo de Gasto</label>
+                                                <select name="id_tipo_gasto" id="id_tipo_gasto" class="form-control" required>
+                                                  <option value="">Seleccione...</option>
                                                   <?php
-                                                    include("core/models/ClassDocumentoIdentidad.php");
-                                                    $dataDocumento = $OBJ_DOCUMENTO_IDENTIDAD->show("activo");
-                                                    if ($dataDocumento["error"]=="NO") {
-                                                      foreach ($dataDocumento["data"] as $key) {
-                                                        echo '<option value="' . $key['id_documento'] . '">' . $key['name_documento'] . '</option>';
+                                                    include("core/models/ClassTipoGasto.php");
+                                                    $dataTipoGasto = $OBJ_TIPO_GASTO->show("activo");
+                                                    if ($dataTipoGasto["error"]=="NO") {
+                                                      foreach ($dataTipoGasto["data"] as $key) {
+                                                        echo '<option value="' . $key['id_tipo_gasto'] . '">' . $key['descripcion'] . '</option>';
                                                       }
                                                     }
                                                    ?>
@@ -169,22 +150,12 @@
                                               </div>
 
                                               <div class="form-group col-xs-12">
-                                                <label for="num_documento" class="label-control">Número Documento</label>
-                                                <input id="num_documento" type="number" name="num_documento" class="form-control"
+                                                <label for="name_gasto" class="label-control">Gasto</label>
+                                                <input id="name_gasto" type="text" name="name_gasto" class="form-control"
                                                 autocomplete="off" required data-msg="Campo obligatorio...">
                                               </div>
 
-                                              <div class="form-group col-xs-12">
-                                                <label for="nombres" class="label-control" id="lblNombres">Nombres</label>
-                                                <input id="nombres" type="text" name="nombres" class="form-control"
-                                                autocomplete="off" required data-msg="Campo obligatorio...">
-                                              </div>
 
-                                              <div class="form-group col-xs-12">
-                                                <label for="apellidos" class="label-control" id="lblApellidos">Apellidos</label>
-                                                <input id="apellidos" type="text" name="apellidos" class="form-control"
-                                                autocomplete="off" required data-msg="Campo obligatorio...">
-                                              </div>                                        
                                             </div>
 
 
@@ -192,63 +163,48 @@
 
                                           <div class="row">
 
-                                            <div class="form-group col-xs-12">
-                                                <label for="nickname" class="label-control" id="lblNickname">Sobrenombre (Nickname)</label>
-                                                <input id="nickname" type="text" name="nickname" class="form-control"
-                                                autocomplete="off" required data-msg="Campo obligatorio...">
+                                            <div class="form-group col-md-12 col-sm-12">
+                                              <label for="descripcion_gasto" class="label-control">Descripción</label>
+                                              <input id="descripcion_gasto" type="text" name="descripcion_gasto"
+                                              class="form-control" autocomplete="off" maxlength="1000">
                                             </div>
 
-                                            <div class="form-group col-md-12 col-sm-6">
-                                              <label for="direccion" class="label-control">Dirección</label>
-                                              <input id="direccion" type="text" name="direccion" class="form-control"
-                                              autocomplete="off">
+                                            <div class="form-group col-md-3 col-sm-4">
+                                              <label for="id_moneda" class="label-control">Moneda</label>
+                                              <select class="form-control" name="id_moneda" id="id_moneda" required>
+                                                <option value="">Seleccione</option>
+                                                <?php
+                                                  include("core/models/ClassMoneda.php");
+                                                  $dataMoneda = $OBJ_MONEDA->show("1");
+                                                  if ($dataMoneda["error"]=="NO") {
+                                                    foreach ($dataMoneda["data"] as $key) {
+                                                      echo '<option value="' . $key['id_moneda'] . '">' . $key['name_moneda'] . '</option>';
+                                                    }
+                                                  }
+                                                 ?>
+                                              </select>
                                             </div>
 
-                                            <div class="form-group col-md-4 col-sm-6">
-                                              <label for="telefono" class="label-control">Teléfono</label>
-                                              <input id="telefono" type="tel" name="telefono" class="form-control"
-                                              autocomplete="off">
+                                            <div class="form-group col-md-3 col-sm-4">
+                                              <label for="precio" class="label-control">Precio (Incluido IGV*)</label>
+                                              <input id="precio" type="number" name="precio" class="form-control"
+                                              autocomplete="off" value="0.00" required min="0.00" pattern="^\d*(\.\d{0,2})?$"
+                                              step="0.10" >
                                             </div>
 
-                                            <div class="form-group col-md-8 col-sm-6">
-                                              <label for="correo" class="label-control">Correo</label>
-                                              <input id="correo" type="email" name="correo" class="form-control"
-                                              autocomplete="off">
-                                            </div>
-
-                                            <div class="form-group col-md-4 col-sm-6">
-                                              <label for="fecha_nacimiento" class="label-control" id="lblFechaNacimiento">Fecha Nacimiento</label>
-                                              <input id="fecha_nacimiento" type="date" name="fecha_nacimiento" class="form-control"
-                                              autocomplete="off" value="<?=date("Y-m-d",strtotime(date("Y-m-d")."- 30 years")); ?>">
-                                            </div>
-
-                                            <div class="form-group col-md-2 col-sm-4" id="lblSexo1">
-                                              <label for="" class="label-control">Sexo</label>
-                                              <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="sexo"
-                                                id="rdbM" value="M">
-                                                <label class="form-check-label" for="rdbM">
-                                                  Masculino
-                                                </label>
-                                              </div>
-                                            </div>
-
-                                            <div class="form-group col-md-2 col-sm-4" id="lblSexo2">
-                                              <label for="" class="label-control">&nbsp;</label>
-                                              <div class="form-check">
-                                                <input class="form-check-input" type="radio" name="sexo"
-                                                id="rdbF" value="F">
-                                                <label class="form-check-label" for="rdbF">
-                                                  Femenino
-                                                </label>
-                                              </div>
-                                            </div>
-
-                                            <div class="form-group col-md-2 col-sm-4">
+                                            <div class="form-group col-md-3 col-sm-4">
                                               <label for="">&nbsp;</label>
                                               <div class="form-check">
                                                 <input id="estado" name="estado" type="checkbox" class="form-check-input" checked="">
                                                 <label for="estado" class="form-check-label">Estado</label>
+                                              </div>
+                                            </div>
+
+                                            <div class="form-group col-md-3 col-sm-4 d-none">
+                                              <label for="">&nbsp;</label>
+                                              <div class="form-check">
+                                                <input id="flag_igv" name="flag_igv" type="checkbox" class="form-check-input" checked="">
+                                                <label for="flag_igv" class="form-check-label">¿Precio incluye IGV?</label>
                                               </div>
                                             </div>
 
@@ -268,25 +224,23 @@
 
                                       <!-- START CONTENT -->
                                       <div class="row">
-
-                                        <div class="col-md-2 col-sm-4">
+                                        <div class="col-md-4 col-sm-4">
                                           <div class="form-group">
-                                            <label for="cboDocumentoBuscar" class="label-control">Documento</label>
-                                            <select class="form-control" name="cboDocumentoBuscar" id="cboDocumentoBuscar">
+                                            <label for="cboTipoBuscar" class="label-control">Tipo de Gasto</label>
+                                            <select class="form-control" name="cboTipoBuscar" id="cboTipoBuscar">
                                               <option value="">Todos...</option>
                                               <?php
-                                                $dataDocumento = $OBJ_DOCUMENTO_IDENTIDAD->show("all");
-                                                if ($dataDocumento["error"]=="NO") {
-                                                  foreach ($dataDocumento["data"] as $key) {
-                                                    echo '<option value="' . $key['id_documento'] . '">' . $key['name_documento'] . '</option>';
+                                                $dataTipoGasto = $OBJ_TIPO_GASTO->show("all");
+                                                if ($dataTipoGasto["error"]=="NO") {
+                                                  foreach ($dataTipoGasto["data"] as $key) {
+                                                    echo '<option value="' . $key['id_tipo_gasto'] . '">' . $key['descripcion'] . '</option>';
                                                   }
                                                 }
                                               ?>
                                             </select>
                                           </div>
                                         </div>
-
-                                        <div class="col-md-10 col-sm-8">
+                                        <div class="col-md-8 col-sm-8">
                                           <label for="">&nbsp;</label>
                                           <div class="input-group mb-3">
                                             <input type="text" class="form-control" placeholder="Search..."
@@ -299,7 +253,7 @@
                                         </div>
                                       </div>
 
-                                      <div class="row" id="divDatos">
+                                      <div class="card-body py-0 table-responsive" id="divDatos">
 
                                       </div>
 
@@ -439,7 +393,7 @@
                                                       </g>
                                               </svg>
                                               <h3 class="m-t-30">No se encontraron datos</h3>
-                                              <p>Posiblemente no tiene ningún operador registrado con los parametros de busqueda</p>
+                                              <p>Posiblemente no tiene ningún producto registrado con los parametros de busqueda</p>
                                             </div>
                                           </div>
                                         </div>
@@ -474,10 +428,10 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/mantenimiento/operador.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/mantenimiento/gasto.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#menumantenimiento").addClass('active');
-      $("#menuoperador").addClass('active');
+      $("#menugasto").addClass('active');
     </script>
 
   </body>
