@@ -17,6 +17,7 @@
 
 
         <!-- begin app -->
+
         <div class="app">
             <!-- begin app-wrap -->
             <div class="app-wrap">
@@ -117,12 +118,12 @@
                                           <input type="hidden" name="accion" id="accion" value="add">
 
                                           <div class="row">
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            <div class="form-group col-md-12 col-sm-12">
                                               <label for="descripcion" class="label-control">Descripción</label>
                                               <input id="descripcion" type="text" name="descripcion" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            <div class="form-group col-md-12 col-sm-12">
                                               <label for="observaciones" class="label-control">Observaciones</label>
                                               <input id="observaciones" type="text" name="observaciones" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
