@@ -24,7 +24,7 @@
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_OPERADOOR->show("all",$id_documento,$valor,$offset,$limit);
+      $Resultado = $OBJ_OPERADOR->show("all",$id_documento,$valor,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {

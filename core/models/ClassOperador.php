@@ -209,12 +209,12 @@
 						}
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_operador` WHERE id_persona != ? AND name_user = ? ");
+					/* $stmt = $conexion->prepare("SELECT * FROM `tb_operador` WHERE id_persona != ? AND name_user = ? ");
 					$stmt->execute([$id_persona,$name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result)>0) {
 						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, ingrese otro nombre de usuario.");
-					}
+					} */
 
 					$sql = "UPDATE tb_persona SET ";
 					$sql .=" nombres = ?, ";
@@ -241,12 +241,12 @@
 						}
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_operador` WHERE name_user = ? ");
+					/* $stmt = $conexion->prepare("SELECT * FROM `tb_operador` WHERE name_user = ? ");
 					$stmt->execute([$name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result)>0) {
 						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
-					}
+					} */
 
 					$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `sexo`) VALUES ";
 					$sql .= "(";
@@ -379,12 +379,12 @@
 					}
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_operador` WHERE id_operador != ? AND name_user = ? ");
+				/* $stmt = $conexion->prepare("SELECT * FROM `tb_operador` WHERE id_operador != ? AND name_user = ? ");
 				$stmt->execute([$id_operador,$name_user]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result)>0) {
 					throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, por favor ingrese otro nombre de usuario.");
-				}
+				} */
 
 				$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND id_documento = ? AND num_documento = ?");
 				$stmt->execute([$id_persona,$id_documento,$num_documento]);
@@ -453,9 +453,9 @@
 				$stmt->execute([$id_operador]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-				if (count($result)>0) {
+				/* if (count($result)>0) {
 					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Mascotas.");
-				}
+				} */
 
 				$stmt = $conexion->prepare("DELETE FROM tb_operador WHERE id_operador = ?");
 				$stmt->execute([$id_operador]);
@@ -483,6 +483,7 @@
 			}
 			return $VD;
 		}
+
 
 	}
 
