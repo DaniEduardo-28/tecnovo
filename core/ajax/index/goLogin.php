@@ -78,12 +78,10 @@
     $_SESSION['id_persona'] = $result[0]["id_persona"];
     $_SESSION['id_trabajador'] = $result[0]["id_trabajador"];
     $_SESSION['id_grupo'] = $result[0]["id_grupo"];
-    $_SESSION['id_especialidad'] = $result[0]["id_especialidad"];
     $_SESSION['name_user'] = $result[0]["name_user"];
     $_SESSION['nombres'] = $result[0]["nombres"];
     $_SESSION['apellidos'] = $result[0]["apellidos"];
     $_SESSION['name_grupo'] = $result[0]["name_grupo"];
-    $_SESSION['name_especialidad'] = $result[0]["name_especialidad"];
     $_SESSION['src_image'] = $srcImg;
     /* $_SESSION["id_fundo"] = $resultSucursal[0]["id_fundo"];
     $_SESSION["id_empresa"] = $resultSucursal[0]["id_empresa"];

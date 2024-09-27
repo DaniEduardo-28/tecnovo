@@ -14,7 +14,7 @@ class ClassUsuario extends Conexion {
 		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
 
 		try {
-			$stmt = $conexion->prepare("SELECT p.*,e.id_especialidad,e.name_especialidad,t.name_user,t.pass_user,t.estado,g.estado as estado_grupo,t.id_trabajador,g.name_grupo,g.id_grupo FROM tb_persona p INNER JOIN tb_trabajador t ON t.id_persona=p.id_persona INNER JOIN tb_grupo_usuario g ON g.id_grupo=t.id_grupo INNER JOIN tb_especialidad e ON e.id_especialidad=t.id_especialidad WHERE ? in (t.name_user)");
+			$stmt = $conexion->prepare("SELECT p.*,t.name_user,t.pass_user,t.estado,g.estado as estado_grupo,t.id_trabajador,g.name_grupo,g.id_grupo FROM tb_persona p INNER JOIN tb_trabajador t ON t.id_persona=p.id_persona INNER JOIN tb_grupo_usuario g ON g.id_grupo=t.id_grupo WHERE ? in (t.name_user)");
 			$stmt->execute([$name_user]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

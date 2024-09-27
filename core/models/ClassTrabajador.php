@@ -504,13 +504,12 @@
 			try {
 
 				$parametros = null;
-				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,t.id_especialidad,
+				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,
 				t.name_user,t.pass_user,t.estado,t.src_imagen,t.flag_medico,
 				concat(p.apellidos, ' ', p.nombres) as nombres_medico,
 				t.link_twitter,t.link_facebook,t.link_instagram,t.descripcion,
 				e.name_especialidad
 				FROM `tb_persona` p INNER JOIN tb_trabajador t ON t.id_persona = p.id_persona
-				INNER JOIN tb_especialidad e ON e.id_especialidad = t.id_especialidad
 				WHERE t.flag_medico = 1";
 
 				if ($estado != "all") {

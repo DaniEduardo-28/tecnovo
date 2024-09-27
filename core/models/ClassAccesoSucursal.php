@@ -91,7 +91,6 @@ class ClassAccesoSucursal extends Conexion {
 										 T.flag_medico
 							FROM tb_trabajador_sucursal TS
 							INNER JOIN vw_trabajadores T ON T.id_trabajador = TS.id_trabajador
-							INNER JOIN tb_especialidad E ON E.id_especialidad = T.id_especialidad
 							WHERE TS.id_fundo = ? AND T.flag_medico = '1' AND T.estado = 'activo'
 							ORDER BY T.apellidos_trabajador ASC";
 			$stmt = $conexion->prepare($sql);
