@@ -14,9 +14,7 @@
       throw new Exception("Error al verificar los permisos.");
     }
 
-    /* if (empty(trim($id_cliente))) {
-      throw new Exception("Campo Obligatorio : Id Cliente.");
-    } */
+    
     if (empty($id_cliente)) {
       throw new Exception("Campo Obligatorio: Id Cliente.");
     }
@@ -36,6 +34,18 @@
         }
     }
     }
+
+    /* if ($datos != null) {
+      $datos = json_decode($datos, true); // Decodifica como array asociativo
+      foreach ($datos as $dato) {
+          // Suponiendo que tienes una función para insertar o actualizar la tabla tb_cliente_fundo
+          $resultado = $OBJ_ACCESO_FUNDO->updateAccesoFundo($id_cliente, $dato['id_fundo'], $dato['cantidad_hc']);
+          if ($resultado !== "OK") {
+              throw new Exception($resultado);
+          }
+      }
+  } */
+  
 
     require_once "core/models/ClassAccesoFundo.php";
     $VD = $OBJ_ACCESO_FUNDO->updateAccesoFundo($id_cliente,$datos);
