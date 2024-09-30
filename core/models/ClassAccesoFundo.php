@@ -46,12 +46,17 @@ class ClassAccesoFundo extends Conexion {
 		try {
 
 			$sql = "SELECT  * FROM tb_cliente_fundo WHERE id_cliente = ?";
+			/* $sql= "SELECT f.id_fundo, f.nombre, cf.cantidad_hc 
+			        FROM tb_fundo f
+			        LEFT JOIN tb_cliente_fundo cf ON f.id_fundo = cf.id_fundo AND cf.id_cliente = ?
+			        ORDER BY f.nombre"; */
+
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_cliente]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result)==0) {
-				throw new Exception("No tiene accesos a sucursales.");
+				throw new Exception("No tiene accesos a fundos.");
 			}
 
 			$VD1['error'] = "NO";
@@ -147,6 +152,15 @@ class ClassAccesoFundo extends Conexion {
 		    }
 			}
 
+			/* if ($datos != null) {
+				foreach ($datos as $key) {
+					$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_fundo, id_cliente, cantidad_hc) VALUES (?, ?, ?)");
+					if ($stmt->execute([$key->id_fundo, $id_cliente, $key->cantidad_hc]) == false) {
+						throw new Exception("Error al actualizar los permisos.");
+					}
+				}
+			} */
+
 			$VD = "OK";
 			$conexion->commit();
 
@@ -164,6 +178,11 @@ class ClassAccesoFundo extends Conexion {
 
 }
 
-	$OBJ_ACCESO_SUCURSAL = new ClassAccesoFundo();
+	/* $datos = [
+    (object) ['id_fundo' => 1, 'cantidad_hc' => 50],
+    (object) ['id_fundo' => 2, 'cantidad_hc' => 100]
+	]; */
+
+	$OBJ_ACCESO_FUNDO = new ClassAccesoFundo();
 
 ?>

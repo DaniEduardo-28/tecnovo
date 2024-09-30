@@ -17,13 +17,13 @@ $(document).ready(function(){
       showData();
       });
   
-/*     $('#btnAdd').click(function(){
+    $('#btnAdd').click(function(){
       $('#frmDatos')[0].reset();
-      $('#img_destino').attr('src', "resources/global/images/sin_imagen.png");
-      $("#flag_imagen").val("0");
+      /* $('#img_destino').attr('src', "resources/global/images/sin_imagen.png");
+      $("#flag_imagen").val("0"); */
       $("#accion").val("add");
       addClassDiv();
-    }); */
+    });
   
     $("#frmDatos").submit(function(e) {
       e.preventDefault();

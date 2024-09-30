@@ -54,6 +54,9 @@
         case 'trabajador':
           $VD = 304;
           break;
+          case 'accesofundo':
+            $VD = 305;
+            break;
         case 'ordenventa':
           $VD = 602;
           break;

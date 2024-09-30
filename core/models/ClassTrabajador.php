@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($estado,$id_documento,$id_grupo,$id_especialidad,$valor) {
+		public function getCount($estado,$id_documento,$id_grupo,$valor) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -35,10 +35,6 @@
 				if ($id_grupo!="") {
 					$sql .= " AND t.id_grupo = ?";
 					$parametros[] = $id_grupo;
-				}
-				if ($id_especialidad!="") {
-					$sql .= " AND t.id_especialidad = ?";
-					$parametros[] = $id_especialidad;
 				}
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute($parametros);
@@ -76,7 +72,7 @@
 			return $VD;
 		}
 
-		public function show($estado,$id_documento,$id_grupo,$id_especialidad,$valor,$offset,$limit) {
+		public function show($estado,$id_documento,$id_grupo,$valor,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -86,7 +82,7 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,t.id_especialidad,t.name_user,
+				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,t.name_user,
 								t.pass_user,t.estado,d.name_documento,t.src_imagen,t.descripcion,
 								t.link_facebook,t.link_instagram,t.link_twitter
 								FROM tb_persona p
@@ -109,10 +105,6 @@
 				if ($id_grupo!="") {
 					$sql .= " AND t.id_grupo = ?";
 					$parametros[] = $id_grupo;
-				}
-				if ($id_especialidad!="") {
-					$sql .= " AND t.id_especialidad = ?";
-					$parametros[] = $id_especialidad;
 				}
 
 				$sql .= " LIMIT $offset, $limit ";
@@ -197,7 +189,7 @@
 			$VD = null;
 
 			try {
-				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,t.id_especialidad,t.name_user,
+				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,t.name_user,
 								t.pass_user,t.estado,t.src_imagen,t.flag_medico,t.descripcion,
 								t.link_facebook,t.link_instagram,t.link_twitter
 								FROM `tb_persona` p
@@ -235,7 +227,7 @@
 			return $VD;
 		}
 
-		public function insert($id_persona,$id_trabajador,$id_grupo,$id_especialidad,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter) {
+		public function insert($id_persona,$id_trabajador,$id_grupo,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = null;
@@ -330,13 +322,13 @@
 
 				}
 
-				$sql = "INSERT INTO tb_trabajador (`id_trabajador`, `id_persona`, `id_grupo`, `id_especialidad`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`, `flag_medico`, `descripcion`, `link_facebook`, `link_instagram`, `link_twitter`) VALUES ";
+				$sql = "INSERT INTO tb_trabajador (`id_trabajador`, `id_persona`, `id_grupo`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`, `descripcion`, `link_facebook`, `link_instagram`, `link_twitter`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(t.id_trabajador) WHEN 0 THEN 1 ELSE (MAX(t.id_trabajador) + 1) end FROM `tb_trabajador` t),";
-				$sql .= "?,?,?,?,?,now(),?,?,?,?,?,?,?";
+				$sql .= "?,?,?,?,now(),?,?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_persona,$id_grupo,$id_especialidad,$name_user,$pass_user,$estado,$src_imagen,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter]);
+				$stmt->execute([$id_persona,$id_grupo,$name_user,$pass_user,$estado,$src_imagen,$descripcion,$link_facebook,$link_instagram,$link_twitter]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al registrar el trabajador en la base de datos.");
 				}
@@ -356,7 +348,7 @@
 			return $VD;
 		}
 
-		public function update($id_persona,$id_trabajador,$id_grupo,$id_especialidad,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter) {
+		public function update($id_persona,$id_trabajador,$id_grupo,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = null;
@@ -422,7 +414,6 @@
 
 				$sql = "UPDATE tb_trabajador SET ";
 				$sql .=" id_grupo = ?, ";
-				$sql .=" id_especialidad = ?, ";
 				$sql .=" name_user = ?, ";
 				$sql .=" pass_user = ?, ";
 				$sql .=" flag_medico = ?, ";
@@ -433,7 +424,7 @@
 				$sql .=" link_twitter = ? ";
 				$sql .=" WHERE id_trabajador = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_grupo,$id_especialidad,$name_user,$pass_user,$flag_medico,$estado,$descripcion,$link_facebook,$link_instagram,$link_twitter,$id_trabajador])==false) {
+				if ($stmt->execute([$id_grupo,$name_user,$pass_user,$flag_medico,$estado,$descripcion,$link_facebook,$link_instagram,$link_twitter,$id_trabajador])==false) {
 					throw new Exception("2. Error al actualizar los datos del trabajador.");
 				}
 
@@ -466,14 +457,6 @@
 			try {
 				$conexion->beginTransaction();
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cita` WHERE id_trabajador = ?");
-				$stmt->execute([$id_trabajador]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				if (count($result)>0) {
-					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Citas.");
-				}
-
 				$stmt = $conexion->prepare("DELETE FROM tb_trabajador WHERE id_trabajador = ?");
 				$stmt->execute([$id_trabajador]);
 				if ($stmt->rowCount()==0) {
@@ -492,62 +475,6 @@
     	} finally {
 				$conexionClass->Close();
 			}
-			return $VD;
-		}
-
-		public function getMedicos($estado) {
-
-			$conexionClass = new Conexion();
-			$conexion = $conexionClass->Open();
-			$VD = null;
-
-			try {
-
-				$parametros = null;
-				$sql = "SELECT p.*,t.id_trabajador,t.id_grupo,
-				t.name_user,t.pass_user,t.estado,t.src_imagen,t.flag_medico,
-				concat(p.apellidos, ' ', p.nombres) as nombres_medico,
-				t.link_twitter,t.link_facebook,t.link_instagram,t.descripcion,
-				e.name_especialidad
-				FROM `tb_persona` p INNER JOIN tb_trabajador t ON t.id_persona = p.id_persona
-				WHERE t.flag_medico = 1";
-
-				if ($estado != "all") {
-					$sql .= " AND t.estado = ? ";
-					$parametros[] = $estado;
-				}
-
-				$sql .= " ORDER BY p.apellidos ASC";
-
-				$stmt = $conexion->prepare($sql);
-				$stmt->execute($parametros);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				if (count($result)==0) {
-					throw new Exception("No se encontraron datos.");
-				}
-
-				$VD1['error'] = "NO";
-				$VD1['message'] = "Success";
-				$VD1['data'] = $result;
-				$VD = $VD1;
-
-			} catch(PDOException $e) {
-
-				$VD1['error'] = "SI";
-				$VD1['message'] = $e->getMessage();
-				$VD = $VD1;
-
-			} catch (Exception $exception) {
-
-				$VD1['error'] = "SI";
-				$VD1['message'] = $exception->getMessage();
-				$VD = $VD1;
-
-    	} finally {
-				$conexionClass->Close();
-			}
-
 			return $VD;
 		}
 

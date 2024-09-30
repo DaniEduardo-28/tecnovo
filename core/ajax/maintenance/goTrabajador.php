@@ -160,10 +160,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_TRABAJADOR->insert($id_persona,$id_trabajador,$id_grupo,$id_especialidad,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
+        $VD = $OBJ_TRABAJADOR->insert($id_persona,$id_trabajador,$id_grupo,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
         break;
       case 'edit':
-        $VD = $OBJ_TRABAJADOR->update($id_persona,$id_trabajador,$id_grupo,$id_especialidad,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
+        $VD = $OBJ_TRABAJADOR->update($id_persona,$id_trabajador,$id_grupo,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

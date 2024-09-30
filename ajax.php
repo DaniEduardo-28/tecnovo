@@ -410,6 +410,14 @@
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/seguridad/goAccesoSucursal.php");
           break;
+          case 'showFundoCliente':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/seguridad/showFundoCliente.php");
+            break;
+          case 'goAccesoFundo':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/seguridad/goAccesoFundo.php");
+            break;
         case 'showMoneda':
           require("core/models/ClassAccesoOpcion.php");
           require("core/ajax/configuration/showMoneda.php");

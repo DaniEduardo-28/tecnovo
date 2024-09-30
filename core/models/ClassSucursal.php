@@ -104,7 +104,7 @@
 				$stmt = $conexion->prepare("INSERT INTO tb_fundo (id_fundo, id_empresa, estado, nombre, cod_ubigeo, direccion, telefono, mapa, token, ruta) VALUES ((SELECT CASE COUNT(c.id_fundo) WHEN 0 THEN 1 ELSE (MAX(c.id_fundo) + 1) end FROM `tb_fundo` c),?,?,?,?,?,?,?,?,?)");
 				$stmt->execute([$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta]);
 				if ($stmt->rowCount()==0) {
-					throw new Exception("Error al registrar la nueva sucursal.");
+					throw new Exception("Error al registrar el nuevo fundo.");
 				}
 				$VD = "OK";
 				$conexion->commit();
