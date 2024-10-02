@@ -207,7 +207,7 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/seguridad/accesosucursal.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/seguridad/accesofundo.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#tabmenuSeguridad").attr("aria-expanded",true);
       $("#tabmenuSeguridad1").addClass('show');

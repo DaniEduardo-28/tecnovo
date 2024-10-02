@@ -1,13 +1,16 @@
 <?php
 
-class ClassAccesoSucursal extends Conexion {
+class ClassAccesoSucursal extends Conexion
+{
 
 	//constructor de la clase
-	public function __construct(){
+	public function __construct()
+	{
 
 	}
 
-	public function verificarPermiso($id_trabajador,$id_fundo) {
+	public function verificarPermiso($id_trabajador, $id_fundo)
+	{
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -17,15 +20,15 @@ class ClassAccesoSucursal extends Conexion {
 
 			$sql = "SELECT * FROM tb_trabajador_sucursal WHERE id_trabajador = ? AND id_fundo = ?";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_trabajador,$id_fundo]);
+			$stmt->execute([$id_trabajador, $id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			if (count($result)==0) {
+			if (count($result) == 0) {
 				throw new Exception("No tienes permiso");
 			}
 
 			$VD = true;
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 			$VD = false;
 		} catch (Exception $exception) {
 			$VD = false;
@@ -37,7 +40,8 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function getPermisosSucursal($id_trabajador) {
+	public function getPermisosSucursal($id_trabajador)
+	{
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -50,7 +54,7 @@ class ClassAccesoSucursal extends Conexion {
 			$stmt->execute([$id_trabajador]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (count($result)==0) {
+			if (count($result) == 0) {
 				throw new Exception("No tiene accesos a sucursales.");
 			}
 
@@ -59,7 +63,7 @@ class ClassAccesoSucursal extends Conexion {
 			$VD1['data'] = $result;
 			$VD = $VD1;
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
@@ -79,7 +83,8 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function getAccesoTrabajadorSucursal($id_fundo) {
+	public function getAccesoTrabajadorSucursal($id_fundo)
+	{
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -97,7 +102,7 @@ class ClassAccesoSucursal extends Conexion {
 			$stmt->execute([$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (count($result)==0) {
+			if (count($result) == 0) {
 				throw new Exception("No tiene accesos a sucursales.");
 			}
 
@@ -106,7 +111,7 @@ class ClassAccesoSucursal extends Conexion {
 			$VD1['data'] = $result;
 			$VD = $VD1;
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
@@ -126,7 +131,8 @@ class ClassAccesoSucursal extends Conexion {
 
 	}
 
-	public function updateAccesoSucursal($id_trabajador,$datos) {
+	public function updateAccesoSucursal($id_trabajador, $datos)
+	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
 		$VD;
@@ -139,19 +145,19 @@ class ClassAccesoSucursal extends Conexion {
 
 			if ($datos != null) {
 				foreach ($datos as $key) {
-		      foreach ($key as $key1) {
+					foreach ($key as $key1) {
 						$stmt = $conexion->prepare("INSERT INTO tb_trabajador_sucursal (id_fundo, id_trabajador) VALUES (?,?)");
-						if ($stmt->execute([$key1->id_fundo,$id_trabajador])==false) {
+						if ($stmt->execute([$key1->id_fundo, $id_trabajador]) == false) {
 							throw new Exception("Error al actualizar los permisos.");
 						}
-		      }
-		    }
+					}
+				}
 			}
 
 			$VD = "OK";
 			$conexion->commit();
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 			$conexion->rollBack();
 			$VD = $e->getMessage();
 		} catch (Exception $exception) {
@@ -165,6 +171,6 @@ class ClassAccesoSucursal extends Conexion {
 
 }
 
-	$OBJ_ACCESO_SUCURSAL = new ClassAccesoSucursal();
+$OBJ_ACCESO_SUCURSAL = new ClassAccesoSucursal();
 
 ?>

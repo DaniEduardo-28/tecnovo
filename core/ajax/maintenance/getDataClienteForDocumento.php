@@ -18,6 +18,7 @@
         $retorno_array[] =array(
           "nombres" => $key['nombres'],
           "apellidos" => $key['apellidos'],
+          "nickname" => $key['nickname'],
           "direccion" => $key['direccion'],
           "telefono" => $key['telefono'],
           "correo" => $key['correo'],

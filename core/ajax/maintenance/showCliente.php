@@ -44,6 +44,7 @@
           "num_documento" => $key['num_documento'],
           "nombres" => $key['nombres'],
           "apellidos" => strtoupper($key['apellidos']) . ",<br>",
+          "nickname" => $key['nickname'],
           "direccion" => strtoupper(substr($key['direccion'],0,30)),
           "telefono" => $key['telefono'],
           "correo" => strtoupper(substr($key['correo'],0,25)),

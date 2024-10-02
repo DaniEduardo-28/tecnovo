@@ -31,6 +31,7 @@
           "nombres" => $key['nombres'],
           "apellidos" => $key['apellidos'],
           "direccion" => $key['direccion'],
+          "nickname" => $key['nickname'],
           "telefono" => $key['telefono'],
           "correo" => $key['correo'],
           "fecha_nacimiento" => $key['fecha_nacimiento'],

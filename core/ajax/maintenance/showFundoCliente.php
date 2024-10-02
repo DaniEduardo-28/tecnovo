@@ -26,7 +26,7 @@
       foreach ($Resultado["data"] as $key) {
         $retorno_array[] =[
           "id_fundo" => $key['id_fundo'],
-          "opcion" => '<label class="container-label"><input type="checkbox" checked="checked"><span class="checkmark"></span></label>',
+          "cantidad_hc" => $key['cantidad_hc'],
           ];
       }
       $data = [

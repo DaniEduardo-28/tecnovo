@@ -273,6 +273,7 @@ function getDataEdit(id_cliente){
           $("#num_documento").val(o[0].num_documento);
           $("#nombres").val(o[0].nombres);
           $("#apellidos").val(o[0].apellidos);
+          $("#nickname").val(o[0].nickname);
           $("#direccion").val(o[0].direccion);
           $("#telefono").val(o[0].telefono);
           $("#correo").val(o[0].correo);

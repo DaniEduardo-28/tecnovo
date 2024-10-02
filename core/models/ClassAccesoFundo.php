@@ -1,61 +1,34 @@
 <?php
 
-class ClassAccesoFundo extends Conexion {
+class ClassAccesoFundo extends Conexion
+{
 
 	//constructor de la clase
-	public function __construct(){
+	public function __construct()
+	{
 
 	}
 
-	public function verificarPermiso($id_cliente,$id_fundo) {
+	public function getPermisosFundo($id_cliente)
+	{
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = false;
-
-		try {
-
-			$sql = "SELECT * FROM tb_cliente_fundo WHERE id_cliente = ? AND id_fundo = ?";
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_cliente,$id_fundo]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			if (count($result)==0) {
-				throw new Exception("No tienes permiso");
-			}
-
-			$VD = true;
-
-		} catch(PDOException $e) {
-			$VD = false;
-		} catch (Exception $exception) {
-			$VD = false;
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-
-	}
-
-	public function getPermisosFundo($id_cliente) {
-
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = "";
 
 		try {
 
 			$sql = "SELECT  * FROM tb_cliente_fundo WHERE id_cliente = ?";
 			/* $sql= "SELECT f.id_fundo, f.nombre, cf.cantidad_hc 
-			        FROM tb_fundo f
-			        LEFT JOIN tb_cliente_fundo cf ON f.id_fundo = cf.id_fundo AND cf.id_cliente = ?
-			        ORDER BY f.nombre"; */
+									  FROM tb_fundo f
+									  LEFT JOIN tb_cliente_fundo cf ON f.id_fundo = cf.id_fundo AND cf.id_cliente = ?
+									  ORDER BY f.nombre"; */
 
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_cliente]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (count($result)==0) {
+			if (count($result) == 0) {
 				throw new Exception("No tiene accesos a fundos.");
 			}
 
@@ -64,7 +37,7 @@ class ClassAccesoFundo extends Conexion {
 			$VD1['data'] = $result;
 			$VD = $VD1;
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
@@ -84,11 +57,12 @@ class ClassAccesoFundo extends Conexion {
 
 	}
 
-	public function getAccesoClienteFundo($id_fundo) {
+	public function getAccesoClienteFundo($id_fundo)
+	{
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = "";
 
 		try {
 
@@ -101,7 +75,7 @@ class ClassAccesoFundo extends Conexion {
 			$stmt->execute([$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (count($result)==0) {
+			if (count($result) == 0) {
 				throw new Exception("No tiene accesos a fundos.");
 			}
 
@@ -110,7 +84,7 @@ class ClassAccesoFundo extends Conexion {
 			$VD1['data'] = $result;
 			$VD = $VD1;
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
@@ -130,10 +104,11 @@ class ClassAccesoFundo extends Conexion {
 
 	}
 
-	public function updateAccesoFundo($id_cliente,$datos) {
+	public function updateAccesoFundo($id_cliente, $datos)
+	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = "";
 		try {
 
 			$conexion->beginTransaction();
@@ -142,29 +117,18 @@ class ClassAccesoFundo extends Conexion {
 			$stmt->execute([$id_cliente]);
 
 			if ($datos != null) {
-				foreach ($datos as $key) {
-		      foreach ($key as $key1) {
-						$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_fundo, id_cliente) VALUES (?,?)");
-						if ($stmt->execute([$key1->id_fundo,$id_cliente])==false) {
-							throw new Exception("Error al actualizar los permisos.");
-						}
-		      }
-		    }
-			}
-
-			/* if ($datos != null) {
-				foreach ($datos as $key) {
-					$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_fundo, id_cliente, cantidad_hc) VALUES (?, ?, ?)");
-					if ($stmt->execute([$key->id_fundo, $id_cliente, $key->cantidad_hc]) == false) {
-						throw new Exception("Error al actualizar los permisos.");
+				foreach ($datos as $key1) {
+					$stmt = $conexion->prepare("INSERT INTO tb_cliente_fundo (id_fundo, id_cliente, cantidad_hc) VALUES (?,?,?)");
+					if ($stmt->execute([$key1->id_fundo, $id_cliente, $key1->cantidad_hc]) == false) {
+						throw new Exception("Error al registrar la cantidad de hectareas del cliente.");
 					}
 				}
-			} */
+			}
 
 			$VD = "OK";
 			$conexion->commit();
 
-		} catch(PDOException $e) {
+		} catch (PDOException $e) {
 			$conexion->rollBack();
 			$VD = $e->getMessage();
 		} catch (Exception $exception) {
@@ -178,11 +142,11 @@ class ClassAccesoFundo extends Conexion {
 
 }
 
-	/* $datos = [
-    (object) ['id_fundo' => 1, 'cantidad_hc' => 50],
-    (object) ['id_fundo' => 2, 'cantidad_hc' => 100]
-	]; */
+/* $datos = [
+   (object) ['id_fundo' => 1, 'cantidad_hc' => 50],
+   (object) ['id_fundo' => 2, 'cantidad_hc' => 100]
+   ]; */
 
-	$OBJ_ACCESO_FUNDO = new ClassAccesoFundo();
+$OBJ_ACCESO_FUNDO = new ClassAccesoFundo();
 
 ?>

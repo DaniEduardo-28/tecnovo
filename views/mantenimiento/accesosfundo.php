@@ -199,67 +199,66 @@ if (!isset($_SESSION['id_trabajador'])) {
                         </select>
                       </div>
                     </div>
+                    <div class="row">
 
-                  </div>
-                </div>
-
-                <div class="row">
-
-                  <div class="col-md-12" id="panelTabla">
-                    <div class="user-block block">
-                      <div class="table-responsive">
-                        <table id="example" class="table table-bordered">
-                          <thead>
-                            <tr>
-                              <th style="width:50px; text-align: center;">#</th>
-                              <th>Id</th>
-                              <th>Fundo</th>
-                              <th style="width:100px; text-align: center;">Cantidad HC</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php
-                            require("core/models/ClassSucursal.php");
-                            $dataSucursales = $OBJ_SUCURSAL->show(1, "all");
-                            if ($dataSucursales['error'] == "NO") {
-                              $num = 1;
-                              foreach ($dataSucursales['data'] as $key) {
-                                ?>
+                      <div class="col-md-12" id="panelTabla">
+                        <div class="user-block block">
+                          <div class="table-responsive">
+                            <table id="example" class="table table-bordered">
+                              <thead>
                                 <tr>
-                                  <td><?= $num; ?></td>
-                                  <td><?= $key['id_fundo']; ?></td>
-                                  <td><?= strtoupper($key['nombre']); ?></td>
-                                  <td><input type="number" class="form-control cantidad-hc" min="0" step="1" value="0"></td>
+                                  <th style="width:50px; text-align: center;">#</th>
+                                  <th>Id</th>
+                                  <th>Fundo</th>
+                                  <th style="width:100px; text-align: center;">Cantidad HC</th>
                                 </tr>
+                              </thead>
+                              <tbody>
                                 <?php
-                                $num++;
-                              }
+                                require("core/models/ClassSucursal.php");
+                                $dataSucursales = $OBJ_SUCURSAL->show(1, "all");
+                                if ($dataSucursales['error'] == "NO") {
+                                  $num = 1;
+                                  foreach ($dataSucursales['data'] as $key) {
+                                    ?>
+                                    <tr>
+                                      <td><?= $num; ?></td>
+                                      <td><?= $key['id_fundo']; ?></td>
+                                      <td><?= strtoupper($key['nombre']); ?></td>
+                                      <td><input type="number" class="form-control cantidad-hc" min="0" step="1" value="0">
+                                      </td>
+                                    </tr>
+                                    <?php
+                                    $num++;
+                                  }
+                                }
+                                ?>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="float-right">
+                        <div class="col-sm-2 col-xs-6">
+                          <br>
+                          <?php
+                          if ($access_options[0]['error'] == "NO") {
+                            if ($access_options[0]['flag_editar']) {
+                              ?>
+                              <button type="button" name="btnSave" id="btnSave" class="btn btn-primary" style="color:#fff;">
+                                GRABAR
+                              </button>
+                              <?php
                             }
-                            ?>
-                          </tbody>
-                        </table>
+                          }
+                          ?>
+                        </div>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
-                <div class="float-right">
-                  <div class="col-sm-2 col-xs-6">
-                    <br>
-                    <?php
-                    if ($access_options[0]['error'] == "NO") {
-                      if ($access_options[0]['flag_editar']) {
-                        ?>
-                        <button type="button" name="btnSave" id="btnSave" class="btn btn-primary" style="color:#fff;">
-                          GRABAR
-                        </button>
-                        <?php
-                      }
-                    }
-                    ?>
-                  </div>
-                </div>
+
 
               </div>
             </div>
@@ -285,9 +284,9 @@ if (!isset($_SESSION['id_trabajador'])) {
 
   <!-- JavaScript files-->
   <?php include("views/overall/js.php"); ?>
-  <script src="resources/system/js/pages/seguridad/accesofundo.js?v=<?= APP_VERSION; ?>"></script>
+  <script src="resources/system/js/pages/mantenimiento/accesofundo.js?v=<?= APP_VERSION; ?>"></script>
   <script>
-    $("#menuseguridad").addClass('active');
+    $("#menumantenimiento").addClass('active');
     $("#menuaccesofundo").addClass('active');
   </script>
 
