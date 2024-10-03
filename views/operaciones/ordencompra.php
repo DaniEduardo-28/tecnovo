@@ -188,6 +188,28 @@
                                                 ?>
                                               </select>
                                             </div>
+
+                                            <!-- <div class="form-group col-md-3 col-sm-4">
+                                              <label for="codigo_gasto">Gastos(*)</label>
+                                              <select class="form-control" name="codigo_gasto"
+                                                    id="codigo_gasto" required>
+                                                <option value="">Seleccione</option>
+                                                <?php
+                                                  // include('core/models/ClassGasto.php');
+                                                  // $dataGasto = $OBJ_GASTO->show("1");
+                                                  // if ($dataGasto["error"]=="NO") {
+                                                 //  foreach ($dataGasto["data"] as $key) {
+                                                 //    if ($key['flag_principal']) {
+                                                 //      echo '<option value="' . $key['id_gasto'] . '" selected>' . $key['name_gasto'] . '</option>';
+                                                 //    } else {
+                                                 //      echo '<option value="' . $key['id_gasto'] . '">' . $key['name_gasto'] . '</option>';
+                                                 //    }
+                                                 //  }
+                                                 //}
+                                                ?>
+                                              </select>
+                                            </div> -->
+
                                             <div class="col-sm-12">
                                               &nbsp;
                                             </div>
@@ -196,11 +218,11 @@
                                               <input type="date" name="txtFechaOrdenForm" id="txtFechaOrdenForm"
                                                class="form-control" readonly value="<?=date("Y-m-d");?>">
                                             </div>
-                                            <div class="form-group col-md-3 col-sm-4">
+                                            <!-- <div class="form-group col-md-3 col-sm-4">
                                               <label for="txtFechaEntregaForm" class="label-control">Fecha Entrega</label>
                                               <input type="date" name="txtFechaEntregaForm" id="txtFechaEntregaForm"
                                                class="form-control" value="<?=date("Y-m-d");?>" min="<?=date("Y-m-d");?>">
-                                            </div>
+                                            </div> -->
                                             <div class="form-group col-md-3 col-sm-4">
                                               <label for="txtObservacionesForm" class="label-control">Observaciones</label>
                                               <input type="text" name="txtObservacionesForm" id="txtObservacionesForm"
@@ -241,7 +263,7 @@
 
                                           <!-- START FOOTER -->
                                           <div class="row">
-                                            <div class="form-group col-sm-5">
+                                            <!--<div class="form-group col-sm-5">
                                               <div class="form-group col-md-12">
                                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                                   <label class="btn btn-info active">
@@ -253,11 +275,11 @@
                                                 </div>
                                                 <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
                                               </div>
-                                              <!--<br>
+                                              <br>
                                               <button type="button" class="btn btn-primary" id="btnSeleccionarProducto">
                                                  <span class="fa fa-plus"></span> Agregar Producto&nbsp;
-                                              </button>-->
-                                            </div>
+                                              </button>
+                                            </div>-->
                                             <div class="form-group col-sm-5">
                                               <br>&nbsp;&nbsp;&nbsp;
                                               <button type="button" class="btn btn-success float-right"
@@ -403,7 +425,7 @@
                                               <th>Proveedor</th>
                                               <th>Usuario</th>
                                               <th>Fecha Orden</th>
-                                              <th>Fecha Entrega</th>
+                                              <!-- <th>Fecha Entrega</th> -->
                                               <th>Forma de Envío</th>
                                               <th># Productos</th>
                                               <th>Total</th>
