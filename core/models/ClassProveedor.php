@@ -415,10 +415,28 @@
 
 				$conexion->beginTransaction();
 
+				// First, get the id_persona associated 
+				$stmt = $conexion->prepare("SELECT id_persona FROM tb_proveedor WHERE id_proveedor = ?");
+				$stmt->execute([$id_proveedor]);
+				$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+				if (!$result) {
+					throw new Exception("No se encontró el cliente con el ID especificado.");
+				}
+		
+				$id_persona = $result['id_persona'];
+
 				$stmt = $conexion->prepare("DELETE FROM tb_proveedor WHERE id_proveedor = ?");
 				$stmt->execute([$id_proveedor]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Ocurrió un error al eliminar el registro.");
+				}
+
+				// Delete from tb_persona
+				$stmt = $conexion->prepare("DELETE FROM tb_persona WHERE id_persona = ?");
+				$stmt->execute([$id_persona]);
+				if ($stmt->rowCount() == 0) {
+					throw new Exception("Ocurrió un error al eliminar el registro de la persona asociada.");
 				}
 
 				$VD = "OK";

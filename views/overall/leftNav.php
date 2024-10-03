@@ -69,13 +69,13 @@
       $flag_mostar_menu = false;
       $flag_cliente = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("cliente"));
       $flag_servicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("servicio"));
-      //PUNTO DE OBSERVACIÓN
       $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("operador"));
+      $flag_proveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("proveedor"));
       $flag_maquinaria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("maquinaria"));
       $flag_tipogasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipogasto"));
       $flag_gasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("gasto"));
       $flag_accesofundo = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesofundo"));
-      if ($flag_cliente || $flag_servicio || $flag_operador || $flag_maquinaria || $flag_accesofundo) {
+      if ($flag_cliente || $flag_servicio || $flag_operador || $flag_proveedor || $flag_maquinaria || $flag_tipogasto || $flag_gasto || $flag_accesofundo) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -99,6 +99,9 @@
             <?php endif; ?>
             <?php if ($flag_operador): ?>
               <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
+            <?php endif; ?>
+            <?php if ($flag_proveedor): ?>
+              <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
             <?php endif; ?>
             <?php if ($flag_maquinaria): ?>
               <li id="menumaquinaria"> <a href="?view=maquinaria">Maquinarias</a> </li>

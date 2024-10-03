@@ -31,6 +31,9 @@ function printCodeOption($controller)
       case 'servicio':
         $VD = 202;
         break;
+      case 'proveedor':
+        $VD = 208;
+        break;
       case 'operador':
         $VD = 209;
         break;

@@ -474,7 +474,7 @@
 			try {
 				$conexion->beginTransaction();
 
-				// First, get the id_persona associated with this client
+				// First, get the id_persona associated 
 				$stmt = $conexion->prepare("SELECT id_persona FROM tb_cliente WHERE id_cliente = ?");
 				$stmt->execute([$id_cliente]);
 				$result = $stmt->fetch(PDO::FETCH_ASSOC);
