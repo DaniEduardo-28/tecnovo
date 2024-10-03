@@ -14,12 +14,12 @@
     }
 
     if (empty($id_fundo)) {
-      throw new Exception("No se recibió el id de sucursal.");
+      throw new Exception("No se recibió el id de fundo.");
     }
 
-    if ($id_fundo == $_SESSION['id_fundo']) {
-      throw new Exception("No puedes eliminar la sucursal con la que accediste al sistema.");
-    }
+    /* if ($id_fundo == $_SESSION['id_fundo']) {
+      throw new Exception("No puedes eliminar el fundo con la que accediste al sistema.");
+    } */
 
     require_once "core/models/ClassSucursal.php";
     $VD = $OBJ_SUCURSAL->delete($id_fundo);
@@ -29,7 +29,7 @@
     }
 
     $data["error"]="NO";
-    $data["message"]="Sucursal eliminada correctmente.";
+    $data["message"]="Fundo eliminada correctmente.";
     $data["data"] = null;
     echo json_encode($data);
 

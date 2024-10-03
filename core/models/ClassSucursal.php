@@ -153,38 +153,6 @@
 
 				$conexion->beginTransaction();
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_medicamento` WHERE id_fundo = ?");
-				$stmt->execute([$id_fundo]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (count($result)>0) {
-					throw new Exception("La sucursal tiene medicamentos registrados en lista.");
-				}
-
-				$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_fundo = ?");
-				$stmt->execute([$id_fundo]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (count($result)>0) {
-					throw new Exception("La sucursal tiene accesorios registrados en lista.");
-				}
-
-				$stmt = $conexion->prepare("SELECT * FROM `tb_venta` WHERE id_fundo = ?");
-				$stmt->execute([$id_fundo]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (count($result)>0) {
-					throw new Exception("La sucursal tiene documentos de venta registrados en el sistema.");
-				}
-
-				$stmt = $conexion->prepare("SELECT * FROM `tb_documento_venta` WHERE id_fundo = ?");
-				$stmt->execute([$id_fundo]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (count($result)>0) {
-					throw new Exception("La sucursal tiene documentos de venta registrados en el sistema.");
-				}
-
-				$stmt = $conexion->prepare("DELETE FROM tb_trabajador_sucursal  WHERE id_fundo = ?");
-				if ($stmt->execute([$id_fundo])==false) {
-					throw new Exception("Error al eliminar el registro.");
-				}
 
 				$stmt = $conexion->prepare("DELETE FROM tb_fundo  WHERE id_fundo = ?");
 				$stmt->execute([$id_fundo]);
