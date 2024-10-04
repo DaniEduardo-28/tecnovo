@@ -68,7 +68,7 @@ var tableListado = $('#tabla_listado').DataTable({
     { 'data': 'name_proveedor' },
     { 'data': 'name_usuario' },
     { 'data': 'fecha_orden' },
-    // { 'data': 'fecha_entrega' },
+    { 'data': 'fecha_entrega' },
     { 'data': 'name_forma_envio' },
     { 'data': 'num_registros' },
     { 'data': 'total' },
@@ -216,7 +216,7 @@ $(document).ready(function(){
       var id_proveedor = $("#id_proveedor").val();
       var id_metodo_envio = $("#cboFormaEnvioForm").val();
       var fecha_orden = $("#txtFechaOrdenForm").val();
-      // var fecha_entrega = $("#txtFechaEntregaForm").val();
+      var fecha_entrega = $("#txtFechaEntregaForm").val();
       var observaciones = $("#txtObservacionesForm").val();
       var codigo_moneda = $("#codigo_moneda").val();
 
@@ -265,13 +265,8 @@ $(document).ready(function(){
       objeto.datos = datos;
 
       var form = 'id_proveedor=' + id_proveedor + '&id_metodo_envio=' + id_metodo_envio + '&id_orden_compra=' + id_orden_compra +
-              '&fecha_orden=' + fecha_orden + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
+              '&fecha_orden=' + fecha_orden + '&fecha_entrega=' + fecha_entrega + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
               '&observaciones=' + observaciones +  "&array_detalle=" + JSON.stringify(objeto);
-
-      // var form = 'id_proveedor=' + id_proveedor + '&id_metodo_envio=' + id_metodo_envio + '&id_orden_compra=' + id_orden_compra +
-      // '&fecha_orden=' + fecha_orden + '&fecha_entrega=' + fecha_entrega + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
-      // '&observaciones=' + observaciones +  "&array_detalle=" + JSON.stringify(objeto);
-
 
       Swal.fire({
         title: '¿Seguro de confirmar la operación?',
@@ -698,7 +693,7 @@ function get_data_callback2(){
             "name_proveedor": o[i].name_proveedor,
             "name_usuario": o[i].name_usuario,
             "fecha_orden": o[i].fecha_orden,
-            // "fecha_entrega": o[i].fecha_entrega,
+            "fecha_entrega": o[i].fecha_entrega,
             "name_forma_envio": o[i].name_forma_envio,
             "num_registros": o[i].num_registros,
             "total": o[i].total,
@@ -748,7 +743,7 @@ function getDataEdit(id_orden_compra){
             $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
             $("#cboFormaEnvioForm").val(o[0].id_metodo_envio);
             $("#txtFechaOrdenForm").val(o[0].fecha_orden);
-            // $("#txtFechaEntregaForm").val(o[0].fecha_entrega);
+            $("#txtFechaEntregaForm").val(o[0].fecha_entrega);
             $("#txtObservacionesForm").val(o[0].observaciones);
             $("#txtEstadoForm").val(o[0].estado);
             $("#codigo_moneda").val(o[0].id_moneda);
@@ -833,7 +828,7 @@ function verRegistro(id_orden_compra){
             $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
             $("#cboFormaEnvioForm").val(o[0].id_metodo_envio);
             $("#txtFechaOrdenForm").val(o[0].fecha_orden);
-            // $("#txtFechaEntregaForm").val(o[0].fecha_entrega);
+            $("#txtFechaEntregaForm").val(o[0].fecha_entrega);
             $("#txtObservacionesForm").val(o[0].observaciones);
             $("#txtEstadoForm").val(o[0].estado);
             $("#codigo_moneda").val(o[0].id_moneda);

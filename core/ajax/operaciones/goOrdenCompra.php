@@ -11,7 +11,7 @@
   $detalle_compra = json_decode($array_detalle);
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
-  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : "";
+  $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : "";
 
   try {
 
@@ -52,7 +52,7 @@
       throw new Exception("Campo obligatorio : Tiene que seleccionar el trabajador.");
     }
 
-    if (empty(trim($id_fundo))) {
+    if (empty(trim($id_sucursal))) {
       throw new Exception("Campo obligatorio : Tiene que seleccionar una sucursal.");
     }
 
@@ -76,10 +76,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_COMPRA->insert($id_fundo,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra);
+        $VD = $OBJ_ORDEN_COMPRA->insert($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_COMPRA->update($id_fundo,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra);
+        $VD = $OBJ_ORDEN_COMPRA->update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra);
         break;
       default:
         $VD = "No se recibió parametro de acción.";
