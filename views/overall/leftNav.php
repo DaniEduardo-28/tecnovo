@@ -163,7 +163,8 @@
       $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordencompra"));
       $flag_promocion = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("promocion"));
       $flag_ingreso = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ingreso"));
-      if ($flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso) {
+      $flag_ordengasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordengasto"));
+      if ($flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso || $flag_ordengasto) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -190,6 +191,9 @@
             <?php endif; ?>
             <?php if ($flag_promocion): ?>
               <li id="submenupromocion"> <a href="?view=promocion">Promociones de Clientes</a></li>
+            <?php endif; ?>
+            <?php if ($flag_ordengasto): ?>
+              <li id="submenuordengasto"> <a href="?view=ordengasto">Ordenes de Gasto</a></li>
             <?php endif; ?>
           </ul>
         </li>
