@@ -634,6 +634,38 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/getDataEditOrdenCompraIngreso.php");
         break;
+        case 'showDetalleParaOrdenGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/showDetalleParaOrdenGasto.php");
+          break;
+        case 'showOrdenGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/showOrdenGasto.php");
+          break;
+        case 'goOrdenGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/goOrdenGasto.php");
+          break;
+        case 'getDataVerOrdenGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/getDataVerOrdenGasto.php");
+          break;
+        case 'getDataEditOrdenGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/getDataEditOrdenGasto.php");
+          break;
+        case 'deleteOrdenGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/deleteOrdenGasto.php");
+          break;
+        case 'showOrdenGastoIngreso':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/showOrdenGastoIngreso.php");
+          break;
+        case 'getDataEditOrdenGastoIngreso':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/getDataEditOrdenGastoIngreso.php");
+          break;
       case 'goIngreso':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/goIngreso.php");

@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Ordenes de Compra | <?=APP_TITLE;?> </title>
+    <title>Orden de Gastos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -75,7 +75,7 @@
                                       Operaciones
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Ordenes de Compra
+                                      Orden de Gastos
                                     </li>
                                   </ol>
                                 </nav>
@@ -83,7 +83,7 @@
 
                               <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions" name="panelOptions">
                                 <?php
-                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordencompra"));
+                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
                                     if ($access_options[0]['error']=="NO") {
 
                                       if ($access_options[0]['flag_agregar']) {
@@ -117,7 +117,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Ordenes de Compra</h4>
+                                        <h4 class="card-title">Orden de Gastos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -149,25 +149,9 @@
                                                 <p class="font-weight-bold" id="name_proveedor">No seleccionado</p>
                                               </div>
                                               <button type="button" class="btn btn-info btn-xs" id="btnSeleccionarProveedor">
-                                                 Seleccionar&nbsp;<span class="fa fa-ellipsis-h"></span>
+                                                 SELECCIONAR&nbsp;<span class="fa fa-ellipsis-h"></span>
                                               </button>
-                                            </div>
-                                            <div class="form-group col-md-3 col-sm-4">
-                                              <label for="" class="label-control">Forma de Envío</label>
-                                              <select class="form-control" name="cboFormaEnvioForm"
-                                               id="cboFormaEnvioForm">
-                                                <?php
-                                                  $resultMetodo= $OBJ_METODO_ENVIO->show("1");
-                                                  if ($resultMetodo['error']=="NO") {
-                                                    foreach ($resultMetodo['data'] as $key) {
-                                                      ?>
-                                                      <option value="<?=$key['id_metodo_envio'];?>"><?=$key['name_metodo']; ?></option>
-                                                      <?php
-                                                    }
-                                                  }
-                                                ?>
-                                              </select>
-                                            </div>
+                                            </div>                                           
                                             <div class="form-group col-md-3 col-sm-4">
                                               <label for="codigo_moneda">Moneda(*)</label>
                                               <select class="form-control" name="codigo_moneda"
