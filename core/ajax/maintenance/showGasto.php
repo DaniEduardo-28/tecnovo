@@ -19,11 +19,11 @@
     }
 
     require_once "core/models/ClassGasto.php";
-    $DataCantidad = $OBJ_GASTO->getCount("all",$id_tipo_gasto,$valor);
+    $DataCantidades = $OBJ_GASTO->getCount("all",$id_tipo_gasto,$valor);
 
-    if ($DataCantidad["error"]=="NO") {
+    if ($DataCantidades["error"]=="NO") {
 
-      $cantidad = $DataCantidad["data"][0]["cantidad"];
+      $cantidades = $DataCantidades["data"][0]["cantidades"];
       $Resultado = $OBJ_GASTO->show("all",$id_tipo_gasto,$valor,$offset,$limit);
 
       $count = 1;
@@ -43,7 +43,8 @@
           "name_gasto" => $key['name_gasto'],
           "descripcion_gasto" => $key['descripcion_gasto'],
           "descripcion" => $key['descripcion'],
-          "precio" => $key['precio'],
+          "precio_unit" => $key['precio_unit'],
+          "cantidad" => $key['cantidad'],
           "signo_moneda" => $key['signo_moneda'],
           "estado" => $estado,
           "flag_editar" => "$flag_editar",
@@ -54,12 +55,12 @@
 
       $data["error"] = "NO";
       $data["message"] = "Success";
-      $data["cantidad"] = $cantidad;
+      $data["cantidades"] = $cantidades;
       $data["data"] = $retorno_array;
       echo json_encode($data);
 
     }else {
-      throw new Exception($DataCantidad["message"]);
+      throw new Exception($DataCantidades["message"]);
     }
 
   } catch (\Exception $e) {

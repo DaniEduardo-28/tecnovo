@@ -193,7 +193,7 @@
               <li id="submenupromocion"> <a href="?view=promocion">Promociones de Clientes</a></li>
             <?php endif; ?>
             <?php if ($flag_ordengasto): ?>
-              <li id="submenuordengasto"> <a href="?view=ordengasto">Ordenes de Gasto</a></li>
+              <li id="submenuordengasto"> <a href="?view=ordengasto">Orden de Gastos</a></li>
             <?php endif; ?>
           </ul>
         </li>

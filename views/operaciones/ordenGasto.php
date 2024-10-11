@@ -149,7 +149,7 @@
                                                 <p class="font-weight-bold" id="name_proveedor">No seleccionado</p>
                                               </div>
                                               <button type="button" class="btn btn-info btn-xs" id="btnSeleccionarProveedor">
-                                                 SELECCIONAR&nbsp;<span class="fa fa-ellipsis-h"></span>
+                                                 Seleccionar&nbsp;<span class="fa fa-ellipsis-h"></span>
                                               </button>
                                             </div>                                           
                                             <div class="form-group col-md-3 col-sm-4">
@@ -176,25 +176,25 @@
                                               &nbsp;
                                             </div>
                                             <div class="form-group col-md-3 col-sm-4">
-                                              <label for="txtFechaOrdenForm" class="label-control">Fecha Orden</label>
+                                              <label for="txtFechaOrdenForm" class="label-control">Fecha Gasto</label>
                                               <input type="date" name="txtFechaOrdenForm" id="txtFechaOrdenForm"
                                                class="form-control" readonly value="<?=date("Y-m-d");?>">
                                             </div>
-                                            <div class="form-group col-md-3 col-sm-4">
+                                            <!-- <div class="form-group col-md-3 col-sm-4">
                                               <label for="txtFechaEntregaForm" class="label-control">Fecha Entrega</label>
                                               <input type="date" name="txtFechaEntregaForm" id="txtFechaEntregaForm"
                                                class="form-control" value="<?=date("Y-m-d");?>" min="<?=date("Y-m-d");?>">
-                                            </div>
+                                            </div> -->
                                             <div class="form-group col-md-3 col-sm-4">
                                               <label for="txtObservacionesForm" class="label-control">Observaciones</label>
                                               <input type="text" name="txtObservacionesForm" id="txtObservacionesForm"
                                                class="form-control">
                                             </div>
-                                            <div class="form-group col-md-3 col-sm-4">
+                                            <!-- <div class="form-group col-md-3 col-sm-4">
                                               <label for="txtEstadoForm" class="label-control">Estado</label>
                                               <input type="text" name="txtEstadoForm" id="txtEstadoForm"
                                                class="form-control" readonly>
-                                            </div>
+                                            </div> -->
                                           </div>
                                           <!-- END HEADER -->
 
@@ -228,11 +228,14 @@
                                             <div class="form-group col-sm-5">
                                               <div class="form-group col-md-12">
                                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                                  <label class="btn btn-info active">
+                                                  <!-- <label class="btn btn-info active">
                                                     <input checked type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Accesorio
-                                                  </label>
-                                                  <label class="btn btn-info">
+                                                  </label> -->
+                                                  <!-- <label class="btn btn-info">
                                                     <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Medicamento
+                                                  </label> -->
+                                                  <label class="btn btn-info">
+                                                    <input type="radio" name="opcion_busqueda" value="gasto" id="opcion_gasto" autocomplete="off"> Gastos
                                                   </label>
                                                 </div>
                                                 <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
@@ -348,13 +351,13 @@
                                           class="form-control" autocomplete="off" value="<?=date("Y-m-d");?>">
                                         </div>
 
-                                        <div class="form-group col-md-3 col-sm-4">
+                                        <!-- <div class="form-group col-md-3 col-sm-4">
                                           <label for="txtFechaFinBuscarListado" class="label-control">Fecha Fin</label>
                                           <input id="txtFechaFinBuscarListado" type="date" name="txtFechaFinBuscarListado"
                                           class="form-control" autocomplete="off" value="<?=date("Y-m-d");?>">
-                                        </div>
+                                        </div> -->
 
-                                        <div class="form-group col-md-2 col-sm-4">
+                                        <div class="form-group col-md-3 col-sm-4">
                                           <label for="cboTipoBuscarListado" class="label-control">Tipo Busqueda</label>
                                           <select class="form-control" id="cboTipoBuscarListado" name="cboTipoBuscarListado">
                                             <option value="1">Documento</option>
@@ -363,9 +366,9 @@
                                           </select>
                                         </div>
 
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-6">
                                           <label for="">&nbsp;</label>
-                                          <div class="input-group mb-3">
+                                          <div class="input-group">
                                             <input type="text" class="form-control" placeholder="Search..."
                                             aria-label="Search..." aria-describedby="basic-addon2"
                                             id="txtBuscarListado" name="txtBuscarListado">
@@ -445,11 +448,11 @@
                                           <thead>
                                             <tr>
                                               <th style="width:20px;">Num</th>
-                                              <th>Id Producto</th>
-                                              <th>Producto</th>
+                                              <th>Id</th>
+                                              <th>Descripción</th>
                                               <th style="width:60px;">Stock</th>
                                               <th style="width:40px;">Precio Unitario</th>
-                                              <th style="width:90px;">Cantidad</th>
+                                              <!-- <th style="width:90px;">Cantidad</th> -->
                                               <th style="width:10px;">Seleccionar</th>
                                               <th>Nombre Producto</th>
                                             </tr>
@@ -497,10 +500,10 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/operaciones/ordencompra.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/operaciones/ordengasto.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#menuoperaciones").addClass('active');
-      $("#submenuordencompra").addClass('active');
+      $("#submenuordengasto").addClass('active');
     </script>
 
   </body>

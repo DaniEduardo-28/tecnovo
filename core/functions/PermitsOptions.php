@@ -74,7 +74,7 @@ function printCodeOption($controller)
         $VD = 605;
         break;
       case 'ordengasto':
-        $VD = 603;
+        $VD = 606;
         break;
       case 'vistareporteordenventa':
         $VD = 702;

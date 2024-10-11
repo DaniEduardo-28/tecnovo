@@ -5,7 +5,8 @@
   $name_gasto = isset($_POST["name_gasto"]) ? $_POST["name_gasto"] : "";
   $descripcion_gasto = isset($_POST["descripcion_gasto"]) ? $_POST["descripcion_gasto"] : "";
   $id_moneda = isset($_POST["id_moneda"]) ? $_POST["id_moneda"] : "";
-  $precio = isset($_POST["precio"]) ? $_POST["precio"] : 0.00;
+  $precio_unit = isset($_POST["precio_unit"]) ? $_POST["precio_unit"] : 0.00;
+  $cantidad = isset($_POST["cantidad"]) ? $_POST["cantidad"] : 0;
   $estado = isset($_POST["estado"]) ? 1 : 0;
   $flag_igv = isset($_POST["flag_igv"]) ? 1 : 0;
    $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
@@ -50,10 +51,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_GASTO->insert($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio,$estado,$id_moneda,$flag_igv);
+        $VD = $OBJ_GASTO->insert($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv);
         break;
       case 'edit':
-        $VD = $OBJ_GASTO->update($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio,$estado,$id_moneda,$flag_igv);
+        $VD = $OBJ_GASTO->update($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

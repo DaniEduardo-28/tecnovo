@@ -186,10 +186,16 @@
                                             </div>
 
                                             <div class="form-group col-md-3 col-sm-4">
-                                              <label for="precio" class="label-control">Precio (Incluido IGV*)</label>
-                                              <input id="precio" type="number" name="precio" class="form-control"
+                                              <label for="precio_unit" class="label-control">Precio Unit. (Incluido IGV*)</label>
+                                              <input id="precio_unit" type="number" name="precio_unit" class="form-control"
                                               autocomplete="off" value="0.00" required min="0.00" pattern="^\d*(\.\d{0,2})?$"
                                               step="0.10" >
+                                            </div>
+
+                                            <div class="form-group col-md-2 col-sm-4">
+                                              <label for="cantidad" class="label-control">Cantidad</label>
+                                              <input id="cantidad" type="number" name="cantidad" class="form-control"
+                                              autocomplete="off" value="0" required min="0">
                                             </div>
 
                                             <div class="form-group col-md-3 col-sm-4">

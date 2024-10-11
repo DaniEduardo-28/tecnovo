@@ -30,7 +30,8 @@
           "name_gasto" => $key['name_gasto'],
           "descripcion_gasto" => $key['descripcion_gasto'],
           "descripcion" => $key['descripcion'],
-          "precio" => $key['precio'],
+          "precio_unit" => $key['precio_unit'],
+          "cantidad" => $key['cantidad'],
           "id_moneda" => $key['id_moneda'],
           "estado" => $key['estado'],
           "flag_igv" => $key['flag_igv']
