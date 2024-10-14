@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 
     class ClassOrdenGasto extends Conexion {
 
@@ -718,4 +718,153 @@
     }
 $OBJ_ORDEN_GASTO = new ClassOrdenGasto();
 
+?> -->
+
+<!-- APARTIR DE AQUI INICIAN LOS CAMBIOS -->
+
+<?php 
+
+class ClassOrdenGasto extends Conexion {
+
+    // Constructor de la clase
+    public function __construct() {}
+
+    // Método para contar el número de órdenes de gasto
+    public function getCount($id_proveedor, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda) {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD;
+
+        try {
+            $fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
+            $valor = "%$valor%";
+            $parametros = null;
+
+            $sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_gasto` o
+                    INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
+                    WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_proveedor = ? ";
+
+            $parametros[] = $fecha_inicio;
+            $parametros[] = $fecha_fin;
+            $parametros[] = $id_proveedor;
+
+            if ($tipo_busqueda != '') {
+                switch ($tipo_busqueda) {
+                    case "1":
+                        $sql .= " AND p.num_documento_proveedor LIKE ? ";
+                        $parametros[] = $valor;
+                        break;
+                    case "2":
+                        $sql .= " AND p.nombre_proveedor LIKE ? ";
+                        $parametros[] = $valor;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute($parametros);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($result) == 0 || $result[0]['cantidad'] == 0) {
+                throw new Exception("No se encontraron datos.");
+            }
+
+            $VD1['error'] = "NO";
+            $VD1['message'] = "Success";
+            $VD1['data'] = $result;
+            $VD = $VD1;
+
+        } catch (PDOException $e) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $e->getMessage();
+            $VD = $VD1;
+        } catch (Exception $exception) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $exception->getMessage();
+            $VD = $VD1;
+        } finally {
+            $conexionClass->Close();
+        }
+
+        return $VD;
+    }
+
+    // Método para mostrar las órdenes de gasto
+    public function show($id_proveedor, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda, $offset, $limit) {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD;
+
+        try {
+            $fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
+            $valor = "%$valor%";
+            $parametros = null;
+
+            $sql = "SELECT o.*, p.nombre_proveedor, g.name_gasto, m.signo as signo_moneda, 
+                    (SELECT SUM(dc.precio_unit * dc.cantidad_solicitada) FROM tb_detalle_gasto dc 
+                    WHERE dc.id_orden_gasto = o.id_orden_gasto) AS total 
+                    FROM `tb_orden_gasto` o 
+                    INNER JOIN tb_moneda m ON m.id_moneda = o.id_moneda 
+                    INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor 
+                    INNER JOIN tb_gasto g ON g.id_gasto = o.id_gasto 
+                    WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_proveedor = ? ";
+
+            $parametros[] = $fecha_inicio;
+            $parametros[] = $fecha_fin;
+            $parametros[] = $id_proveedor;
+
+            if ($tipo_busqueda != '') {
+                switch ($tipo_busqueda) {
+                    case "1":
+                        $sql .= " AND p.num_documento_proveedor LIKE ? ";
+                        $parametros[] = $valor;
+                        break;
+                    case "2":
+                        $sql .= " AND p.nombre_proveedor LIKE ? ";
+                        $parametros[] = $valor;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            $sql .= " LIMIT $offset, $limit";
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute($parametros);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($result) == 0) {
+                throw new Exception("No se encontraron datos.");
+            }
+
+            $VD1['error'] = "NO";
+            $VD1['message'] = "Success";
+            $VD1['data'] = $result;
+            $VD = $VD1;
+
+        } catch (PDOException $e) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $e->getMessage();
+            $VD = $VD1;
+        } catch (Exception $exception) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $exception->getMessage();
+            $VD = $VD1;
+        } finally {
+            $conexionClass->Close();
+        }
+
+        return $VD;
+    }
+
+    // Otros métodos pueden adaptarse de manera similar...
+
+}
+
+$OBJ_ORDEN_GASTO = new ClassOrdenGasto();
+
 ?>
+
