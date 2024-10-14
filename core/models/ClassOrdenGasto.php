@@ -1,4 +1,4 @@
-<!-- <?php
+<?php
 
     class ClassOrdenGasto extends Conexion {
 
@@ -7,11 +7,11 @@
 
         }
 
-        public function getCount($id_fundo,$valor,$fecha_gasto,$tipo_busqueda) {
+        public function getCount($id_gasto,$valor,$fecha_gasto,$tipo_busqueda) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -21,10 +21,10 @@
 				$parametros = null;
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_gasto` o
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_fundo = ? ";
+								WHERE o.fecha_gasto >= ? AND o.id_proveedor = ? ";
 
 				$parametros[] = $fecha_gasto;
-				$parametros[] = $id_fundo;
+				$parametros[] = $id_gasto;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -41,17 +41,13 @@
 					}
 				}
 
-				$stmt = $conexion->prepare($sql);
-				$stmt->execute($parametros);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $conexion->prepare($sql);
+            $stmt->execute($parametros);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-				if (count($result)==0) {
-					throw new Exception("No se encontraron datos");
-				}else {
-					if ($result[0]['cantidad']==0) {
-						throw new Exception("No se encontraron datos.");
-					}
-				}
+            if (count($result) == 0 || $result[0]['cantidad'] == 0) {
+                throw new Exception("No se encontraron datos.");
+            }
 
 				$VD1['error'] = "NO";
 				$VD1['message'] = "Success";
@@ -77,11 +73,11 @@
 			return $VD;
 		}
 
-    public function show($id_fundo,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit) {
+    public function show($id_gasto,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit) {
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
@@ -89,15 +85,17 @@
 
             $valor = "%$valor%";
             $parametros = null;
-            $sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,mon.signo as signo_moneda,
-                            FROM `tb_orden_gasto` o
-                            INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
-                            INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-                            INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-                            WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_fundo = ? ";
+            $sql = "SELECT o.*, p.nombre_proveedor, g.name_gasto, m.signo as signo_moneda, 
+                    (SELECT SUM(dc.precio_unit * dc.cantidad_solicitada) FROM tb_detalle_gasto dc 
+                    WHERE dc.id_orden_gasto = o.id_orden_gasto) AS total 
+                    FROM `tb_orden_gasto` o 
+                    INNER JOIN tb_moneda m ON m.id_moneda = o.id_moneda 
+                    INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor 
+                    INNER JOIN tb_gasto g ON g.id_gasto = o.id_gasto 
+                    WHERE o.fecha_gasto >= ? AND o.id_proveedor = ? ";
 
             $parametros[] = $fecha_gasto;
-            $parametros[] = $id_fundo;
+            $parametros[] = $id_gasto;
 
             if ($tipo_busqueda!='') {
                 switch ($tipo_busqueda) {
@@ -149,11 +147,11 @@
         return $VD;
     }
 
-    public function getCount1($id_fundo,$valor,$fecha_gasto,$tipo_busqueda) {
+    public function getCount1($id_gasto,$valor,$fecha_gasto,$tipo_busqueda) {
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
@@ -163,11 +161,11 @@
             $parametros = null;
             $sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_gasto` o
                             INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-                            WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ?
-                            AND o.id_fundo = ? ";
+                            WHERE o.fecha_gasto >= ?
+                            AND o.id_proveedor = ? ";
 
             $parametros[] = $fecha_gasto;
-            $parametros[] = $id_fundo;
+            $parametros[] = $id_gasto;
 
             if ($tipo_busqueda!='') {
                 switch ($tipo_busqueda) {
@@ -220,11 +218,11 @@
         return $VD;
     }
 
-    public function show1($id_fundo,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit) {
+    public function show1($id_gasto,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit) {
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
@@ -237,11 +235,11 @@
                             INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
                             INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
                             INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-                            WHERE o.fecha_orden >= ? AND o.fecha_orden < ?
-                            AND o.id_fundo = ? ";
+                            WHERE o.fecha_orden >= ?
+                            AND o.id_proveedor = ? ";
 
             $parametros[] = $fecha_gasto;
-            $parametros[] = $id_fundo;
+            $parametros[] = $id_gasto;
 
             if ($tipo_busqueda!='') {
                 switch ($tipo_busqueda) {
@@ -296,7 +294,7 @@
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
@@ -346,7 +344,7 @@
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
@@ -384,32 +382,21 @@
         return $VD;
     }
 
-    public function getCountDetalleParaOrden($id_gasto,$tipo,$valor) {
+    public function getCountDetalleParaOrden($valor) {
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD= " ";
 
         try {
 
             $valor = "%$valor%";
             $sql = "";
             $parametros = null;
-            switch ($tipo) {
-                /* case 'medicamento':
-                    $sql .= "SELECT count(*) as cantidad FROM tb_medicamento WHERE id_sucursal = ? AND name_medicamento LIKE ? ";
-                    $parametros[] = $id_fundo;
+            $sql .= "SELECT count(*) as cantidad FROM tb_gasto WHERE name_gasto LIKE ? ";
+                    
                     $parametros[] = $valor;
-                    break; */
-                case 'gasto':
-                    $sql .= "SELECT count(*) as cantidad FROM tb_gasto WHERE id_gasto = ? AND name_gasto LIKE ? ";
-                    $parametros[] = $id_gasto;
-                    $parametros[] = $valor;
-                    break;
-                default:
-                    throw new Exception("Error al validar la busqueda de la tabla.");
-                    break;
-            }
+            
 
             $stmt = $conexion->prepare($sql);
             $stmt->execute($parametros);
@@ -451,7 +438,7 @@
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD= "";
 
         try {
 
@@ -493,7 +480,7 @@
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
@@ -529,37 +516,22 @@
         return $VD;
     }
 
-    public function showDetalleParaOrden($id_gasto,$tipo,$valor,$offset,$limit) {
+    public function showDetalleParaOrden($valor,$offset,$limit) {
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
 
         try {
 
             $valor = "%$valor%";
             $sql = "";
             $parametros = null;
-            switch ($tipo) {
-                /* case 'medicamento':
-                    $sql .= "SELECT name_medicamento as descripcion,id_medicamento as cod_producto,
-                                    id_moneda,precio_compra as precio_unitario, src_imagen, stock
-                                    FROM tb_medicamento WHERE id_sucursal = ? AND name_medicamento LIKE ? ";
-                    $parametros[] = $id_sucursal;
-                    $parametros[] = $valor;
-                    break; */
-                case 'gasto':
-                    $sql .= "SELECT name_gasto as descripcion,id_gasto as cod_gasto,
-                                    id_moneda,precio as costo_gasto
-                                    FROM tb_gasto WHERE id_sgasto = ? AND name_gasto LIKE ? ";
-                    $parametros[] = $id_gasto;
-                    $parametros[] = $valor;
-                    break;
-                default:
-                    throw new Exception("Error al validar la busqueda de la tabla.");
-                    break;
-            }
 
+            $sql .= "SELECT name_gasto as descripcion,id_gasto
+                                    FROM tb_gasto WHERE name_gasto LIKE ? ";
+                    $parametros[] = $valor;
+            
             $sql .= " LIMIT $offset, $limit ";
 
             $stmt = $conexion->prepare($sql);
@@ -594,22 +566,22 @@
         return $VD;
     }
 
-    public function insert($id_fundo,$id_orden_gasto,$id_proveedor,$id_trabajador,$id_gasto,$codigo_moneda,$fecha_gasto,$observaciones) {
+    public function insert($id_proveedor,$id_orden_gasto,$id_gasto,$id_trabajador,$codigo_moneda,$fecha_gasto,$descripcion,$observaciones) {
 
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
         try {
 
             $conexion->beginTransaction();
 
-            $sql = "INSERT INTO tb_orden_gasto (`id_orden_gasto`, `id_fundo`, `id_proveedor`, `id_trabajador`, `id_gasto`, `fecha_gasto`, `observaciones`, `id_moneda`) VALUES ";
+            $sql = "INSERT INTO tb_orden_gasto (`id_orden_gasto`, `id_proveedor`, `id_trabajador`, `id_gasto`, `fecha_gasto`, `descripción`, `observaciones`, `id_moneda`) VALUES ";
             $sql .= "(";
             $sql .= "(SELECT CASE COUNT(o.id_orden_gasto) WHEN 0 THEN 1 ELSE (MAX(o.id_orden_gasto) + 1) end FROM `tb_orden_gasto` o),";
-            $sql .= "?,?,?,?,NOW(),?,?,?,?";
+            $sql .= "?,?,?,?,?,NOW(),?,?,?,?,?";
             $sql .= ")";
             $stmt = $conexion->prepare($sql);
-            $stmt->execute([$id_fundo,$id_gasto,$id_proveedor,$id_trabajador,$fecha_gasto,$observaciones,'0',$codigo_moneda]);
+            $stmt->execute([$id_proveedor,$id_gasto,$id_gasto,$id_trabajador,$fecha_gasto,$descripcion,$observaciones,'0',$codigo_moneda]);
             if ($stmt->rowCount()==0) {
                 throw new Exception("1. Error al registrar la orden de gasto en la base de datos.");
             }
@@ -629,10 +601,10 @@
         return $VD;
     }
 
-    public function update($id_fundo,$id_orden_gasto,$id_proveedor,$id_trabajador,$id_gasto,$codigo_moneda,$fecha_gasto,$observaciones) {
+    public function update($id_orden_gasto,$id_proveedor,$id_trabajador,$id_gasto,$codigo_moneda,$fecha_gasto,$descripcion,$observaciones) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
         try {
 
             $conexion->beginTransaction();
@@ -651,10 +623,11 @@
             $sql .=" id_trabajador = ?, ";
             $sql .=" fecha_gasto = ?, ";
             $sql .=" id_moneda = ?, ";
+            $sql .=" descripcion = ? ";
             $sql .=" observaciones = ? ";
             $sql .=" WHERE id_orden_gasto = ? ";
             $stmt = $conexion->prepare($sql);
-            if ($stmt->execute([$id_gasto,$id_proveedor,$id_trabajador,$fecha_gasto,$codigo_moneda,$observaciones,$id_orden_gasto])==false) {
+            if ($stmt->execute([$id_gasto,$id_proveedor,$id_trabajador,$fecha_gasto,$codigo_moneda,$descripcion,$observaciones,$id_orden_gasto])==false) {
                 throw new Exception("1. Error al actualizar los datos de la orden de gasto.");
             }
 
@@ -682,7 +655,7 @@
     public function delete($id_orden_gasto) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
-        $VD;
+        $VD = "";
         try {
 
             $conexion->beginTransaction();
@@ -718,153 +691,4 @@
     }
 $OBJ_ORDEN_GASTO = new ClassOrdenGasto();
 
-?> -->
-
-<!-- APARTIR DE AQUI INICIAN LOS CAMBIOS -->
-
-<?php 
-
-class ClassOrdenGasto extends Conexion {
-
-    // Constructor de la clase
-    public function __construct() {}
-
-    // Método para contar el número de órdenes de gasto
-    public function getCount($id_proveedor, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda) {
-        $conexionClass = new Conexion();
-        $conexion = $conexionClass->Open();
-        $VD;
-
-        try {
-            $fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
-            $valor = "%$valor%";
-            $parametros = null;
-
-            $sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_gasto` o
-                    INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
-                    WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_proveedor = ? ";
-
-            $parametros[] = $fecha_inicio;
-            $parametros[] = $fecha_fin;
-            $parametros[] = $id_proveedor;
-
-            if ($tipo_busqueda != '') {
-                switch ($tipo_busqueda) {
-                    case "1":
-                        $sql .= " AND p.num_documento_proveedor LIKE ? ";
-                        $parametros[] = $valor;
-                        break;
-                    case "2":
-                        $sql .= " AND p.nombre_proveedor LIKE ? ";
-                        $parametros[] = $valor;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute($parametros);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (count($result) == 0 || $result[0]['cantidad'] == 0) {
-                throw new Exception("No se encontraron datos.");
-            }
-
-            $VD1['error'] = "NO";
-            $VD1['message'] = "Success";
-            $VD1['data'] = $result;
-            $VD = $VD1;
-
-        } catch (PDOException $e) {
-            $VD1['error'] = "SI";
-            $VD1['message'] = $e->getMessage();
-            $VD = $VD1;
-        } catch (Exception $exception) {
-            $VD1['error'] = "SI";
-            $VD1['message'] = $exception->getMessage();
-            $VD = $VD1;
-        } finally {
-            $conexionClass->Close();
-        }
-
-        return $VD;
-    }
-
-    // Método para mostrar las órdenes de gasto
-    public function show($id_proveedor, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda, $offset, $limit) {
-        $conexionClass = new Conexion();
-        $conexion = $conexionClass->Open();
-        $VD;
-
-        try {
-            $fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
-            $valor = "%$valor%";
-            $parametros = null;
-
-            $sql = "SELECT o.*, p.nombre_proveedor, g.name_gasto, m.signo as signo_moneda, 
-                    (SELECT SUM(dc.precio_unit * dc.cantidad_solicitada) FROM tb_detalle_gasto dc 
-                    WHERE dc.id_orden_gasto = o.id_orden_gasto) AS total 
-                    FROM `tb_orden_gasto` o 
-                    INNER JOIN tb_moneda m ON m.id_moneda = o.id_moneda 
-                    INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor 
-                    INNER JOIN tb_gasto g ON g.id_gasto = o.id_gasto 
-                    WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_proveedor = ? ";
-
-            $parametros[] = $fecha_inicio;
-            $parametros[] = $fecha_fin;
-            $parametros[] = $id_proveedor;
-
-            if ($tipo_busqueda != '') {
-                switch ($tipo_busqueda) {
-                    case "1":
-                        $sql .= " AND p.num_documento_proveedor LIKE ? ";
-                        $parametros[] = $valor;
-                        break;
-                    case "2":
-                        $sql .= " AND p.nombre_proveedor LIKE ? ";
-                        $parametros[] = $valor;
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            $sql .= " LIMIT $offset, $limit";
-
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute($parametros);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (count($result) == 0) {
-                throw new Exception("No se encontraron datos.");
-            }
-
-            $VD1['error'] = "NO";
-            $VD1['message'] = "Success";
-            $VD1['data'] = $result;
-            $VD = $VD1;
-
-        } catch (PDOException $e) {
-            $VD1['error'] = "SI";
-            $VD1['message'] = $e->getMessage();
-            $VD = $VD1;
-        } catch (Exception $exception) {
-            $VD1['error'] = "SI";
-            $VD1['message'] = $exception->getMessage();
-            $VD = $VD1;
-        } finally {
-            $conexionClass->Close();
-        }
-
-        return $VD;
-    }
-
-    // Otros métodos pueden adaptarse de manera similar...
-
-}
-
-$OBJ_ORDEN_GASTO = new ClassOrdenGasto();
-
 ?>
-

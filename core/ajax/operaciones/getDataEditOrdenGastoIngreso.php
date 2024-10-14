@@ -32,7 +32,6 @@
           "id_gasto" => $key['id_gasto'],
           "fecha_gasto" => date('d/m/Y h:i a', strtotime($key['fecha_gasto'])),
           "estado" => $key['estado'],
-          "cod_producto" => $key['cod_producto'],
           "name_tabla" => $key['name_tabla'],
           "name_producto" => $key['name_producto'],
           "name_metodo" => $key['name_metodo'],

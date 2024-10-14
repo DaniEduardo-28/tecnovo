@@ -8,7 +8,7 @@ var tableForm = $('#table_form').DataTable({
     info: false,
     columns: [
       { 'data': 'num' },
-      { 'data': 'cod_producto' },
+      { 'data': 'id_gasto' },
       { 'data': 'name_producto' },
       { 'data': 'stock' },
       { 'data': 'precio_unitario' },
@@ -37,7 +37,7 @@ var tableForm = $('#table_form').DataTable({
     info: false,
     columns: [
       { 'data': 'num' },
-      { 'data': 'cod_producto' },
+      { 'data': 'id_gasto' },
       { 'data': 'name_producto' },
       { 'data': 'stock' },
       { 'data': 'precio_unitario' },
@@ -149,9 +149,9 @@ var tableForm = $('#table_form').DataTable({
         var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
         var num = tableForm.data().count() + 1;
         var data = tableProducto.row( $(this).parents('tr') ).data();
-        var cod_producto = data["cod_producto"];
+        var id_gasto = data["id_gasto"];
         if (num>1) {
-          if (verificarproductoontable(name_tabla,cod_producto)==true) {
+          if (verificarproductoontable(name_tabla,id_gasto)==true) {
             generateAlert('warning', 'El Producto ya se encuentra agregado a la lista.');
             return;
           }
@@ -165,7 +165,7 @@ var tableForm = $('#table_form').DataTable({
         total = (Math.round( total * 100 )/100 ).toFixed(2);
         tableForm.row.add({
           "num": num,
-          "cod_producto": cod_producto,
+          "id_gasto": id_gasto,
           "name_producto": name_producto,
           "name_tabla": name_tabla,
           "stock": stock,
@@ -254,7 +254,7 @@ var tableForm = $('#table_form').DataTable({
   
           datos.push({
             "name_tabla" : data['name_tabla'],
-            "cod_producto" : data['cod_producto'],
+            "id_gasto" : data['id_gasto'],
             "cantidad_solicitada" : cantidad,
             "precio_unitario" : precio_unitario,
             "notas" : notas
@@ -421,13 +421,13 @@ var tableForm = $('#table_form').DataTable({
     }
   }
   
-  function verificarproductoontable(name_tabla,cod_producto){
+  function verificarproductoontable(name_tabla,id_gasto){
   
     try {
       var num=0;
       $('#table_form > tbody  > tr').each(function(){
         var data = tableForm.row($(this)).data();
-        if (data['cod_producto']==cod_producto&&data['name_tabla']==name_tabla) {
+        if (data['id_gasto']==id_gasto&&data['name_tabla']==name_tabla) {
           num++;
         }
       });
@@ -576,16 +576,7 @@ var tableForm = $('#table_form').DataTable({
   
           var o = data1["data"];
           for (var i = 0; i < o.length; i++) {
-  
-            //tableProducto.row.add({
-              //"num": o[i].num,
-              //"descripcion": o[i].descripcion,
-              //"cod_producto": o[i].cod_producto,
-              //"precio_unitario": o[i].precio_unitario,
-              //"cantidad": '<input class="form-control" type="number" min="1" value="1">',
-              //"precio_unitario_string": o[i].precio_unitario_string,
-              //"seleccionar": o[i].seleccionar
-            //}).draw();
+
   
             var name_producto = '<div class="d-flex align-items-center">';
             name_producto += '<div class="bg-img mr-4">';
@@ -597,7 +588,7 @@ var tableForm = $('#table_form').DataTable({
   
             tableProducto.row.add({
               "num": o[i].num,
-              "cod_producto": o[i].cod_producto,
+              "id_gasto": o[i].id_gasto,
               "name_producto": name_producto,
               "stock": o[i].stock,
               "precio_unitario": o[i].precio_unitario,
@@ -760,7 +751,7 @@ var tableForm = $('#table_form').DataTable({
   
                 tableForm.row.add({
                   "num": i+1,
-                  "cod_producto": o[i].cod_producto,
+                  "id_gasto": o[i].id_gasto,
                   "name_tabla": o[i].name_tabla,
                   "name_producto": name_producto,
                   "stock": o[i].stock,
@@ -846,7 +837,7 @@ var tableForm = $('#table_form').DataTable({
                 tableForm.row.add({
                   "num": i+1,
                   "name_tabla": o[i].name_tabla,
-                  "cod_producto": o[i].cod_producto,
+                  "id_gasto": o[i].id_gasto,
                   "name_producto": name_producto,
                   "stock": o[i].stock,
                   "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0" disabled>',
