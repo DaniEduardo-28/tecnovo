@@ -35,9 +35,9 @@
       throw new Exception("Error al verificar los permisos.");
     }
 
-    if (empty(trim($id_gasto))) {
+    /* if (empty(trim($id_gasto))) {
       throw new Exception("Campo obligatorio : Gasto.");
-    }
+    } */
 
     if (empty(trim($codigo_moneda))) {
       throw new Exception("Campo obligatorio : Moneda.");
@@ -51,13 +51,13 @@
       throw new Exception("Campo obligatorio : Tiene que seleccionar el trabajador.");
     }
 
-    if (empty(trim($id_fundo))) {
+    /* if (empty(trim($id_fundo))) {
       throw new Exception("Campo obligatorio : Tiene que seleccionar un fundo.");
-    }
+    } */
 
-    if (empty(trim($fecha_gasto))) {
+    /* if (empty(trim($fecha_gasto))) {
       throw new Exception("Campo obligatorio : Fecha de Gasto.");
-    }
+    } */
 
     require_once "core/models/ClassOrdenGasto.php";
     $VD = "";
