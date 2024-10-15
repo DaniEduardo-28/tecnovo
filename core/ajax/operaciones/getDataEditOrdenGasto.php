@@ -33,7 +33,6 @@
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
           "observaciones" => $key['observaciones'],
           "name_producto" => $key['name_producto'],
-          "stock" => $key['stock'],
           "precio" => $key['precio'],
           "cantidad_solicitada" => $key['cantidad_solicitada'],
           "name_tabla" => $key['name_tabla'],

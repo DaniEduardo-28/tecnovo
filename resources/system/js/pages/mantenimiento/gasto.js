@@ -112,7 +112,6 @@ $(document).ready(function(){
             innerdivHtml += '</div>';
             innerdivHtml += '</td>';
             innerdivHtml += '<td>' + o[i].descripcion + '</td>';
-            innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio + '</td>';
             innerdivHtml += o[i].estado;
             innerdivHtml += '    <td>';
             innerdivHtml += o[i].flag_editar;
@@ -245,7 +244,6 @@ $(document).ready(function(){
             $("#id_tipo_gasto").val(o[0].id_tipo_gasto);
             $("#name_gasto").val(o[0].name_gasto);
             $("#descripcion_gasto").val(o[0].descripcion_gasto);
-            $("#id_moneda").val(o[0].id_moneda);
             var estado = o[0].estado;
             var flag_igv = o[0].flag_igv;
             $("#accion").val("edit");

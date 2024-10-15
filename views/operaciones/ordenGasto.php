@@ -107,7 +107,6 @@
                         <?php
 
                           require("core/models/ClassDocumentoIdentidad.php");
-                          require("core/models/ClassMetodoEnvio.php");
 
                         ?>
 
@@ -180,21 +179,11 @@
                                               <input type="date" name="txtFechaOrdenForm" id="txtFechaOrdenForm"
                                                class="form-control" readonly value="<?=date("Y-m-d");?>">
                                             </div>
-                                            <!-- <div class="form-group col-md-3 col-sm-4">
-                                              <label for="txtFechaEntregaForm" class="label-control">Fecha Entrega</label>
-                                              <input type="date" name="txtFechaEntregaForm" id="txtFechaEntregaForm"
-                                               class="form-control" value="<?=date("Y-m-d");?>" min="<?=date("Y-m-d");?>">
-                                            </div> -->
                                             <div class="form-group col-md-3 col-sm-4">
                                               <label for="txtObservacionesForm" class="label-control">Observaciones</label>
                                               <input type="text" name="txtObservacionesForm" id="txtObservacionesForm"
                                                class="form-control">
                                             </div>
-                                            <!-- <div class="form-group col-md-3 col-sm-4">
-                                              <label for="txtEstadoForm" class="label-control">Estado</label>
-                                              <input type="text" name="txtEstadoForm" id="txtEstadoForm"
-                                               class="form-control" readonly>
-                                            </div> -->
                                           </div>
                                           <!-- END HEADER -->
 
@@ -228,22 +217,12 @@
                                             <div class="form-group col-sm-5">
                                               <div class="form-group col-md-12">
                                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                                  <!-- <label class="btn btn-info active">
-                                                    <input checked type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Accesorio
-                                                  </label> -->
-                                                  <!-- <label class="btn btn-info">
-                                                    <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Medicamento
-                                                  </label> -->
                                                   <label class="btn btn-info">
                                                     <input type="radio" name="opcion_busqueda" value="gasto" id="opcion_gasto" autocomplete="off"> Gastos
                                                   </label>
                                                 </div>
                                                 <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
                                               </div>
-                                              <!--<br>
-                                              <button type="button" class="btn btn-primary" id="btnSeleccionarProducto">
-                                                 <span class="fa fa-plus"></span> Agregar Producto&nbsp;
-                                              </button>-->
                                             </div>
                                             <div class="form-group col-sm-5">
                                               <br>&nbsp;&nbsp;&nbsp;
@@ -351,12 +330,6 @@
                                           class="form-control" autocomplete="off" value="<?=date("Y-m-d");?>">
                                         </div>
 
-                                        <!-- <div class="form-group col-md-3 col-sm-4">
-                                          <label for="txtFechaFinBuscarListado" class="label-control">Fecha Fin</label>
-                                          <input id="txtFechaFinBuscarListado" type="date" name="txtFechaFinBuscarListado"
-                                          class="form-control" autocomplete="off" value="<?=date("Y-m-d");?>">
-                                        </div> -->
-
                                         <div class="form-group col-md-3 col-sm-4">
                                           <label for="cboTipoBuscarListado" class="label-control">Tipo Busqueda</label>
                                           <select class="form-control" id="cboTipoBuscarListado" name="cboTipoBuscarListado">
@@ -449,10 +422,9 @@
                                             <tr>
                                               <th style="width:20px;">Num</th>
                                               <th>Id</th>
-                                              <th>Descripción</th>
-                                              <th style="width:60px;">Stock</th>
+                                              <th>Gasto</th>
+                                              <th style="width:60px;">Tipo de gasto</th>
                                               <th style="width:40px;">Precio Unitario</th>
-                                              <!-- <th style="width:90px;">Cantidad</th> -->
                                               <th style="width:10px;">Seleccionar</th>
                                               <th>Nombre Producto</th>
                                             </tr>
