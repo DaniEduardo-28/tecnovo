@@ -16,7 +16,7 @@
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
     if ($access_options[0]['error']=="NO") {
-      switch ($accion) {
+      switch ($accion) { 
         case 'add':
           if ($access_options[0]['flag_agregar']==false) {
             throw new Exception("No tienes permisos para registrar la orden.");
@@ -50,14 +50,6 @@
     if (empty(trim($id_trabajador))) {
       throw new Exception("Campo obligatorio : Tiene que seleccionar el trabajador.");
     }
-
-    /* if (empty(trim($id_fundo))) {
-      throw new Exception("Campo obligatorio : Tiene que seleccionar un fundo.");
-    } */
-
-    /* if (empty(trim($fecha_gasto))) {
-      throw new Exception("Campo obligatorio : Fecha de Gasto.");
-    } */
 
     require_once "core/models/ClassOrdenGasto.php";
     $VD = "";
