@@ -170,47 +170,10 @@
                                             </div>
 
                                             <div class="form-group col-md-3 col-sm-4">
-                                              <label for="id_moneda" class="label-control">Moneda</label>
-                                              <select class="form-control" name="id_moneda" id="id_moneda" required>
-                                                <option value="">Seleccione</option>
-                                                <?php
-                                                  include("core/models/ClassMoneda.php");
-                                                  $dataMoneda = $OBJ_MONEDA->show("1");
-                                                  if ($dataMoneda["error"]=="NO") {
-                                                    foreach ($dataMoneda["data"] as $key) {
-                                                      echo '<option value="' . $key['id_moneda'] . '">' . $key['name_moneda'] . '</option>';
-                                                    }
-                                                  }
-                                                 ?>
-                                              </select>
-                                            </div>
-
-                                            <div class="form-group col-md-3 col-sm-4">
-                                              <label for="precio_unit" class="label-control">Precio Unit. (Incluido IGV*)</label>
-                                              <input id="precio_unit" type="number" name="precio_unit" class="form-control"
-                                              autocomplete="off" value="0.00" required min="0.00" pattern="^\d*(\.\d{0,2})?$"
-                                              step="0.10" >
-                                            </div>
-
-                                            <div class="form-group col-md-2 col-sm-4">
-                                              <label for="cantidad" class="label-control">Cantidad</label>
-                                              <input id="cantidad" type="number" name="cantidad" class="form-control"
-                                              autocomplete="off" value="0" required min="0">
-                                            </div>
-
-                                            <div class="form-group col-md-3 col-sm-4">
                                               <label for="">&nbsp;</label>
                                               <div class="form-check">
                                                 <input id="estado" name="estado" type="checkbox" class="form-check-input" checked="">
                                                 <label for="estado" class="form-check-label">Estado</label>
-                                              </div>
-                                            </div>
-
-                                            <div class="form-group col-md-3 col-sm-4 d-none">
-                                              <label for="">&nbsp;</label>
-                                              <div class="form-check">
-                                                <input id="flag_igv" name="flag_igv" type="checkbox" class="form-check-input" checked="">
-                                                <label for="flag_igv" class="form-check-label">¿Precio incluye IGV?</label>
                                               </div>
                                             </div>
 
@@ -259,7 +222,7 @@
                                         </div>
                                       </div>
 
-                                      <div class="card-body py-0 table-responsive" id="divDatos">
+                                     <div class="card-body py-0 table-responsive" id="divDatos">
 
                                       </div>
 

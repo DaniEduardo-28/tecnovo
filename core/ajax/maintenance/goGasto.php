@@ -4,9 +4,6 @@
   $id_tipo_gasto = isset($_POST["id_tipo_gasto"]) ? $_POST["id_tipo_gasto"] : "";
   $name_gasto = isset($_POST["name_gasto"]) ? $_POST["name_gasto"] : "";
   $descripcion_gasto = isset($_POST["descripcion_gasto"]) ? $_POST["descripcion_gasto"] : "";
-  $id_moneda = isset($_POST["id_moneda"]) ? $_POST["id_moneda"] : "";
-  $precio_unit = isset($_POST["precio_unit"]) ? $_POST["precio_unit"] : 0.00;
-  $cantidad = isset($_POST["cantidad"]) ? $_POST["cantidad"] : 0;
   $estado = isset($_POST["estado"]) ? 1 : 0;
   $flag_igv = isset($_POST["flag_igv"]) ? 1 : 0;
    $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
@@ -42,19 +39,17 @@
       throw new Exception("Campo obligatorio : Nombre del Gasto.");
     }
 
-    if (empty(trim($id_moneda))) {
-      throw new Exception("Campo obligatorio : Moneda.");
-    }
+  
 
 
     require_once "core/models/ClassGasto.php";
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_GASTO->insert($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv);
+        $VD = $OBJ_GASTO->insert($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$estado,$flag_igv);
         break;
       case 'edit':
-        $VD = $OBJ_GASTO->update($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv);
+        $VD = $OBJ_GASTO->update($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$estado,$flag_igv);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

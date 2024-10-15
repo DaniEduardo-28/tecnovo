@@ -34,10 +34,6 @@ $(document).ready(function(){
   
     showData();
   
-    $("#precio_unit").change(function(){
-      var element = $("#precio_unit");
-      element.val(dosDecimales(element));
-    });
   
   });
   
@@ -56,8 +52,6 @@ $(document).ready(function(){
   innerdivHtml1 += '<tr>';
   innerdivHtml1 += '<th scope="col">Gasto</th>';
   innerdivHtml1 += '<th scope="col">Tipo</th>';
-  innerdivHtml1 += '<th scope="col">Precio Unit</th>';
-  innerdivHtml1 += '<th scope="col">Cantidad</th>';
   innerdivHtml1 += '<th scope="col">Estado</th>';
   innerdivHtml1 += '<th scope="col">Editar &amp; Eliminar</th>';
   innerdivHtml1 += '</tr>';
@@ -93,7 +87,7 @@ $(document).ready(function(){
         if (data1["error"]=="NO") {
   
           if(pagina==0){
-            creaPaginador(data1["cantidades"]);
+            creaPaginador(data1["cantidad"]);
           }
   
           // genera el cuerpo de la tabla
@@ -102,8 +96,6 @@ $(document).ready(function(){
           innerdivHtml += '<tr>';
           innerdivHtml += '<th scope="col">Gasto</th>';
           innerdivHtml += '<th scope="col">Tipo</th>';
-          innerdivHtml += '<th scope="col">Precio Unit</th>';
-          innerdivHtml += '<th scope="col">Cantidad</th>';
           innerdivHtml += '<th scope="col">Estado</th>';
           innerdivHtml += '<th scope="col">Editar &amp; Eliminar</th>';
           innerdivHtml += '</tr>';
@@ -121,7 +113,6 @@ $(document).ready(function(){
             innerdivHtml += '</td>';
             innerdivHtml += '<td>' + o[i].descripcion + '</td>';
             innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio + '</td>';
-            innerdivHtml += '<td>' + o[i].cantidad + '</td>';
             innerdivHtml += o[i].estado;
             innerdivHtml += '    <td>';
             innerdivHtml += o[i].flag_editar;
@@ -254,8 +245,6 @@ $(document).ready(function(){
             $("#id_tipo_gasto").val(o[0].id_tipo_gasto);
             $("#name_gasto").val(o[0].name_gasto);
             $("#descripcion_gasto").val(o[0].descripcion_gasto);
-            $("#precio_unit").val(o[0].precio_unit);
-            $("#cantidad").val(o[0].cantidad);
             $("#id_moneda").val(o[0].id_moneda);
             var estado = o[0].estado;
             var flag_igv = o[0].flag_igv;

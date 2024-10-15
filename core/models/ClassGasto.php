@@ -11,12 +11,12 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= "";
 
 			try {
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT COUNT(*) as cantidades FROM `tb_gasto` s
+				$sql = "SELECT COUNT(*) as cantidad FROM `tb_gasto` s
 								WHERE (s.name_gasto LIKE ? OR s.descripcion_gasto LIKE ?) ";
 
 				$parametros[] = $valor;
@@ -37,7 +37,7 @@
 				if (count($result)==0) {
 					throw new Exception("No se encontraron datos");
 				}else {
-					if ($result[0]['cantidades']==0) {
+					if ($result[0]['cantidad']==0) {
 						throw new Exception("No se encontraron datos.");
 					}
 				}
@@ -70,15 +70,14 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT s.*,t.descripcion,M.name_moneda
+				$sql = "SELECT s.*,t.descripcion
 								FROM `tb_gasto` s
 							  INNER JOIN tb_tipo_gasto t ON t.id_tipo_gasto = s.id_tipo_gasto
-								INNER JOIN tb_moneda M ON M.id_moneda = s.id_moneda
 								WHERE (s.name_gasto LIKE ? OR s.descripcion_gasto LIKE ?) ";
 				$parametros[] = $valor;
 				$parametros[] = $valor;
@@ -130,7 +129,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 				$sql = "SELECT s.*,t.descripcion
@@ -169,21 +168,21 @@
 			return $VD;
 		}
 
-		public function insert($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv) {
+		public function insert($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$estado,$flag_igv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_gasto (`id_gasto`, `id_tipo_gasto`, `name_gasto`, `descripcion_gasto`, `precio_unit`, `cantidad`, `estado`, `id_moneda`, `flag_igv`, `signo_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_gasto (`id_gasto`, `id_tipo_gasto`, `name_gasto`, `descripcion_gasto`, `estado`, `flag_igv`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(s.id_gasto) WHEN 0 THEN 1 ELSE (MAX(s.id_gasto) + 1) end FROM `tb_gasto` s),";
-				$sql .= "?,?,?,?,?,?,?,?,(SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?)";
+				$sql .= "?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv,$id_moneda]);
+				$stmt->execute([$id_tipo_gasto, $name_gasto, $descripcion_gasto, $estado, $flag_igv]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al registrar el producto en la base de datos.");
 				}
@@ -203,10 +202,10 @@
 			return $VD;
 		}
 
-		public function update($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$precio_unit,$cantidad,$estado,$id_moneda,$flag_igv) {
+		public function update($id_gasto,$id_tipo_gasto,$name_gasto,$descripcion_gasto,$estado,$flag_igv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
@@ -224,14 +223,10 @@
 				$sql .=" name_gasto = ?, ";
 				$sql .=" descripcion_gasto = ?, ";
 				$sql .=" estado = ?, ";
-				$sql .=" flag_igv = ?, ";
-				$sql .=" id_moneda = ?, ";
-				$sql .=" signo_moneda = (SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?), ";
-				$sql .=" precio_unit = ?, ";
-				$sql .=" cantidad = ? ";
+				$sql .=" flag_igv = ? ";
 				$sql .=" WHERE id_gasto = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_tipo_gasto,$name_gasto,$descripcion_gasto,$estado,$flag_igv,$id_moneda,$id_moneda,$precio_unit,$cantidad,$id_gasto])==false) {
+				if ($stmt->execute([$id_tipo_gasto,$name_gasto,$descripcion_gasto,$estado,$flag_igv,$id_gasto])==false) {
 					throw new Exception("1. Error al actualizar los datos del producto.");
 				}
 
@@ -253,7 +248,7 @@
 		public function delete($id_gasto) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
@@ -283,7 +278,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -322,11 +317,11 @@
 			return $VD;
 		}
 
-		public function show_cantidad_limite_activos($cantidades) {
+		public function show_cantidad_limite_activos($cantidad) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -334,7 +329,7 @@
 								FROM `tb_gasto` s
 							  INNER JOIN tb_tipo_gasto t ON t.id_tipo_gasto = s.id_tipo_gasto
 								WHERE s.estado = 'activo'
-								LIMIT $cantidades";
+								LIMIT $cantidad";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -371,7 +366,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
