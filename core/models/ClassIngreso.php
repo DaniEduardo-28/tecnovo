@@ -21,7 +21,7 @@
 				$parametros = null;
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_ingreso` i
 								INNER JOIN tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
-								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_fundo = ? ";
 
 				$parametros[] = $fecha_inicio;
@@ -97,7 +97,7 @@
 								FROM `tb_ingreso` i
 								INNER JOIN tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
 								INNER JOIN tb_documento_venta td ON td.id_documento_venta = i.id_tipo_docu
-								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_fundo = ? ";
 
@@ -172,7 +172,7 @@
 								FROM `tb_ingreso` i
 								INNER JOIN tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
 								INNER JOIN tb_tipo_documento td ON td.id_tipo_docu = i.id_tipo_docu
-								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajador t ON t.id_trabajador = o.id_trabajador
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? ";
 
@@ -251,7 +251,7 @@
 											 (DC.precio_unitario * DC.cantidad_solicitada) as total,ME.name_metodo,
 											 PRO.src_imagen as src_imagen_producto,DC.cantidad_solicitada
 								FROM tb_orden_compra O
-								INNER JOIN vw_proveedor PR ON PR.id_proveedor = O.id_proveedor
+								INNER JOIN vw_proveedores PR ON PR.id_proveedor = O.id_proveedor
 								INNER JOIN tb_detalle_compra DC ON DC.id_orden_compra = O.id_orden_compra
 								INNER JOIN tb_producto PRO ON PRO.cod_producto = DC.cod_producto
 								INNER JOIN tb_metodo_envio ME ON ME.id_metodo_envio = O.id_metodo_envio

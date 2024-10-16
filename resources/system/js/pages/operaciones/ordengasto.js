@@ -38,10 +38,10 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'num' },
       { 'data': 'id_gasto' },
       { 'data': 'name_producto' },
-      { 'data': 'precio_unitario' },
-      { 'data': 'cantidad' },
+      /* { 'data': 'precio_unitario' },
+      { 'data': 'cantidad' }, */
       { 'data': 'opcion' },
-      { 'data': 'name_producto_string' },
+      /* { 'data': 'name_producto_string' }, */    
     ],
     columnDefs: [
       {
@@ -66,8 +66,6 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'name_proveedor' },
       { 'data': 'name_usuario' },
       { 'data': 'fecha_orden' },
-      { 'data': 'fecha_entrega' },
-      { 'data': 'name_forma_envio' },
       { 'data': 'num_registros' },
       { 'data': 'total' },
       { 'data': 'estado' },
@@ -155,7 +153,6 @@ var tableForm = $('#table_form').DataTable({
           }
         }
         var name_producto = data["name_producto"];
-        var stock = data["stock"];
         var precio_unitario = data["precio_unitario"];
         precio_unitario = (Math.round( precio_unitario * 100 )/100 ).toFixed(2);
         var cantidad = $(this).parents("tr").find("td").eq(3).find("input").val();
@@ -168,7 +165,6 @@ var tableForm = $('#table_form').DataTable({
           "name_tabla": name_tabla,
           "precio_unitario": '<input class="form-control" value="' + precio_unitario + '" step="0.10" type="number" min="0" >',
           "cantidad": '<input class="form-control" value="' + cantidad + '" type="number" min="1">',
-          "notas": '<input class="form-control" value="" type="text">',
           "total": total,
           "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
         }).draw();

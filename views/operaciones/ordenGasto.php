@@ -364,8 +364,8 @@
                                               <th>Usuario</th>
                                               <th>Fecha Orden</th>
                                               <th>Fecha Entrega</th>
-                                              <th>Forma de Envío</th>
-                                              <th># Productos</th>
+                                              <!-- <th>Forma de Envío</th> -->
+                                              <!-- <th># Productos</th> -->
                                               <th>Total</th>
                                               <th>Estado</th>
                                               <th>Acciones</th>
@@ -424,9 +424,10 @@
                                               <th>Id</th>
                                               <th>Gasto</th>
                                               <th style="width:60px;">Tipo de gasto</th>
+                                              <th>Nombre Producto</th>
                                               <th style="width:40px;">Precio Unitario</th>
                                               <th style="width:10px;">Seleccionar</th>
-                                              <th>Nombre Producto</th>
+                                              
                                             </tr>
                                           </thead>
                                           <tbody id="tbody_productos">
