@@ -9,7 +9,8 @@
     $fecha_gasto = isset($_POST["fecha_gasto"])	? $_POST["fecha_gasto"]	: "";
     $tipo_busqueda = isset($_POST["tipo_busqueda"])	? $_POST["tipo_busqueda"]	: "";
     $tipo = isset($_POST["tipo"])	? $_POST["tipo"]	: "";
-    $id_fundo = isset($_SESSION["id_fundo"])	? $_SESSION["id_fundo"]	: 0;
+    $id_gasto = isset($_SESSION["id_gasto"])	? $_SESSION["id_gasto"]	: 0;
+
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
 
@@ -22,12 +23,12 @@
     }
 
     require_once "core/models/ClassOrdenGasto.php";
-    $DataCantidad = $OBJ_ORDEN_GASTO->getCount($id_fundo,$valor,$fecha_gasto,$tipo_busqueda);
+    $DataCantidad = $OBJ_ORDEN_GASTO->getCount($id_gasto,$valor,$fecha_gasto,$tipo_busqueda);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_GASTO->show($id_fundo,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit);
+      $Resultado = $OBJ_ORDEN_GASTO->show($id_gasto,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {
@@ -59,10 +60,9 @@
         $retorno_array[] =array(
           "num" => $count + $offset,
           "id_orden_gasto" => $key['id_orden_gasto'],
-          "name_proveedor" => $key['nombre_proveedor'],
+          "nombre_proveedor" => $key['nombre_proveedor'],
           "name_usuario" => $key['nombres_trabajador'],
           "fecha_gasto" => date('d/m/Y H:i', strtotime($key['fecha_gasto'])),
-          "name_forma_envio" => $key['name_metodo'],
           "num_registros" => '&nbsp;&nbsp;&nbsp;' . $key['num_registros'],
           "total" => $key['signo_moneda'] . ' ' . $key['total'],
           "options" => "$options"

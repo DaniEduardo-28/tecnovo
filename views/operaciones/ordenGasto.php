@@ -361,7 +361,7 @@
                                               <th>Num</th>
                                               <th>Id Orden</th>
                                               <th>Proveedor</th>
-                                              <th>Usuario</th>
+                                              <th>Usuario</th>                                                                        
                                               <th>Fecha Orden</th>
                                               <th>Fecha Entrega</th>
                                               <!-- <th>Forma de Envío</th> -->
@@ -423,7 +423,7 @@
                                               <th style="width:20px;">Num</th>
                                               <th>Id</th>
                                               <th>Gasto</th>
-                                              <th style="width:60px;">Tipo de gasto</th>
+                                              <th style="width:10px;">Seleccionar</th>
                                               <th>Nombre Producto</th>
                                               <th style="width:40px;">Precio Unitario</th>
                                               <th style="width:10px;">Seleccionar</th>

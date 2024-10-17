@@ -9,7 +9,6 @@
     $fecha_inicio = isset($_POST["fecha_inicio"])	? $_POST["fecha_inicio"]	: "";
     $fecha_fin = isset($_POST["fecha_fin"])	? $_POST["fecha_fin"]	: "";
     $tipo_busqueda = isset($_POST["tipo_busqueda"])	? $_POST["tipo_busqueda"]	: "";
-    $id_fundo = isset($_SESSION["id_fundo"])	? $_SESSION["id_fundo"]	: "";
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ingreso"));
 
@@ -22,12 +21,12 @@
     }
 
     require_once "core/models/ClassOrdenGasto.php";
-    $DataCantidad = $OBJ_ORDEN_COMPRA->getCount1($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda);
+    $DataCantidad = $OBJ_ORDEN_GASTO->getCount1($id_proveedor,$valor,$fecha_gasto,$tipo_busqueda);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_COMPRA->show1($id_sucursal,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit);
+      $Resultado = $OBJ_ORDEN_GASTO->show1($id_proveedor,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit);
       $count = 1;
 
       foreach ($Resultado["data"] as $key) {
@@ -46,19 +45,16 @@
             break;
         }
 
-        $options = '<a href="javascript:seleccionarOrden(' . $key['id_orden_compra'] . ')" class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-check"></i></a>';
+        $options = '<a href="javascript:seleccionarOrden(' . $key['id_orden_gasto'] . ')" class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-check"></i></a>';
 
         $retorno_array[] =array(
           "num" => $count + $offset,
-          "id_orden_compra" => $key['id_orden_compra'],
+          "id_orden_gasto" => $key['id_orden_gasto'],
           "name_proveedor" => $key['nombre_proveedor'],
           "name_usuario" => $key['nombres_trabajador'],
-          "fecha_orden" => date('d/m/Y H:i', strtotime($key['fecha_orden'])),
-          "fecha_entrega" => date('d/m/Y', strtotime($key['fecha_entrega'])),
-          "name_forma_envio" => $key['name_metodo'],
+          "fecha_gasto" => date('d/m/Y', strtotime($key['fecha_gasto'])),
           "num_registros" => '&nbsp;&nbsp;' . $key['num_registros'],
           "total" => $key['signo_moneda'] . ' ' . $key['total'],
-          "estado" => $estado,
           "options" => "$options"
         );
         $count++;

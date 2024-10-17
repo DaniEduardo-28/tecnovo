@@ -10,7 +10,9 @@
   $detalle_compra = json_decode($array_detalle);
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
-  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : "";
+  $id_gasto = isset($_SESSION["id_gasto"]) ? $_SESSION["id_gasto"] : "";
+  $precio_unit = isset($_POST["precio_unit"]) ? $_POST["precio_unit"] : null;
+  $cantidad_ga = isset($_POST["cantidad_ga"]) ? $_POST["cantidad_ga"] : null;
 
   try {
 
@@ -47,18 +49,18 @@
       throw new Exception("Campo obligatorio : Tiene que seleccionar el proveedor.");
     }
 
-    if (empty(trim($id_trabajador))) {
+    /* if (empty(trim($id_trabajador))) {
       throw new Exception("Campo obligatorio : Tiene que seleccionar el trabajador.");
-    }
+    } */
 
     require_once "core/models/ClassOrdenGasto.php";
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_GASTO->insert($id_fundo,$id_orden_gasto,$id_proveedor,$id_trabajador,$id_gasto,$codigo_moneda,$fecha_gasto,$observaciones);
+        $VD = $OBJ_ORDEN_GASTO->insert($id_proveedor,$id_orden_gasto,$id_gasto,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$precio_unit,$cantidad_ga);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_GASTO->update($id_fundo,$id_orden_gasto,$id_proveedor,$id_trabajador,$id_gasto,$codigo_moneda,$fecha_gasto,$observaciones);
+        $VD = $OBJ_ORDEN_GASTO->update($id_proveedor,$id_orden_gasto,$id_gasto,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$precio_unit,$cantidad_ga);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

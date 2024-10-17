@@ -10,8 +10,8 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'num' },
       { 'data': 'id_gasto' },
       { 'data': 'name_producto' },
-      { 'data': 'precio_unitario' },
-      { 'data': 'cantidad' },
+      { 'data': 'precio_unit' },
+      { 'data': 'cantidad_ga' },
       { 'data': 'notas' },
       { 'data': 'total' },
       { 'data': 'opcion' },
@@ -19,7 +19,7 @@ var tableForm = $('#table_form').DataTable({
     ],
     columnDefs: [
       {
-        "targets": [1,3,9],
+        "targets": [1,3,7],
         "visible": false,
         "searchable": false
       }
@@ -37,21 +37,22 @@ var tableForm = $('#table_form').DataTable({
     columns: [
       { 'data': 'num' },
       { 'data': 'id_gasto' },
-      { 'data': 'name_producto' },
-      /* { 'data': 'precio_unitario' },
-      { 'data': 'cantidad' }, */
+      { 'data': 'name_gasto' },
+      { 'data': 'precio_unit' },
+      { 'data': 'cantidad_ga' },
       { 'data': 'opcion' },
       /* { 'data': 'name_producto_string' }, */    
     ],
     columnDefs: [
       {
-        "targets": [1,4,7],
+        "targets": [1],
         "visible": false,
         "searchable": false
       }
     ]
   });
-  
+  console.log(tableProducto.data());
+
   var tableListado = $('#tabla_listado').DataTable({
     language: languageSpanish,
     searching: false,
