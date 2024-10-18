@@ -6,7 +6,8 @@
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 10;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
-    $fecha_gasto = isset($_POST["fecha_gasto"])	? $_POST["fecha_gasto"]	: "";
+    $fecha_inicio = isset($_POST["fecha_inicio"])	? $_POST["fecha_inicio"]	: "";
+    $fecha_fin = isset($_POST["fecha_fin"])	? $_POST["fecha_fin"]	: "";
     $tipo_busqueda = isset($_POST["tipo_busqueda"])	? $_POST["tipo_busqueda"]	: "";
     $tipo = isset($_POST["tipo"])	? $_POST["tipo"]	: "";
     $id_gasto = isset($_SESSION["id_gasto"])	? $_SESSION["id_gasto"]	: 0;
@@ -23,12 +24,12 @@
     }
 
     require_once "core/models/ClassOrdenGasto.php";
-    $DataCantidad = $OBJ_ORDEN_GASTO->getCount($id_gasto,$valor,$fecha_gasto,$tipo_busqueda);
+    $DataCantidad = $OBJ_ORDEN_GASTO->getCount($id_gasto,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_GASTO->show($id_gasto,$valor,$fecha_gasto,$tipo_busqueda,$offset,$limit);
+      $Resultado = $OBJ_ORDEN_GASTO->show($id_gasto,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {

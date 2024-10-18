@@ -24,20 +24,20 @@
     if ($Resultado["error"]=="NO") {
 
       foreach ($Resultado["data"] as $key) {
-        $retorno_array[] =array(
+        $retorno_array[] = array(
           "id_orden_gasto" => $key['id_orden_gasto'],
           "id_proveedor" => $key['id_proveedor'],
-          "nombre_proveedor" => $key['nombre_proveedor'],
+          "name_proveedor" => $key['nombre_proveedor'],
           "src_imagen_proveedor" => $key['src_imagen_proveedor'],
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
           "observaciones" => $key['observaciones'],
-          "id_gasto" => $key['id_gasto'],
+          "cod_gasto" => $key['cod_gasto'],
           "name_gasto" => $key['name_gasto'],
-          "precio" => $key['precio'],
           "cantidad_solicitada" => $key['cantidad_solicitada'],
           "name_tabla" => $key['name_tabla'],
           "id_moneda" => $key['id_moneda'],
           "total" => $key['total'],
+          "src_imagen_producto" => $key['src_imagen_producto']
         );
       }
 

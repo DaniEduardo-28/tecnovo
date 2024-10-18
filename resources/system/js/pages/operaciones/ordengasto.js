@@ -9,17 +9,16 @@ var tableForm = $('#table_form').DataTable({
     columns: [
       { 'data': 'num' },
       { 'data': 'id_gasto' },
-      { 'data': 'name_producto' },
+      { 'data': 'descripcion_gasto' },
       { 'data': 'precio_unit' },
       { 'data': 'cantidad_ga' },
-      { 'data': 'notas' },
       { 'data': 'total' },
       { 'data': 'opcion' },
       { 'data': 'name_tabla' }
     ],
     columnDefs: [
       {
-        "targets": [1,3,7],
+        "targets": [1,4],
         "visible": false,
         "searchable": false
       }
@@ -38,10 +37,9 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'num' },
       { 'data': 'id_gasto' },
       { 'data': 'name_gasto' },
-      { 'data': 'precio_unit' },
-      { 'data': 'cantidad_ga' },
+      { 'data': 'descripcion_gasto' },
       { 'data': 'opcion' },
-      /* { 'data': 'name_producto_string' }, */    
+      { 'data': 'name_producto_string' },
     ],
     columnDefs: [
       {
@@ -65,8 +63,8 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'num' },
       { 'data': 'id_orden_compra' },
       { 'data': 'name_proveedor' },
-      { 'data': 'name_usuario' },
-      { 'data': 'fecha_orden' },
+      /* { 'data': 'name_usuario' }, */
+      { 'data': 'fecha_gasto' },
       { 'data': 'num_registros' },
       { 'data': 'total' },
       { 'data': 'estado' },
@@ -147,9 +145,10 @@ var tableForm = $('#table_form').DataTable({
         var num = tableForm.data().count() + 1;
         var data = tableProducto.row( $(this).parents('tr') ).data();
         var id_gasto = data["id_gasto"];
+
         if (num>1) {
           if (verificarproductoontable(name_tabla,id_gasto)==true) {
-            generateAlert('warning', 'El Producto ya se encuentra agregado a la lista.');
+            generateAlert('warning', 'El Gasto ya se encuentra agregado a la lista.');
             return;
           }
         }
@@ -208,9 +207,7 @@ var tableForm = $('#table_form').DataTable({
         var id_orden_compra = $("#id_orden_compra").val();
         var accion = $('#accion').val();
         var id_proveedor = $("#id_proveedor").val();
-        var id_metodo_envio = $("#cboFormaEnvioForm").val();
-        var fecha_orden = $("#txtFechaOrdenForm").val();
-        var fecha_entrega = $("#txtFechaEntregaForm").val();
+        var fecha_gasto = $("#txtFechaOrdenForm").val();
         var observaciones = $("#txtObservacionesForm").val();
         var codigo_moneda = $("#codigo_moneda").val();
   
@@ -221,10 +218,10 @@ var tableForm = $('#table_form').DataTable({
           return;
         }
   
-        if (id_metodo_envio=="0" || id_metodo_envio == "" || id_metodo_envio == 0) {
+        /* if (id_metodo_envio=="0" || id_metodo_envio == "" || id_metodo_envio == 0) {
           runAlert("Faltan Datos","Tiene que seleccionar una forma de envío.","warning")
           return;
-        }
+        } */
   
         if ($("#codigo_moneda").val()=="") {
           runAlert("Advertencia","Selecciona la moneda con la que se realizará la operación","warning");
@@ -241,9 +238,9 @@ var tableForm = $('#table_form').DataTable({
   
         $('#table_form > tbody  > tr').each(function(){
   
-          var cantidad = $(this).find("td").eq(3).find("input").val();
           var precio_unitario = $(this).find("td").eq(2).find("input").val();
-          var notas = $(this).find("td").eq(4).find("input").val();
+          var cantidad = $(this).find("td").eq(3).find("input").val();
+          /* var notas = $(this).find("td").eq(4).find("input").val(); */
           var data = tableForm.row($(this)).data();
   
           datos.push({

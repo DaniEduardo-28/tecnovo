@@ -6,7 +6,8 @@
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 10;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
-    
+    $id_gasto = isset($_POST['id_gasto']) ? $_POST['id_gasto'] : null;
+
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
 
     if ($access_options[0]['error']=="NO") {
@@ -18,12 +19,12 @@
     }
 
     require_once "core/models/ClassOrdenGasto.php";
-    $DataCantidad = $OBJ_ORDEN_GASTO->getCountDetalleParaOrden($valor);
+    $DataCantidad = $OBJ_ORDEN_GASTO->getCountDetalleParaOrden($id_gasto,$valor);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_GASTO->showDetalleParaOrden($valor,$offset,$limit);
+      $Resultado = $OBJ_ORDEN_GASTO->showDetalleParaOrden($id_gasto,$tipo,$valor,$offset,$limit)  ;
 
       $count = 1 + $offset;
       $tipo_cambio_moneda_a_convertir = 1;

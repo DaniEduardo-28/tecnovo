@@ -69,7 +69,7 @@
         $retorno_array[] =array(
           "num" => "$count",
           "descripcion" => $key['descripcion'],
-          "cod_producto" => $key['cod_producto'],
+          "cod_gasto" => $key['cod_gasto'],
           "id_moneda" => $key['id_moneda'],
           "precio_unitario" => $precio_unitario,
           "precio_unitario_string" => $signo_moneda . " " . $precio_unitario,

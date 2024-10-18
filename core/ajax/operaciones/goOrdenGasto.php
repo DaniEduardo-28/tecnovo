@@ -11,9 +11,7 @@
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
   $id_gasto = isset($_SESSION["id_gasto"]) ? $_SESSION["id_gasto"] : "";
-  $precio_unit = isset($_POST["precio_unit"]) ? $_POST["precio_unit"] : null;
-  $cantidad_ga = isset($_POST["cantidad_ga"]) ? $_POST["cantidad_ga"] : null;
-
+ 
   try {
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
@@ -31,7 +29,6 @@
           break;
         default:
           throw new Exception("Acción no recibida.");
-          break;
       }
     }else {
       throw new Exception("Error al verificar los permisos.");
@@ -57,10 +54,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_GASTO->insert($id_proveedor,$id_orden_gasto,$id_gasto,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$precio_unit,$cantidad_ga);
+        $VD = $OBJ_ORDEN_GASTO->insert($id_gasto,$id_orden_gasto,$id_proveedor,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$detalle_gasto);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_GASTO->update($id_proveedor,$id_orden_gasto,$id_gasto,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$precio_unit,$cantidad_ga);
+        $VD = $OBJ_ORDEN_GASTO->update($id_gasto,$id_orden_gasto,$id_proveedor,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$detalle_gasto);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

@@ -32,12 +32,11 @@
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
           "observaciones" => $key['observaciones'],
           "id_gasto" => $key['id_gasto'],
+          "cod_gasto" => $key['cod_gasto'],
+          "name_tabla" => $key['name_tabla'],
           "name_gasto" => $key['name_gasto'],
           "precio" => $key['precio'],
           "cantidad_solicitada" => $key['cantidad_solicitada'],
-          "name_tabla" => $key['name_tabla'],
-          "id_moneda" => $key['id_moneda'],
-          "total" => $key['total'],
         );
       }
 
