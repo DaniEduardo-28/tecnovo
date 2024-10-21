@@ -392,7 +392,7 @@
 			return $VD;
 		}
 
-		public function getCountDetalleParaOrden($id_gasto,$valor) {
+		public function getCountDetalleParaOrden($valor) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -402,7 +402,7 @@
 
 				$valor = "%$valor%";
 				$sql = "SELECT count(*) as cantidad FROM tb_gasto WHERE id_gasto = ? AND name_gasto LIKE ? ";
-						$parametros[] = $id_gasto;
+						/* $parametros[] = $id_gasto; */
 						$parametros[] = $valor;
 
 				$stmt = $conexion->prepare($sql);
@@ -523,7 +523,7 @@
 			return $VD;
 		}
 
-		public function showDetalleParaOrden($id_gasto,$tipo,$valor,$offset,$limit) {
+		public function showDetalleParaOrden($valor,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -535,7 +535,7 @@
 				$sql = "SELECT name_gasto as descripcion,id_gasto as cod_gasto,
 										descripcion_gasto as detalle_gasto
 										FROM tb_gasto WHERE id_gasto = ? AND name_gasto LIKE ? ";
-						$parametros[] = $id_gasto;
+						/* $parametros[] = $id_gasto; */
 						$parametros[] = $valor;
 
 				$sql .= " LIMIT $offset, $limit ";

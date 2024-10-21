@@ -683,6 +683,23 @@ try {
         require("core/ajax/operaciones/deleteIngreso.php");
         break;
 
+        case 'goIngresoGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/goIngresoGasto.php");
+          break;
+        case 'showIngresoGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/showIngresoGasto.php");
+          break;
+        case 'getDataVerIngresoGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/getDataVerIngresoGasto.php");
+          break;
+        case 'deleteIngresoGasto':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/deleteIngresoGasto.php");
+          break;
+
       default:
         $data["error"] = "SI";
         $data["message"] = "No se encontró el ajax especificado.";

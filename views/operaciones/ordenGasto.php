@@ -362,12 +362,12 @@
                                               <th>Id Orden</th>
                                               <th>Proveedor</th>
                                               <th>Usuario</th>                                                                        
-                                              <th>Fecha Orden</th>
-                                              <th>Fecha Entrega</th>
+                                              <th>Fecha Gasto</th>
+                                              <!-- <th>Fecha Entrega</th> -->
                                               <!-- <th>Forma de Envío</th> -->
-                                              <!-- <th># Productos</th> -->
+                                              <th># Gastos</th>
                                               <th>Total</th>
-                                              <th>Estado</th>
+                                              <!-- <th>Estado</th> -->
                                               <th>Acciones</th>
                                             </tr>
                                           </thead>
@@ -423,9 +423,9 @@
                                               <th style="width:20px;">Num</th>
                                               <th>Id</th>
                                               <th>Gasto</th>
-                                              <th style="width:10px;">Seleccionar</th>
-                                              <th>Nombre Producto</th>
-                                              <th style="width:40px;">Precio Unitario</th>
+                                              <th>Descripción</th>
+                                              <th style="width:10px;">Colum abs 1</th>
+                                              <th style="width:40px;">Colum abs 2</th>
                                               <th style="width:10px;">Seleccionar</th>
                                               
                                             </tr>
