@@ -4,11 +4,11 @@
 
     $id_orden_gasto = isset($_POST["id_orden_gasto"])	? $_POST["id_orden_gasto"]	: "";
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ingreso"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
 
     if ($access_options[0]['error']=="NO") {
-      if ($access_options[0]['flag_agregar']==false) {
-        throw new Exception("No tienes permisos para seleccionar este registro.");
+      if ($access_options[0]['flag_ver']==false) {
+        throw new Exception("No tienes permisos para ver este registro.");
       }
     }else {
       throw new Exception("Error al verificar los permisos.");
@@ -19,7 +19,7 @@
     }
 
     require_once "core/models/ClassOrdenGasto.php";
-    $Resultado = $OBJ_ORDEN_GASTO->getDataEditOrdenGastoIngreso($id_orden_gasto);
+    $Resultado = $OBJ_ORDEN_GASTO->getDataVerOrdenGasto($id_orden_gasto);
 
     if ($Resultado["error"]=="NO") {
 
@@ -30,10 +30,14 @@
           "name_proveedor" => $key['nombre_proveedor'],
           "src_imagen_proveedor" => $key['src_imagen_proveedor'],
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
+          "observaciones" => $key['observaciones'],
           "cod_gasto" => $key['cod_gasto'],
+          "id_moneda" => $key['id_moneda'],
           "name_gasto" => $key['name_gasto'],
-          "cantidad_solicitada" => $key['cantidad_solicitada'],
           "name_tabla" => $key['name_tabla'],
+          "precio_unitario" => $key['precio_unitario'],
+          "cantidad_solicitada" => $key['cantidad_solicitada'],
+          "total" => $key['total'],
           "src_imagen_gasto" => $key['src_imagen_gasto']
         );
       }
@@ -55,4 +59,4 @@
     exit();
   }
 
- ?>
+?>

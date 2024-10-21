@@ -8,10 +8,10 @@ var tableForm = $('#table_form').DataTable({
     info: false,
     columns: [
       { 'data': 'num' },
-      { 'data': 'id_gasto' },
-      { 'data': 'descripcion_gasto' },
-      { 'data': 'precio_unit' },
-      { 'data': 'cantidad_ga' },
+      { 'data': 'cod_gasto' },
+      { 'data': 'name_gasto' },
+      { 'data': 'precio_unitario' },
+      { 'data': 'cantidad' },
       { 'data': 'total' },
       { 'data': 'opcion' },
       { 'data': 'name_tabla' }
@@ -35,9 +35,11 @@ var tableForm = $('#table_form').DataTable({
     info: false,
     columns: [
       { 'data': 'num' },
-      { 'data': 'id_gasto' },
+      { 'data': 'cod_gasto' },
       { 'data': 'name_gasto' },
-      { 'data': 'descripcion_gasto' },
+      { 'data': 'stock' },
+      { 'data': 'precio_unitario' },
+      { 'data': 'cantidad' },
       { 'data': 'opcion' },
       { 'data': 'name_producto_string' },
     ],
