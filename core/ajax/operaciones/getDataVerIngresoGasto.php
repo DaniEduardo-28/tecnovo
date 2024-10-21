@@ -29,7 +29,7 @@
           "id_orden_gasto" => $key['id_orden_gasto'],
           "id_tipo_docu" => $key['id_tipo_docu'],
           "num_documento" => $key['num_documento'],
-          "name_proveedor" => $key['nombre_proveedor'],
+          "nombre_proveedor" => $key['nombre_proveedor'],
           "src_imagen_proveedor" => $key['src_imagen_proveedor'],
           "fecha_gasto" => date('d/m/Y h:i a', strtotime($key['gasto'])),
           "observaciones" => $key['observaciones'],
@@ -37,8 +37,7 @@
           "cod_gasto" => $key['cod_gasto'],
           "name_tabla" => $key['name_tabla'],
           "name_gasto" => $key['name_gasto'],
-          "cantidad" => $key['cantidad'],
-          "src_imagen_gasto" => $key['src_imagen_gasto']
+          "cantidad" => $key['cantidad']
         );
       }
 

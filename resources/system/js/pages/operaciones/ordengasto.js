@@ -40,7 +40,7 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'precio_unitario' },
       { 'data': 'cantidad' },
       { 'data': 'opcion' },
-      { 'data': 'name_producto_string' },
+      { 'data': 'name_gasto_string' },
     ],
     columnDefs: [
       {
@@ -145,10 +145,10 @@ var tableForm = $('#table_form').DataTable({
         var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
         var num = tableForm.data().count() + 1;
         var data = tableProducto.row( $(this).parents('tr') ).data();
-        var id_gasto = data["id_gasto"];
+        var id_gasto = data["cod_gasto"];
 
         if (num>1) {
-          if (verificarproductoontable(name_tabla,id_gasto)==true) {
+          if (verificarproductoontable(name_tabla,cod_gasto)==true) {
             generateAlert('warning', 'El Gasto ya se encuentra agregado a la lista.');
             return;
           }
@@ -161,7 +161,7 @@ var tableForm = $('#table_form').DataTable({
         total = (Math.round( total * 100 )/100 ).toFixed(2);
         tableForm.row.add({
           "num": num,
-          "id_gasto": id_gasto,
+          "cod_gasto": id_gasto,
           "name_gasto": name_gasto,
           "name_tabla": name_tabla,
           "precio_unitario": '<input class="form-control" value="' + precio_unitario + '" step="0.10" type="number" min="0" >',
@@ -185,8 +185,6 @@ var tableForm = $('#table_form').DataTable({
         tableForm.row($(this).parents('tr')).remove().draw();
         actualizarnumeracion();
         calcularTotal();
-        console.log(data); // Para verificar si los datos de la fila son correctos
-
       } catch (e) {
         runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
       }
@@ -208,7 +206,6 @@ var tableForm = $('#table_form').DataTable({
     $("#btnSaveForm").click(function(e){
   
       try {
-        console.log(data); // Para verificar si los datos de la fila son correctos
         var id_orden_gasto = $("#id_orden_gasto").val();
         var accion = $('#accion').val();
         var id_proveedor = $("#id_proveedor").val();
@@ -245,7 +242,7 @@ var tableForm = $('#table_form').DataTable({
   
           datos.push({
             "name_tabla" : data['name_tabla'],
-            "id_gasto" : data['id_gasto'],
+            "cod_gasto" : data['cod_gasto'],
             "cantidad_solicitada" : cantidad,
             "precio_unitario" : precio_unitario,
           });
@@ -411,13 +408,13 @@ var tableForm = $('#table_form').DataTable({
     }
   }
   
-  function verificarproductoontable(name_tabla,id_gasto){
+  function verificarproductoontable(name_tabla,cod_gasto){
   
     try {
       var num=0;
       $('#table_form > tbody  > tr').each(function(){
         var data = tableForm.row($(this)).data();
-        if (data['id_gasto']==id_gasto&&data['name_tabla']==name_tabla) {
+        if (data['cod_gasto']==cod_gasto&&data['name_tabla']==name_tabla) {
           num++;
         }
       });
@@ -579,10 +576,10 @@ var tableForm = $('#table_form').DataTable({
   
             tableProducto.row.add({
               "num": o[i].num,
-              "id_gasto": o[i].id_gasto,
+              "cod_gasto": o[i].id_gasto,
               "name_gasto": name_gasto,
               "opcion": o[i].seleccionar,
-              "name_producto_string": o[i].descripcion
+              "name_gasto_string": o[i].descripcion
             }).draw();
   
           }

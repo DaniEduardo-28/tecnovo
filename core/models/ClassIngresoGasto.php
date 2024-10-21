@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($id_gasto,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
+		public function getCount($valor,$fecha_inicio,$fecha_fin,$tipo_busqueda) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -22,11 +22,10 @@
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_ingreso_gasto` i
 								INNER JOIN tb_orden_gasto o ON o.id_orden_gasto = i.id_orden_gasto
 								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
-								WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_gasto = ? ";
+								WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_gasto;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -79,7 +78,7 @@
 			return $VD;
 		}
 
-		public function show($id_gasto,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
+		public function show($valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -99,11 +98,10 @@
 								INNER JOIN tb_documento_venta td ON td.id_documento_venta = i.id_tipo_docu
 								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-								WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? AND o.id_gasto = ? ";
+								WHERE o.fecha_gasto >= ? AND o.fecha_gasto < ? ";
 
 				$parametros[] = $fecha_inicio;
 				$parametros[] = $fecha_fin;
-				$parametros[] = $id_gasto;
 
 				if ($tipo_busqueda!='') {
 					switch ($tipo_busqueda) {
@@ -246,7 +244,7 @@
 											 O.fecha_gasto,O.observaciones,DC.cantidad_solicitada,
 											 DC.cod_gasto,DC.precio_unitario as precio_compra,
 											 DC.precio_unitario,DC.cantidad_solicitada as cantidad,
-											 (DC.precio_unitario * DC.cantidad_solicitada) as total,PRO.src_imagen as src_imagen_producto,DC.cantidad_solicitada
+											 (DC.precio_unitario * DC.cantidad_solicitada) as total
 								FROM tb_orden_gasto O
 								INNER JOIN vw_proveedores PR ON PR.id_proveedor = O.id_proveedor
 								INNER JOIN tb_detalle_gasto DC ON DC.id_orden_gasto = O.id_orden_gasto
@@ -293,14 +291,14 @@
 
 				$sql = "SELECT i.id_orden_gasto,i.id_ingreso,O.nombre_proveedor,O.src_imagen_proveedor,
 											 i.fecha,i.observaciones,i.id_tipo_docu,
-											 DI.cod_producto,O.name_producto,DI.cantidad,
+											 DI.cod_gasto,O.name_gasto,DI.cantidad,
 											 DI.observaciones as observaciones_detalle,
-											 O.src_imagen_producto,O.name_tabla,
+											 O.name_tabla,
 											 i.num_documento
 								FROM tb_ingreso_gasto i
 								INNER JOIN tb_detalle_ingreso DI ON DI.id_ingreso = i.id_ingreso
 								INNER JOIN vw_orden_gasto O ON O.id_orden_gasto = i.id_orden_gasto
-								AND O.cod_producto = DI.cod_producto AND O.name_tabla = DI.name_tabla
+								AND O.cod_gasto = DI.cod_gasto AND O.name_tabla = DI.name_tabla
 								WHERE i.id_ingreso_gasto = ?";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_ingreso_gasto]);
@@ -334,7 +332,7 @@
 			return $VD;
 		}
 
-		public function insert($id_gasto,$id_trabajador,$id_orden_gasto,$id_tipo_docu,$num_documento,$observaciones,$detalle_gasto) {
+		public function insert($id_trabajador,$id_orden_gasto,$id_tipo_docu,$num_documento,$observaciones,$detalle_gasto) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -364,13 +362,13 @@
 					}
 				}
 
-				$sql = "INSERT INTO tb_ingreso_gasto (`id_ingreso_gasto`, `id_orden_gasto`, `id_gasto`, `id_trabajador`, `id_tipo_docu`, `num_documento`, `fecha`, `observaciones`, `estado`) VALUES ";
+				$sql = "INSERT INTO tb_ingreso_gasto (`id_ingreso_gasto`, `id_orden_gasto`, `id_trabajador`, `id_tipo_docu`, `num_documento`, `fecha`, `observaciones`, `estado`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(i.id_ingreso_gasto) WHEN 0 THEN 1 ELSE (MAX(i.id_ingreso_gasto) + 1) end FROM `tb_ingreso_gasto` i),";
 				$sql .= "?,?,?,?,?,?,?,'1'";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_orden_gasto,$id_gasto,$id_trabajador,$id_tipo_docu,$num_documento,$observaciones]);
+				$stmt->execute([$id_orden_gasto,$id_trabajador,$id_tipo_docu,$num_documento,$observaciones]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Error al registrar el ingreso en la base de datos.");
 				}
@@ -426,7 +424,7 @@
 					throw new Exception("El ingreso de tus productos es cero, no puedes registrar este ingreso.");
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_detalle_gasto` WHERE id_orden_gasto = ? AND cantidad_solicitada = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_detalle_gasto` WHERE id_orden_gasto = ? ");
 				$stmt->execute([$id_orden_gasto]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

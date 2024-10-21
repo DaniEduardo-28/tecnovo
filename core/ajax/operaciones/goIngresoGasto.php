@@ -3,7 +3,6 @@
   $id_orden_gasto = isset($_POST["id_orden_gasto"]) ? $_POST["id_orden_gasto"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
   $id_tipo_docu = isset($_POST["id_tipo_docu"]) ? $_POST["id_tipo_docu"] : "";
-  $id_gasto = isset($_SESSION["id_gasto"]) ? $_SESSION["id_gasto"] : "";
   $num_documento = isset($_POST["num_documento"]) ? $_POST["num_documento"] : "";
   $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
   $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
@@ -28,9 +27,6 @@
       throw new Exception("Campo obligatorio : Id. Trabajador.");
     }
 
-    if (empty(trim($id_gasto))) {
-      throw new Exception("Campo obligatorio : Seleccionar gasto.");
-    }
 
     if (empty(trim($id_tipo_docu))) {
       throw new Exception("Campo obligatorio : Seleccionar el tipo de documento.");
