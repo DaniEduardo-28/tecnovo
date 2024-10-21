@@ -2,15 +2,13 @@
 
   $id_orden_gasto = isset($_POST["id_orden_gasto"]) ? $_POST["id_orden_gasto"] : "";
   $id_proveedor = isset($_POST["id_proveedor"]) ? $_POST["id_proveedor"] : "";
-  $id_gasto = isset($_POST["id_gasto"]) ? $_POST["id_gasto"] : "";
   $codigo_moneda = isset($_POST["codigo_moneda"]) ? $_POST["codigo_moneda"] : "";
   $fecha_gasto = isset($_POST["fecha_gasto"]) ? $_POST["fecha_gasto"] : "";
   $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
   $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
-  $detalle_compra = json_decode($array_detalle);
+  $detalle_gasto = json_decode($array_detalle);
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
-  $id_gasto = isset($_SESSION["id_gasto"]) ? $_SESSION["id_gasto"] : "";
  
   try {
 
@@ -34,9 +32,6 @@
       throw new Exception("Error al verificar los permisos.");
     }
 
-    /* if (empty(trim($id_gasto))) {
-      throw new Exception("Campo obligatorio : Gasto.");
-    } */
 
     if (empty(trim($codigo_moneda))) {
       throw new Exception("Campo obligatorio : Moneda.");
@@ -46,18 +41,26 @@
       throw new Exception("Campo obligatorio : Tiene que seleccionar el proveedor.");
     }
 
-    /* if (empty(trim($id_trabajador))) {
-      throw new Exception("Campo obligatorio : Tiene que seleccionar el trabajador.");
-    } */
+    if (empty(trim($fecha_gasto))) {
+      throw new Exception("Campo obligatorio : Fecha de Gasto.");
+    }
+
+    if ($array_detalle==null) {
+      throw new Exception("1. No se recibió los detalles de la orden.");
+    }
+
+    if (count($detalle_gasto->datos)==0) {
+      throw new Exception("2. No se recibió los detalles de la orden.");
+    }
 
     require_once "core/models/ClassOrdenGasto.php";
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_GASTO->insert($id_gasto,$id_orden_gasto,$id_proveedor,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$detalle_gasto);
+        $VD = $OBJ_ORDEN_GASTO->insert($id_orden_gasto,$id_proveedor,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$detalle_gasto);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_GASTO->update($id_gasto,$id_orden_gasto,$id_proveedor,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$detalle_gasto);
+        $VD = $OBJ_ORDEN_GASTO->update($id_orden_gasto,$id_proveedor,$id_trabajador,$codigo_moneda,$fecha_gasto,$observaciones,$detalle_gasto);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

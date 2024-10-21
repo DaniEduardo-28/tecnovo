@@ -27,7 +27,7 @@
         $retorno_array[] = array(
           "id_orden_gasto" => $key['id_orden_gasto'],
           "id_proveedor" => $key['id_proveedor'],
-          "name_proveedor" => $key['nombre_proveedor'],
+          "nombre_proveedor" => $key['nombre_proveedor'],
           "src_imagen_proveedor" => $key['src_imagen_proveedor'],
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
           "observaciones" => $key['observaciones'],
@@ -36,8 +36,7 @@
           "cantidad_solicitada" => $key['cantidad_solicitada'],
           "name_tabla" => $key['name_tabla'],
           "id_moneda" => $key['id_moneda'],
-          "total" => $key['total'],
-          "src_imagen_producto" => $key['src_imagen_producto']
+          "total" => $key['total']
         );
       }
 

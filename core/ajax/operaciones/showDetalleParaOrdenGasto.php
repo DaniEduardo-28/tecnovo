@@ -6,8 +6,7 @@
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 10;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
-    /* $id_gasto = isset($_POST['id_gasto']) ? $_POST['id_gasto'] : null; */
-
+    
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
 
     if ($access_options[0]['error']=="NO") {
@@ -27,8 +26,8 @@
       $Resultado = $OBJ_ORDEN_GASTO->showDetalleParaOrden($valor,$offset,$limit)  ;
 
       $count = 1 + $offset;
-      $tipo_cambio_moneda_a_convertir = 1;
-      $signo_moneda = "SN ";
+      /* $tipo_cambio_moneda_a_convertir = 1;
+      $signo_moneda = "SN "; */
 
 
       foreach ($Resultado["data"] as $key) {
@@ -39,7 +38,7 @@
         $retorno_array[] =array(
           "num" => "$count",
           "descripcion" => $key['descripcion'],
-          "id_gasto" => $key['id_gasto'],
+          "cod_gasto" => $key['cod_gasto'],
           "seleccionar" => "$flag_seleccionar",
         );
         $count++;
