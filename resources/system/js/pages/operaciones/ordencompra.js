@@ -577,15 +577,15 @@ function get_data_callback_detalle(){
         var o = data1["data"];
         for (var i = 0; i < o.length; i++) {
 
-          //tableProducto.row.add({
-            //"num": o[i].num,
-            //"descripcion": o[i].descripcion,
-            //"cod_producto": o[i].cod_producto,
-            //"precio_unitario": o[i].precio_unitario,
-            //"cantidad": '<input class="form-control" type="number" min="1" value="1">',
-            //"precio_unitario_string": o[i].precio_unitario_string,
-            //"seleccionar": o[i].seleccionar
-          //}).draw();
+          tableProducto.row.add({
+            "num": o[i].num,
+            "descripcion": o[i].descripcion,
+            "cod_producto": o[i].cod_producto,
+            "precio_unitario": o[i].precio_unitario,
+            "cantidad": '<input class="form-control" type="number" min="1" value="1">',
+            "precio_unitario_string": o[i].precio_unitario_string,
+            "seleccionar": o[i].seleccionar
+          }).draw();
 
           var name_producto = '<div class="d-flex align-items-center">';
           name_producto += '<div class="bg-img mr-4">';

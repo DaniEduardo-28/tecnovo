@@ -170,7 +170,7 @@ var tableForm = $('#table_form').DataTable({
           "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
         }).draw();
   
-        generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + data["name_producto_string"] + ' al precio de ' + precio_unitario + ' c/u.</h6>');
+        generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">Se añadio ' + [name_gasto] + ' a la orden</h6>');
         calcularTotal();
 
 
@@ -537,9 +537,9 @@ var tableForm = $('#table_form').DataTable({
           data:{
             limit: itemsPorPagina,
             offset: desde,
-        id_moneda: id_moneda,
-        valor: valor,
-        tipo: tipo
+            id_moneda: id_moneda,
+            valor: valor,
+            tipo: tipo
           },
       beforeSend: function (xhr) {
         showHideLoader('block');
@@ -565,7 +565,13 @@ var tableForm = $('#table_form').DataTable({
           var o = data1["data"];
           for (var i = 0; i < o.length; i++) {
 
-  
+            tableProducto.row.add({
+              "num": o[i].num,
+              "descripcion": o[i].descripcion,
+              "cod_gasto": o[i].cod_gasto,
+              "seleccionar": o[i].seleccionar
+            }).draw();
+
             var name_gasto = '<div class="d-flex align-items-center">';
             name_gasto += '<div class="bg-img mr-4">';
             name_gasto += '<img src="' + o[i].src_imagen + '" class="img-fluid"';
@@ -573,15 +579,16 @@ var tableForm = $('#table_form').DataTable({
             name_gasto += '</div>';
             name_gasto += '<p class="font-weight-bold">' + o[i].descripcion + '</p>';
             name_gasto += '</div>';
-  
+
             tableProducto.row.add({
               "num": o[i].num,
-              "cod_gasto": o[i].id_gasto,
-              "name_gasto": name_gasto,
+              "cod_producto": o[i].cod_gasto,
+              "name_producto": name_gasto,
               "opcion": o[i].seleccionar,
-              "name_gasto_string": o[i].descripcion
+              "name_producto_string": o[i].descripcion
             }).draw();
   
+          
           }
   
           $("#div_paginador_productos").removeClass("d-none");

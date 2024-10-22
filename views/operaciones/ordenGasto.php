@@ -197,12 +197,12 @@
                                                     <th style="width:50px; text-align: center;">#</th>
                                                     <th>Id Producto</th>
                                                     <th>Producto</th>
-                                                    <th style="width:20px;">Stock</th>
-                                                    <th style="width:40px; text-align:right;">Precio Compra</th>
-                                                    <th style="width:100px;">Cantidad</th>
-                                                    <th>Notas</th>
-                                                    <th style="width:60px;">Total</th>
-                                                    <th style="width:20px;">Eliminar</th>
+                                                    <!-- <th style="width:20px;">Stock</th> -->
+                                                    <th style="width:40px;">Precio Compra</th>
+                                                    <th style="width:40px;">Cantidad</th>
+                                                    <th>Cantidad</th>
+                                                    <th style="width:50px;">Total</th>
+                                                    <th style="width:30px;">Eliminar</th>
                                                   </tr>
                                                 </thead>
 
@@ -425,8 +425,8 @@
                                               <th>Gasto</th>
                                               <th>Descripción</th>
                                               <th style="width:10px;">Colum abs 1</th>
-                                              <th style="width:40px;">Colum abs 2</th>
-                                              <th style="width:10px;">Seleccionar</th>
+                                              <th style="width:40px;">Seleccionar</th>
+                                              <th style="width:10px;">Colum abs 2</th>
                                               
                                             </tr>
                                           </thead>
