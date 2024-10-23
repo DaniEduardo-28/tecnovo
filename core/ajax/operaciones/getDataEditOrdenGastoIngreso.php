@@ -31,9 +31,9 @@
           "src_imagen_proveedor" => $key['src_imagen_proveedor'],
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
           "cod_gasto" => $key['cod_gasto'],
+          "name_tabla" => $key['name_tabla'],
           "name_gasto" => $key['name_gasto'],
-          "cantidad_solicitada" => $key['cantidad_solicitada'],
-          "name_tabla" => $key['name_tabla']
+          "cantidad_solicitada" => $key['cantidad_solicitada']
         );
       }
 

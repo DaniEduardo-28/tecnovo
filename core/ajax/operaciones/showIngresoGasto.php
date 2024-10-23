@@ -52,7 +52,7 @@
           "num" => $count + $offset,
           "id_orden_gasto" => $key['id_orden_gasto'],
           "id_ingreso_gasto" => $key['id_ingreso_gasto'],
-          "name_proveedor" => $key['nombre_proveedor'],
+          "nombre_proveedor" => $key['nombre_proveedor'],
           "name_usuario" => $key['nombres_trabajador'],
           "documento" => $key['documento'],
           "fecha_orden" => date('d/m/Y H:i', strtotime($key['fecha'])),

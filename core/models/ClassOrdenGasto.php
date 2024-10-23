@@ -89,9 +89,9 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.name_metodo,mon.signo as signo_moneda,
-								(SELECT COUNT(*) FROM tb_orden_gasto AS num_registros,
-                                (SELECT SUM(o.precio_unit*o.cantidad_ga) AS total
+				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,mon.signo as signo_moneda,
+								(SELECT COUNT(*) FROM tb_detalle_gasto dg WHERE dc.id_orden_gasto = o.id_orden_gasto) AS num_registros,
+								(SELECT SUM(dg.precio_unitario*dg.cantidad_solicitada) FROM tb_detalle_gasto dg WHERE dc.id_orden_gasto = o.id_orden_gasto) AS total
 								FROM `tb_orden_gasto` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
 								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
@@ -234,8 +234,8 @@
 				$valor = "%$valor%";
 				$parametros = null;
 				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,mon.signo as signo_moneda,
-								(SELECT COUNT(*) FROM tb_detalle_gasto dc WHERE dc.id_orden_gasto = o.id_orden_gasto) AS num_registros,
-								(SELECT SUM(dc.precio_unitario*dc.cantidad_solicitada) FROM tb_detalle_gasto dc WHERE dc.id_orden_gasto = o.id_orden_gasto) AS total
+								(SELECT COUNT(*) FROM tb_detalle_gasto dg WHERE dg.id_orden_gasto = o.id_orden_gasto) AS num_registros,
+								(SELECT SUM(dg.precio_unitario*dg.cantidad_solicitada) FROM tb_detalle_gasto dg WHERE dg.id_orden_gasto = o.id_orden_gasto) AS total
 								FROM `tb_orden_compra` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
 								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
@@ -525,8 +525,7 @@
 			try {
 
 				$valor = "%$valor%";
-				$sql = "SELECT name_gasto as descripcion,id_gasto as cod_gasto,
-										descripcion_gasto as detalle_gasto
+				$sql = "SELECT name_gasto as descripcion,id_gasto as cod_gasto
 										FROM tb_gasto WHERE name_gasto LIKE ? ";
 						$parametros[] = $valor;
 
@@ -573,10 +572,10 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_orden_gasto (`id_orden_gasto`, `id_gasto`, `id_proveedor`, `id_trabajador`, `fecha_gasto`, `observaciones`, `id_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_orden_gasto (`id_orden_gasto`, `id_proveedor`, `id_trabajador`, `fecha_gasto`, `observaciones`, `id_moneda`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(o.id_orden_gasto) WHEN 0 THEN 1 ELSE (MAX(o.id_orden_gasto) + 1) end FROM `tb_orden_gasto` o),";
-				$sql .= "?,?,?,?,?,?";
+				$sql .= "?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_proveedor,$id_trabajador,$fecha_gasto,$observaciones,$codigo_moneda]);
@@ -652,7 +651,7 @@
 					foreach ($key as $key1) {
 						$sql = "INSERT INTO tb_detalle_gasto (`id_orden_gasto`, `name_tabla`, `cod_gasto`, `cantidad_solicitada`, `precio_unitario`) VALUES ";
 						$sql .= "(";
-						$sql .= "?,?,?,?,?,?,?";
+						$sql .= "?,?,?,?,?";
 						$sql .= ")";
 						$stmt = $conexion->prepare($sql);
 						$stmt->execute([$id_orden_gasto,$key1->name_tabla,$key1->cod_gasto,$key1->cantidad_solicitada,$key1->precio_unitario]);

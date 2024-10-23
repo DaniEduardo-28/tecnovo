@@ -145,7 +145,7 @@
                                                   <img src="resources/global/images/sin_imagen.png" class="img-fluid"
                                                   alt="Proveedor" id="img_proveedor">
                                                 </div>
-                                                <p class="font-weight-bold" id="name_proveedor">No seleccionado</p>
+                                                <p class="font-weight-bold" id="nombre_proveedor">No seleccionado</p>
                                               </div>
                                               <button type="button" class="btn btn-info btn-xs" id="btnSeleccionarProveedor">
                                                  Seleccionar&nbsp;<span class="fa fa-ellipsis-h"></span>

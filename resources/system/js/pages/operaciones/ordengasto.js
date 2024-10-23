@@ -63,7 +63,7 @@ var tableForm = $('#table_form').DataTable({
     columns: [
       { 'data': 'num' },
       { 'data': 'id_orden_gasto' },
-      { 'data': 'name_proveedor' },
+      { 'data': 'nombre_proveedor' },
       { 'data': 'name_usuario' },
       { 'data': 'fecha_gasto' },
       { 'data': 'num_registros' },
@@ -90,7 +90,7 @@ var tableForm = $('#table_form').DataTable({
       $("#contenedor_listado").addClass("d-none");
       $("#panelOptions").addClass("d-none");
       $("#accion").val("add");
-      $("#txtEstadoForm").val("En proceso ...");
+      /* $("#txtEstadoForm").val("En proceso ..."); */
     });
   
     $("#btnCancelForm").click(function(){
@@ -131,7 +131,7 @@ var tableForm = $('#table_form').DataTable({
       $("#contenedor_proveedor").addClass("d-none");
       $("#id_proveedor").val("0");
       $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
-      $("#name_proveedor").html("No Seleccionado");
+      $("#nombre_proveedor").html("No Seleccionado");
     });
   
     $("#btnSiguienteProductos").click(function(){
@@ -145,7 +145,7 @@ var tableForm = $('#table_form').DataTable({
         var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
         var num = tableForm.data().count() + 1;
         var data = tableProducto.row( $(this).parents('tr') ).data();
-        var id_gasto = data["cod_gasto"];
+        var cod_gasto = data["cod_gasto"];
 
         if (num>1) {
           if (verificarproductoontable(name_tabla,cod_gasto)==true) {
@@ -236,8 +236,8 @@ var tableForm = $('#table_form').DataTable({
   
         $('#table_form > tbody  > tr').each(function(){
   
-          var precio_unitario = $(this).find("td").eq(2).find("input").val();
           var cantidad = $(this).find("td").eq(3).find("input").val();
+          var precio_unitario = $(this).find("td").eq(2).find("input").val();
           var data = tableForm.row($(this)).data();
   
           datos.push({
@@ -343,7 +343,7 @@ var tableForm = $('#table_form').DataTable({
     $("#id_proveedor").val("0");
     $("#id_orden_gasto").val("0");
     $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
-    $("#name_proveedor").html("No Seleccionado");
+    $("#nombre_proveedor").html("No Seleccionado");
     $("#form_datos")[0].reset();
     var rows = tableForm.rows().remove().draw();
     calcularTotal();
@@ -575,17 +575,17 @@ var tableForm = $('#table_form').DataTable({
             var name_gasto = '<div class="d-flex align-items-center">';
             name_gasto += '<div class="bg-img mr-4">';
             name_gasto += '<img src="' + o[i].src_imagen + '" class="img-fluid"';
-            name_gasto += 'alt="Producto" id="img_producto">';
+            name_gasto += 'alt="Gasto" id="img_producto">';
             name_gasto += '</div>';
             name_gasto += '<p class="font-weight-bold">' + o[i].descripcion + '</p>';
             name_gasto += '</div>';
 
             tableProducto.row.add({
               "num": o[i].num,
-              "cod_producto": o[i].cod_gasto,
-              "name_producto": name_gasto,
+              "cod_gasto": o[i].cod_gasto,
+              "name_gasto": name_gasto,
               "opcion": o[i].seleccionar,
-              "name_producto_string": o[i].descripcion
+              "name_gasto_string": o[i].descripcion
             }).draw();
   
           
@@ -613,7 +613,7 @@ var tableForm = $('#table_form').DataTable({
     $("#contenedor_proveedor").addClass("d-none");
     $("#id_proveedor").val(id_proveedor);
     $('#img_proveedor').attr('src', src_imagen);
-    $("#name_proveedor").html(proveedor);
+    $("#nombre_proveedor").html(proveedor);
   }
   
   function showData(){
@@ -673,10 +673,9 @@ var tableForm = $('#table_form').DataTable({
             tableListado.row.add({
               "num": o[i].num,
               "id_orden_gasto": o[i].id_orden_gasto,
-              "name_proveedor": o[i].name_proveedor,
+              "nombre_proveedor": o[i].nombre_proveedor,
               "name_usuario": o[i].name_usuario,
               "fecha_gasto": o[i].fecha_gasto,
-              "name_forma_envio": o[i].name_forma_envio,
               "num_registros": o[i].num_registros,
               "total": o[i].total,
               "opciones": o[i].options
@@ -721,7 +720,7 @@ var tableForm = $('#table_form').DataTable({
               var o = data1["data"];
               $("#id_orden_gasto").val(o[0].id_orden_gasto);
               $("#id_proveedor").val(o[0].id_proveedor);
-              $("#name_proveedor").html(o[0].name_proveedor);
+              $("#nombre_proveedor").html(o[0].nombre_proveedor);
               $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
               $("#txtFechaGastoForm").val(o[0].fecha_gasto);
               $("#txtObservacionesForm").val(o[0].observaciones);
@@ -734,14 +733,14 @@ var tableForm = $('#table_form').DataTable({
                 name_gasto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
                 name_gasto += 'alt="Gasto" id="img_producto">';
                 name_gasto += '</div>';
-                name_gasto += '<p class="font-weight-bold" id="name_proveedor">' + o[i].name_gasto + '</p>';
+                name_gasto += '<p class="font-weight-bold" id="nombre_proveedor">' + o[i].name_gasto + '</p>';
                 name_gasto += '</div>';
   
                 tableForm.row.add({
                   "num": i+1,
-                  "id_gasto": o[i].id_gasto,
+                  "cod_gasto": o[i].cod_gasto,
                   "name_tabla": o[i].name_tabla,
-                  "name_producto": name_gasto,
+                  "name_gasto": name_gasto,
                   "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0">',
                   "cantidad": '<input class="form-control" value="' + o[i].cantidad_solicitada + '" type="number" min="1">',
                   "total": o[i].total,
@@ -801,7 +800,7 @@ var tableForm = $('#table_form').DataTable({
               var o = data1["data"];
               $("#id_orden_gasto").val(o[0].id_orden_gasto);
               $("#id_proveedor").val(o[0].id_proveedor);
-              $("#name_proveedor").html(o[0].name_proveedor);
+              $("#nombre_proveedor").html(o[0].nombre_proveedor);
               $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
               $("#txtFechaGastoForm").val(o[0].fecha_gasto);
               $("#txtObservacionesForm").val(o[0].observaciones);
@@ -820,7 +819,7 @@ var tableForm = $('#table_form').DataTable({
                 tableForm.row.add({
                   "num": i+1,
                   "name_tabla": o[i].name_tabla,
-                  "id_gasto": o[i].id_gasto,
+                  "cod_gasto": o[i].cod_gasto,
                   "name_gasto": name_gasto,
                   "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0" disabled>',
                   "cantidad": '<input class="form-control" value="' + o[i].cantidad_solicitada + '" type="number" min="1" disabled>',
