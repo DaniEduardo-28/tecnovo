@@ -23,12 +23,12 @@
     }
 
     require_once "core/models/ClassIngresoGasto.php";
-    $DataCantidad = $OBJ_INGRESO_GASTO->getCount($id_gasto,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda);
+    $DataCantidad = $OBJ_INGRESO_GASTO->getCount($valor,$fecha_inicio,$fecha_fin,$tipo_busqueda);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_INGRESO_GASTO->show($id_gasto,$valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit);
+      $Resultado = $OBJ_INGRESO_GASTO->show($valor,$fecha_inicio,$fecha_fin,$tipo_busqueda,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {
@@ -55,7 +55,7 @@
           "nombre_proveedor" => $key['nombre_proveedor'],
           "name_usuario" => $key['nombres_trabajador'],
           "documento" => $key['documento'],
-          "fecha_orden" => date('d/m/Y H:i', strtotime($key['fecha'])),
+          "fecha_gasto" => date('d/m/Y H:i', strtotime($key['fecha'])),
           "num_registros" => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $key['num_registros'],
           "options" => "$options"
         );

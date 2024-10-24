@@ -35,7 +35,7 @@ var tableForm = $('#table_form').DataTable({
     columns: [
       { 'data': 'num' },
       { 'data': 'id_orden_gasto' },
-      { 'data': 'name_proveedor' },
+      { 'data': 'nombre_proveedor' },
       { 'data': 'name_usuario' },
       { 'data': 'fecha_gasto' },
       { 'data': 'num_registros' },
@@ -63,7 +63,7 @@ var tableForm = $('#table_form').DataTable({
       { 'data': 'num' },
       { 'data': 'id_ingreso_gasto' },
       { 'data': 'documento' },
-      { 'data': 'name_proveedor' },
+      { 'data': 'nombre_proveedor' },
       { 'data': 'name_usuario' },
       { 'data': 'fecha_gasto' },
       { 'data': 'num_registros' },
@@ -138,7 +138,7 @@ var tableForm = $('#table_form').DataTable({
         var countRows = tableForm.data().count();
   
         if (id_orden_gasto=="0" || id_orden_gasto == "" || id_orden_gasto == 0) {
-          runAlert("Faltan Datos","Error al seleccionar el id orden de compra.","warning")
+          runAlert("Faltan Datos","Error al seleccionar el id orden de gasto.","warning")
           return;
         }
   
@@ -153,7 +153,7 @@ var tableForm = $('#table_form').DataTable({
         }
   
         if (countRows==0) {
-          runAlert("Faltan Datos","Tiene que seleccionar por lo menos un producto.","warning")
+          runAlert("Faltan Datos","Tiene que seleccionar por lo menos un registro.","warning")
           return;
         }
   
@@ -247,7 +247,7 @@ var tableForm = $('#table_form').DataTable({
     $("#id_orden_gasto").val("0");
     $("#id_ingreso_gasto").val("0");
     $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
-    $("#name_proveedor").html("No Seleccionado");
+    $("#nombre_proveedor").html("No Seleccionado");
     $("#form_datos")[0].reset();
     var rows = tableForm.rows().remove().draw();
   }
@@ -308,7 +308,7 @@ var tableForm = $('#table_form').DataTable({
             tableOrden.row.add({
               "num": o[i].num,
               "id_orden_gasto": o[i].id_orden_gasto,
-              "name_proveedor": o[i].name_proveedor,
+              "nombre_proveedor": o[i].nombre_proveedor,
               "name_usuario": o[i].name_usuario,
               "fecha_gasto": o[i].fecha_gasto,
               "num_registros": o[i].num_registros,
@@ -355,7 +355,7 @@ var tableForm = $('#table_form').DataTable({
             if (data1["error"]=="NO") {
               var o = data1["data"];
               $("#id_orden_gasto").val(o[0].id_orden_gasto);
-              $("#name_proveedor").html(o[0].name_proveedor);
+              $("#nombre_proveedor").html(o[0].nombre_proveedor);
               $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
               $("#txtFechaGastoForm").val(o[0].fecha_gasto);
   
@@ -468,7 +468,7 @@ var tableForm = $('#table_form').DataTable({
               "num": o[i].num,
               "id_ingreso_gasto": o[i].id_ingreso_gasto,
               "documento": o[i].documento,
-              "name_proveedor": o[i].name_proveedor,
+              "nombre_proveedor": o[i].nombre_proveedor,
               "name_usuario": o[i].name_usuario,
               "fecha_gasto": o[i].fecha_gasto,
               "num_registros": o[i].num_registros,
@@ -500,7 +500,7 @@ var tableForm = $('#table_form').DataTable({
       $("#id_orden_gasto").val("0");
       $("#id_ingreso_gasto").val("0");
       $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
-      $("#name_proveedor").html("No Seleccionado");
+      $("#nombre_proveedor").html("No Seleccionado");
       $("#form_datos")[0].reset();
       var rows = tableForm.rows().remove().draw();
   
@@ -520,7 +520,7 @@ var tableForm = $('#table_form').DataTable({
   
               $("#id_ingreso_gasto").val(o[0].id_ingreso_gasto);
               $("#id_orden_gasto").val(o[0].id_orden_gasto);
-              $("#name_proveedor").html(o[0].name_proveedor);
+              $("#nombre_proveedor").html(o[0].nombre_proveedor);
               $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
               $("#txtFechaGastoForm").val(o[0].fecha_gasto);
               $("#txtObservacionesForm").val(o[0].observaciones);

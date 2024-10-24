@@ -45,7 +45,7 @@
     }
 
     require_once "core/models/ClassIngresoGasto.php";
-    $VD = $OBJ_INGRESO_GASTO->insert($id_gasto,$id_trabajador,$id_orden_gasto,$id_tipo_docu,$num_documento,$observaciones,$detalle_gasto);
+    $VD = $OBJ_INGRESO_GASTO->insert($id_trabajador,$id_orden_gasto,$id_tipo_docu,$num_documento,$observaciones,$detalle_gasto);
 
     if ($VD!="OK") {
       throw new Exception($VD);
