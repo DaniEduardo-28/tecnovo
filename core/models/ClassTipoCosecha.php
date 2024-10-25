@@ -49,7 +49,7 @@
         public function insert($descripcion,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -77,7 +77,7 @@
         public function update($id_tipo_cosecha,$descripcion,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -105,7 +105,7 @@
         public function delete($id_tipo_cosecha) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 				$conexion->beginTransaction();
 

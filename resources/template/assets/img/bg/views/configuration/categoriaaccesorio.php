@@ -66,7 +66,7 @@
 
                               <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions" name="panelOptions">
                                 <?php
-                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("categoriaaccesorio"));
+                                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tipoproducto"));
                                     if ($access_options[0]['error']=="NO") {
 
                                       if ($access_options[0]['flag_agregar']) {
@@ -196,7 +196,7 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/configuration/categoriaaccesorio.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/configuration/tipoproducto.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#menuconfiguration").addClass('active');
       $("#menucategoriaaccesorio").addClass('active');

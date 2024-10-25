@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -57,7 +57,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -96,7 +96,7 @@
 		public function insert($name_documento,$codigo_sunat,$size,$flag_exacto,$flag_numerico,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -122,7 +122,7 @@
 		public function update($id_documento,$name_documento,$codigo_sunat,$size,$flag_exacto,$flag_numerico,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 				$conexion->beginTransaction();
 				$stmt = $conexion->prepare("UPDATE tb_documento_identidad SET name_documento = ?, estado = ?, size = ?, codigo_sunat = ?, flag_exacto = ?, flag_numerico = ? WHERE id_documento = ?");
@@ -146,7 +146,7 @@
 		public function delete($id_documento) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 				$conexion->beginTransaction();
 

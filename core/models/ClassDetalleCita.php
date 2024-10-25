@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -58,7 +58,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -105,7 +105,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 

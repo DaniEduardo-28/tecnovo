@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -57,7 +57,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -97,7 +97,7 @@
 		public function insert($id_fundo,$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -123,7 +123,7 @@
 		public function update($id_fundo,$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 				$conexion->beginTransaction();
 				$stmt = $conexion->prepare("UPDATE tb_fundo SET estado = ?, nombre = ?, cod_ubigeo = ?, direccion = ?, telefono = ?, mapa = ?, token = ?, ruta = ? WHERE id_fundo = ? AND id_empresa = ?");
@@ -147,7 +147,7 @@
 		public function delete($id_fundo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 

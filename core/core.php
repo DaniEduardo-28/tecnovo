@@ -4,9 +4,7 @@
   date_default_timezone_set('America/Lima');
   setlocale(LC_ALL,"es_ES");
 
-  //NUCLEO DE LA APP
   define('APP_URL','http://syscos.test/');
-  // define('APP_URL','https://syscos.oxerva.com.pe/');
   define('APP_TITLE','SysCos | Sistema para gestión de cosechas ');
   define('APP_COPY','Copyright © ' . date('Y',time()) . ' <a href="https://www.oxerva.com.pe" target="_blank">Oxerva SRL</a>');
   define('APP_VERSION','1.0.0.1');
@@ -17,19 +15,11 @@
   define('SRC_GLOBAL',$_SERVER['DOCUMENT_ROOT']);
   define('ID_EMPRESA',1);
 
-  //CONSTANTES BASE DE CONEXIÓN
-
   define('HOST_DB','localhost');
   define('USER_DB','root');
   define('DB','syscos');
-  define('PASS_DB','');
+  define('PASS_DB','Qz0966lb');
   define('CHARSET','utf8');
-
-  // define('HOST_DB','db5000108902.hosting-data.io');
-  // define('USER_DB','dbu152091');
-  // define('DB','dbs103397');
-  // define('PASS_DB','Veterin@ria123');
-  // define('CHARSET','utf8');
 
   //CLASES GLOBALES
   require('core/models/Conexion.php');

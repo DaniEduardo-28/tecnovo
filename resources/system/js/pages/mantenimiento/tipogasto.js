@@ -74,7 +74,7 @@ var table = $('#example').DataTable({
         };
   
         Swal.fire({
-          title: '¿Seguro de eliminar el tipo de gasto : ' + descripcion + '?',
+          title: '¿Seguro de eliminar el tipo de producto : ' + descripcion + '?',
           text: "No podrás revertir esta operación.",
           type: 'warning',
           showCancelButton: true,

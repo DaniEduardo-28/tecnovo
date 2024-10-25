@@ -17,6 +17,7 @@ function saveOperation(){
     cancelButtonColor: '#d33',
     confirmButtonText: 'Si, Actualizar ahora!'
   }).then(function(result) {
+    console.log(result);
     if (result.value) {
       var form = $("#frmDatos");
       var formdata = false;

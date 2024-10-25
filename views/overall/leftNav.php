@@ -23,8 +23,9 @@
       $flag_monedas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("monedas"));
       $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("identitydocuments"));
       $flag_tiposervicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tiposervicio"));
+      $flag_tipogasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipogasto"));
       $flag_tipocosecha = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipocosecha"));
-      if ($flag_mybusiness || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio || $flag_tipocosecha) {
+      if ($flag_mybusiness || $flag_tipogasto || $flag_fundos || $flag_monedas || $flag_identitydocuments || $flag_tiposervicio || $flag_tipocosecha) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -55,6 +56,9 @@
             <?php if ($flag_tiposervicio): ?>
               <li id="menutiposervicio"> <a href="?view=tiposervicio">Tipos de Servicio</a> </li>
             <?php endif; ?>
+            <?php if ($flag_tipogasto): ?>
+              <li id="menutipogasto"> <a href="?view=tipogasto">Tipos de Productos</a> </li>
+            <?php endif; ?>
             <?php if ($flag_tipocosecha): ?>
               <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
             <?php endif; ?>
@@ -72,10 +76,9 @@
       $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("operador"));
       $flag_proveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("proveedor"));
       $flag_maquinaria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("maquinaria"));
-      $flag_tipogasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipogasto"));
       $flag_gasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("gasto"));
       $flag_accesofundo = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesofundo"));
-      if ($flag_cliente || $flag_servicio || $flag_operador || $flag_proveedor || $flag_maquinaria || $flag_tipogasto || $flag_gasto || $flag_accesofundo) {
+      if ($flag_cliente || $flag_servicio || $flag_operador || $flag_proveedor || $flag_maquinaria || $flag_gasto || $flag_accesofundo) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -106,11 +109,8 @@
             <?php if ($flag_maquinaria): ?>
               <li id="menumaquinaria"> <a href="?view=maquinaria">Maquinarias</a> </li>
             <?php endif; ?>
-            <?php if ($flag_tipogasto): ?>
-              <li id="menutipogasto"> <a href="?view=tipogasto">Tipos de gastos</a> </li>
-            <?php endif; ?>
             <?php if ($flag_gasto): ?>
-              <li id="menugasto"> <a href="?view=gasto">Gastos</a> </li>
+              <li id="menugasto"> <a href="?view=gasto">Productos</a> </li>
             <?php endif; ?>
             <?php if ($flag_accesofundo): ?>
               <li id="menuaccesofundo"> <a href="?view=accesosfundo">Accesos a Fundos</a> </li>
@@ -183,18 +183,18 @@
             <!-- <?php if ($flag_ordencompra): ?>
               <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
             <?php endif; ?> -->
-            <?php if ($flag_ingreso): ?>
-              <li id="submenuingreso"> <a href="?view=ingreso">Ingreso de Productos</a></li>
+            <?php if ($flag_ordengasto): ?>
+              <li id="submenuordengasto"> <a href="?view=ordengasto">Registro de Gastos</a></li>
             <?php endif; ?>
             <?php if ($flag_ordenventa): ?>
-              <li id="submenuordenventa"><a href="?view=ordenventa">Ordenes de venta</a></li>
+              <li id="submenucronograma"><a href="?view=ordenventa">Cronograma de Cosechas</a></li>
             <?php endif; ?>
-            <?php if ($flag_promocion): ?>
+            <!-- <?php if ($flag_promocion): ?>
               <li id="submenupromocion"> <a href="?view=promocion">Promociones de Clientes</a></li>
             <?php endif; ?>
             <?php if ($flag_ordengasto): ?>
               <li id="submenuordengasto"> <a href="?view=ordengasto">Orden de Gastos</a></li>
-            <?php endif; ?>
+            <?php endif; ?> -->
           </ul>
         </li>
 
@@ -225,7 +225,7 @@
             <span class="nav-title">Reportes</span>
           </a>
           <ul aria-expanded="false">
-            <?php if ($flag_vistareporteordencompra): ?>
+            <!-- <?php if ($flag_vistareporteordencompra): ?>
               <li id="submenureporteordencompra"><a href="?view=vistareporteordencompra">Compras</a></li>
             <?php endif; ?>
             <?php if ($flag_vistareporteordenventa): ?>
@@ -237,7 +237,7 @@
             <?php if ($flag_observacionesproveedor): ?>
               <li id="submenuobservacionesproveedor"><a href="?view=observacionesproveedor">Observaciones de Proveedor</a>
               </li>
-            <?php endif; ?>
+            <?php endif; ?> -->
           </ul>
         </li>
 

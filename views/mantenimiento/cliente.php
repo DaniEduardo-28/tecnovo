@@ -91,14 +91,13 @@ if (!isset($_SESSION['id_trabajador'])) {
                     if ($access_options[0]['error'] == "NO") {
 
                       if ($access_options[0]['flag_agregar']) {
-                        ?>
+                    ?>
                         <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
                           data-original-title="Agregar" id="btnAdd">
                           <i class="fe fe-plus-circle btn btn-icon text-success"></i>
                         </a>
-                        <?php
+                    <?php
                       }
-
                     }
                     ?>
                   </div>
@@ -175,7 +174,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <div class="form-group col-xs-12">
                                   <label for="num_documento" class="label-control">Número Documento</label>
                                   <input id="num_documento" type="number" name="num_documento" class="form-control"
-                                    autocomplete="off" required data-msg="Campo obligatorio...">
+                                    autocomplete="off" required data-msg="Campo obligatorio..." keyleave="getDatosApi()">
                                 </div>
 
                                 <div class="form-group col-xs-12">
@@ -189,6 +188,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <input id="apellidos" type="text" name="apellidos" class="form-control"
                                     autocomplete="off" required data-msg="Campo obligatorio...">
                                 </div>
+                                
                               </div>
 
 

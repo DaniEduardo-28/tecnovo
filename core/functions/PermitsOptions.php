@@ -22,6 +22,9 @@ function printCodeOption($controller)
       case 'tiposervicio':
         $VD = 107;
         break;
+      case 'tipoproducto':
+        $VD = 108;
+        break;
       case 'tipocosecha':
         $VD = 115;
         break;
@@ -93,13 +96,9 @@ function printCodeOption($controller)
         $VD = 0;
         break;
     }
-
   } catch (\Exception $e) {
     $VD = $e;
   }
 
   return $VD;
-
 }
-
-?>

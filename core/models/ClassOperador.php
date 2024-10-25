@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 				$valor = "%$valor%";
@@ -73,7 +73,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 				$valor = "%$valor%";
@@ -135,7 +135,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 				$sql = "SELECT p.*,c.id_operador,c.name_user,
@@ -178,7 +178,7 @@
 		public function insert($id_persona,$id_operador,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -293,7 +293,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 				$sql = "SELECT p.*,c.id_operador,c.name_user,
@@ -336,7 +336,7 @@
 		public function update($id_persona,$id_operador,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -426,7 +426,7 @@
 		public function delete($id_operador) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 				$conexion->beginTransaction();
 

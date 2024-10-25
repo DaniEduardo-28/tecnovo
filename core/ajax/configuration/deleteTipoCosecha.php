@@ -1,6 +1,6 @@
 <?php
 
-  sleep(1);
+  
 
   $id_tipo_cosecha = isset($_POST["id_tipo_cosecha"]) ? $_POST["id_tipo_cosecha"] : "";
 

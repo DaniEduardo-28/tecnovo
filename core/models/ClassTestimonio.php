@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -66,7 +66,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -120,7 +120,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 				$sql = "SELECT *
@@ -161,7 +161,7 @@
 		public function insert($id,$titulo,$descripcion,$estado,$flag_imagen,$src_imagen,$rating) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -196,7 +196,7 @@
 		public function update($id,$titulo,$descripcion,$estado,$flag_imagen,$src_imagen,$rating) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -245,7 +245,7 @@
 		public function delete($id) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -275,7 +275,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 

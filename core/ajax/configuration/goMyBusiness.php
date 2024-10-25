@@ -1,6 +1,6 @@
 <?php
 
-  sleep(2);
+  
 
   $id_empresa = isset($_POST["id_empresa"]) ? $_POST["id_empresa"] : "";
   $id_documento = isset($_POST["id_documento"]) ? $_POST["id_documento"] : "";

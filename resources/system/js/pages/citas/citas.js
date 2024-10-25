@@ -4,13 +4,27 @@ $(document).ready(function(){
 
     cargarServicios();
 
+    $("#id_documento").change(function () {
+      changeOption();
+    });
+
+    $("#num_documento").on("keypress", function (event) {
+      if (event.which == 13) {
+        validarYEnviar();
+      }
+    });
+  
+    $("#num_documento").on("blur", function () {
+      validarYEnviar();
+    });
+
     $('#cboMedicoBuscar').change(function(){
       crearCalendario();
     });
 
-    $('#id_trabajador').change(function(){
-      cargarServicios();
-    });
+    // $('#id_trabajador').change(function(){
+    //   cargarServicios();
+    // });
 
     $('#cboDocumentoBuscar').change(function(){
       crearCalendario();
@@ -22,10 +36,6 @@ $(document).ready(function(){
 
     $('#btnBuscarMascotas').click(function(){
       cargarMascotas();
-    });
-
-    $("#num_documento").keypress(function() {
-      $('#id_mascota').empty();
     });
 
     $('#btnCancelarCita').click(function(){
@@ -204,10 +214,65 @@ $(document).ready(function(){
 
     $('#frmDatos').submit(function(e){
       e.preventDefault();
-      registrarCita();
+      // registrarCita();
     });
 
 });
+
+function validarYEnviar() {
+  var number_document = $("#num_documento").val();
+  var id_document = $("#id_documento").val();
+
+  // Validar que tenga 8 o 11 dígitos
+  if (number_document.length == 8 || number_document.length == 11) {
+      // Verificar si el tipo de documento es válido
+      console.log("paso 1");
+      if (id_document != 1 && id_document != 3) {
+        console.log("paso 2");
+          return false;
+      }
+      // Determinar el tipo de documento: DNI o RUC
+      var tipo = id_document == 1 ? 'dni' : 'ruc';
+      
+      $.ajax({
+        url: "ajax.php?accion=buscar-" + tipo, // Cambia por la ruta correcta
+        method: "POST",
+        dataType: "json", // Especifica que la respuesta será JSON
+        data: { dni: number_document, ruc: number_document },
+        success: function(response) {
+          console.log(response);
+            if (response.success) {
+                let nombres = id_document == 1 ? response.data.nombres : response.data.nombre_o_razon_social;
+                let apellidos = id_document == 1 ? response.data.apellido_paterno + " " + response.data.apellido_materno : '';
+                let direccion = id_document == 3 ? response.data.direccion_completa : '';
+
+                // Mostrar los datos en los campos correspondientes
+                $("#nombres").val(nombres);
+                $("#apellidos").val(apellidos);
+                $("#direccion").val(direccion);
+            } else {
+                console.log("Error en la API: " + response.error);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("Error en la solicitud AJAX: " + error);
+        },
+    });
+  } else {
+      alert("El número de documento debe tener 8 o 11 dígitos.");
+  }
+}
+
+function changeOption() {
+  var name_documento = $('select[name="id_documento"] option:selected').text();
+  if (name_documento.toUpperCase().trim() == "RUC") {
+    $("#lblNombres").html("Razón Social");
+    $("#lblApellidos").html("Nombre Comercial");
+  } else {
+    $("#lblNombres").html("Nombres");
+    $("#lblApellidos").html("Apellidos");
+  }
+}
 
 function crearCalendario(){
 
@@ -216,16 +281,13 @@ function crearCalendario(){
   var id_documento = $('#cboDocumentoBuscar').val();
   var valor = $('#txtBuscar').val();
   var calendario = $('#calendario').fullCalendar({  // assign calendar
-    defaultView: 'agendaWeek',
+    defaultView: 'month',
     editable: true,
     selectable: true,
     allDaySlot: false,
     locale: 'es', // Idioma
     //titleFormat: '[Horario Carrera, Semestre y Sección]', //Título
-    weekends: true, // Oculta fin de semana
-    minTime: '07:00:00', //Hora Mínima Mostrada
-    maxTime: '22:00:00', //Hora Máxima Mostrada
-    slotDuration : '00:15:00', //Intervalo de Tiempo entre Horas
+    weekends: false, // Oculta fin de semana
     displayEventTime: true,
     displayEventEnd: true,
     columnHeader: true,
@@ -303,30 +365,38 @@ function crearCalendario(){
   var calendarioEvent = $('#calendario').fullCalendar('getCalendar');
   calendarioEvent.on('select', function(start, end, jsEvent, view) {
 
-    var fecha_inicio_Obj = new Date(start);
-    var momentObj_1 = moment(fecha_inicio_Obj);
-    var fecha_inicio = momentObj_1.format('YYYY-MM-DD');
+    // Convertir las fechas de inicio y fin a objetos Date
+var fecha_inicio_Obj = new Date(start);
+var momentObj_1 = moment(fecha_inicio_Obj);
+var fecha_inicio = momentObj_1.format('YYYY-MM-DD');
 
-    var fecha_fin_Obj = new Date(end);
-    var momentObj_2 = moment(fecha_fin_Obj);
-    var fecha_fin = momentObj_2.format('YYYY-MM-DD');
+var fecha_fin_Obj = new Date(end);
+var momentObj_2 = moment(fecha_fin_Obj);
+var fecha_fin = momentObj_2.format('YYYY-MM-DD');
 
-    var hora_inicio = start.format('HH:mm');
-    var hora_fin = end.format('HH:mm');
+// Obtener horas de inicio y fin
+var hora_inicio = momentObj_1.format('HH:mm');
+var hora_fin = momentObj_2.format('HH:mm');
 
-    var fecha_actual = new Date();
-    var fecha_compara = new Date(fecha_inicio + ' ' + hora_inicio);
+// Obtener la fecha y hora actual
+var fecha_actual = new Date();
+var fecha_compara = new Date(fecha_inicio + ' ' + hora_inicio);
 
-    if (fecha_actual.getTime() > fecha_compara.getTime()) {
-      new PNotify({
-          title: 'Advertencia',
-          text: 'No puedes separar una cita con fecha pasada.',
-          type: 'warning',
-          styling: 'bootstrap3',
-          addclass: ''
-      });
-      return;
-    }
+// Para incluir la fecha de hoy, se ajusta la fecha_compara a medianoche
+var fecha_hoy = new Date();
+fecha_hoy.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 para comparar solo la fecha
+
+// Comparar si la fecha de comparación es menor que la fecha de hoy
+if (fecha_compara.getTime() < fecha_hoy.getTime()) {
+    new PNotify({
+        title: 'Advertencia',
+        text: 'No puedes separar una cita con fecha pasada.',
+        type: 'warning',
+        styling: 'bootstrap3',
+        addclass: ''
+    });
+    return;
+} 
 
     $('#txtFechaInicio').val(fecha_inicio);
     $('#txtFechaTermino').val(fecha_fin);
@@ -610,81 +680,83 @@ function crearCalendario(){
 
 }
 
+
+
 function cargarServicios(){
-  $('#cboServicioForm').empty();
-  var id_trabajador = $("#id_trabajador").val();
-  $.ajax({
-    url: "ajax.php?accion=showServicioMedico",
-    type: "POST",
-    data:{
-      id_trabajador: id_trabajador
-    },
-    success : function(data) {
-      try {
-        var data1 = JSON.parse(data);
-        if (data1["error"]=="NO") {
-          var o = data1["data"];
-          for (var i = 0; i < o.length; i++) {
-            $('#cboServicioForm').append('<option value="' + o[i].id_servicio + '">' + o[i].name_servicio + '</option>');
-          }
-        }else {
-          console.log(data1["message"]);
-        }
-      } catch (e) {
-        runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
-        showHideLoader('none');
-      }
-    },
-    beforeSend: function (xhr) {
-      showHideLoader('block');
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
-    },
-    complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
-    }
-  });
+  // $('#cboServicioForm').empty();
+  // var id_trabajador = $("#id_trabajador").val();
+  // $.ajax({
+  //   url: "ajax.php?accion=showServicioMedico",
+  //   type: "POST",
+  //   data:{
+  //     id_trabajador: id_trabajador
+  //   },
+  //   success : function(data) {
+  //     try {
+  //       var data1 = JSON.parse(data);
+  //       if (data1["error"]=="NO") {
+  //         var o = data1["data"];
+  //         for (var i = 0; i < o.length; i++) {
+  //           $('#cboServicioForm').append('<option value="' + o[i].id_servicio + '">' + o[i].name_servicio + '</option>');
+  //         }
+  //       }else {
+  //         console.log(data1["message"]);
+  //       }
+  //     } catch (e) {
+  //       runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+  //       showHideLoader('none');
+  //     }
+  //   },
+  //   beforeSend: function (xhr) {
+  //     showHideLoader('block');
+  //   },
+  //   error: function (jqXHR, textStatus, errorThrown) {
+  //     runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+  //   },
+  //   complete: function (jqXHR, textStatus) {
+  //     showHideLoader('none');
+  //   }
+  // });
 
 }
 
 function cargarMascotas(){
-  $('#id_mascota').empty();
-  var id_documento = $("#id_documento").val();
-  var num_documento = $("#num_documento").val();
-  $.ajax({
-    url: "ajax.php?accion=showMascotasDocumento",
-    type: "POST",
-    data:{
-      id_documento: id_documento,
-      num_documento: num_documento,
-    },
-    success : function(data) {
-      try {
-        var data1 = JSON.parse(data);
-        if (data1["error"]=="NO") {
-          var o = data1["data"];
-          for (var i = 0; i < o.length; i++) {
-            $('#id_mascota').append('<option value="' + o[i].id_mascota + '">' + o[i].nombre + '</option>');
-          }
-        }else {
-          console.log(data1["message"]);
-        }
-      } catch (e) {
-        runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
-        showHideLoader('none');
-      }
-    },
-    beforeSend: function (xhr) {
-      showHideLoader('block');
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
-    },
-    complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
-    }
-  });
+  // $('#id_mascota').empty();
+  // var id_documento = $("#id_documento").val();
+  // var num_documento = $("#num_documento").val();
+  // $.ajax({
+  //   url: "ajax.php?accion=showMascotasDocumento",
+  //   type: "POST",
+  //   data:{
+  //     id_documento: id_documento,
+  //     num_documento: num_documento,
+  //   },
+  //   success : function(data) {
+  //     try {
+  //       var data1 = JSON.parse(data);
+  //       if (data1["error"]=="NO") {
+  //         var o = data1["data"];
+  //         for (var i = 0; i < o.length; i++) {
+  //           $('#id_mascota').append('<option value="' + o[i].id_mascota + '">' + o[i].nombre + '</option>');
+  //         }
+  //       }else {
+  //         console.log(data1["message"]);
+  //       }
+  //     } catch (e) {
+  //       runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+  //       showHideLoader('none');
+  //     }
+  //   },
+  //   beforeSend: function (xhr) {
+  //     showHideLoader('block');
+  //   },
+  //   error: function (jqXHR, textStatus, errorThrown) {
+  //     runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+  //   },
+  //   complete: function (jqXHR, textStatus) {
+  //     showHideLoader('none');
+  //   }
+  // });
 
 }
 

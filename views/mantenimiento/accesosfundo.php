@@ -133,7 +133,7 @@ if (!isset($_SESSION['id_trabajador'])) {
         <div class="app-main" id="main">
           <!-- begin container-fluid -->
           <div class="container-fluid">
-            <!-- begin row -->
+
             <div class="row">
               <div class="col-md-12 m-b-30">
                 <!-- begin page title -->
@@ -163,7 +163,6 @@ if (!isset($_SESSION['id_trabajador'])) {
             </div>
 
             <div class="row">
-
               <div class="col-xl-12">
                 <div class="card card-statistics">
                   <div class="card-header">
@@ -186,11 +185,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                               $dataTrabajador = $OBJ_CLIENTE->listarClientes();
                               if ($dataTrabajador['error'] == "NO") {
                                 foreach ($dataTrabajador['data'] as $key) {
-                                  ?>
+                          ?>
                                   <option value="<?= $key['id_cliente']; ?>">
                                     <?= $key['apellidos_cliente'] . ' ' . $key['nombres_cliente'] . ' - ' . $key['name_documento'] . ' ' . $key['num_documento']; ?>
                                   </option>
-                                  <?php
+                          <?php
                                 }
                               }
                             }
@@ -198,7 +197,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                           ?>
                         </select>
                       </div>
+
                     </div>
+
                     <div class="row">
 
                       <div class="col-md-12" id="panelTabla">
@@ -220,7 +221,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 if ($dataSucursales['error'] == "NO") {
                                   $num = 1;
                                   foreach ($dataSucursales['data'] as $key) {
-                                    ?>
+                                ?>
                                     <tr>
                                       <td><?= $num; ?></td>
                                       <td><?= $key['id_fundo']; ?></td>
@@ -228,7 +229,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                       <td><input type="number" class="form-control cantidad-hc" min="0" step="1" value="0">
                                       </td>
                                     </tr>
-                                    <?php
+                                <?php
                                     $num++;
                                   }
                                 }
@@ -238,49 +239,46 @@ if (!isset($_SESSION['id_trabajador'])) {
                           </div>
                         </div>
                       </div>
+
                       <div class="float-right">
                         <div class="col-sm-2 col-xs-6">
                           <br>
                           <?php
                           if ($access_options[0]['error'] == "NO") {
                             if ($access_options[0]['flag_editar']) {
-                              ?>
+                          ?>
                               <button type="button" name="btnSave" id="btnSave" class="btn btn-primary" style="color:#fff;">
                                 GRABAR
                               </button>
-                              <?php
+                          <?php
                             }
                           }
                           ?>
                         </div>
                       </div>
+
                     </div>
+
                   </div>
                 </div>
-
-
-
               </div>
             </div>
+
           </div>
 
         </div>
 
       </div>
       <!-- end container-fluid -->
+
+      <!-- begin footer -->
+      <?php include("views/overall/footer.php"); ?>
+      <!-- end footer -->
+
     </div>
     <!-- end app-main -->
   </div>
   <!-- end app-container -->
-
-  <!-- begin footer -->
-  <?php include("views/overall/footer.php"); ?>
-  <!-- end footer -->
-
-  </div>
-  <!-- end app-wrap -->
-  </div>
-  <!-- end app -->
 
   <!-- JavaScript files-->
   <?php include("views/overall/js.php"); ?>
@@ -289,44 +287,42 @@ if (!isset($_SESSION['id_trabajador'])) {
     $("#menumantenimiento").addClass('active');
     $("#menuaccesofundo").addClass('active');
   </script>
+  <script>
+    // Código JavaScript para la funcionalidad de búsqueda
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchCliente');
+      const searchResults = document.getElementById('searchResults');
+      const cboCliente = document.getElementById('cboCliente');
 
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const options = cboCliente.options;
+
+        searchResults.innerHTML = '';
+
+        for (let i = 0; i < options.length; i++) {
+          if (options[i].text.toLowerCase().includes(searchTerm)) {
+            const div = document.createElement('div');
+            div.className = 'search-result-item';
+            div.textContent = options[i].text;
+            div.addEventListener('click', function() {
+              cboCliente.value = options[i].value;
+              searchInput.value = options[i].text;
+              searchResults.innerHTML = '';
+            });
+            searchResults.appendChild(div);
+          }
+        }
+      });
+
+      // Cerrar resultados de búsqueda al hacer clic fuera
+      document.addEventListener('click', function(e) {
+        if (e.target !== searchInput && e.target !== searchResults) {
+          searchResults.innerHTML = '';
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
-
-<script>
-  // Código JavaScript para la funcionalidad de búsqueda
-  document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('searchCliente');
-    const searchResults = document.getElementById('searchResults');
-    const cboCliente = document.getElementById('cboCliente');
-
-    searchInput.addEventListener('input', function () {
-      const searchTerm = this.value.toLowerCase();
-      const options = cboCliente.options;
-
-      searchResults.innerHTML = '';
-
-      for (let i = 0; i < options.length; i++) {
-        if (options[i].text.toLowerCase().includes(searchTerm)) {
-          const div = document.createElement('div');
-          div.className = 'search-result-item';
-          div.textContent = options[i].text;
-          div.addEventListener('click', function () {
-            cboCliente.value = options[i].value;
-            searchInput.value = options[i].text;
-            searchResults.innerHTML = '';
-          });
-          searchResults.appendChild(div);
-        }
-      }
-    });
-
-    // Cerrar resultados de búsqueda al hacer clic fuera
-    document.addEventListener('click', function (e) {
-      if (e.target !== searchInput && e.target !== searchResults) {
-        searchResults.innerHTML = '';
-      }
-    });
-  });
-</script>

@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Tipos de Gastos | <?=APP_TITLE;?> </title>
+    <title>Tipos De Productos | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Tipos de Gastos
+                                      Tipos De Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -102,7 +102,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Tipos de Gastos</h4>
+                                        <h4 class="card-title">Tipos De Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -118,7 +118,7 @@
 
                                           <div class="row">
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="descripcion" class="label-control">Tipo de gasto</label>
+                                              <label for="descripcion" class="label-control">Tipo De Producto</label>
                                               <input id="descripcion" type="text" name="descripcion" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
@@ -148,7 +148,7 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id</th>
-                                                <th>Tipo de Gasto</th>
+                                                <th>Tipo De Producto</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
                                                 <th style="width:90px;">Options</th>
                                               </tr>
@@ -186,7 +186,7 @@
     <?php include("views/overall/js.php"); ?>
     <script src="resources/system/js/pages/mantenimiento/tipogasto.js?v=<?=APP_VERSION;?>"></script>
     <script>
-      $("#menumantenimiento").addClass('active');
+      $("#menuconfiguration").addClass('active');
       $("#menutipogasto").addClass('active');
     </script>
 

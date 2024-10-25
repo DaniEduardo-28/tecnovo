@@ -2,7 +2,7 @@
 
   try {
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("categoriaaccesorio"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tipoproducto"));
     if ($access_options[0]['error']=="NO") {
       if ($access_options[0]['flag_buscar']==false) {
         throw new Exception("No tienes permisos para realizar busquedas.");

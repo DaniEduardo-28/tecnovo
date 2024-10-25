@@ -634,38 +634,38 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/getDataEditOrdenCompraIngreso.php");
         break;
-        case 'showDetalleParaOrdenGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/showDetalleParaOrdenGasto.php");
-          break;
-        case 'showOrdenGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/showOrdenGasto.php");
-          break;
-        case 'goOrdenGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/goOrdenGasto.php");
-          break;
-        case 'getDataVerOrdenGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/getDataVerOrdenGasto.php");
-          break;
-        case 'getDataEditOrdenGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/getDataEditOrdenGasto.php");
-          break;
-        case 'deleteOrdenGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/deleteOrdenGasto.php");
-          break;
-        case 'showOrdenGastoIngreso':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/showOrdenGastoIngreso.php");
-          break;
-        case 'getDataEditOrdenGastoIngreso':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/getDataEditOrdenGastoIngreso.php");
-          break;
+      case 'showDetalleParaOrdenGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/showDetalleParaOrdenGasto.php");
+        break;
+      case 'showOrdenGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/showOrdenGasto.php");
+        break;
+      case 'goOrdenGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/goOrdenGasto.php");
+        break;
+      case 'getDataVerOrdenGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/getDataVerOrdenGasto.php");
+        break;
+      case 'getDataEditOrdenGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/getDataEditOrdenGasto.php");
+        break;
+      case 'deleteOrdenGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/deleteOrdenGasto.php");
+        break;
+      case 'showOrdenGastoIngreso':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/showOrdenGastoIngreso.php");
+        break;
+      case 'getDataEditOrdenGastoIngreso':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/getDataEditOrdenGastoIngreso.php");
+        break;
       case 'goIngreso':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/goIngreso.php");
@@ -682,23 +682,28 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteIngreso.php");
         break;
-
-        case 'goIngresoGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/goIngresoGasto.php");
-          break;
-        case 'showIngresoGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/showIngresoGasto.php");
-          break;
-        case 'getDataVerIngresoGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/getDataVerIngresoGasto.php");
-          break;
-        case 'deleteIngresoGasto':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/deleteIngresoGasto.php");
-          break;
+      case 'goIngresoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/goIngresoGasto.php");
+        break;
+      case 'showIngresoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/showIngresoGasto.php");
+        break;
+      case 'getDataVerIngresoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/getDataVerIngresoGasto.php");
+        break;
+      case 'deleteIngresoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/deleteIngresoGasto.php");
+        break;
+      case 'buscar-dni':
+        require("core/ajax/utils/buscarDNI.php");
+        break;
+      case 'buscar-ruc':
+        require("core/ajax/utils/buscarRUC.php");
+        break;
 
       default:
         $data["error"] = "SI";
@@ -713,12 +718,9 @@ try {
     $data["data"] = null;
     echo json_encode($data);
   }
-
 } catch (\Exception $e) {
   $data["error"] = "SI";
   $data["message"] = $e->getMessage();
   $data["data"] = null;
   echo json_encode($data);
 }
-
-?>
