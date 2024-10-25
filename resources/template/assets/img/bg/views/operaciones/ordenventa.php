@@ -146,7 +146,7 @@
                                           <div class="row">
 
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="codigo_documento_venta">Doc. Venta(*)</label>
+                                              <label for="codigo_documento_venta">Doc. Compra(*)</label>
                                               <select class="form-control" name="codigo_documento_venta"
                                                     id="codigo_documento_venta" required>
                                                 <option value="">Seleccione</option>
@@ -380,7 +380,7 @@
                                                 <th style="width:90px;">Acciones</th>
                                                 <th>Id Venta</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
-                                                <th>Doc. Venta</th>
+                                                <th>Doc. Compra</th>
                                                 <th>Doc. Identidad</th>
                                                 <th>Cliente</th>
                                                 <th>Dirección</th>

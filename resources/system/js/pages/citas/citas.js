@@ -30,7 +30,7 @@ $(document).ready(function(){
       crearCalendario();
     });
 
-    $('#cboSucursalBuscar').change(function(){
+    $('#cboFundoBuscar').change(function(){
       crearCalendario();
     });
 
@@ -283,7 +283,7 @@ function crearCalendario(){
   $('#calendario').fullCalendar('destroy');
   var id_medico = $('#cboMedicoBuscar').val();
   var id_documento = $('#cboDocumentoBuscar').val();
-  var id_fundo = $('#cboSucursalBuscar').val();
+  var id_fundo = $('#cboFundoBuscar').val();
   var valor = $('#txtBuscar').val();
   var calendario = $('#calendario').fullCalendar({  // assign calendar
     defaultView: 'month',
@@ -339,6 +339,7 @@ function crearCalendario(){
         data: {
           id_medico: id_medico,
           id_documento: id_documento,
+          id_fundo: id_fundo,
           valor: valor
         },
         error: function(e) {

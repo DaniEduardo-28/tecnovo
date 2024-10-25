@@ -178,6 +178,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/configuration/deleteMaquinaria.php");
         break;
+      case 'getDataEditMaquinaria':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/getDataEditMaquinaria.php");
+        break;
       case 'showTrabajador':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showTrabajador.php");

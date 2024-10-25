@@ -1,11 +1,10 @@
 <?php
 
-  
-
   $id_maquinaria = isset($_POST["id_maquinaria"]) ? $_POST["id_maquinaria"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;
   $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
   $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
+  $id_operador = isset($_POST["id_operador"]) ? $_POST["id_operador"] : "";
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
   try {
@@ -39,10 +38,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_MAQUINARIA->insert($descripcion,$observaciones,$estado);
+        $VD = $OBJ_MAQUINARIA->insert($id_maquinaria,$descripcion,$observaciones, $estado,$id_operador);
         break;
       case 'edit':
-        $VD = $OBJ_MAQUINARIA->update($id_maquinaria,$descripcion,$observaciones, $estado);
+        $VD = $OBJ_MAQUINARIA->update($id_maquinaria,$descripcion,$observaciones, $estado,$id_operador);
         break;
       default:
         $VD = "Error de operación";

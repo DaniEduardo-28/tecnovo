@@ -7,6 +7,7 @@ var table = $('#example').DataTable({
       { 'data': 'id_maquinaria' },
       { 'data': 'descripcion' },
       { 'data': 'observaciones' },
+      { 'data': 'nombre_operador' },
       { 'data': 'estado' },
       { 'data': 'options' }
     ],

@@ -98,12 +98,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                     
                   <!-- Nuevo agregado para fundos -->
                   <div class="form-group col-sm-4 col-md-3">
-                    <label for="cboSucursalBuscar">Fundo</label>
-                    <select class="form-control" id="cboSucursalBuscar" name="cboSucursalBuscar">
+                    <label for="cboFundoBuscar">Fundo</label>
+                    <select class="form-control" id="cboFundoBuscar" name="cboFundoBuscar">
                       <option value="all">Todos</option>
                       <?php
                       include("core/models/ClassSucursal.php");
-                      $dataFundo = $OBJ_SUCURSAL->show(id_empresa,"activo");
+                      $dataFundo = $OBJ_SUCURSAL->show(1,"activo");
                       if ($dataFundo["error"] == "NO") {
                         foreach ($dataFundo["data"] as $key) {
                       ?>
@@ -111,7 +111,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                       <?php
                         }
                       }
-                      ?>
+                      var_dump($dataFundo);
+                      ?>    
                     </select>
                   </div>
 
@@ -255,6 +256,18 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <select class="form-control" id="id_fundo_cliente" name="id_fundo_cliente">
                     
                   </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="txtPrecio">Precio</label>
+                  <input type="text" id="txtPrecio" name="txtPrecio"
+                    value="" class="form-control" required>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="txtCantidad_HC">Cantidad HC</label>
+                  <input type="text" id="txtCantidad_HC" name="txtCantidad_HC"
+                    value="" class="form-control" required>
                 </div>
 
                 <div class="form-group col-sm-6">

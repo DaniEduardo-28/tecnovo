@@ -83,7 +83,7 @@ function crearCalendario(){
 
   $('#calendario').fullCalendar('destroy');
   var id_medico = $('#cboMedicoBuscar').val();
-  var id_fundo = $('#cboSucursalBuscar').val();
+  var id_fundo = $('#cboFundoBuscar').val();
   var calendario = $('#calendario').fullCalendar({  // assign calendar
     defaultView: 'agendaWeek',
     editable: true,

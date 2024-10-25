@@ -128,11 +128,25 @@
                                               <input id="observaciones" type="text" name="observaciones" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
+                                            <div class="form-group col-md-12 col-sm-12">
+                                              <label for="id_operador" class="label-control">Operador Seleccionado</label>
+                                              <input name="id_operador" id="id_operador" class="form-control" required>
+                                                <option value="">Seleccione...</option>
+                                                <?php
+                                                  include("core/models/ClassOperador.php");
+                                                  $dataOperador = $OBJ_OPERADOR->show("activo",$id_documento,$valor,$offset,$limit);
+                                                  if ($dataOperador["error"]=="NO") {
+                                                    foreach ($dataOperador["data"] as $key) {
+                                                      echo '<option value="' . $key['id_operador'] . '">' . $key['nombre_operador'] . '</option>';
+                                                    }
+                                                  }
+                                                ?>
+                                            </div>
                                             <div class="form-group col-md-2 col-sm-6">
                                               <br>
                                               <div class="form-check">
                                                 <input id="estado" name="estado" type="checkbox"
-                                                class="form-check-input" checked>
+                                                class="form-check-input" checked="">
                                                 <label for="estado" class="form-check-label">Estado</label>
                                               </div>
                                             </div>
@@ -156,6 +170,7 @@
                                                 <th>Id</th>
                                                 <th>Descripción</th>
                                                 <th>Observaciones</th>
+                                                <th>Operador</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
                                                 <th style="width:90px;">Options</th>
                                               </tr>

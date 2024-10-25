@@ -15,7 +15,7 @@
 
 			try {
 
-				$sql = "SELECT * FROM `tb_fundo` WHERE id_empresa = ? ";
+				$sql = "SELECT * FROM `tb_fundo`";
 				$parametros[] = $id_empresa;
 				if ($estado!="all") {
 					$sql .= " AND estado = ?";
