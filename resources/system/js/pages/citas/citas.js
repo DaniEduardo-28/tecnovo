@@ -30,6 +30,10 @@ $(document).ready(function(){
       crearCalendario();
     });
 
+    $('#cboSucursalBuscar').change(function(){
+      crearCalendario();
+    });
+
     $('#btnSearch').click(function(){
       crearCalendario();
     });
@@ -279,6 +283,7 @@ function crearCalendario(){
   $('#calendario').fullCalendar('destroy');
   var id_medico = $('#cboMedicoBuscar').val();
   var id_documento = $('#cboDocumentoBuscar').val();
+  var id_fundo = $('#cboSucursalBuscar').val();
   var valor = $('#txtBuscar').val();
   var calendario = $('#calendario').fullCalendar({  // assign calendar
     defaultView: 'month',

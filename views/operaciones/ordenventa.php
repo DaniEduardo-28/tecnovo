@@ -60,7 +60,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                 <div class="row">
 
-                  <div class="form-group col-sm-6 col-md-4">
+                  <div class="form-group col-sm-3 col-md-2">
                     <label for="cboMedicoBuscar">Maquinaria</label>
                     <select class="form-control" id="cboMedicoBuscar" name="cboMedicoBuscar">
                       <option value="all">Todos</option>
@@ -78,7 +78,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                     </select>
                   </div>
 
-                  <div class="form-group col-sm-6 col-md-4">
+                  <div class="form-group col-sm-4 col-md-3">
                     <label for="cboDocumentoBuscar">Documento Cliente</label>
                     <select class="form-control" id="cboDocumentoBuscar" name="cboDocumentoBuscar">
                       <option value="all">Todos</option>
@@ -89,6 +89,25 @@ if (!isset($_SESSION['id_trabajador'])) {
                         foreach ($dataDocumento["data"] as $key) {
                       ?>
                           <option value="<?= $key['id_documento']; ?>"><?= $key['name_documento']; ?></option>
+                      <?php
+                        }
+                      }
+                      ?>
+                    </select>
+                  </div>
+                    
+                  <!-- Nuevo agregado para fundos -->
+                  <div class="form-group col-sm-4 col-md-3">
+                    <label for="cboSucursalBuscar">Fundo</label>
+                    <select class="form-control" id="cboSucursalBuscar" name="cboSucursalBuscar">
+                      <option value="all">Todos</option>
+                      <?php
+                      include("core/models/ClassSucursal.php");
+                      $dataFundo = $OBJ_SUCURSAL->show(id_empresa,"activo");
+                      if ($dataFundo["error"] == "NO") {
+                        foreach ($dataFundo["data"] as $key) {
+                      ?>
+                          <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre']; ?></option>
                       <?php
                         }
                       }
