@@ -33,6 +33,7 @@ var table = $('#example').DataTable({
       $("#accion").val("add");
       $("#descripcion").val("");
       $("#observaciones").val("");
+      $("#nombre_operador").val("");
       addClassDiv();
     });
   
@@ -47,6 +48,7 @@ var table = $('#example').DataTable({
       $("#accion").val("add");
       $("#descripcion").val("");
       $("#observaciones").val("");
+      $("#nombre_operador").val("");
       $("#estado").prop('checked', false);
     });
   
@@ -57,6 +59,7 @@ var table = $('#example').DataTable({
         $("#accion").val("edit");
         $("#descripcion").val(data["descripcion"]);
         $("#observaciones").val(data["observaciones"]);
+        $("#nombre_operador").val(data["nombre_operador"]);
         if ('<label class="badge badge-success">Activo</label>'==data["estado"]) {
           $("#estado").prop('checked', true);
         }else {
@@ -157,6 +160,7 @@ var table = $('#example').DataTable({
                 "id_maquinaria": o[i].id_maquinaria,
                 "descripcion": o[i].descripcion,
                 "observaciones": o[i].observaciones,
+                "nombre_operador": o[i].nombre_operador,
                 "estado": o[i].estado,
                 "options": o[i].options
               }).draw();

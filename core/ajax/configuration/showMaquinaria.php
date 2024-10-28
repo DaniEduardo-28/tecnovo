@@ -42,8 +42,10 @@
           "id_maquinaria" => $key['id_maquinaria'],
           "descripcion" => $key['descripcion'],
           "observaciones" => $key['observaciones'],
+          "nombre_operador" => $key['nombre_operador'],
           "estado" => $estado,
-          "id_operador" => $key['id_operador']
+          "flag_editar" => "$flag_editar",
+          "flag_eliminar" => "$flag_eliminar"
         );
         $count++;
       }

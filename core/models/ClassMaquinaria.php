@@ -74,9 +74,9 @@
 			try {
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT m.*,(o.nombres+' '+o.apellidos) AS nombre_operador
-								FROM `tb_maquinaria` m
-							  INNER JOIN tb_operador o ON o.id_operador = m.id_operador
+				$sql = "SELECT m.*, o.nombre_operador
+								FROM tb_maquinaria m
+								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
 								WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?) ";
 				$parametros[] = $valor;
 				$parametros[] = $valor;
@@ -124,6 +124,55 @@
 			return $VD;
 		}
 
+		public function show1($estado) {
+
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+
+			try {
+
+				$parametros = null;
+				$sql = "SELECT m.*, o.nombre_operador
+								FROM tb_maquinaria m
+								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
+								WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?) ";
+				if ($estado!="all") {
+					$sql .= " AND m.estado = ?";
+					$parametros[] = $estado;
+				}
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute($parametros);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				if (count($result)==0) {
+					throw new Exception("No se encontraron datos.");
+				}
+
+				$VD1['error'] = "NO";
+				$VD1['message'] = "Success";
+				$VD1['data'] = $result;
+				$VD = $VD1;
+
+			} catch(PDOException $e) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
+				$VD = $VD1;
+
+			} catch (Exception $exception) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $exception->getMessage();
+				$VD = $VD1;
+
+    	} finally {
+				$conexionClass->Close();
+			}
+
+			return $VD;
+		}
+
 		public function getDataEditMaquinaria($id_maquinaria) {
 
 			$conexionClass = new Conexion();
@@ -131,9 +180,9 @@
 			$VD = "";
 
 			try {
-				$sql = "SELECT m.*,(o.nombres+' '+o.apellidos) AS nombre_operador
+				$sql = "SELECT m.*, o.nombre_operador
 								FROM tb_maquinaria m
-								INNER JOIN tb_operador o ON o.id_operador = m.id_operador
+								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
 								WHERE  m.id_maquinaria = ?";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_maquinaria]);
@@ -174,7 +223,13 @@
 			try {
 
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("INSERT INTO tb_maquinaria (id_maquinaria, descripcion, observaciones, estado, id_operador) VALUES ((SELECT CASE COUNT(t.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(t.id_maquinaria) + 1) end FROM `tb_maquinaria` t),?,?,?,?)");
+
+				$sql = "INSERT INTO tb_maquinaria (`id_maquinaria`, `descripcion`, `observaciones`, `estado`, `id_operador`) VALUES ";
+				$sql .= "(";
+				$sql .= "(SELECT CASE COUNT(m.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(m.id_maquinaria) + 1) end FROM `tb_maquinaria` m),";
+				$sql .= "?,?,?,?";
+				$sql .= ")";
+				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$descripcion, $observaciones,$estado,$id_operador]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Ocurrió un error al insertar el registro.");
@@ -264,6 +319,140 @@
 			}
 			return $VD;
 		}
+
+		public function show_all() {
+
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+
+			try {
+
+				$sql = "SELECT m.*,o.nombre_operador
+								FROM `tb_maquinaria` m
+								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador";
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute([]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				if (count($result)==0) {
+					throw new Exception("No se encontraron datos.");
+				}
+
+				$VD1['error'] = "NO";
+				$VD1['message'] = "Success";
+				$VD1['data'] = $result;
+				$VD = $VD1;
+
+			} catch(PDOException $e) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
+				$VD = $VD1;
+
+			} catch (Exception $exception) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $exception->getMessage();
+				$VD = $VD1;
+
+    	} finally {
+				$conexionClass->Close();
+			}
+
+			return $VD;
+		}
+
+		public function show_cantidad_limite_activos($cantidad) {
+
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+
+			try {
+
+				$sql = "SELECT m.*,o.nombre_operador
+								FROM `tb_maquinaria` m
+								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
+								WHERE m.estado = 'activo'
+								LIMIT $cantidad";
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute([]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				if (count($result)==0) {
+					throw new Exception("No se encontraron datos.");
+				}
+
+				$VD1['error'] = "NO";
+				$VD1['message'] = "Success";
+				$VD1['data'] = $result;
+				$VD = $VD1;
+
+			} catch(PDOException $e) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
+				$VD = $VD1;
+
+			} catch (Exception $exception) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $exception->getMessage();
+				$VD = $VD1;
+
+    	} finally {
+				$conexionClass->Close();
+			}
+
+			return $VD;
+		}
+
+		public function show_activos() {
+
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+
+			try {
+
+				$sql = "SELECT m.*,o.nombre_operador
+								FROM `tb_maquinaria` m
+								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
+								WHERE m.estado = 'activo'";
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute([]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				if (count($result)==0) {
+					throw new Exception("No se encontraron datos.");
+				}
+
+				$VD1['error'] = "NO";
+				$VD1['message'] = "Success";
+				$VD1['data'] = $result;
+				$VD = $VD1;
+
+			} catch(PDOException $e) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
+				$VD = $VD1;
+
+			} catch (Exception $exception) {
+
+				$VD1['error'] = "SI";
+				$VD1['message'] = $exception->getMessage();
+				$VD = $VD1;
+
+    	} finally {
+				$conexionClass->Close();
+			}
+
+			return $VD;
+		}
+
+
 
 	}
 

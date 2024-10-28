@@ -133,8 +133,8 @@
                                               <input name="id_operador" id="id_operador" class="form-control" required>
                                                 <option value="">Seleccione...</option>
                                                 <?php
-                                                  include("core/models/ClassOperador.php");
-                                                  $dataOperador = $OBJ_OPERADOR->show("activo",$id_documento,$valor,$offset,$limit);
+                                                  include("core/models/ClassMaquinaria.php");
+                                                  $dataOperador = $OBJ_MAQUINARIA->show1("activo");
                                                   if ($dataOperador["error"]=="NO") {
                                                     foreach ($dataOperador["data"] as $key) {
                                                       echo '<option value="' . $key['id_operador'] . '">' . $key['nombre_operador'] . '</option>';

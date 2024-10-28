@@ -30,6 +30,10 @@
       throw new Exception("Error al verificar los permisos.");
     }
 
+    if (empty(trim($id_operador))) {
+      throw new Exception("Campo obligatorio : Operador.");
+    }
+
     if (empty(trim($descripcion))) {
       throw new Exception("Campo Obligatorio : Nombre de Maquinaria.");
     }

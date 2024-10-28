@@ -25,11 +25,12 @@
 
       foreach ($Resultado["data"] as $key) {
         $retorno_array[] =array(
-          "id_maquinaria" => $key['id_servicio'],
-          "descripcion" => $key['name_servicio'],
-          "observaciones" => $key['descripcion_breve'],
+          "id_maquinaria" => $key['id_maquinaria'],
+          "descripcion" => $key['descripcion'],
+          "observaciones" => $key['observaciones'],
           "estado" => $key['estado'],
-          "id_operador" => $key['id_operador']
+          "id_operador" => $key['id_operador'],
+          "nombre_proveedor" => $key['nombre_proveedor']
         );
       }
 
