@@ -162,7 +162,7 @@ var table = $('#example').DataTable({
                 "observaciones": o[i].observaciones,
                 "nombre_operador": o[i].nombre_operador,
                 "estado": o[i].estado,
-                "options": o[i].options
+                "options": o[i].options || ""
               }).draw();
             }
           }else {
