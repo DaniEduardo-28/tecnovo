@@ -29,13 +29,12 @@
       $count = 1;
       foreach ($Resultado["data"] as $key) {
         $estado = ($key['estado']=="activo") ? '<td><a href="javascript:void(0)" class="dot bg-success"></a><span>Activo</span></td>' : '<td><a href="javascript:void(0)" class="dot bg-danger"></a><span>Inactivo</span></td>' ;
-        $flag_editar='';
-        $flag_eliminar='';
+        $options='';
         if ($access_options[0]['flag_editar']) {
-          $flag_editar = '<a href="javascript:getDataEdit(' . $key['id_maquinaria'] . ')" class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i class="ti ti-pencil"></i></a>';
+          $options .= '<a href="javascript:getDataEdit(' . $key['id_maquinaria'] . ')" class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0 "><i class="ti ti-pencil"></i></a>';
         }
         if ($access_options[0]['flag_eliminar']) {
-          $flag_eliminar = '<a href="javascript:deleteRegistro(' . $key['id_maquinaria'] . ",'" . str_replace('"',' ',str_replace("'",' ',$key['descripcion'])) . "'" . ')" class="btn btn-icon btn-outline-danger btn-round"><i class="ti ti-close"></i></a>';
+          $options .= '<a href="javascript:deleteRegistro(' . $key['id_maquinaria'] . ",'" . str_replace('"',' ',str_replace("'",' ',$key['descripcion'])) . "'" . ')" class="btn btn-icon btn-outline-danger btn-round"><i class="ti ti-close"></i></a>';
         }
         $retorno_array[] =array(
           "num" => "$count",
@@ -44,8 +43,7 @@
           "observaciones" => $key['observaciones'],
           "nombre_operador" => $key['nombre_operador'],
           "estado" => $estado,
-          "flag_editar" => "$flag_editar",
-          "flag_eliminar" => "$flag_eliminar"
+          "options" => "$options"
         );
         $count++;
       }

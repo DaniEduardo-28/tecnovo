@@ -77,9 +77,69 @@ var tableForm = $('#table_form').DataTable({
       }
     ]
   });
+
+  function validarYEnviar() {
+    var number_document = $("#num_documento").val();
+    var id_document = $("#id_documento").val();
+  
+    // Validar que tenga 8 o 11 dígitos
+    if (number_document.length === 8 || number_document.length === 11) {
+        // Verificar si el tipo de documento es válido
+        if (id_document != 1 && id_document != 3) {
+            return false;
+        }
+  
+        // Determinar el tipo de documento: DNI o RUC
+        var tipo = id_document == 1 ? 'dni' : 'ruc';
+        
+        // Validar si la acción es 'add'
+        if ($("#accion").val() == "add" && id_document) {
+            // Realizar la solicitud AJAX
+            $.ajax({
+                url: "ajax.php?accion=buscar-" + tipo, // Cambia por la ruta correcta
+                method: "POST",
+                dataType: "json", // Especifica que la respuesta será JSON
+                data: { dni: number_document, ruc: number_document },
+                success: function(response) {
+                    if (response.success) {
+                        let nombres = id_document == 1 ? response.data.nombres : response.data.nombre_o_razon_social;
+                        let apellidos = id_document == 1 ? response.data.apellido_paterno + " " + response.data.apellido_materno : '';
+                        let direccion = id_document == 3 ? response.data.direccion_completa : '';
+  
+                        // Mostrar los datos en los campos correspondientes
+                        $("#nombres").val(nombres);
+                        $("#apellidos").val(apellidos);
+                        $("#direccion").val(direccion);
+                    } else {
+                        console.log("Error en la API: " + response.error);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log("Error en la solicitud AJAX: " + error);
+                },
+            });
+        }
+    } else {
+        alert("El número de documento debe tener 8 o 11 dígitos.");
+    }
+  }
   
   $(document).ready(function(){
   
+    $("#id_documento").change(function () {
+      changeOption();
+    });
+  
+    $("#num_documento").on("keypress", function (event) {
+      if (event.which == 13) {
+        validarYEnviar();
+      }
+    });
+  
+    $("#num_documento").on("blur", function () {
+      validarYEnviar();
+    });
+
     $("#contenedor_formulario").addClass("d-none");
     $("#contenedor_orden").addClass("d-none");
   

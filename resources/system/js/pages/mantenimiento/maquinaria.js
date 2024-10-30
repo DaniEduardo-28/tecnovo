@@ -162,7 +162,7 @@ var table = $('#example').DataTable({
                 "observaciones": o[i].observaciones,
                 "nombre_operador": o[i].nombre_operador,
                 "estado": o[i].estado,
-                "options": o[i].options || ""
+                "options": o[i].options
               }).draw();
             }
           }else {
@@ -229,5 +229,110 @@ var table = $('#example').DataTable({
         });
       }
     });
+  }
+
+  function getDataEdit(id_maquinaria){
+    $.ajax({
+      type: "POST",
+      data:{
+        id_maquinaria: id_maquinaria
+      },
+  
+      url: "ajax.php?accion=getDataEditMaquinaria",
+      success : function(data) {
+        try {
+          var data1 = JSON.parse(data);
+          if (data1["error"]=="NO") {
+            var o = data1["data"];
+            $("#id_maquinaria").val(o[0].id_maquinaria);
+            $("#descripcion").val(o[0].descripcion);
+            $("#observaciones").val(o[0].observaciones);
+            var estado = o[0].estado;
+            estado=="activo" ? $("#estado").prop('checked', true) : $("#estado").prop('checked', false);
+            var nombre_operador = o[0].nombre_operador;
+            var id_operador = o[0].id_operador;
+            var flag_encontro = false;
+            $("#id_operador option").each(function(){
+              if ($(this).val() == id_operador ){
+                flag_encontro = true;
+              }
+            });
+            if (!flag_encontro) {
+              $('#id_operador').append('<option value="' + id_operador + '" selected>' + nombre_operador + '</option>');
+            }
+            addClassDiv();
+          }else {
+            runAlert("Message",data1["message"],"warning");
+          }
+        } catch (e) {
+          runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+          showHideLoader('none');
+        }
+      },
+      beforeSend: function (xhr) {
+        showHideLoader('block');
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+      },
+      complete: function (jqXHR, textStatus) {
+        showHideLoader('none');
+      }
+    });
+  }
+
+  function deleteRegistro(id_maquinaria,maquinaria){
+
+    try {
+  
+      var parametros = {
+        "id_maquinaria" : id_maquinaria
+      };
+  
+      Swal.fire({
+        title: '¿Seguro de eliminar ' + maquinaria + '?',
+        text: "No podrás revertir esta operación.",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#22c63b',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Eliminar ahora!'
+      }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+            type: "POST",
+            url: "ajax.php?accion=deleteMaquinaria",
+            datatype: "json",
+            data: parametros,
+            success: function(data){
+              try {
+                var response = JSON.parse(data);
+                if (response['error']=="SI") {
+                  runAlert("Oh No...!!!",response['message'],"warning");
+                }else {
+                  removeClassDiv();
+                  showData();
+                  runAlert("Bien hecho...!!!",response['message'],"success");
+                }
+              } catch (e) {
+                runAlert("Oh No...!!!",e,"error");
+              }
+            },
+            error: function(data){
+              runAlert("Oh No...!!!",data,"error");
+            },
+            beforeSend: function (xhr) {
+              showHideLoader('block');
+            },
+            complete: function (jqXHR, textStatus) {
+              showHideLoader('none');
+            }
+          });
+        }
+      });
+  
+    } catch (e) {
+      runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+    }
   }
   

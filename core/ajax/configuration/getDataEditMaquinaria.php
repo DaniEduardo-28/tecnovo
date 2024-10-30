@@ -29,8 +29,7 @@
           "descripcion" => $key['descripcion'],
           "observaciones" => $key['observaciones'],
           "estado" => $key['estado'],
-          "id_operador" => $key['id_operador'],
-          "nombre_proveedor" => $key['nombre_proveedor']
+          "id_operador" => $key['id_operador']
         );
       }
 
