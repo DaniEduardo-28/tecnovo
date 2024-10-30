@@ -124,54 +124,55 @@
 			return $VD;
 		}
 
-		public function show1($estado) {
+		public function showOperators($estado_operador = "all") {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
-
+		
 			try {
-
-				$parametros = null;
-				$sql = "SELECT m.*, o.nombre_operador
-								FROM tb_maquinaria m
-								INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
-								WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?) ";
-				if ($estado!="all") {
-					$sql .= " AND m.estado = ?";
-					$parametros[] = $estado;
+				$parametros = [];
+				$sql = "SELECT DISTINCT o.id_operador, o.nombre_operador
+						FROM vw_operadores o
+						INNER JOIN tb_maquinaria m ON o.id_operador = m.id_operador";
+		
+				if ($estado_operador != "all") {
+					$sql .= " WHERE o.estado_operador = ?";
+					$parametros[] = $estado_operador;
 				}
+		
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute($parametros);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				if (count($result)==0) {
-					throw new Exception("No se encontraron datos.");
+		
+				if (count($result) == 0) {
+					throw new Exception("No se encontraron operadores.");
 				}
-
+		
 				$VD1['error'] = "NO";
 				$VD1['message'] = "Success";
 				$VD1['data'] = $result;
 				$VD = $VD1;
-
-			} catch(PDOException $e) {
-
+		
+			} catch (PDOException $e) {
+		
 				$VD1['error'] = "SI";
 				$VD1['message'] = $e->getMessage();
 				$VD = $VD1;
-
+		
 			} catch (Exception $exception) {
-
+		
 				$VD1['error'] = "SI";
 				$VD1['message'] = $exception->getMessage();
 				$VD = $VD1;
-
-    	} finally {
+		
+			} finally {
 				$conexionClass->Close();
 			}
-
+		
 			return $VD;
 		}
+		
 
 		public function getDataEditMaquinaria($id_maquinaria) {
 
@@ -270,7 +271,7 @@
 				$sql .=" descripcion = ?, ";
 				$sql .=" observaciones = ?, ";
 				$sql .=" estado = ?, ";
-				$sql .=" id_operador = ?, ";
+				$sql .=" id_operador = ? ";
 				$sql .=" WHERE id_maquinaria = ? ";
 				$stmt = $conexion->prepare($sql);
 				if ($stmt->execute([$descripcion,$observaciones,$estado,$id_operador,$id_maquinaria])==false) {
