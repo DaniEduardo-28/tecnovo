@@ -149,7 +149,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <?php
                                   include("core/models/ClassMaquinaria.php");
                                   $dataOperador = $OBJ_MAQUINARIA->showOperators("activo");
-                                  if ($dataOperador["error"] == "NO") {
+                                  if ($dataOperador["error"] == "NO" && !empty($dataOperador["data"])) {
                                     foreach ($dataOperador["data"] as $key) {
                                       echo '<option value="' . $key['id_operador'] . '">' . $key['nombre_operador'] . '</option>';
                                     }
@@ -158,6 +158,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   }
                                   ?>
                                 </select>
+
                               </div>
                               <div class="form-group col-md-2 col-sm-6">
                                 <br>

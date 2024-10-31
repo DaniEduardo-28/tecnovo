@@ -111,54 +111,49 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
-    public function showOperators($estado_operador = "all") {
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
-	
-		try {
-			$parametros = [];
-			$sql = "SELECT DISTINCT o.id_operador, o.nombre_operador
-					FROM vw_operadores o
-					INNER JOIN tb_maquinaria m ON o.id_operador = m.id_operador";
-			
-			if ($estado_operador === "activo") {
-				$sql .= " WHERE o.estado_operador = ?";
-				$parametros[] = "activo";
-			}
-	
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-	
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron operadores.");
-			}
-	
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-	
-		} catch (PDOException $e) {
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-	
-		} catch (Exception $exception) {
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-	
-		} finally {
-			$conexionClass->Close();
-		}
-	
-		return $VD;
-	}
-	
-	
-
+	public function showOperators($estado_operador = "all") {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD = "";
+    
+        try {
+            $parametros = [];
+            $sql = "SELECT o.id_operador, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
+                    FROM tb_operador o
+                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona";
+    
+            if ($estado_operador === "activo") {
+                $sql .= " WHERE o.estado = ?";
+                $parametros[] = "activo";
+            }
+    
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute($parametros);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Agrega esta línea para verificar el resultado en el log de PHP
+            error_log(print_r($result, true));
+    
+            $VD1['data'] = $result ? $result : [];
+            $VD1['error'] = "NO";
+            $VD1['message'] = "Success";
+            $VD = $VD1;
+    
+        } catch (PDOException $e) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $e->getMessage();
+            $VD1['data'] = [];
+        } catch (Exception $exception) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $exception->getMessage();
+            $VD1['data'] = [];
+        } finally {
+            $conexionClass->Close();
+        }
+    
+        return $VD;
+    }
+    
     public function getDataEditMaquinaria($id_maquinaria) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();

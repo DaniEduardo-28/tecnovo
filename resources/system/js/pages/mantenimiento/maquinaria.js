@@ -230,3 +230,5 @@ function deleteRegistro(id_maquinaria, descripcion) {
       }
   });
 }
+
+
