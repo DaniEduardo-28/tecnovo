@@ -65,8 +65,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                     <select class="form-control" id="cboMedicoBuscar" name="cboMedicoBuscar">
                       <option value="all">Todos</option>
                       <?php
+
                       include("core/models/ClassMaquinaria.php");
-                      $dataMedico = $OBJ_MAQUINARIA->show("activo");
+                      $dataMedico = $OBJ_MAQUINARIA->show("activo", "", "", 0, 10);
                       if ($dataMedico["error"] == "NO") {
                         foreach ($dataMedico["data"] as $key) {
                       ?>
@@ -175,9 +176,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <div class="form-group col-sm-12">
                   <label for="id_trabajador">Maquinaria</label>
                   <select class="form-control" id="id_trabajador" name="id_trabajador">
+                    <option value="all">Seleccione...</option>
                     <?php
-                    $dataMaquinaria = $OBJ_MAQUINARIA->show("activo");
-                    if ($dataMaquinaria["error"] == "NO") {
+                      $dataMaquinaria = $OBJ_MAQUINARIA->show("activo","","",0,10);                    if ($dataMaquinaria["error"] == "NO") {
                       foreach ($dataMaquinaria["data"] as $key) {
                     ?>
                         <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
