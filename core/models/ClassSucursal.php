@@ -7,51 +7,50 @@
 
 		}
 
-		public function show($id_empresa,$estado) {
-
+		public function show($id_empresa, $estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
-
+		
 			try {
-
-				$sql = "SELECT * FROM `tb_fundo`";
+				$sql = "SELECT * FROM `tb_fundo` WHERE id_empresa = ?";
 				$parametros[] = $id_empresa;
-				if ($estado!="all") {
+		
+				if ($estado != "all") {
 					$sql .= " AND estado = ?";
 					$parametros[] = $estado;
 				}
+		
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute($parametros);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				if (count($result)==0) {
+		
+				if (count($result) == 0) {
 					throw new Exception("No se encontraron datos.");
 				}
-
+		
 				$VD1['error'] = "NO";
 				$VD1['message'] = "Success";
 				$VD1['data'] = $result;
 				$VD = $VD1;
-
+		
 			} catch(PDOException $e) {
-
 				$VD1['error'] = "SI";
 				$VD1['message'] = $e->getMessage();
 				$VD = $VD1;
-
+		
 			} catch (Exception $exception) {
-
 				$VD1['error'] = "SI";
 				$VD1['message'] = $exception->getMessage();
 				$VD = $VD1;
-
-    	} finally {
+		
+			} finally {
 				$conexionClass->Close();
 			}
-
+		
 			return $VD;
 		}
+		
 
 		public function getSucursalForId($id_fundo) {
 
