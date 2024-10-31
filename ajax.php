@@ -727,4 +727,5 @@ try {
   $data["message"] = $e->getMessage();
   $data["data"] = null;
   echo json_encode($data);
+  $verer;
 }
