@@ -1,53 +1,64 @@
 <?php
 
-  try {
+try {
+    // Verificar si el parámetro id_maquinaria fue proporcionado
+    $id_maquinaria = isset($_POST["id_maquinaria"]) ? $_POST["id_maquinaria"] : "";
 
-    $id_maquinaria = isset($_POST["id_maquinaria"])	? $_POST["id_maquinaria"]	: "";
+    // Verificar permisos de edición
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinaria"));
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("maquinaria"));
-
-    if ($access_options[0]['error']=="NO") {
-      if ($access_options[0]['flag_editar']==false) {
-        throw new Exception("No tienes permisos para editar este registro.");
-      }
-    }else {
-      throw new Exception("Error al verificar los permisos.");
+    if ($access_options[0]['error'] == "NO") {
+        if ($access_options[0]['flag_editar'] == false) {
+            throw new Exception("No tienes permisos para editar este registro.");
+        }
+    } else {
+        throw new Exception("Error al verificar los permisos.");
     }
 
-    if ($id_maquinaria=="") {
-      throw new Exception("No se recibió el parámetro id maquinaria.");
+    // Validar que el ID de maquinaria no esté vacío
+    if (empty($id_maquinaria)) {
+        throw new Exception("No se recibió el parámetro id_maquinaria.");
     }
 
+    // Importar la clase y obtener los datos del registro a editar
     require_once "core/models/ClassMaquinaria.php";
     $Resultado = $OBJ_MAQUINARIA->getDataEditMaquinaria($id_maquinaria);
 
-    if ($Resultado["error"]=="NO") {
+    if ($Resultado["error"] == "NO") {
+        // Formatear los datos para enviarlos al frontend en un arreglo JSON
+        foreach ($Resultado["data"] as $key) {
+            $retorno_array[] = array(
+                "id_maquinaria" => $key['id_maquinaria'],
+                "descripcion" => $key['descripcion'],
+                "observaciones" => $key['observaciones'],
+                "estado" => $key['estado'],
+                "id_operador" => $key['id_operador'],
+                "nombre_operador" => $key['nombre_operador']
+            );
+        }
 
-      foreach ($Resultado["data"] as $key) {
-        $retorno_array[] =array(
-          "id_maquinaria" => $key['id_maquinaria'],
-          "descripcion" => $key['descripcion'],
-          "observaciones" => $key['observaciones'],
-          "estado" => $key['estado'],
-          "id_operador" => $key['id_operador']
+        // Estructura de respuesta en JSON para el éxito
+        $data = array(
+            "error" => "NO",
+            "message" => "Success",
+            "data" => $retorno_array
         );
-      }
+        echo json_encode($data);
 
-      $data["error"] = "NO";
-      $data["message"] = "Success";
-      $data["data"] = $retorno_array;
-      echo json_encode($data);
-
-    }else {
-      throw new Exception($Resultado["message"]);
+    } else {
+        // Si hay un error en la obtención de datos
+        throw new Exception($Resultado["message"]);
     }
 
-  } catch (\Exception $e) {
-    $data["error"]="SI";
-    $data["message"]=$e->getMessage();
-    $data["data"] = null;
+} catch (Exception $e) {
+    // Estructura de respuesta en caso de error
+    $data = array(
+        "error" => "SI",
+        "message" => $e->getMessage(),
+        "data" => null
+    );
     echo json_encode($data);
     exit();
-  }
+}
 
- ?>
+?>
