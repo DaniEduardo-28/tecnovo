@@ -18,12 +18,12 @@ if (!isset($_SESSION['id_trabajador'])) {
     }
 
     .form-check-input {
-      margin-top: 5px;
-      margin-right: 5px;
+      margin-right: 8px;
+      position: static;
     }
 
     .form-check-label {
-      position: relative;
+      position: static;
       top: 3px;
       left: -5px;
     }
@@ -87,7 +87,8 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                       if ($access_options[0]['flag_agregar']) {
                         ?>
-                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="Agregar" id="btnAdd">
+                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="Agregar"
+                          id="btnAdd">
                           <i class="fe fe-plus-circle btn btn-icon text-success"></i>
                         </a>
                         <?php
@@ -95,7 +96,8 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                       if ($access_options[0]['flag_buscar']) {
                         ?>
-                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="Actualizar listado" id="btnSearch">
+                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top"
+                          title="Actualizar listado" id="btnSearch">
                           <i class="fa fa-refresh btn btn-icon text-primary"></i>
                         </a>
                         <?php
@@ -132,11 +134,13 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <div class="row">
                               <div class="form-group col-md-12 col-sm-12">
                                 <label for="descripcion" class="label-control">Descripción</label>
-                                <input id="descripcion" type="text" name="descripcion" class="form-control" autocomplete="off" required data-msg="Campo obligatorio...">
+                                <input id="descripcion" type="text" name="descripcion" class="form-control"
+                                  autocomplete="off" required data-msg="Campo obligatorio...">
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                 <label for="observaciones" class="label-control">Observaciones</label>
-                                <input id="observaciones" type="text" name="observaciones" class="form-control" autocomplete="off" required data-msg="Campo obligatorio...">
+                                <input id="observaciones" type="text" name="observaciones" class="form-control"
+                                  autocomplete="off" required data-msg="Campo obligatorio...">
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                 <label for="id_operador" class="label-control">Operador Seleccionado</label>
@@ -149,6 +153,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     foreach ($dataOperador["data"] as $key) {
                                       echo '<option value="' . $key['id_operador'] . '">' . $key['nombre_operador'] . '</option>';
                                     }
+                                  } else {
+                                    echo '<option value="">No hay operadores activos</option>';
                                   }
                                   ?>
                                 </select>
@@ -156,7 +162,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <div class="form-group col-md-2 col-sm-6">
                                 <br>
                                 <div class="form-check">
-                                  <input id="estado" name="estado" type="checkbox" class="form-check-input" checked="">
+                                  <input id="estado" name="estado" type="checkbox" class="form-check-input">
                                   <label for="estado" class="form-check-label">Estado</label>
                                 </div>
                               </div>

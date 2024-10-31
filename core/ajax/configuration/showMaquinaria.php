@@ -35,7 +35,7 @@ try {
             
             $options = '';
             if ($access_options[0]['flag_editar']) {
-                $options .= '<a href="javascript:getDataEdit(' . $key['id_maquinaria'] . ')" class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0"><i class="ti ti-pencil"></i></a>';
+                $options .= '<a href="javascript:editData(' . $key['id_maquinaria'] . ')" class="btn btn-icon btn-outline-primary btn-round mr-2 mb-2 mb-sm-0"><i class="ti ti-pencil"></i></a>';
             }
             if ($access_options[0]['flag_eliminar']) {
                 $options .= '<a href="javascript:deleteRegistro(' . $key['id_maquinaria'] . ", '" . str_replace('"', ' ', str_replace("'", ' ', $key['descripcion'])) . "'" . ')" class="btn btn-icon btn-outline-danger btn-round"><i class="ti ti-close"></i></a>';

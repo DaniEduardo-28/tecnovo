@@ -112,48 +112,52 @@ class ClassMaquinaria extends Conexion {
     }
 
     public function showOperators($estado_operador = "all") {
-        $conexionClass = new Conexion();
-        $conexion = $conexionClass->Open();
-        $VD = "";
-
-        try {
-            $parametros = [];
-            $sql = "SELECT DISTINCT o.id_operador, o.nombre_operador
-                    FROM vw_operadores o
-                    INNER JOIN tb_maquinaria m ON o.id_operador = m.id_operador";
-
-            if ($estado_operador != "all") {
-                $sql .= " WHERE o.estado_operador = ?";
-                $parametros[] = $estado_operador;
-            }
-
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute($parametros);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (count($result) == 0) {
-                throw new Exception("No se encontraron operadores.");
-            }
-
-            $VD1['error'] = "NO";
-            $VD1['message'] = "Success";
-            $VD1['data'] = $result;
-            $VD = $VD1;
-
-        } catch (PDOException $e) {
-            $VD1['error'] = "SI";
-            $VD1['message'] = $e->getMessage();
-            $VD = $VD1;
-        } catch (Exception $exception) {
-            $VD1['error'] = "SI";
-            $VD1['message'] = $exception->getMessage();
-            $VD = $VD1;
-        } finally {
-            $conexionClass->Close();
-        }
-
-        return $VD;
-    }
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+	
+		try {
+			$parametros = [];
+			$sql = "SELECT DISTINCT o.id_operador, o.nombre_operador
+					FROM vw_operadores o
+					INNER JOIN tb_maquinaria m ON o.id_operador = m.id_operador";
+			
+			if ($estado_operador === "activo") {
+				$sql .= " WHERE o.estado_operador = ?";
+				$parametros[] = "activo";
+			}
+	
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron operadores.");
+			}
+	
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+	
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+	
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+	
+		} finally {
+			$conexionClass->Close();
+		}
+	
+		return $VD;
+	}
+	
+	
 
     public function getDataEditMaquinaria($id_maquinaria) {
         $conexionClass = new Conexion();
@@ -227,44 +231,47 @@ class ClassMaquinaria extends Conexion {
     }
 
     public function update($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador) {
-        $conexionClass = new Conexion();
-        $conexion = $conexionClass->Open();
-        $VD = "";
-
-        try {
-            $conexion->beginTransaction();
-
-            $stmt = $conexion->prepare("SELECT * FROM `tb_maquinaria` WHERE id_maquinaria = ?");
-            $stmt->execute([$id_maquinaria]);
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (count($result) == 0) {
-                throw new Exception("No se encontró el registro de maquinaria a editar.");
-            }
-
-            $sql = "UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ?, id_operador = ? WHERE id_maquinaria = ?";
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute([$descripcion, $observaciones, $estado, $id_operador, $id_maquinaria]);
-
-            if ($stmt->rowCount() == 0) {
-                throw new Exception("Error al actualizar los datos.");
-            }
-
-            $VD = "OK";
-            $conexion->commit();
-
-        } catch(PDOException $e) {
-            $conexion->rollBack();
-            $VD = $e->getMessage();
-        } catch (Exception $exception) {
-            $conexion->rollBack();
-            $VD = $exception->getMessage();
-        } finally {
-            $conexionClass->Close();
-        }
-
-        return $VD;
-    }
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+	
+		try {
+			$conexion->beginTransaction();
+	
+			// Verificar si el ID existe antes de intentar actualizar
+			$stmt = $conexion->prepare("SELECT COUNT(*) FROM `tb_maquinaria` WHERE id_maquinaria = ?");
+			$stmt->execute([$id_maquinaria]);
+			$exists = $stmt->fetchColumn();
+	
+			if ($exists == 0) {
+				throw new Exception("No se encontró el registro de maquinaria a editar.");
+			}
+	
+			// Si existe, proceder con la actualización
+			$sql = "UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ?, id_operador = ? WHERE id_maquinaria = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$descripcion, $observaciones, $estado, $id_operador, $id_maquinaria]);
+	
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al actualizar los datos.");
+			}
+	
+			$VD = "OK";
+			$conexion->commit();
+	
+		} catch(PDOException $e) {
+			$conexion->rollBack();
+			$VD = $e->getMessage();
+		} catch (Exception $exception) {
+			$conexion->rollBack();
+			$VD = $exception->getMessage();
+		} finally {
+			$conexionClass->Close();
+		}
+	
+		return $VD;
+	}
+	
 
     public function delete($id_maquinaria) {
         $conexionClass = new Conexion();

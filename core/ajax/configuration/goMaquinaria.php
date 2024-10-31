@@ -46,6 +46,7 @@ try {
 
     switch ($accion) {
         case 'add':
+            error_log("Creando nuevo registro"); // Log temporal para agregar
             $VD = $OBJ_MAQUINARIA->insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador);
             break;
         case 'edit':
@@ -53,6 +54,7 @@ try {
             if (empty(trim($id_maquinaria))) {
                 throw new Exception("ID de maquinaria no recibido para la edición.");
             }
+            error_log("Actualizando registro con ID: $id_maquinaria"); // Log temporal para editar
             $VD = $OBJ_MAQUINARIA->update($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador);
             break;
         default:

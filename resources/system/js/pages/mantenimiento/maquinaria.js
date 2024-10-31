@@ -108,6 +108,8 @@ function showData() {
 }
 
 function saveOperation() {
+  console.log("Acción:", $("#accion").val());
+  console.log("ID Maquinaria:", $("#id_maquinaria").val());
   Swal.fire({
       title: '¿Seguro de confirmar la operación?',
       text: "No podrás revertir esta operación.",
@@ -150,19 +152,42 @@ function saveOperation() {
   });
 }
 
-function editData(data) {
-  try {
-      $("#id_maquinaria").val(data["id_maquinaria"]);
-      $("#accion").val("edit");
-      $("#descripcion").val(data["descripcion"]);
-      $("#observaciones").val(data["observaciones"]);
-      $("#id_operador").val(data["id_operador"]);
-      $("#estado").prop('checked', data["estado"].includes("Activo"));
-      addClassDiv();
-  } catch (e) {
-      runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
-  }
+function editData(id_maquinaria) {
+  $.ajax({
+      type: "POST",
+      data: { id_maquinaria: id_maquinaria },
+      url: "ajax.php?accion=getDataEditMaquinaria",
+      success: function(data) {
+          try {
+              var data1 = JSON.parse(data);
+              if (data1["error"] == "NO") {
+                  var o = data1["data"][0];
+                  $("#id_maquinaria").val(o.id_maquinaria);
+                  $("#descripcion").val(o.descripcion);
+                  $("#observaciones").val(o.observaciones);
+                  $("#id_operador").val(o.id_operador);
+                  $("#estado").prop('checked', o.estado === "activo");
+                  $("#accion").val("edit");
+                  addClassDiv();
+              } else {
+                  runAlert("Mensaje", data1["message"], "warning");
+              }
+          } catch (e) {
+              runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
+          }
+      },
+      beforeSend: function() {
+          showHideLoader('block');
+      },
+      error: function(jqXHR) {
+          runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
+      },
+      complete: function() {
+          showHideLoader('none');
+      }
+  });
 }
+
 
 function deleteRegistro(id_maquinaria, descripcion) {
   Swal.fire({
