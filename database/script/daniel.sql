@@ -113,19 +113,3 @@ FROM
     tb_operador o
 JOIN tb_persona p ON
     o.id_persona = p.id_persona;
-
-
--- Una nueva tabla de orden de gasto
-CREATE TABLE tb_orden_gasto (
-    id_orden_gasto INT AUTO_INCREMENT PRIMARY KEY,
-    id_orden INT NOT NULL,
-    id_documento INT NOT NULL,
-    id_documento_venta INT NOT NULL,
-    id_moneda INT NOT NULL,
-    id_proveedor INT NOT NULL,
-    id_gasto INT NOT NULL,
-    id_servicio INT NOT NULL,
-    serie VARCHAR(50),
-    correlativo VARCHAR(50),
-    fecha_gasto DATE
-);
