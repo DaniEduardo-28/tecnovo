@@ -559,6 +559,31 @@
 			return $VD;
 		}
 
+
+		public function getProveedorPorDocumento($numero_documento) {
+			$conexion = $this->Open();
+			$response = ["error" => "SI", "message" => ""];
+	
+			try {
+				$sql = "SELECT * FROM vw_proveedores WHERE num_documento_proveedor = ?";
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute([$numero_documento]);
+	
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				if (count($result) > 0) {
+					$response["error"] = "NO";
+					$response["data"] = $result;
+				} else {
+					throw new Exception("Proveedor no encontrado.");
+				}
+			} catch (PDOException $e) {
+				$response["message"] = "Error en la consulta: " . $e->getMessage();
+			}
+	
+			$this->Close();
+			return $response;
+		}
+
 	}
 
 	$OBJ_PROVEEDOR = new ClassProveedor();

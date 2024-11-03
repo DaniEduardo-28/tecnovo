@@ -1,980 +1,288 @@
-var tableForm = $('#table_form').DataTable({
-  language: languageSpanish,
-  searching: false,
-  ordering: false,
-  lengthChange: false,
-  paging: false,
-  destroy: true,
-  info: false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'cod_gasto' },
-    { 'data': 'name_gasto' },
-    { 'data': 'precio_unitario' },
-    { 'data': 'cantidad' },
-    { 'data': 'total' },
-    { 'data': 'opcion' },
-    { 'data': 'name_tabla' }
-  ],
-  columnDefs: [
-    {
-      "targets": [1, 4],
-      "visible": false,
-      "searchable": false
-    }
-  ]
-});
-
-var tableProducto = $('#tabla_productos').DataTable({
-  language: languageSpanish,
-  searching: false,
-  ordering: false,
-  lengthChange: false,
-  paging: false,
-  destroy: true,
-  info: false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'cod_gasto' },
-    { 'data': 'name_gasto' },
-    { 'data': 'precio_unitario' },
-    { 'data': 'cantidad' },
-    { 'data': 'opcion' },
-    { 'data': 'name_gasto_string' },
-  ],
-  columnDefs: [
-    {
-      "targets": [1],
-      "visible": false,
-      "searchable": false
-    }
-  ]
-});
-console.log(tableProducto.data());
-
-var tableListado = $('#tabla_listado').DataTable({
-  language: languageSpanish,
-  searching: false,
-  ordering: false,
-  lengthChange: false,
-  paging: false,
-  destroy: true,
-  info: false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'id_orden_gasto' },
-    { 'data': 'nombre_proveedor' },
-    { 'data': 'name_usuario' },
-    { 'data': 'fecha_gasto' },
-    { 'data': 'num_registros' },
-    { 'data': 'total' },
-    { 'data': 'opciones' }
-  ],
-  columnDefs: [
-    {
-      "targets": [1, 3],
-      "visible": false,
-      "searchable": false
-    }
-  ]
-});
-
-function validarYEnviar() {
-  var number_document = $("#num_documento").val();
-  var id_document = $("#id_documento").val();
-
-  // Validar que tenga 8 o 11 dígitos
-  if (number_document.length === 8 || number_document.length === 11) {
-    // Verificar si el tipo de documento es válido
-    if (id_document != 1 && id_document != 3) {
-      return false;
-    }
-
-    // Determinar el tipo de documento: DNI o RUC
-    var tipo = id_document == 1 ? 'dni' : 'ruc';
-
-    // Validar si la acción es 'add'
-    if ($("#accion").val() == "add" && id_document) {
-      // Realizar la solicitud AJAX
-      $.ajax({
-        url: "ajax.php?accion=buscar-" + tipo, // Cambia por la ruta correcta
-        method: "POST",
-        dataType: "json", // Especifica que la respuesta será JSON
-        data: { dni: number_document, ruc: number_document },
-        success: function (response) {
-          if (response.success) {
-            let nombres = id_document == 1 ? response.data.nombres : response.data.nombre_o_razon_social;
-            let apellidos = id_document == 1 ? response.data.apellido_paterno + " " + response.data.apellido_materno : '';
-            let direccion = id_document == 3 ? response.data.direccion_completa : '';
-
-            // Mostrar los datos en los campos correspondientes
-            $("#nombres").val(nombres);
-            $("#apellidos").val(apellidos);
-            $("#direccion").val(direccion);
-          } else {
-            console.log("Error en la API: " + response.error);
-          }
-        },
-        error: function (xhr, status, error) {
-          console.log("Error en la solicitud AJAX: " + error);
-        },
-      });
-    }
-  } else {
-    alert("El número de documento debe tener 8 o 11 dígitos.");
-  }
-}
-
 $(document).ready(function () {
-
-  $("#id_documento").change(function () {
-    changeOption();
-  });
-
-  $("#num_documento").on("keypress", function (event) {
-    if (event.which == 13) {
-      validarYEnviar();
-    }
-  });
-
-  $("#num_documento").on("blur", function () {
-    validarYEnviar();
-  });
-
-  $("#contenedor_formulario").addClass("d-none");
-  $("#contenedor_proveedor").addClass("d-none");
-  $("#contenedor_productos").addClass("d-none");
-
-  $("#btnAdd").click(function () {
-    $("#contenedor_formulario").removeClass("d-none");
-    $("#contenedor_listado").addClass("d-none");
-    $("#panelOptions").addClass("d-none");
-    $("#accion").val("add");
-    /* $("#txtEstadoForm").val("En proceso ..."); */
-  });
-
-  $("#btnCancelForm").click(function () {
-    cancelarForm();
-    $("#btnSaveForm").removeClass("d-none");
-    $("#btnSeleccionarProveedor").removeClass("d-none");
-    $("#btnSeleccionarProducto").removeClass("d-none");
-  });
-
-  $("#btnSeleccionarProveedor").click(function () {
-    $("#contenedor_formulario").addClass("d-none");
-    $("#contenedor_proveedor").removeClass("d-none");
-    showDataProveedor();
-  });
-
-  $('#btnSearchProveedor').click(function () {
-    showDataProveedor();
-  });
-
-  $('#btnSearchProducto').click(function () {
-    showListaAgregarDetalle();
-  });
-
-  $("#txtBuscarProveedor").keypress(function (e) {
-    if (e.which == 13) {
-      showDataProveedor();
-    }
-  });
-
-  $("#txtBuscarProducto").keypress(function (e) {
-    if (e.which == 13) {
-      showListaAgregarDetalle();
-    }
-  });
-
-  $("#btnCancelarProveedor").click(function () {
-    $("#contenedor_formulario").removeClass("d-none");
-    $("#contenedor_proveedor").addClass("d-none");
-    $("#id_proveedor").val("0");
-    $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
-    $("#nombre_proveedor").html("No Seleccionado");
-  });
-
-  $("#btnSiguienteProductos").click(function () {
-    $("#contenedor_formulario").removeClass("d-none");
-    $("#contenedor_productos").addClass("d-none");
-  });
-
-  $('#tabla_productos tbody').on('click', '#btnCheckProducto', function () {
-    try {
-      console.log(data); // Para verificar si los datos de la fila son correctos
-      var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
-      var num = tableForm.data().count() + 1;
-      var data = tableProducto.row($(this).parents('tr')).data();
-      var cod_gasto = data["cod_gasto"];
-
-      if (num > 1) {
-        if (verificarproductoontable(name_tabla, cod_gasto) == true) {
-          generateAlert('warning', 'El Gasto ya se encuentra agregado a la lista.');
-          return;
-        }
-      }
-      var name_gasto = data["name_gasto"];
-      var precio_unitario = data["precio_unitario"];
-      precio_unitario = (Math.round(precio_unitario * 100) / 100).toFixed(2);
-      var cantidad = $(this).parents("tr").find("td").eq(3).find("input").val();
-      var total = precio_unitario * cantidad;
-      total = (Math.round(total * 100) / 100).toFixed(2);
-      tableForm.row.add({
-        "num": num,
-        "cod_gasto": id_gasto,
-        "name_gasto": name_gasto,
-        "name_tabla": name_tabla,
-        "precio_unitario": '<input class="form-control" value="' + precio_unitario + '" step="0.10" type="number" min="0" >',
-        "cantidad": '<input class="form-control" value="' + cantidad + '" type="number" min="1">',
-        "total": total,
-        "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
-      }).draw();
-
-      generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">Se añadio ' + [name_gasto] + ' a la orden</h6>');
-      calcularTotal();
-
-
-    } catch (e) {
-      runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
-    }
-  });
-
-  $('#table_form tbody').on('click', '#btnDeleteProducto', function (e) {
-    try {
-      e.preventDefault();
-      tableForm.row($(this).parents('tr')).remove().draw();
-      actualizarnumeracion();
-      calcularTotal();
-    } catch (e) {
-      runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
-    }
-  });
-
-  $('#table_form tbody').on('change', 'input', function (e) {
-    try {
-      var element = $(this).parents("tr").find("td").eq(2).find("input");
-      element.val(dosDecimales(element));
-      calcularTotal();
-
-    } catch (e) {
-      runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
-    }
-  });
-
+  // Inicialización de la interfaz
+  $("#panelForm").addClass("d-none");
+  $("#divSinDatos").addClass("d-none");
   showData();
 
-  $("#btnSaveForm").click(function (e) {
-
-    try {
-      var id_orden_gasto = $("#id_orden_gasto").val();
-      var accion = $('#accion').val();
-      var id_proveedor = $("#id_proveedor").val();
-      var fecha_gasto = $("#txtFechaGastoForm").val();
-      var observaciones = $("#txtObservacionesForm").val();
-      var codigo_moneda = $("#codigo_moneda").val();
-
-      var countRows = tableForm.data().count();
-
-      if (id_proveedor == "0" || id_proveedor == "" || id_proveedor == 0) {
-        runAlert("Faltan Datos", "Tiene que seleccionar un proveedor.", "warning")
-        return;
-      }
-
-
-      if ($("#codigo_moneda").val() == "") {
-        runAlert("Advertencia", "Selecciona la moneda con la que se realizará la operación", "warning");
-        return;
-      }
-
-      if (countRows == 0) {
-        runAlert("Faltan Datos", "Tiene que seleccionar por lo menos un producto.", "warning")
-        return;
-      }
-
-      var datos = [];
-      var objeto = {};
-
-      $('#table_form > tbody  > tr').each(function () {
-
-        var cantidad = $(this).find("td").eq(3).find("input").val();
-        var precio_unitario = $(this).find("td").eq(2).find("input").val();
-        var data = tableForm.row($(this)).data();
-
-        datos.push({
-          "name_tabla": data['name_tabla'],
-          "cod_gasto": data['cod_gasto'],
-          "cantidad_solicitada": cantidad,
-          "precio_unitario": precio_unitario,
-        });
-
-      });
-
-      objeto.datos = datos;
-
-      var form = 'id_proveedor=' + id_proveedor + '&id_orden_gasto=' + id_orden_gasto +
-        '&fecha_gasto=' + fecha_gasto + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
-        '&observaciones=' + observaciones + "&array_detalle=" + JSON.stringify(objeto);
-
-      Swal.fire({
-        title: '¿Seguro de confirmar la operación?',
-        text: "No podrás revertir esta operación.",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#22c63b',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Realizar ahora!'
-      }).then(function (result) {
-        if (result.value) {
-          $.ajax({
-            type: "POST",
-            url: "ajax.php?accion=goOrdenGasto",
-            datatype: "json",
-            data: form,
-            success: function (data) {
-              try {
-                var response = JSON.parse(data);
-                if (response['error'] == "SI") {
-                  runAlert("Oh No...!!!", response['message'], "warning");
-                } else {
-                  cancelarForm();
-                  runAlert("Bien hecho...!!!", response['message'], "success");
-                }
-              } catch (e) {
-                runAlert("Oh No...!!!", data + e, "error");
-              }
-            },
-            error: function (data) {
-              runAlert("Oh No...!!!", data, "error");
-            },
-            beforeSend: function (xhr) {
-              showHideLoader('block');
-            },
-            complete: function (jqXHR, textStatus) {
-              showHideLoader('none');
-              showData();
-            }
-          });
-        }
-      });
-
-    } catch (e) {
-      runAlert("Oh No...!!!", "Error en Try Catch : " + e, "error");
-    }
-
-  });
-
-  $('#btnBuscarListado').click(function () {
-    showData();
-  });
-
-  $("#txtBuscarListado").keypress(function (e) {
-    if (e.which == 13) {
+  // Eventos de búsqueda y filtrado
+  $("#btnSearch").click(function () {
       showData();
-    }
   });
 
-  $('#btnAgregarDetalle').click(function () {
-
-    if ($("#codigo_moneda").val() == "") {
-      runAlert("Advertencia", "Selecciona la moneda con la que se realizará la operación", "warning");
-      return;
-    }
-
-    var title = "AGREGAR " + $('input:radio[name=opcion_busqueda]:checked').val().toUpperCase();
-    $("#title_modal").html(title);
-
-    tableProducto.clear().draw();
-    $("#txtBuscarProducto").val("");
-    $("#contenedor_formulario").addClass("d-none");
-    $("#contenedor_productos").removeClass("d-none");
-    showListaAgregarDetalle();
-
+  $("#txtBuscar").keypress(function (e) {
+      if (e.which == 13) {
+          showData();
+      }
   });
 
+  // Evento para mostrar el formulario de nueva orden de gasto
+  $("#btnAdd").click(function () {
+      $("#frmDatos")[0].reset();
+      $("#accion").val("add");
+      addClassDiv();
+  });
+
+  // Evento para cancelar y ocultar el formulario
+  $("#btnCancel").click(function () {
+      removeClassDiv();
+  });
+
+  // Evento de envío del formulario
+  $("#frmDatos").submit(function (e) {
+      e.preventDefault();
+      saveOperation();
+  });
+
+  // Detectar cuando el usuario sale del campo "N° Documento"
+  $("#numero_documento_cliente").on("blur", function () {
+    buscarProveedorPorDocumento();
+  });
 });
 
-function cancelarForm() {
-  $("#contenedor_formulario").addClass("d-none");
-  $("#contenedor_listado").removeClass("d-none");
-  $("#panelOptions").removeClass("d-none");
-  $("#accion").val("");
-  $("#txtTotalForm").val("S/ 0.00");
-  $("#txtObservacionesForm").val("S/ 0.00");
-  $("#id_proveedor").val("0");
-  $("#id_orden_gasto").val("0");
-  $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
-  $("#nombre_proveedor").html("No Seleccionado");
-  $("#form_datos")[0].reset();
-  var rows = tableForm.rows().remove().draw();
-  calcularTotal();
-}
-
-function actualizarnumeracion() {
-
-  try {
-
-    var cantidad = tableForm.data().count();
-    var num = 1;
-
-    if (cantidad > 0) {
-
-      $('#table_form > tbody  > tr').each(function () {
-        tableForm.cell(num - 1, 0).data(num).draw();
-        num++;
-      });
-
-    }
-
-  } catch (e) {
-    runAlert("Oh No...!!!", "Error en TryCatch Actualizar Numeración : " + e, "error");
-  }
-
-}
-
-function calcularTotal() {
-
-  $("#txtTotalForm").val("0.00");
-
-  try {
-
-    var count = tableForm.data().count();
-    var num = 1;
-    var suma_total = 0.00;
-
-    if (count > 0) {
-
-      $('#table_form > tbody  > tr').each(function () {
-
-        var precio_unitario = $(this).find("td").eq(2).find("input").val();
-        var cantidad = $(this).find("td").eq(3).find("input").val();
-        var total = cantidad * precio_unitario;
-        total = (Math.round(total * 100) / 100).toFixed(2);
-        tableForm.cell(num - 1, 7).data(total).draw();
-        suma_total += parseFloat(total);
-        num++;
-
-      });
-
-      suma_total = (Math.round(suma_total * 100) / 100).toFixed(2);
-      $("#txtTotalForm").val(suma_total);
-      return suma_total;
-    }
-
-    return 0.00;
-
-  } catch (e) {
-    runAlert("Oh No...!!!", "Error en TryCatch Calcular Total: " + e, "error");
-    return 0.00;
-  }
-}
-
-function verificarproductoontable(name_tabla, cod_gasto) {
-
-  try {
-    var num = 0;
-    $('#table_form > tbody  > tr').each(function () {
-      var data = tableForm.row($(this)).data();
-      if (data['cod_gasto'] == cod_gasto && data['name_tabla'] == name_tabla) {
-        num++;
-      }
-    });
-    if (num > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch (e) {
-    runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
-    return false;
-  }
-
-}
-
-function showDataProveedor() {
-
-  $("#tbody_proveedor").html("");
-  $("#paginador_proveedor").addClass("d-none");
-  paginador = $("#paginador_proveedor");
-  var items = 9, numeros = 6;
+// Función para mostrar datos con paginación
+function showData() {
+  paginador = $(".pagination");
+  var items = 6, numeros = 6;
   init_paginator(paginador, items, numeros);
   set_callback(get_data_callback);
   cargaPagina(0);
-
 }
 
+// Callback para cargar los datos de órdenes de gasto
 function get_data_callback() {
-  var valor = $("#txtBuscarProveedor").val();
-  var id_documento = $("#cboDocuProveedor").val();
+  var valor = $("#txtBuscar").val();
+  var id_documento = $("#cboDocumentoBuscar").val();
   $.ajax({
-    data: {
-      limit: itemsPorPagina,
-      offset: desde,
-      valor: valor,
-      id_documento: id_documento,
-      estado: 1
-    },
-    beforeSend: function (xhr) {
-      showHideLoader('block');
-    },
-    complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
-      if (totalPaginas == 1 && pagina == 0) {
-        paginador.find(".next_link").hide();
+      data: {
+          limit: itemsPorPagina,
+          offset: desde,
+          valor: valor,
+          id_documento: id_documento
+      },
+      beforeSend: function () {
+          showHideLoader("block");
+      },
+      complete: function () {
+          showHideLoader("none");
+          if (totalPaginas == 1 && pagina == 0) {
+              paginador.find(".next_link").hide();
+          }
+      },
+      type: "POST",
+      url: "ajax.php?accion=showOrdenGasto",
+  })
+  .done(function (data) {
+      try {
+          var data1 = JSON.parse(data);
+          if (data1["error"] == "NO") {
+              if (pagina == 0) {
+                  creaPaginador(data1["cantidad"]);
+              }
+              
+              // Genera el cuerpo de la tabla
+              var innerdivHtml = "";
+              var o = data1["data"];
+              for (var i = 0; i < o.length; i++) {
+                  innerdivHtml += '<div class="col-xxl-3 col-xl-4 col-sm-6">';
+                  innerdivHtml += '<div class="card card-statistics">';
+                  innerdivHtml += '<div class="card-body py-4">';
+                  innerdivHtml += '<h5 class="mb-0">' + o[i].nombre_proveedor + '</h5>';
+                  innerdivHtml += '<p>' + o[i].estado + o[i].options + '</p>';
+                  innerdivHtml += "<p><strong>Documento:</strong> " + o[i].name_documento + " " + o[i].serie + "-" + o[i].correlativo + "</p>";
+                  innerdivHtml += "<p><strong>Fecha:</strong> " + o[i].fecha_gasto + "</p>";
+                  innerdivHtml += "</div>";
+                  innerdivHtml += "</div>";
+                  innerdivHtml += "</div>";
+              }
+
+              $("#divDatos").html(innerdivHtml);
+              $("#divSinDatos").addClass("d-none");
+              $("#divPaginador").removeClass("d-none");
+          } else {
+              console.log(data1["message"]);
+              $("#divSinDatos").removeClass("d-none");
+              $("#divPaginador").addClass("d-none");
+              $("#divDatos").html("");
+          }
+      } catch (err) {
+          console.log("Error: " + err);
+          $("#divSinDatos").removeClass("d-none");
+          $("#divPaginador").addClass("d-none");
+          $("#divDatos").html("");
       }
-    },
-    type: "POST",
-    url: 'ajax.php?accion=showProveedor'
-  }).done(function (data, textStatus, jqXHR) {
-    try {
-      var data1 = JSON.parse(data);
-      if (data1["error"] == "NO") {
-
-        if (pagina == 0) {
-          creaPaginador(data1["cantidad"]);
-        }
-
-        // genera el cuerpo de la tabla
-        var innerdivHtml = "";
-        var o = data1["data"];
-
-        for (var i = 0; i < o.length; i++) {
-          innerdivHtml += '<tr>';
-          innerdivHtml += '<td>';
-          innerdivHtml += '<div class="d-flex align-items-center">';
-          innerdivHtml += '<div class="bg-img mr-4">';
-          innerdivHtml += '<img src="' + o[i].src_imagen + '" class="img-fluid" alt="Proveedor">';
-          innerdivHtml += '</div>';
-          innerdivHtml += '<p class="font-weight-bold">' + o[i].apellidos + o[i].nombres + '</p>';
-          innerdivHtml += '</div>';
-          innerdivHtml += '</td>';
-          innerdivHtml += '<td>' + o[i].name_documento + '</td>';
-          innerdivHtml += '<td>' + o[i].num_documento + '</td>';
-          innerdivHtml += '<td>' + o[i].direccion_completa + '</td>';
-          innerdivHtml += '<td>' + o[i].telefono + '</td>';
-          innerdivHtml += '<td>' + o[i].btnseleccionar + '</td>';
-          innerdivHtml += '</tr>';
-        }
-
-        $("#paginador_proveedor").removeClass("d-none");
-        $("#tbody_proveedor").html(innerdivHtml);
-
-      } else {
-        console.log(data1["message"]);
-        $("#paginador_proveedor").addClass("d-none");
-        $("#tbody_proveedor").html("");
-      }
-    }
-    catch (err) {
-      runAlert("Message", err + data, "warning");
-      $("#paginador_proveedor").addClass("d-none");
-      $("#tbody_proveedor").html("");
-    }
-
-  }).fail(function (jqXHR, textStatus, textError) {
-    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+  })
+  .fail(function (jqXHR, textStatus) {
+      console.log("Error en la petición: " + textStatus);
   });
 }
 
-function showListaAgregarDetalle() {
-
-  tableProducto.clear().draw();
-  $("#div_paginador_productos").addClass("d-none");
-  paginador = $("#paginador_productos");
-  var items = 10, numeros = 6;
-  init_paginator(paginador, items, numeros);
-  set_callback(get_data_callback_detalle);
-  cargaPagina(0);
-
+// Función para mostrar el formulario de agregar/editar
+function addClassDiv() {
+  $("#panelForm").removeClass("d-none");
+  $("#panelTabla").addClass("d-none");
+  $("#panelOptions").addClass("d-none");
 }
 
-function get_data_callback_detalle() {
-  tableProducto.clear().draw();
-  var id_moneda = $("#codigo_moneda").val();
-  var valor = $("#txtBuscarProducto").val();
-  var tipo = $('input:radio[name=opcion_busqueda]:checked').val();
-  $("#div_paginador_productos").addClass("d-none");
-  $.ajax({
-    data: {
-      limit: itemsPorPagina,
-      offset: desde,
-      id_moneda: id_moneda,
-      valor: valor,
-      tipo: tipo
-    },
-    beforeSend: function (xhr) {
-      showHideLoader('block');
-    },
-    complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
-      if (totalPaginas == 1 && pagina == 0) {
-        paginador.find(".next_link").hide();
+// Función para ocultar el formulario y volver a la tabla
+function removeClassDiv() {
+  $("#panelForm").addClass("d-none");
+  $("#panelTabla").removeClass("d-none");
+  $("#panelOptions").removeClass("d-none");
+  $("#frmDatos")[0].reset();
+}
+
+// Función para guardar una nueva orden de gasto o actualizar una existente
+function saveOperation() {
+  Swal.fire({
+      title: "¿Seguro de confirmar la operación?",
+      text: "No podrás revertir esta operación.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, realizar ahora!"
+  }).then(function (result) {
+      if (result.value) {
+          var form = $("#frmDatos");
+          var formdata = new FormData(form[0]);
+
+          $.ajax({
+              type: "POST",
+              url: "ajax.php?accion=goOrdenGasto",
+              contentType: false,
+              processData: false,
+              data: formdata,
+              success: function (data) {
+                  try {
+                      var response = JSON.parse(data);
+                      if (response["error"] == "SI") {
+                          Swal.fire("Error", response["message"], "warning");
+                      } else {
+                          removeClassDiv();
+                          showData();
+                          Swal.fire("Éxito", response["message"], "success");
+                      }
+                  } catch (e) {
+                      console.log("Error en JSON: " + e);
+                  }
+              },
+              error: function () {
+                  Swal.fire("Error", "Error en la petición", "error");
+              }
+          });
       }
-    },
-    type: "POST",
-    url: 'ajax.php?accion=showDetalleParaOrdenGasto'
-  }).done(function (data, textStatus, jqXHR) {
-    try {
-
-      var data1 = JSON.parse(data);
-      if (data1["error"] == "NO") {
-
-        if (pagina == 0) {
-          creaPaginador(data1["cantidad"]);
-        }
-
-        var o = data1["data"];
-        for (var i = 0; i < o.length; i++) {
-
-          tableProducto.row.add({
-            "num": o[i].num,
-            "descripcion": o[i].descripcion,
-            "cod_gasto": o[i].cod_gasto,
-            "seleccionar": o[i].seleccionar
-          }).draw();
-
-          var name_gasto = '<div class="d-flex align-items-center">';
-          name_gasto += '<div class="bg-img mr-4">';
-          name_gasto += '<img src="' + o[i].src_imagen + '" class="img-fluid"';
-          name_gasto += 'alt="Gasto" id="img_producto">';
-          name_gasto += '</div>';
-          name_gasto += '<p class="font-weight-bold">' + o[i].descripcion + '</p>';
-          name_gasto += '</div>';
-
-          tableProducto.row.add({
-            "num": o[i].num,
-            "cod_gasto": o[i].cod_gasto,
-            "name_gasto": name_gasto,
-            "opcion": o[i].seleccionar,
-            "name_gasto_string": o[i].descripcion
-          }).draw();
-
-
-        }
-
-        $("#div_paginador_productos").removeClass("d-none");
-
-      } else {
-        console.log(data1["message"]);
-        $("#div_paginador_productos").addClass("d-none");
-      }
-    }
-    catch (err) {
-      runAlert("Message", err + data, "warning");
-      $("#div_paginador_productos").addClass("d-none");
-    }
-
-  }).fail(function (jqXHR, textStatus, textError) {
-    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
   });
 }
 
-function seleccionarProveedor(id_proveedor, proveedor, src_imagen) {
-  $("#contenedor_formulario").removeClass("d-none");
-  $("#contenedor_proveedor").addClass("d-none");
-  $("#id_proveedor").val(id_proveedor);
-  $('#img_proveedor').attr('src', src_imagen);
-  $("#nombre_proveedor").html(proveedor);
-}
-
-function showData() {
-
-  tableListado.clear().draw();
-  $("#paginador_listado").addClass("d-none");
-  paginador = $("#paginador_listado");
-  var items = 10, numeros = 6;
-  init_paginator(paginador, items, numeros);
-  set_callback(get_data_callback2);
-  cargaPagina(0);
-
-}
-
-function get_data_callback2() {
-
-  tableListado.clear().draw();
-  var fecha_inicio = $("#txtFechaInicioBuscarListado").val();
-  var fecha_fin = $("#txtFechaFinBuscarListado").val();
-  var tipo_busqueda = $("#cboTipoBuscarListado").val();
-  var valor = $("#txtBuscarListado").val();
-
-  $.ajax({
-    data: {
-      limit: itemsPorPagina,
-      offset: desde,
-      valor: valor,
-      tipo_busqueda: tipo_busqueda,
-      fecha_fin: fecha_fin,
-      fecha_inicio: fecha_inicio
-    },
-    beforeSend: function (xhr) {
-      showHideLoader('block');
-    },
-    complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
-      if (totalPaginas == 1 && pagina == 0) {
-        paginador.find(".next_link").hide();
-      }
-    },
-    type: "POST",
-    url: 'ajax.php?accion=showOrdenGasto'
-  }).done(function (data, textStatus, jqXHR) {
-    try {
-
-      var data1 = JSON.parse(data);
-      if (data1["error"] == "NO") {
-
-        if (pagina == 0) {
-          creaPaginador(data1["cantidad"]);
-        }
-
-        var o = data1["data"];
-
-        for (var i = 0; i < o.length; i++) {
-
-          tableListado.row.add({
-            "num": o[i].num,
-            "id_orden_gasto": o[i].id_orden_gasto,
-            "nombre_proveedor": o[i].nombre_proveedor,
-            "name_usuario": o[i].name_usuario,
-            "fecha_gasto": o[i].fecha_gasto,
-            "num_registros": o[i].num_registros,
-            "total": o[i].total,
-            "opciones": o[i].options
-          }).draw();
-
-        }
-
-        $("#paginador_listado").removeClass("d-none");
-
-      } else {
-        console.log(data1["message"]);
-      }
-    }
-    catch (err) {
-      runAlert("Message", err + data, "warning");
-    }
-
-  }).fail(function (jqXHR, textStatus, textError) {
-    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
-  });
-
-}
-
+// Función para obtener datos de una orden de gasto para edición
 function getDataEdit(id_orden_gasto) {
-
-  try {
-
-    cancelarForm();
-
-    $.ajax({
+  $.ajax({
       type: "POST",
       data: {
-        id_orden_gasto: id_orden_gasto
+          id_orden_gasto: id_orden_gasto
       },
-
       url: "ajax.php?accion=getDataEditOrdenGasto",
       success: function (data) {
-        try {
-
-          var data1 = JSON.parse(data);
-          if (data1["error"] == "NO") {
-            var o = data1["data"];
-            $("#id_orden_gasto").val(o[0].id_orden_gasto);
-            $("#id_proveedor").val(o[0].id_proveedor);
-            $("#nombre_proveedor").html(o[0].nombre_proveedor);
-            $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
-            $("#txtFechaGastoForm").val(o[0].fecha_gasto);
-            $("#txtObservacionesForm").val(o[0].observaciones);
-            $("#codigo_moneda").val(o[0].id_moneda);
-
-            for (var i = 0; i < o.length; i++) {
-
-              var name_gasto = '<div class="d-flex align-items-center">';
-              name_gasto += '<div class="bg-img mr-4">';
-              name_gasto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
-              name_gasto += 'alt="Gasto" id="img_producto">';
-              name_gasto += '</div>';
-              name_gasto += '<p class="font-weight-bold" id="nombre_proveedor">' + o[i].name_gasto + '</p>';
-              name_gasto += '</div>';
-
-              tableForm.row.add({
-                "num": i + 1,
-                "cod_gasto": o[i].cod_gasto,
-                "name_tabla": o[i].name_tabla,
-                "name_gasto": name_gasto,
-                "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0">',
-                "cantidad": '<input class="form-control" value="' + o[i].cantidad_solicitada + '" type="number" min="1">',
-                "total": o[i].total,
-                "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
-              }).draw();
-
-            }
-
-            $("#contenedor_formulario").removeClass("d-none");
-            $("#contenedor_listado").addClass("d-none");
-            $("#panelOptions").addClass("d-none");
-            $("#accion").val("edit");
-            $("#txtEstadoForm").val("En proceso ...");
-            calcularTotal();
-
-          } else {
-            runAlert("Message", data1["message"], "warning");
-          }
-        } catch (e) {
-          runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
-          showHideLoader('none');
-        }
-      },
-      beforeSend: function (xhr) {
-        showHideLoader('block');
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
-      },
-      complete: function (jqXHR, textStatus) {
-        showHideLoader('none');
-      }
-    });
-
-  } catch (e) {
-    runAlert("Oh No...!!!", "Error Try Catch " + e, "warning");
-  }
-
-}
-
-function verRegistro(id_orden_gasto) {
-
-  try {
-
-    cancelarForm();
-
-    $.ajax({
-      type: "POST",
-      data: {
-        id_orden_gasto: id_orden_gasto
-      },
-      url: "ajax.php?accion=getDataVerOrdenGasto",
-      success: function (data) {
-        try {
-          var data1 = JSON.parse(data);
-          if (data1["error"] == "NO") {
-            var o = data1["data"];
-            $("#id_orden_gasto").val(o[0].id_orden_gasto);
-            $("#id_proveedor").val(o[0].id_proveedor);
-            $("#nombre_proveedor").html(o[0].nombre_proveedor);
-            $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
-            $("#txtFechaGastoForm").val(o[0].fecha_gasto);
-            $("#txtObservacionesForm").val(o[0].observaciones);
-            $("#codigo_moneda").val(o[0].id_moneda);
-
-            for (var i = 0; i < o.length; i++) {
-
-              var name_gasto = '<div class="d-flex align-items-center">';
-              name_gasto += '<div class="bg-img mr-4">';
-              name_gasto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
-              name_gasto += 'alt="Gasto" id="img_producto">';
-              name_gasto += '</div>';
-              name_gasto += '<p class="font-weight-bold">' + o[i].name_gasto + '</p>';
-              name_gasto += '</div>';
-
-              tableForm.row.add({
-                "num": i + 1,
-                "name_tabla": o[i].name_tabla,
-                "cod_gasto": o[i].cod_gasto,
-                "name_gasto": name_gasto,
-                "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0" disabled>',
-                "cantidad": '<input class="form-control" value="' + o[i].cantidad_solicitada + '" type="number" min="1" disabled>',
-                "total": o[i].total,
-                "opcion": '',
-              }).draw();
-
-            }
-
-            $("#contenedor_formulario").removeClass("d-none");
-            $("#contenedor_listado").addClass("d-none");
-            $("#panelOptions").addClass("d-none");
-            $("#accion").val("ver");
-
-            $("#btnSaveForm").addClass("d-none");
-            $("#btnSeleccionarProveedor").addClass("d-none");
-            $("#btnSeleccionarProducto").addClass("d-none");
-
-            calcularTotal();
-
-          } else {
-            runAlert("Message", data1["message"], "warning");
-          }
-        } catch (e) {
-          runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
-          showHideLoader('none');
-        }
-      },
-      beforeSend: function (xhr) {
-        showHideLoader('block');
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
-      },
-      complete: function (jqXHR, textStatus) {
-        showHideLoader('none');
-      }
-    });
-
-  } catch (e) {
-    runAlert("Oh No...!!!", "Error Try Catch " + e, "warning");
-  }
-
-}
-
-function deleteRegistro(id_orden_gasto) {
-
-  try {
-
-    var parametros = {
-      "id_orden_compra": id_orden_gasto
-    };
-
-    Swal.fire({
-      title: '¿Seguro de anular la orden de gasto seleccionada?',
-      text: "No podrás revertir esta operación.",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#22c63b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Anular ahora!'
-    }).then(function (result) {
-      if (result.value) {
-        $.ajax({
-          type: "POST",
-          url: "ajax.php?accion=deleteOrdenGasto",
-          datatype: "json",
-          data: parametros,
-          success: function (data) {
-            try {
-              var response = JSON.parse(data);
-              if (response['error'] == "SI") {
-                runAlert("Oh No...!!!", response['message'], "warning");
+          try {
+              var data1 = JSON.parse(data);
+              if (data1["error"] == "NO") {
+                  var o = data1["data"][0];
+                  $("#id_orden_gasto").val(o.id_orden_gasto);
+                  $("#id_documento").val(o.id_documento);
+                  $("#id_documento_venta").val(o.id_documento_venta);
+                  $("#id_moneda").val(o.id_moneda);
+                  $("#id_proveedor").val(o.id_proveedor);
+                  $("#id_gasto").val(o.id_gasto);
+                  $("#id_servicio").val(o.id_servicio);
+                  $("#serie").val(o.serie);
+                  $("#correlativo").val(o.correlativo);
+                  $("#fecha_gasto").val(o.fecha_gasto);
+                  $("#accion").val("edit");
+                  addClassDiv();
               } else {
-                showData();
-                runAlert("Bien hecho...!!!", response['message'], "success");
+                  Swal.fire("Error", data1["message"], "warning");
               }
-            } catch (e) {
-              runAlert("Oh No...!!!", e, "error");
-            }
-          },
-          error: function (data) {
-            runAlert("Oh No...!!!", data, "error");
-          },
-          beforeSend: function (xhr) {
-            showHideLoader('block');
-          },
-          complete: function (jqXHR, textStatus) {
-            showHideLoader('none');
+          } catch (e) {
+              console.log("Error en JSON: " + e);
           }
-        });
+      },
+      error: function () {
+          Swal.fire("Error", "Error en la petición", "error");
       }
-    });
+  });
+}
 
-  } catch (e) {
-    runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
+// Función para eliminar una orden de gasto
+function deleteRegistro(id_orden_gasto, orden_info) {
+  Swal.fire({
+      title: "¿Seguro de eliminar la orden de gasto: " + orden_info + "?",
+      text: "No podrás revertir esta operación.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar ahora!"
+  }).then(function (result) {
+      if (result.value) {
+          $.ajax({
+              type: "POST",
+              url: "ajax.php?accion=deleteOrdenGasto",
+              data: { id_orden_gasto: id_orden_gasto },
+              success: function (data) {
+                  try {
+                      var response = JSON.parse(data);
+                      if (response["error"] == "SI") {
+                          Swal.fire("Error", response["message"], "warning");
+                      } else {
+                          showData();
+                          Swal.fire("Éxito", response["message"], "success");
+                      }
+                  } catch (e) {
+                      console.log("Error en JSON: " + e);
+                  }
+              },
+              error: function () {
+                  Swal.fire("Error", "Error en la petición", "error");
+              }
+          });
+      }
+  });
+}
+
+function buscarProveedorPorDocumento() {
+  const numeroDocumento = $("#numero_documento_cliente").val().trim();
+
+  if (numeroDocumento === "") {
+    return;
   }
+
+  $.ajax({
+    url: "ajax.php?accion=getDataProveedor",
+    type: "POST",
+    data: {
+      numero_documento: numeroDocumento,
+    },
+    dataType: "json",
+    success: function (response) {
+      if (response.error === "NO") {
+        // Autocompletar los campos con la información obtenida
+        const proveedor = response.data;
+        $("#nombres").val(proveedor.nombre_proveedor);
+        $("#apellidos").val(proveedor.apellidos_proveedor);
+        $("#direccion").val(proveedor.direccion_proveedor);
+        $("#telefono").val(proveedor.telefono_proveedor);
+        $("#correo").val(proveedor.correo_proveedor);
+      } else {
+        // Limpia los campos si no se encuentra el proveedor
+        $("#nombres").val("");
+        $("#apellidos").val("");
+        $("#direccion").val("");
+        $("#telefono").val("");
+        $("#correo").val("");
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error al buscar proveedor:", error);
+    },
+  });
 }
