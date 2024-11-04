@@ -113,3 +113,58 @@ FROM
     tb_operador o
 JOIN tb_persona p ON
     o.id_persona = p.id_persona;
+
+-- Al cargar la BD, puede que ciertas tablas pierdan su primary key
+-- Añadirlo al tb_cliente_fundo para que siga operativo correctamente
+ALTER TABLE `tb_cliente_fundo` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+
+-- Eliminar la anterior tabla de detalle gasto
+DROP TABLE tb_detalle_gasto;
+
+-- Una nueva tabla de tb_detalle_gasto
+CREATE TABLE `tb_detalle_gasto` (
+  `id_detalle` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_orden_gasto` INT NOT NULL,
+  `name_tabla` VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cod_producto` VARCHAR(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `descripcion` VARCHAR(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cantidad` DECIMAL(18,2) NOT NULL,
+  `precio_unitario` DECIMAL(18,3) NOT NULL,
+  `descuento` DECIMAL(18,2) DEFAULT '0.00',
+  `sub_total` DECIMAL(18,2) NOT NULL,
+  `tipo_igv` VARCHAR(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `igv` DECIMAL(18,2) NOT NULL,
+  `total` DECIMAL(18,2) NOT NULL,
+  PRIMARY KEY (`id_detalle`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Eliminar la anterior tabla tb_orden_gasto
+DROP TABLE tb_orden_gasto;
+
+-- Una nueva tabla de tb_orden_gasto
+CREATE TABLE tb_orden_gasto (
+  id_orden_gasto INT NOT NULL,
+  id_documento_compra INT NOT NULL,
+  name_documento_compra VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  serie VARCHAR(4) COLLATE utf8mb4_unicode_ci NOT NULL,
+  correlativo VARCHAR(12) COLLATE utf8mb4_unicode_ci UNSIGNED NOT NULL,
+  id_documento_proveedor BIGINT UNSIGNED NOT NULL,
+  name_documento_proveedor VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  numero_documento_proveedor VARCHAR(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  proveedor VARCHAR(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  direccion VARCHAR(500) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  telefono VARCHAR(30) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  correo VARCHAR(150) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  fecha_gasto DATETIME NOT NULL,
+  descuento_total DECIMAL(18,2) NULL DEFAULT '0.00',
+  sub_total DECIMAL(18,2) NOT NULL,
+  igv DECIMAL(18,2) NOT NULL,
+  total DECIMAL(18,2) NOT NULL,
+  monto_recibido DECIMAL(18,2) NULL DEFAULT NULL,
+  vuelto DECIMAL(18,2) NULL DEFAULT NULL,
+  id_moneda INT NOT NULL,
+  codigo_moneda VARCHAR(4) COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  signo_moneda VARCHAR(10) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  abreviatura_moneda VARCHAR(10) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  flag_enviado CHAR(1) COLLATE utf8mb4_vi_0900_ai_ci NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
