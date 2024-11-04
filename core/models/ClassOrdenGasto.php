@@ -222,6 +222,49 @@ class ClassOrdenGasto extends Conexion
 			$this->Close();
 		}
 	}
+
+	public function getServicios() {
+		$conexion = $this->Open();
+		try {
+			// Consulta para obtener los servicios
+			$sql = "SELECT id_servicio, name_servicio FROM tb_servicio";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+			if (!$result) {
+				throw new Exception("No se encontraron servicios.");
+			}
+	
+			return $result;
+		} catch (PDOException $e) {
+			throw new Exception("Error al obtener los servicios: " . $e->getMessage());
+		} finally {
+			$this->Close();
+		}
+	}
+
+	public function getProductos() {
+		$conexion = $this->Open();
+		try {
+			// Consulta para obtener los productos
+			$sql = "SELECT id_gasto, name_gasto FROM tb_gasto";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute();
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+			if (!$result) {
+				throw new Exception("No se encontraron servicios.");
+			}
+	
+			return $result;
+		} catch (PDOException $e) {
+			throw new Exception("Error al obtener los productos: " . $e->getMessage());
+		} finally {
+			$this->Close();
+		}
+	}
+	
 	
 	
 }
