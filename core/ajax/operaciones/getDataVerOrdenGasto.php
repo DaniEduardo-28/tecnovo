@@ -11,11 +11,11 @@
         throw new Exception("No tienes permisos para ver este registro.");
       }
     }else {
-      throw new Exception("Error al verificar los permisos.");
+      throw new Exception(message: "Error al verificar los permisos.");
     }
 
     if ($id_orden_gasto=="") {
-      throw new Exception("No se recibió el parámetro id orden.");
+      throw new Exception("No se recibió el parámetro id orden gasto.");
     }
 
     require_once "core/models/ClassOrdenGasto.php";
@@ -27,16 +27,15 @@
         $retorno_array[] =array(
           "id_orden_gasto" => $key['id_orden_gasto'],
           "id_proveedor" => $key['id_proveedor'],
-          "nombre_proveedor" => $key['nombre_proveedor'],
+          "name_proveedor" => $key['nombre_proveedor'],
           "src_imagen_proveedor" => $key['src_imagen_proveedor'],
           "fecha_gasto" => date('Y-m-d', strtotime($key['fecha_gasto'])),
-          "observaciones" => $key['observaciones'],
-          "cod_gasto" => $key['cod_gasto'],
+          "cod_producto" => $key['cod_producto'],
           "id_moneda" => $key['id_moneda'],
-          "name_gasto" => $key['name_gasto'],
+          "name_producto" => $key['name_producto'],
           "name_tabla" => $key['name_tabla'],
           "precio_unitario" => $key['precio_unitario'],
-          "cantidad_solicitada" => $key['cantidad_solicitada'],
+          "cantidad" => $key['cantidad'],
           "total" => $key['total']
         );
       }

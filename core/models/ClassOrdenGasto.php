@@ -295,7 +295,7 @@ class ClassOrdenGasto extends Conexion
 		return $VD;
 	}
 
-	public function getDataEditOrdenCompra($id_orden_gasto) {
+	public function getDataEditOrdenGasto($id_orden_gasto) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -345,7 +345,7 @@ class ClassOrdenGasto extends Conexion
 		return $VD;
 	}
 
-	public function getDataVerOrdenCompra($id_orden_gasto) {
+	public function getDataVerOrdenGasto($id_orden_gasto) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -448,7 +448,7 @@ class ClassOrdenGasto extends Conexion
 		return $VD;
 	}
 
-	public function getDataPrintOrdenCompra($id_orden_gasto) {
+	public function getDataPrintOrdenGasto($id_orden_gasto) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -490,7 +490,7 @@ class ClassOrdenGasto extends Conexion
 		return $VD;
 	}
 
-	public function getDataEditOrdenCompraIngreso($id_orden_gasto) {
+	public function getDataEditOrdenGastoIngreso($id_orden_gasto) {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();

@@ -58,18 +58,17 @@ try {
             }
 
             // Preparar cada registro para la salida
-            $retorno_array[] = [
+            $retorno_array[] =array(
                 "num" => $count + $offset,
                 "id_orden_gasto" => $key['id_orden_gasto'],
-                "nombre_proveedor" => $key['nombre_proveedor'],
-                "name_usuario" => $key['nombres_trabajador'],
+                "name_proveedor" => $key['nombre_proveedor'],
                 "fecha_gasto" => date('d/m/Y H:i', strtotime($key['fecha_gasto'])),
                 "num_registros" => '&nbsp;&nbsp;&nbsp;' . $key['num_registros'],
                 "total" => $key['signo_moneda'] . ' ' . $key['total'],
-                "options" => $options
-            ];
-            $count++;
-        }
+                "options" => "$options"
+              );
+              $count++;
+            }
 
         // Respuesta de éxito en formato JSON
         $data["error"] = "NO";

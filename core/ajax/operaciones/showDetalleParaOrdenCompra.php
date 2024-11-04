@@ -14,7 +14,7 @@
 
     if ($access_options[0]['error']=="NO") {
       if ($access_options[0]['flag_buscar']==false) {
-        throw new Exception("No tienes permisos para realizar busquedas.");
+        throw new Exception(message: "No tienes permisos para realizar busquedas.");
       }
     }else {
       throw new Exception("Error al verificar los permisos.");
