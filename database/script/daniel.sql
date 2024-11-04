@@ -68,31 +68,55 @@ FROM
 -- Vista de orden de gasto
 CREATE VIEW vw_orden_gasto AS 
 SELECT
-    og.id_orden_gasto,
-    p.id_proveedor,
-    p.nombre_proveedor,
-    p.src_imagen_proveedor,
-    og.fecha_gasto,
-    og.observaciones,
-    m.id_moneda,
-    dg.cod_gasto,
+    o.id_orden_gasto,
+    o.id_proveedor,
+    pr.nombre_proveedor,
+    pr.src_imagen_proveedor,
+    o.fecha_gasto,
+    dg.cod_producto,
     dg.name_tabla,
-    g.name_gasto,
+    pro.name_servicio AS name_producto,
     dg.precio_unitario,
-    dg.cantidad_solicitada,
-    (
-        dg.precio_unitario * dg.cantidad_solicitada
-    ) AS total
+    dg.cantidad,
+    dg.descuento,
+    ((dg.precio_unitario * dg.cantidad) - dg.descuento) AS sub_total,
+    dg.tipo_igv,
+    dg.igv,
+    ((dg.precio_unitario * dg.cantidad - dg.descuento) - ((dg.precio_unitario * dg.cantidad - dg.descuento) * dg.igv)) AS total
 FROM
-    tb_orden_gasto og
-JOIN vw_proveedores p ON
-    og.id_proveedor = p.id_proveedor
-JOIN tb_moneda m ON
-    og.id_moneda = m.id_moneda
+    tb_orden_gasto o
+JOIN vw_proveedores pr ON
+    pr.id_proveedor = o.id_proveedor
 JOIN tb_detalle_gasto dg ON
-    dg.id_orden_gasto = og.id_orden_gasto AND dg.name_tabla = 'gasto'
-JOIN tb_gasto g ON
-    g.id_gasto = dg.cod_gasto;
+    dg.id_orden_gasto = o.id_orden_gasto AND dg.name_tabla = 'servicio'
+JOIN tb_servicio pro ON
+    pro.id_servicio = dg.cod_producto
+UNION
+SELECT
+    o.id_orden_gasto,
+    o.id_proveedor,
+    pr.nombre_proveedor,
+    pr.src_imagen_proveedor,
+    o.fecha_gasto,
+    dg.cod_producto,
+    dg.name_tabla,
+    pro.name_gasto AS name_producto,
+    dg.precio_unitario,
+    dg.cantidad,
+    dg.descuento,
+    ((dg.precio_unitario * dg.cantidad) - dg.descuento) AS sub_total,
+    dg.tipo_igv,
+    dg.igv,
+    ((dg.precio_unitario * dg.cantidad - dg.descuento) - ((dg.precio_unitario * dg.cantidad - dg.descuento) * dg.igv)) AS total
+FROM
+    tb_orden_gasto o
+JOIN vw_proveedores pr ON
+    pr.id_proveedor = o.id_proveedor
+JOIN tb_detalle_gasto dg ON
+    dg.id_orden_gasto = o.id_orden_gasto AND dg.name_tabla = 'producto'
+JOIN tb_gasto pro ON
+    pro.id_gasto = dg.cod_producto;
+
 
 -- Vista de operadores 
 -- Este último para facilitar el llamado de los datos del operador
@@ -122,21 +146,22 @@ ALTER TABLE `tb_cliente_fundo` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT, add
 DROP TABLE tb_detalle_gasto;
 
 -- Una nueva tabla de tb_detalle_gasto
-CREATE TABLE `tb_detalle_gasto` (
-  `id_detalle` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `id_orden_gasto` INT NOT NULL,
-  `name_tabla` VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cod_producto` VARCHAR(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `descripcion` VARCHAR(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cantidad` DECIMAL(18,2) NOT NULL,
-  `precio_unitario` DECIMAL(18,3) NOT NULL,
-  `descuento` DECIMAL(18,2) DEFAULT '0.00',
-  `sub_total` DECIMAL(18,2) NOT NULL,
-  `tipo_igv` VARCHAR(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `igv` DECIMAL(18,2) NOT NULL,
-  `total` DECIMAL(18,2) NOT NULL,
-  PRIMARY KEY (`id_detalle`)
+CREATE TABLE tb_detalle_gasto (
+  id_detalle BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  id_orden_gasto INT NOT NULL,
+  name_tabla VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  cod_producto VARCHAR(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  descripcion VARCHAR(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  cantidad DECIMAL(18,2) NOT NULL,
+  precio_unitario DECIMAL(18,3) NOT NULL,
+  descuento DECIMAL(18,2) DEFAULT 0.00,
+  sub_total DECIMAL(18,2) NOT NULL,
+  tipo_igv VARCHAR(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  igv DECIMAL(18,2) NOT NULL,
+  total DECIMAL(18,2) NOT NULL,
+  PRIMARY KEY (id_detalle)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 
 -- Eliminar la anterior tabla tb_orden_gasto
 DROP TABLE tb_orden_gasto;
@@ -144,27 +169,19 @@ DROP TABLE tb_orden_gasto;
 -- Una nueva tabla de tb_orden_gasto
 CREATE TABLE tb_orden_gasto (
   id_orden_gasto INT NOT NULL,
-  id_documento_compra INT NOT NULL,
-  name_documento_compra VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  id_documento_venta INT NOT NULL,
   serie VARCHAR(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  correlativo VARCHAR(12) COLLATE utf8mb4_unicode_ci UNSIGNED NOT NULL,
-  id_documento_proveedor BIGINT UNSIGNED NOT NULL,
-  name_documento_proveedor VARCHAR(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  numero_documento_proveedor VARCHAR(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  proveedor VARCHAR(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  direccion VARCHAR(500) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  telefono VARCHAR(30) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  correo VARCHAR(150) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
+  correlativo VARCHAR(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  id_proveedor INT NOT NULL,
   fecha_gasto DATETIME NOT NULL,
-  descuento_total DECIMAL(18,2) NULL DEFAULT '0.00',
+  descuento_total DECIMAL(18,2) DEFAULT 0.00,
   sub_total DECIMAL(18,2) NOT NULL,
   igv DECIMAL(18,2) NOT NULL,
   total DECIMAL(18,2) NOT NULL,
-  monto_recibido DECIMAL(18,2) NULL DEFAULT NULL,
-  vuelto DECIMAL(18,2) NULL DEFAULT NULL,
-  id_moneda INT NOT NULL,
-  codigo_moneda VARCHAR(4) COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  signo_moneda VARCHAR(10) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  abreviatura_moneda VARCHAR(10) COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL,
-  flag_enviado CHAR(1) COLLATE utf8mb4_vi_0900_ai_ci NULL DEFAULT '1'
+  monto_recibido DECIMAL(18,2) DEFAULT NULL,
+  vuelto DECIMAL(18,2) DEFAULT NULL,
+  id_moneda INT NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `tb_orden_gasto` CHANGE `igv` `igv_total` DECIMAL(18,2) NOT NULL;
+ALTER TABLE `tb_orden_gasto` CHANGE `total` `monto_total` DECIMAL(18,2) NOT NULL;

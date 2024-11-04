@@ -160,11 +160,11 @@
 
       $flag_mostar_menu = false;
       $flag_ordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordenventa"));
-/*       $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordencompra"));
- */      $flag_promocion = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("promocion"));
+      $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordencompra"));
+      $flag_promocion = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("promocion"));
       $flag_ingreso = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ingreso"));
       $flag_ordengasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordengasto"));
-      if ($flag_ordenventa /* || $flag_ordencompra  */|| $flag_promocion || $flag_ingreso || $flag_ordengasto) {
+      if ($flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso || $flag_ordengasto) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -180,9 +180,9 @@
             <span class="nav-title">Operaciones</span>
           </a>
           <ul aria-expanded="false">
-            <!-- <?php if ($flag_ordencompra): ?>
+            <?php if ($flag_ordencompra): ?>
               <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
-            <?php endif; ?> -->
+            <?php endif; ?>
             <?php if ($flag_ordengasto): ?>
               <li id="submenuordengasto"> <a href="?view=ordengasto">Registro de Gastos</a></li>
             <?php endif; ?>
