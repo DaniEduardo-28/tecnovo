@@ -218,8 +218,9 @@ $(document).ready(function(){
 
     $('#frmDatos').submit(function(e){
       e.preventDefault();
-      // registrarCita();
+      registrarCita(); // Ahora esta función debería ejecutarse al enviar el formulario
     });
+    
 
 });
 
@@ -767,7 +768,7 @@ function cargarMascotas(){
 }
 
 function registrarCita(){
-
+  console.log("Función registrarCita ejecutada");
   Swal.fire({
     title: '¿Seguro de confirmar la operación?',
     text: "No podrás revertir esta operación.",

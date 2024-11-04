@@ -713,6 +713,56 @@ function calcularTotal() {
   }
 }
 
+$("#btnSave").click(function (e) {
+  e.preventDefault();
+  saveCita();
+});
+
+function saveCita() {
+  // Obtener los valores de los campos del formulario
+  const formData = {
+      nombres: $("#nombres").val(),
+      apellidos: $("#apellidos").val(),
+      direccion: $("#direccion").val(),
+      fundo: $("#id_fundo_cliente").val(),
+      precio: $("#txtPrecio").val(),
+      cantidad_hc: $("#txtCantidad_HC").val(),
+      fecha_inicio: $("#txtFechaInicio").val(),
+      hora_inicio: $("#txtHoraInicio").val(),
+      fecha_termino: $("#txtFechaTermino").val(),
+      hora_fin: $("#txtHoraFin").val(),
+      observaciones: $("#txtSintomas").val()
+  };
+
+  // Validación simple para asegurar que todos los campos requeridos estén completos
+  if (!formData.nombres || !formData.fundo || !formData.precio || !formData.fecha_inicio || !formData.hora_inicio) {
+      alert("Por favor, complete todos los campos requeridos.");
+      return;
+  }
+
+  // Enviar los datos al servidor con AJAX
+  $.ajax({
+      url: "ajax/saveCita.php", // Archivo PHP que procesará la solicitud
+      type: "POST",
+      data: formData,
+      success: function (response) {
+          const result = JSON.parse(response);
+          if (result.error === "NO") {
+              alert("Cita guardada correctamente.");
+              // Cerrar el modal y actualizar el cronograma o calendario
+              $("#modal-calendario").modal("hide");
+              // Aquí podrías llamar a una función para refrescar el calendario
+          } else {
+              alert("Error: " + result.message);
+          }
+      },
+      error: function (xhr, status, error) {
+          alert("Ocurrió un error: " + error);
+      }
+  });
+}
+
+
 function verificarproductoontable(name_tabla, cod_producto) {
   try {
     var num = 0;

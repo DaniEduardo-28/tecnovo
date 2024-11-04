@@ -2512,6 +2512,39 @@ class ClassOrdenVenta extends Conexion
 		}
 		return $VD;
 	}
+
+
+	public function guardarCita($datos) {
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+	
+		try {
+			$sql = "INSERT INTO tb_cronograma (nombres, apellidos, direccion, id_fundo, precio, cantidad_hc, fecha_inicio, hora_inicio, fecha_termino, hora_fin, observaciones) 
+					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$stmt = $conexion->prepare($sql);
+			
+			$stmt->execute([
+				$datos['nombres'],
+				$datos['apellidos'],
+				$datos['direccion'],
+				$datos['fundo'],
+				$datos['precio'],
+				$datos['cantidad_hc'],
+				$datos['fecha_inicio'],
+				$datos['hora_inicio'],
+				$datos['fecha_termino'],
+				$datos['hora_fin'],
+				$datos['observaciones']
+			]);
+	
+			return $stmt->rowCount() > 0;
+		} catch (PDOException $e) {
+			throw new Exception("Error al guardar la cita: " . $e->getMessage());
+		} finally {
+			$conexionClass->Close();
+		}
+	}
+	
 }
 
 $OBJ_ORDEN_VENTA = new ClassOrdenVenta();
