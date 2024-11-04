@@ -30,6 +30,106 @@ var table = $("#example").DataTable({
   ],
 });
 
+var tableCronograma = $("#cronogramaTable").DataTable({
+  language: languageSpanish,
+  destroy: true,
+  searching: false,
+  paging: false,
+  ordering: false,
+  columns: [
+    { data: "maquinaria" },
+    { data: "servicio" },
+    { data: "cliente" },
+    { data: "fundo" },
+    { data: "fecha_inicio" },
+    { data: "fecha_fin" },
+    { data: "observaciones" },
+    { data: "options" } // Opciones como ver, editar o eliminar
+  ],
+});
+
+function saveCronograma() {
+  const data = {
+    maquinaria: $('#id_maquinaria').val(),
+    servicio: $('#id_servicio').val(),
+    cliente: $('#id_cliente').val(),
+    fundo: $('#id_fundo').val(),
+    fecha_inicio: $('#fecha_inicio').val(),
+    fecha_fin: $('#fecha_fin').val(),
+    observaciones: $('#observaciones').val(),
+  };
+
+  $.ajax({
+    url: 'ajax.php?accion=saveCronograma',
+    method: 'POST',
+    dataType: 'json',
+    data: data,
+    success: function(response) {
+      if (response.error === "NO") {
+        tableCronograma.ajax.reload(); // Recargar la tabla
+        $('#modal-cronograma').modal('hide');
+        alert('Cronograma guardado con éxito');
+      } else {
+        alert('Error: ' + response.message);
+      }
+    },
+    error: function() {
+      alert('Error en la solicitud AJAX');
+    }
+  });
+}
+
+function getCronograma(id) {
+  $.ajax({
+    url: 'ajax.php?accion=getCronograma',
+    method: 'POST',
+    dataType: 'json',
+    data: { id: id },
+    success: function(response) {
+      if (response.error === "NO") {
+        const data = response.data;
+        $('#id_maquinaria').val(data.maquinaria);
+        $('#id_servicio').val(data.servicio);
+        $('#id_cliente').val(data.cliente);
+        $('#id_fundo').val(data.fundo);
+        $('#fecha_inicio').val(data.fecha_inicio);
+        $('#fecha_fin').val(data.fecha_fin);
+        $('#observaciones').val(data.observaciones);
+        $('#modal-cronograma').modal('show');
+      } else {
+        alert('Error: ' + response.message);
+      }
+    },
+    error: function() {
+      alert('Error en la solicitud AJAX');
+    }
+  });
+}
+
+function eliminarCronograma(id) {
+  if (confirm("¿Seguro que deseas eliminar este cronograma?")) {
+    $.ajax({
+      url: 'ajax.php?accion=deleteCronograma',
+      method: 'POST',
+      dataType: 'json',
+      data: { id: id },
+      success: function(response) {
+        if (response.error === "NO") {
+          tableCronograma.ajax.reload(); // Recargar la tabla
+          alert('Cronograma eliminado correctamente');
+        } else {
+          alert('Error: ' + response.message);
+        }
+      },
+      error: function() {
+        alert('Error en la solicitud AJAX');
+      }
+    });
+  }
+}
+
+
+
 var table_detalle = $("#example1").DataTable({
   language: languageSpanish,
   destroy: true,

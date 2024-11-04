@@ -70,9 +70,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataMedico = $OBJ_MAQUINARIA->show("activo", "", "", 0, 10);
                       if ($dataMedico["error"] == "NO") {
                         foreach ($dataMedico["data"] as $key) {
-                          ?>
+                      ?>
                           <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
-                          <?php
+                      <?php
                         }
                       }
                       ?>
@@ -88,24 +88,28 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataDocumento = $OBJ_DOCUMENTO_IDENTIDAD->show("activo");
                       if ($dataDocumento["error"] == "NO") {
                         foreach ($dataDocumento["data"] as $key) {
-                          ?>
+                      ?>
                           <option value="<?= $key['id_documento']; ?>"><?= $key['name_documento']; ?></option>
-                          <?php
+                      <?php
                         }
                       }
                       ?>
                     </select>
                   </div>
 
-                  <!-- Nuevo agregado para fundos -->
                   <div class="form-group col-sm-4 col-md-3">
-                    <label for="cboFundoBuscar">Fundo</label>
+                    <label for="cboFundoBuscar">Fundos</label>
                     <select class="form-control" id="cboFundoBuscar" name="cboFundoBuscar">
                       <option value="all">Todos</option>
                       <?php
+                      include_once("core/models/ClassSucursal.php"); // Incluye la clase
+                      $OBJ_SUCURSAL = new ClassSucursal(); // Crea una instancia de la clase
+                      $dataFundo = $OBJ_SUCURSAL->show(1, 1); // Cambia los parámetros si es necesario
+
+                      // Verifica si hay datos y los carga en el select
                       if ($dataFundo["error"] == "NO") {
-                        foreach ($dataFundo["data"] as $key) {
-                          echo "<option value='{$key['id_fundo']}'>{$key['nombre']}</option>";
+                        foreach ($dataFundo["data"] as $fundo) {
+                          echo "<option value='{$fundo['id_fundo']}'>{$fundo['nombre']}</option>";
                         }
                       } else {
                         echo "<option value=''>No se encontraron fundos</option>";
@@ -113,6 +117,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                       ?>
                     </select>
                   </div>
+
+
 
                   <div class="col-md-4 col-sm-12">
                     <label for="">&nbsp;</label>
@@ -177,9 +183,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                     $dataMaquinaria = $OBJ_MAQUINARIA->show("activo", "", "", 0, 10);
                     if ($dataMaquinaria["error"] == "NO") {
                       foreach ($dataMaquinaria["data"] as $key) {
-                        ?>
+                    ?>
                         <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
-                        <?php
+                    <?php
                       }
                     }
                     ?>
@@ -189,14 +195,15 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <div class="form-group col-sm-12">
                   <label for="cboServicioForm">Servicio:</label>
                   <select name="cboServicioForm" id="cboServicioForm" class="form-control" required="true">
+                  <option value="all">Seleccione...</option>
                     <?php
                     include("core/models/ClassServicio.php");
                     $dataServicio = $OBJ_SERVICIO->show_all();
                     if ($dataServicio["error"] == "NO") {
                       foreach ($dataServicio["data"] as $key) {
-                        ?>
+                    ?>
                         <option value="<?= $key['id_servicio']; ?>"><?= $key['name_servicio'] ?></option>
-                        <?php
+                    <?php
                       }
                     }
                     ?>
@@ -206,13 +213,14 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <div class="form-group col-sm-12">
                   <label for="id_documento">Documento Cliente</label>
                   <select class="form-control" id="id_documento" name="id_documento">
+                  <option value="all">Seleccione...</option>
                     <?php
                     $dataDocumento = $OBJ_DOCUMENTO_IDENTIDAD->show("activo");
                     if ($dataDocumento["error"] == "NO") {
                       foreach ($dataDocumento["data"] as $key) {
-                        ?>
+                    ?>
                         <option value="<?= $key['id_documento']; ?>"><?= $key['name_documento']; ?></option>
-                        <?php
+                    <?php
                       }
                     }
                     ?>
@@ -249,9 +257,19 @@ if (!isset($_SESSION['id_trabajador'])) {
                 </div>
 
                 <div class="form-group col-sm-12">
-                  <label for="id_fundo_cliente">Fundos</label>
-                  <select class="form-control" id="id_fundo_cliente" name="id_fundo_cliente">
-
+                  <label for="id_fundo">Fundo</label>
+                  <select class="form-control" id="id_fundo" name="id_fundo">
+                  <option value="all">Seleccione...</option>
+                    <?php
+                    $dataFundo = $OBJ_SUCURSAL->show(1,1);
+                    if ($dataFundo["error"] == "NO") {
+                      foreach ($dataFundo["data"] as $key) {
+                    ?>
+                        <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre']; ?></option>
+                    <?php
+                      }
+                    }
+                    ?>
                   </select>
                 </div>
 
@@ -403,6 +421,32 @@ if (!isset($_SESSION['id_trabajador'])) {
     </div>
   </form>
   <!-- END MODAL EDIT-->
+
+  <!-- Modal for Cronograma -->
+  <div class="modal fade" id="modal-cronograma" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Registrar/Editar Cronograma</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Campos del formulario -->
+          <input type="text" id="id_maquinaria" class="form-control" placeholder="Maquinaria">
+          <input type="text" id="id_servicio" class="form-control" placeholder="Servicio">
+          <input type="text" id="id_cliente" class="form-control" placeholder="Cliente">
+          <input type="text" id="id_fundo" class="form-control" placeholder="Fundo">
+          <input type="date" id="fecha_inicio" class="form-control">
+          <input type="date" id="fecha_fin" class="form-control">
+          <textarea id="observaciones" class="form-control" placeholder="Observaciones"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="saveCronograma()">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- JavaScript files-->
   <?php include("views/overall/js.php"); ?>
