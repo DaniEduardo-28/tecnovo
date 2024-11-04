@@ -1,305 +1,943 @@
-// Calcular subtotal y total
-function calcularTotales() {
-  const cantidad = parseFloat(document.getElementById('cantidad_solicitada').value) || 0;
-  const precio = parseFloat(document.getElementById('precio_unitario').value) || 0;
-  const descuento = parseFloat(document.getElementById('descuento').value) || 0;
-  const subtotal = (cantidad * precio) - descuento;
-
-  document.getElementById('txtGravada').value = subtotal.toFixed(2);
-
-  const igv = parseFloat(document.getElementById('txtIgv').value) || 1;
-  const total = subtotal * igv;
-  document.getElementById('txtTotal').value = total.toFixed(2);
-}
-
-// Manejar el envío del formulario
-async function enviarFormulario() {
-  const data = {
-      codigo_documento_venta: document.getElementById('codigo_documento_venta').value,
-      serie: document.getElementById('serie').value,
-      correlativo: document.getElementById('correlativo').value,
-      codigo_documento_cliente: document.getElementById('codigo_documento_cliente').value,
-      numero_documento_cliente: document.getElementById('numero_documento_cliente').value,
-      nombres: document.getElementById('nombres').value,
-      apellidos: document.getElementById('apellidos').value,
-      direccion: document.getElementById('direccion').value,
-      telefono: document.getElementById('telefono').value,
-      correo: document.getElementById('correo').value,
-      fecha: document.getElementById('fecha').value,
-      codigo_moneda: document.getElementById('codigo_moneda').value,
-      cantidad_solicitada: document.getElementById('cantidad_solicitada').value,
-      precio_unitario: document.getElementById('precio_unitario').value,
-      descuento: document.getElementById('descuento').value,
-      subtotal: document.getElementById('txtGravada').value,
-      igv: document.getElementById('txtIgv').value,
-      total: document.getElementById('txtTotal').value,
-  };
-
-  try {
-      const response = await fetch('/api/gastos/orden-gasto', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-          alert('Registro guardado con éxito');
-          // Aquí puedes añadir lógica para resetear el formulario si es necesario
-      } else {
-          alert('Error al guardar el registro');
+var tableForm = $('#table_form').DataTable({
+    language: languageSpanish,
+    searching: false,
+    ordering: false,
+    lengthChange: false,
+    paging: false,
+    destroy : true,
+    info: false,
+    columns: [
+      { 'data': 'name_tabla' },
+      { 'data': 'num' },
+      { 'data': 'cod_producto' },
+      { 'data': 'name_producto' },
+      { 'data': 'cantidad' },
+      { 'data': 'precio_unitario' },
+      { 'data': 'descuento' },
+      { 'data': 'sub_total' },
+      { 'data': 'tipo_igv' },
+      { 'data': 'igv' },
+      { 'data': 'total' },
+      { 'data': 'opcion' }
+    ],
+    columnDefs: [
+      {
+        "targets": [1,3,9],
+        "visible": false,
+        "searchable": false
       }
-  } catch (error) {
-      console.error('Error:', error);
-      alert('Error al conectar con el servidor');
-  }
-}
-
-// Listeners para cálculo automático
-document.getElementById('cantidad_solicitada').addEventListener('input', calcularTotales);
-document.getElementById('precio_unitario').addEventListener('input', calcularTotales);
-document.getElementById('descuento').addEventListener('input', calcularTotales);
-document.getElementById('txtIgv').addEventListener('input', calcularTotales);
-
-// Asignar función de envío al botón Guardar
-document.getElementById('btnSave').addEventListener('click', function (event) {
-  event.preventDefault();
-  enviarFormulario();
-});
-
-function loadOrdenesGasto(limit = 10, offset = 0, valor = "", fechaInicio = "", fechaFin = "", tipoBusqueda = "") {
-  $.ajax({
-      url: 'showOrdenGasto.php',
-      type: 'POST',
-      dataType: 'json',
-      data: {
-          limit: limit,
-          offset: offset,
-          valor: valor,
-          fecha_inicio: fechaInicio,
-          fecha_fin: fechaFin,
-          tipo_busqueda: tipoBusqueda
-      },
-      success: function(response) {
-          if (response.error === "NO") {
-              const ordenes = response.data;
-              let html = '';
-              
-              ordenes.forEach(orden => {
-                  html += `
-                      <tr>
-                          <td>${orden.num}</td>
-                          <td>${orden.nombre_proveedor}</td>
-                          <td>${orden.name_usuario}</td>
-                          <td>${orden.fecha_gasto}</td>
-                          <td>${orden.num_registros}</td>
-                          <td>${orden.total}</td>
-                          <td>${orden.options}</td>
-                      </tr>
-                  `;
-              });
-              
-              $('#tablaOrdenGasto tbody').html(html);
-          } else {
-              alert(response.message);
-          }
-      },
-      error: function() {
-          alert('Error al cargar las órdenes de gasto.');
-      }
+    ]
   });
-}
-
-$('#btnSave').on('click', function(event) {
-  event.preventDefault();
-  const data = {
-      id_documento: $('#codigo_documento_cliente').val(),
-      id_documento_venta: $('#codigo_documento_venta').val(),
-      id_moneda: $('#codigo_moneda').val(),
-      id_proveedor: $('#codigo_proveedor').val(),
-      id_gasto: $('#codigo_gasto').val(),
-      id_servicio: $('#codigo_servicio').val(),
-      serie: $('#serie').val(),
-      correlativo: $('#correlativo').val(),
-      fecha_gasto: $('#fecha').val()
-  };
-
-  $.ajax({
-      url: 'goOrdenGasto.php',
-      type: 'POST',
-      dataType: 'json',
-      data: data,
-      success: function(response) {
-          if (response.error === "NO") {
-              alert(response.message);
-              loadOrdenesGasto(); // Recargar la lista de órdenes de gasto
-          } else {
-              alert(response.message);
-          }
-      },
-      error: function() {
-          alert('Error al guardar la orden de gasto.');
+  
+  var tableProducto = $('#tabla_productos').DataTable({
+    language: languageSpanish,
+    searching: false,
+    ordering: false,
+    lengthChange: false,
+    paging: false,
+    destroy : true,
+    info: false,
+    columns: [
+      { 'data': 'num' },
+      { 'data': 'cod_producto' },
+      { 'data': 'name_producto' },
+      { 'data': 'opcion' },
+      { 'data': 'name_producto_string' },
+    ],
+    columnDefs: [
+      {
+        "targets": [1,4,7],
+        "visible": false,
+        "searchable": false
       }
+    ]
   });
-});
-
-function editOrdenGasto(id) {
-  $.ajax({
-      url: 'getDataEditOrdenGasto.php',
-      type: 'POST',
-      dataType: 'json',
-      data: { id_orden_gasto: id },
-      success: function(response) {
-          if (response.error === "NO") {
-              const data = response.data[0];
-              $('#codigo_documento_cliente').val(data.id_documento);
-              $('#codigo_documento_venta').val(data.id_documento_venta);
-              $('#codigo_moneda').val(data.id_moneda);
-              $('#codigo_proveedor').val(data.id_proveedor);
-              $('#codigo_gasto').val(data.id_gasto);
-              $('#codigo_servicio').val(data.id_servicio);
-              $('#serie').val(data.serie);
-              $('#correlativo').val(data.correlativo);
-              $('#fecha').val(data.fecha_gasto);
-              $('#btnSave').data('edit', id); // Agregar el id a un atributo de datos
-          } else {
-              alert(response.message);
-          }
-      },
-      error: function() {
-          alert('Error al obtener los datos de la orden de gasto.');
+  
+  var tableListado = $('#tabla_listado').DataTable({
+    language: languageSpanish,
+    searching: false,
+    ordering: false,
+    lengthChange: false,
+    paging: false,
+    destroy : true,
+    info: false,
+    columns: [
+      { 'data': 'num' },
+      { 'data': 'opciones' },
+      { 'data': 'id_documento_venta' },
+      { 'data': 'id_documento_proveedor' },
+      { 'data': 'name_proveedor' },
+      { 'data': 'fecha_gasto' },
+      { 'data': 'id_moneda' },
+      { 'data': 'sub_total' },
+      { 'data': 'igv_total' },
+      { 'data': 'monto_total' }
+    ],
+    columnDefs: [
+      {
+        "targets": [1,3],
+        "visible": false,
+        "searchable": false
       }
+    ]
   });
-}
+  
+  $(document).ready(function(){
+  
+    $("#contenedor_formulario").addClass("d-none");
+    $("#contenedor_proveedor").addClass("d-none");
+    $("#contenedor_productos").addClass("d-none");
+  
+    $("#btnAdd").click(function(){
+      $("#contenedor_formulario").removeClass("d-none");
+      $("#contenedor_listado").addClass("d-none");
+      $("#panelOptions").addClass("d-none");
+      $("#accion").val("add");
+      $("#txtEstadoForm").val("En proceso ...");
+    });
+  
+    $("#btnCancelForm").click(function(){
+      cancelarForm();
+      $("#btnSaveForm").removeClass("d-none");
+      $("#btnSeleccionarProveedor").removeClass("d-none");
+      $("#btnSeleccionarProducto").removeClass("d-none");
+    });
+  
+    $("#btnSeleccionarProveedor").click(function(){
+      $("#contenedor_formulario").addClass("d-none");
+      $("#contenedor_proveedor").removeClass("d-none");
+      showDataProveedor();
+    });
+  
+    $('#btnSearchProveedor').click(function(){
+      showDataProveedor();
+    });
+  
+    $('#btnSearchProducto').click(function(){
+      showListaAgregarDetalle();
+    });
+  
+    $("#txtBuscarProveedor").keypress(function(e) {
+      if (e.which == 13 ) {
+        showDataProveedor();
+      }
+    });
+  
+    $("#txtBuscarProducto").keypress(function(e) {
+      if (e.which == 13 ) {
+        showListaAgregarDetalle();
+      }
+    });
+  
+    $("#btnCancelarProveedor").click(function(){
+      $("#contenedor_formulario").removeClass("d-none");
+      $("#contenedor_proveedor").addClass("d-none");
+      $("#id_proveedor").val("0");
+      $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
+      $("#name_proveedor").html("No Seleccionado");
+    });
+  
+    $("#btnSiguienteProductos").click(function(){
+      $("#contenedor_formulario").removeClass("d-none");
+      $("#contenedor_productos").addClass("d-none");
+    });
 
-
-function deleteOrdenGasto(id) {
-  if (confirm('¿Estás seguro de que deseas eliminar esta orden de gasto?')) {
-      $.ajax({
-          url: 'deleteOrdenGasto.php',
-          type: 'POST',
-          dataType: 'json',
-          data: { id_orden_gasto: id },
-          success: function(response) {
-              if (response.error === "NO") {
-                  alert(response.message);
-                  loadOrdenesGasto(); // Recargar la lista de órdenes de gasto
-              } else {
-                  alert(response.message);
+    // A partir de aqui, ojo con la función de tabla_productos
+  
+    $('#tabla_productos tbody').on( 'click', '#btnCheckProducto', function () {
+      try {
+        var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
+        var num = tableForm.data().count() + 1;
+        var data = tableProducto.row( $(this).parents('tr') ).data();
+        var cod_producto = data["cod_producto"];
+        if (num>1) {
+          if (verificarproductoontable(name_tabla,cod_producto)==true) {
+            generateAlert('warning', 'El Producto ya se encuentra agregado a la lista.');
+            return;
+          }
+        }
+        var name_producto = data["name_producto"];
+        var stock = data["stock"];
+        var precio_unitario = data["precio_unitario"];
+        precio_unitario = (Math.round( precio_unitario * 100 )/100 ).toFixed(2);
+        var cantidad = $(this).parents("tr").find("td").eq(3).find("input").val();
+        var total = precio_unitario * cantidad;
+        total = (Math.round( total * 100 )/100 ).toFixed(2);
+        tableForm.row.add({
+          "num": num,
+          "cod_producto": cod_producto,
+          "name_producto": name_producto,
+          "name_tabla": name_tabla,
+          "stock": stock,
+          "precio_unitario": '<input class="form-control" value="' + precio_unitario + '" step="0.10" type="number" min="0" >',
+          "cantidad": '<input class="form-control" value="' + cantidad + '" type="number" min="1">',
+          "notas": '<input class="form-control" value="" type="text">',
+          "total": total,
+          "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
+        }).draw();
+  
+        generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + data["name_producto_string"] + ' al precio de ' + precio_unitario + ' c/u.</h6>');
+        calcularTotal();
+  
+      } catch (e) {
+        runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+      }
+    });
+  
+    $('#table_form tbody').on( 'click', '#btnDeleteProducto', function (e) {
+      try {
+        e.preventDefault();
+        tableForm.row($(this).parents('tr')).remove().draw();
+        actualizarnumeracion();
+        calcularTotal();
+      } catch (e) {
+        runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+      }
+    });
+  
+    $('#table_form tbody').on( 'change', 'input', function (e) {
+      try {
+        var element = $(this).parents("tr").find("td").eq(2).find("input");
+        element.val(dosDecimales(element));
+        calcularTotal();
+      } catch (e) {
+        runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+      }
+    });
+  
+    showData();
+  
+    $("#btnSaveForm").click(function(e){
+  
+      try {
+  
+        var id_orden_compra = $("#id_orden_compra").val();
+        var accion = $('#accion').val();
+        var id_proveedor = $("#id_proveedor").val();
+        var fecha_gasto = $("#txtFechaEntregaForm").val();
+        var observaciones = $("#txtObservacionesForm").val();
+        var codigo_moneda = $("#codigo_moneda").val();
+  
+        var countRows = tableForm.data().count();
+  
+        if (id_proveedor=="0" || id_proveedor == "" || id_proveedor == 0) {
+          runAlert("Faltan Datos","Tiene que seleccionar un proveedor.","warning")
+          return;
+        }
+  
+  
+        if ($("#codigo_moneda").val()=="") {
+          runAlert("Advertencia","Selecciona la moneda con la que se realizará la operación","warning");
+          return;
+        }
+  
+        if (countRows==0) {
+          runAlert("Faltan Datos","Tiene que seleccionar por lo menos un producto.","warning")
+          return;
+        }
+  
+        var datos = [];
+        var objeto = {};
+  
+        $('#table_form > tbody  > tr').each(function(){
+  
+          var cantidad = $(this).find("td").eq(3).find("input").val();
+          var precio_unitario = $(this).find("td").eq(2).find("input").val();
+          var notas = $(this).find("td").eq(4).find("input").val();
+          var data = tableForm.row($(this)).data();
+  
+          datos.push({
+            "name_tabla" : data['name_tabla'],
+            "cod_producto" : data['cod_producto'],
+            "cantidad" : cantidad,
+            "precio_unitario" : precio_unitario
+          });
+  
+        });
+  
+        objeto.datos = datos;
+  
+        var form = 'id_proveedor=' + id_proveedor + '&id_metodo_envio=' + id_metodo_envio + '&id_orden_compra=' + id_orden_compra +
+                '&fecha_orden=' + fecha_orden + '&fecha_entrega=' + fecha_entrega + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
+                '&observaciones=' + observaciones +  "&array_detalle=" + JSON.stringify(objeto);
+  
+        Swal.fire({
+          title: '¿Seguro de confirmar la operación?',
+          text: "No podrás revertir esta operación.",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#22c63b',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si, Realizar ahora!'
+        }).then(function(result) {
+          if (result.value) {
+            $.ajax({
+              type: "POST",
+              url: "ajax.php?accion=goOrdenCompra",
+              datatype: "json",
+              data: form,
+              success: function(data){
+                      try {
+                  var response = JSON.parse(data);
+                  if (response['error']=="SI") {
+                    runAlert("Oh No...!!!",response['message'],"warning");
+                  } else {
+                    cancelarForm();
+                    runAlert("Bien hecho...!!!",response['message'],"success");
+                  }
+                } catch (e) {
+                  runAlert("Oh No...!!!",data + e,"error");
+                }
+              },
+              error: function(data){
+                runAlert("Oh No...!!!",data,"error");
+              },
+              beforeSend: function (xhr) {
+                showHideLoader('block');
+              },
+              complete: function (jqXHR, textStatus) {
+                showHideLoader('none');
+                showData();
               }
-          },
-          error: function() {
-              alert('Error al eliminar la orden de gasto.');
+            });
           }
+        });
+  
+      } catch (e) {
+        runAlert("Oh No...!!!","Error en Try Catch : " + e,"error");
+      }
+  
+    });
+  
+    $('#btnBuscarListado').click(function(){
+      showData();
+    });
+  
+    $("#txtBuscarListado").keypress(function(e) {
+      if (e.which == 13 ) {
+        showData();
+      }
+    });
+  
+    $('#btnAgregarDetalle').click(function(){
+  
+      if ($("#codigo_moneda").val()=="") {
+        runAlert("Advertencia","Selecciona la moneda con la que se realizará la operación","warning");
+        return;
+      }
+  
+      var title = "AGREGAR " + $('input:radio[name=opcion_busqueda]:checked').val().toUpperCase();
+      $("#title_modal").html(title);
+  
+      tableProducto.clear().draw();
+      $("#txtBuscarProducto").val("");
+      $("#contenedor_formulario").addClass("d-none");
+      $("#contenedor_productos").removeClass("d-none");
+      showListaAgregarDetalle();
+  
+    });
+  
+  });
+  
+  function cancelarForm(){
+    $("#contenedor_formulario").addClass("d-none");
+    $("#contenedor_listado").removeClass("d-none");
+    $("#panelOptions").removeClass("d-none");
+    $("#accion").val("");
+    $("#txtTotalForm").val("S/ 0.00");
+    $("#txtObservacionesForm").val("S/ 0.00");
+    $("#id_proveedor").val("0");
+    $("#id_orden_compra").val("0");
+    $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
+    $("#name_proveedor").html("No Seleccionado");
+    $("#form_datos")[0].reset();
+    var rows = tableForm.rows().remove().draw();
+    calcularTotal();
+  }
+  
+  function actualizarnumeracion(){
+  
+    try {
+  
+      var cantidad = tableForm.data().count();
+      var num = 1;
+  
+      if (cantidad > 0) {
+  
+        $('#table_form > tbody  > tr').each(function(){
+          tableForm.cell(num-1,0).data(num).draw();
+          num++;
+        });
+  
+      }
+  
+    } catch (e) {
+      runAlert("Oh No...!!!","Error en TryCatch Actualizar Numeración : " + e,"error");
+    }
+  
+  }
+  
+  function calcularTotal(){
+  
+    $("#txtTotalForm").val("0.00");
+  
+    try {
+  
+      var count = tableForm.data().count();
+      var num = 1;
+      var suma_total = 0.00;
+  
+      if (count > 0) {
+  
+        $('#table_form > tbody  > tr').each(function(){
+  
+          var precio_unitario = $(this).find("td").eq(2).find("input").val();
+          var cantidad = $(this).find("td").eq(3).find("input").val();
+          var total = cantidad * precio_unitario;
+          total = (Math.round( total * 100 )/100 ).toFixed(2);
+          tableForm.cell(num-1,7).data(total).draw();
+          suma_total += parseFloat(total);
+          num++;
+  
+        });
+  
+        suma_total = (Math.round( suma_total * 100 )/100 ).toFixed(2);
+        $("#txtTotalForm").val(suma_total);
+        return suma_total;
+      }
+  
+      return 0.00;
+  
+    } catch (e) {
+      runAlert("Oh No...!!!","Error en TryCatch Calcular Total: " + e,"error");
+      return 0.00;
+    }
+  }
+  
+  function verificarproductoontable(name_tabla,cod_producto){
+  
+    try {
+      var num=0;
+      $('#table_form > tbody  > tr').each(function(){
+        var data = tableForm.row($(this)).data();
+        if (data['cod_producto']==cod_producto&&data['name_tabla']==name_tabla) {
+          num++;
+        }
+      });
+      if (num>0) {
+        return true;
+      }else {
+        return false;
+      }
+    } catch (e) {
+      runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+      return false;
+    }
+  
+  }
+  
+  function showDataProveedor(){
+  
+    $("#tbody_proveedor").html("");
+    $("#paginador_proveedor").addClass("d-none");
+    paginador = $("#paginador_proveedor");
+    var items = 9, numeros = 6;
+    init_paginator(paginador,items,numeros);
+    set_callback(get_data_callback);
+    cargaPagina(0);
+  
+  }
+  
+  function get_data_callback(){
+    var valor = $("#txtBuscarProveedor").val();
+    var id_documento = $("#cboDocuProveedor").val();
+    $.ajax({
+          data:{
+            limit: itemsPorPagina,
+            offset: desde,
+        valor: valor,
+        id_documento: id_documento,
+        estado: 1
+          },
+      beforeSend: function (xhr) {
+        showHideLoader('block');
+      },
+      complete: function (jqXHR, textStatus) {
+        showHideLoader('none');
+        if (totalPaginas==1 && pagina==0) {
+          paginador.find(".next_link").hide();
+        }
+      },
+          type:"POST",
+          url:'ajax.php?accion=showProveedor'
+      }).done(function(data,textStatus,jqXHR){
+      try {
+        var data1 = JSON.parse(data);
+        if (data1["error"]=="NO") {
+  
+          if(pagina==0){
+            creaPaginador(data1["cantidad"]);
+          }
+  
+          // genera el cuerpo de la tabla
+          var innerdivHtml = "";
+          var o = data1["data"];
+  
+          for (var i = 0; i < o.length; i++) {
+            innerdivHtml += '<tr>';
+            innerdivHtml += '<td>';
+            innerdivHtml += '<div class="d-flex align-items-center">';
+            innerdivHtml += '<div class="bg-img mr-4">';
+            innerdivHtml += '<img src="' + o[i].src_imagen + '" class="img-fluid" alt="Proveedor">';
+            innerdivHtml += '</div>';
+            innerdivHtml += '<p class="font-weight-bold">' + o[i].apellidos + o[i].nombres + '</p>';
+            innerdivHtml += '</div>';
+            innerdivHtml += '</td>';
+            innerdivHtml += '<td>' + o[i].name_documento + '</td>';
+            innerdivHtml += '<td>' + o[i].num_documento + '</td>';
+            innerdivHtml += '<td>' + o[i].direccion_completa + '</td>';
+            innerdivHtml += '<td>' + o[i].telefono + '</td>';
+            innerdivHtml += '<td>' + o[i].btnseleccionar + '</td>';
+            innerdivHtml += '</tr>';
+          }
+  
+          $("#paginador_proveedor").removeClass("d-none");
+          $("#tbody_proveedor").html(innerdivHtml);
+  
+        }else {
+          console.log(data1["message"]);
+          $("#paginador_proveedor").addClass("d-none");
+          $("#tbody_proveedor").html("");
+        }
+      }
+      catch(err) {
+        runAlert("Message",err+data,"warning");
+        $("#paginador_proveedor").addClass("d-none");
+        $("#tbody_proveedor").html("");
+      }
+  
+      }).fail(function(jqXHR,textStatus,textError){
+      runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
       });
   }
-}
-
-$(document).ready(function() {
-  loadOrdenesGasto(); // Llamada inicial para cargar la lista de órdenes de gasto
-});
-
-let opcionSeleccionada = ""; // Puede ser 'servicio' o 'producto'
-
-// Función que muestra el modal con la tabla de servicios o productos
-function mostrarModalSeleccion(opcion) {
-  opcionSeleccionada = opcion;
-  $('#modalTable tbody').empty(); // Limpiamos la tabla del modal
-
-  // Definimos el origen de los datos
-  const url = opcion === "servicio" ? "getServicios.php" : "getProductos.php";
-
-  // Hacemos la solicitud AJAX para obtener los datos
-  $.ajax({
-      url: url,
-      type: 'POST',
-      dataType: 'json',
-      success: function(response) {
-          if (response.error === "NO") {
-              let html = '';
-              response.data.forEach((item, index) => {
-                  html += `
-                      <tr>
-                          <td>${index + 1}</td>
-                          <td>${item.codigo}</td>
-                          <td>${item.descripcion}</td>
-                          <td><button type="button" class="btn btn-success btn-sm" onclick="añadirItem('${opcionSeleccionada}', '${item.codigo}', '${item.descripcion}')">Añadir</button></td>
-                      </tr>
-                  `;
-              });
-              $('#modalTable tbody').html(html);
-          } else {
-              alert(response.message);
-          }
+  
+  function showListaAgregarDetalle(){
+  
+    tableProducto.clear().draw();
+    $("#div_paginador_productos").addClass("d-none");
+    paginador = $("#paginador_productos");
+    var items = 10, numeros = 6;
+    init_paginator(paginador,items,numeros);
+    set_callback(get_data_callback_detalle);
+    cargaPagina(0);
+  
+  }
+  
+  function get_data_callback_detalle(){
+    tableProducto.clear().draw();
+    var id_moneda = $("#codigo_moneda").val();
+    var valor = $("#txtBuscarProducto").val();
+    var tipo = $('input:radio[name=opcion_busqueda]:checked').val();
+    $("#div_paginador_productos").addClass("d-none");
+    $.ajax({
+          data:{
+            limit: itemsPorPagina,
+            offset: desde,
+        id_moneda: id_moneda,
+        valor: valor,
+        tipo: tipo
+          },
+      beforeSend: function (xhr) {
+        showHideLoader('block');
       },
-      error: function() {
-          alert('Error al cargar los datos.');
+      complete: function (jqXHR, textStatus) {
+        showHideLoader('none');
+        if (totalPaginas==1 && pagina==0) {
+          paginador.find(".next_link").hide();
+        }
+      },
+          type:"POST",
+          url:'ajax.php?accion=showDetalleParaOrdenCompra'
+      }).done(function(data,textStatus,jqXHR){
+      try {
+        var data1 = JSON.parse(data);
+        if (data1["error"]=="NO") {
+  
+          if(pagina==0){
+            creaPaginador(data1["cantidad"]);
+          }
+  
+          var o = data1["data"];
+          for (var i = 0; i < o.length; i++) {
+  
+            tableProducto.row.add({
+              "num": o[i].num,
+              "descripcion": o[i].descripcion,
+              "cod_producto": o[i].cod_producto,
+              "precio_unitario": o[i].precio_unitario,
+              "cantidad": '<input class="form-control" type="number" min="1" value="1">',
+              "precio_unitario_string": o[i].precio_unitario_string,
+              "seleccionar": o[i].seleccionar
+            }).draw();
+  
+            var name_producto = '<div class="d-flex align-items-center">';
+            name_producto += '<div class="bg-img mr-4">';
+            name_producto += '<img src="' + o[i].src_imagen + '" class="img-fluid"';
+            name_producto += 'alt="Producto" id="img_producto">';
+            name_producto += '</div>';
+            name_producto += '<p class="font-weight-bold">' + o[i].descripcion + '</p>';
+            name_producto += '</div>';
+  
+            tableProducto.row.add({
+              "num": o[i].num,
+              "cod_producto": o[i].cod_producto,
+              "name_producto": name_producto,
+              "stock": o[i].stock,
+              "precio_unitario": o[i].precio_unitario,
+              "cantidad": '<input class="form-control" value="1" type="number" min="1">',
+              "opcion": o[i].seleccionar,
+              "name_producto_string": o[i].descripcion
+            }).draw();
+  
+          }
+  
+          $("#div_paginador_productos").removeClass("d-none");
+  
+        }else {
+          console.log(data1["message"]);
+          $("#div_paginador_productos").addClass("d-none");
+        }
       }
-  });
-
-  // Mostrar el modal
-  $('#modalAgregarDetalle').modal('show');
-}
-
-function añadirItem(tipo, codigo, descripcion) {
-  const nombreTabla = tipo === "servicio" ? "Servicio" : "Producto";
-
-  // Añadimos la fila a la tabla principal
-  const nuevaFila = `
-      <tr>
-          <td>${nombreTabla}</td>
-          <td>${codigo}</td>
-          <td>${descripcion}</td>
-          <td><input type="number" class="form-control" min="1" value="1" onchange="calcularSubtotal(this)"></td>
-          <td><input type="number" class="form-control" step="0.01" min="0" value="0.00" onchange="calcularSubtotal(this)"></td>
-          <td><input type="number" class="form-control" step="0.01" min="0" value="0.00"></td>
-          <td class="subtotal">0.00</td>
-          <td>
-              <select class="form-control" onchange="calcularIGV(this)">
-                  <option value="0">Exento</option>
-                  <option value="0.18">18%</option>
-              </select>
-          </td>
-          <td class="igv">0.00</td>
-          <td class="total">0.00</td>
-          <td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarFila(this)">X</button></td>
-      </tr>
-  `;
-
-  $('#example1 tbody').append(nuevaFila);
-  $('#modalAgregarDetalle').modal('hide'); // Cerrar el modal después de añadir el elemento
-}
-
-function calcularSubtotal(elemento) {
-  const fila = $(elemento).closest('tr');
-  const cantidad = parseFloat(fila.find('input').eq(0).val()) || 0;
-  const precioUnitario = parseFloat(fila.find('input').eq(1).val()) || 0;
-  const descuento = parseFloat(fila.find('input').eq(2).val()) || 0;
-  const subtotal = (cantidad * precioUnitario) - descuento;
-
-  fila.find('.subtotal').text(subtotal.toFixed(2));
-  calcularTotal(fila);
-}
-
-function calcularIGV(elemento) {
-  const fila = $(elemento).closest('tr');
-  calcularTotal(fila);
-}
-
-function calcularTotal(fila) {
-  const subtotal = parseFloat(fila.find('.subtotal').text()) || 0;
-  const tipoIGV = parseFloat(fila.find('select').val()) || 0;
-  const igv = subtotal * tipoIGV;
-  const total = subtotal + igv;
-
-  fila.find('.igv').text(igv.toFixed(2));
-  fila.find('.total').text(total.toFixed(2));
-}
-
-function eliminarFila(elemento) {
-  $(elemento).closest('tr').remove();
-}
-
-
-
+      catch(err) {
+        runAlert("Message",err+data,"warning");
+        $("#div_paginador_productos").addClass("d-none");
+      }
+  
+      }).fail(function(jqXHR,textStatus,textError){
+      runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
+      });
+  }
+  
+  function seleccionarProveedor(id_proveedor,proveedor,src_imagen){
+    $("#contenedor_formulario").removeClass("d-none");
+    $("#contenedor_proveedor").addClass("d-none");
+    $("#id_proveedor").val(id_proveedor);
+    $('#img_proveedor').attr('src', src_imagen);
+    $("#name_proveedor").html(proveedor);
+  }
+  
+  function showData(){
+  
+    tableListado.clear().draw();
+    $("#paginador_listado").addClass("d-none");
+    paginador = $("#paginador_listado");
+    var items = 10, numeros = 6;
+    init_paginator(paginador,items,numeros);
+    set_callback(get_data_callback2);
+    cargaPagina(0);
+  
+  }
+  
+  function get_data_callback2(){
+  
+    tableListado.clear().draw();
+    var fecha_inicio = $("#txtFechaInicioBuscarListado").val();
+    var fecha_fin = $("#txtFechaFinBuscarListado").val();
+    var tipo_busqueda = $("#cboTipoBuscarListado").val();
+    var valor = $("#txtBuscarListado").val();
+  
+    $.ajax({
+          data:{
+            limit: itemsPorPagina,
+            offset: desde,
+        valor: valor,
+        tipo_busqueda: tipo_busqueda,
+        fecha_fin: fecha_fin,
+        fecha_inicio: fecha_inicio
+          },
+      beforeSend: function (xhr) {
+        showHideLoader('block');
+      },
+      complete: function (jqXHR, textStatus) {
+        showHideLoader('none');
+        if (totalPaginas==1 && pagina==0) {
+          paginador.find(".next_link").hide();
+        }
+      },
+          type:"POST",
+          url:'ajax.php?accion=showOrdenCompra'
+      }).done(function(data,textStatus,jqXHR){
+      try {
+  
+        var data1 = JSON.parse(data);
+        if (data1["error"]=="NO") {
+  
+          if(pagina==0){
+            creaPaginador(data1["cantidad"]);
+          }
+  
+          var o = data1["data"];
+  
+          for (var i = 0; i < o.length; i++) {
+  
+            tableListado.row.add({
+              "num": o[i].num,
+              "id_orden_compra": o[i].id_orden_compra,
+              "name_proveedor": o[i].name_proveedor,
+              "name_usuario": o[i].name_usuario,
+              "fecha_orden": o[i].fecha_orden,
+              "fecha_entrega": o[i].fecha_entrega,
+              "name_forma_envio": o[i].name_forma_envio,
+              "num_registros": o[i].num_registros,
+              "total": o[i].total,
+              "estado": o[i].estado,
+              "opciones": o[i].options
+            }).draw();
+  
+          }
+  
+          $("#paginador_listado").removeClass("d-none");
+  
+        } else {
+          console.log(data1["message"]);
+        }
+      }
+      catch(err) {
+        runAlert("Message",err+data,"warning");
+      }
+  
+      }).fail(function(jqXHR,textStatus,textError){
+      runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
+      });
+  
+  }
+  
+  function getDataEdit(id_orden_compra){
+  
+    try {
+  
+      cancelarForm();
+  
+      $.ajax({
+        type: "POST",
+        data:{
+              id_orden_compra: id_orden_compra
+            },
+  
+        url: "ajax.php?accion=getDataEditOrdenCompra",
+        success : function(data) {
+          try {
+            var data1 = JSON.parse(data);
+            if (data1["error"]=="NO") {
+              var o = data1["data"];
+              $("#id_orden_compra").val(o[0].id_orden_compra);
+              $("#id_proveedor").val(o[0].id_proveedor);
+              $("#name_proveedor").html(o[0].name_proveedor);
+              $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
+              $("#cboFormaEnvioForm").val(o[0].id_metodo_envio);
+              $("#txtFechaOrdenForm").val(o[0].fecha_orden);
+              $("#txtFechaEntregaForm").val(o[0].fecha_entrega);
+              $("#txtObservacionesForm").val(o[0].observaciones);
+              $("#txtEstadoForm").val(o[0].estado);
+              $("#codigo_moneda").val(o[0].id_moneda);
+  
+              for (var i = 0; i < o.length; i++) {
+  
+                var name_producto = '<div class="d-flex align-items-center">';
+                name_producto += '<div class="bg-img mr-4">';
+                name_producto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
+                name_producto += 'alt="Producto" id="img_producto">';
+                name_producto += '</div>';
+                name_producto += '<p class="font-weight-bold" id="name_proveedor">' + o[i].name_producto + '</p>';
+                name_producto += '</div>';
+  
+                tableForm.row.add({
+                  "num": i+1,
+                  "cod_producto": o[i].cod_producto,
+                  "name_tabla": o[i].name_tabla,
+                  "name_producto": name_producto,
+                  "stock": o[i].stock,
+                  "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0">',
+                  "cantidad": '<input class="form-control" value="' + o[i].cantidad_solicitada + '" type="number" min="1">',
+                  "notas": '<input class="form-control" value="' + o[i].notas + '" type="text">',
+                  "total": o[i].total,
+                  "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
+                }).draw();
+  
+              }
+  
+              $("#contenedor_formulario").removeClass("d-none");
+              $("#contenedor_listado").addClass("d-none");
+              $("#panelOptions").addClass("d-none");
+              $("#accion").val("edit");
+              $("#txtEstadoForm").val("En proceso ...");
+              calcularTotal();
+  
+            }else {
+              runAlert("Message",data1["message"],"warning");
+            }
+          } catch (e) {
+            runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+            showHideLoader('none');
+          }
+        },
+        beforeSend: function (xhr) {
+          showHideLoader('block');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+        },
+        complete: function (jqXHR, textStatus) {
+          showHideLoader('none');
+        }
+      });
+  
+    } catch (e) {
+      runAlert("Oh No...!!!","Error Try Catch " + e,"warning");
+    }
+  
+  }
+  
+  function verRegistro(id_orden_compra){
+  
+    try {
+  
+      cancelarForm();
+  
+      $.ajax({
+        type: "POST",
+        data:{
+              id_orden_compra: id_orden_compra
+            },
+        url: "ajax.php?accion=getDataVerOrdenCompra",
+        success : function(data) {
+          try {
+            var data1 = JSON.parse(data);
+            if (data1["error"]=="NO") {
+              var o = data1["data"];
+              $("#id_orden_compra").val(o[0].id_orden_compra);
+              $("#id_proveedor").val(o[0].id_proveedor);
+              $("#name_proveedor").html(o[0].name_proveedor);
+              $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
+              $("#cboFormaEnvioForm").val(o[0].id_metodo_envio);
+              $("#txtFechaOrdenForm").val(o[0].fecha_orden);
+              $("#txtFechaEntregaForm").val(o[0].fecha_entrega);
+              $("#txtObservacionesForm").val(o[0].observaciones);
+              $("#txtEstadoForm").val(o[0].estado);
+              $("#codigo_moneda").val(o[0].id_moneda);
+  
+              for (var i = 0; i < o.length; i++) {
+  
+                var name_producto = '<div class="d-flex align-items-center">';
+                name_producto += '<div class="bg-img mr-4">';
+                name_producto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
+                name_producto += 'alt="Producto" id="img_producto">';
+                name_producto += '</div>';
+                name_producto += '<p class="font-weight-bold">' + o[i].name_producto + '</p>';
+                name_producto += '</div>';
+  
+                tableForm.row.add({
+                  "num": i+1,
+                  "name_tabla": o[i].name_tabla,
+                  "cod_producto": o[i].cod_producto,
+                  "name_producto": name_producto,
+                  "stock": o[i].stock,
+                  "precio_unitario": '<input class="form-control" value="' + o[i].precio_unitario + '" step="0.10" type="number" min="0" disabled>',
+                  "cantidad": '<input class="form-control" value="' + o[i].cantidad_solicitada + '" type="number" min="1" disabled>',
+                  "notas": '<input class="form-control" value="' + o[i].notas + '" type="text" disabled>',
+                  "total": o[i].total,
+                  "opcion": '',
+                }).draw();
+  
+              }
+  
+              $("#contenedor_formulario").removeClass("d-none");
+              $("#contenedor_listado").addClass("d-none");
+              $("#panelOptions").addClass("d-none");
+              $("#accion").val("ver");
+  
+              $("#btnSaveForm").addClass("d-none");
+              $("#btnSeleccionarProveedor").addClass("d-none");
+              $("#btnSeleccionarProducto").addClass("d-none");
+  
+              calcularTotal();
+  
+            }else {
+              runAlert("Message",data1["message"],"warning");
+            }
+          } catch (e) {
+            runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+            showHideLoader('none');
+          }
+        },
+        beforeSend: function (xhr) {
+          showHideLoader('block');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+        },
+        complete: function (jqXHR, textStatus) {
+          showHideLoader('none');
+        }
+      });
+  
+    } catch (e) {
+      runAlert("Oh No...!!!","Error Try Catch " + e,"warning");
+    }
+  
+  }
+  
+  function deleteRegistro(id_orden_compra){
+  
+    try {
+  
+      var parametros = {
+        "id_orden_compra" : id_orden_compra
+      };
+  
+      Swal.fire({
+        title: '¿Seguro de anular la orden de compra seleccionada?',
+        text: "No podrás revertir esta operación.",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#22c63b',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Anular ahora!'
+      }).then(function(result) {
+        if (result.value) {
+          $.ajax({
+            type: "POST",
+            url: "ajax.php?accion=deleteOrdenCompra",
+            datatype: "json",
+            data: parametros,
+            success: function(data){
+              try {
+                var response = JSON.parse(data);
+                if (response['error']=="SI") {
+                  runAlert("Oh No...!!!",response['message'],"warning");
+                }else {
+                  showData();
+                  runAlert("Bien hecho...!!!",response['message'],"success");
+                }
+              } catch (e) {
+                runAlert("Oh No...!!!",e,"error");
+              }
+            },
+            error: function(data){
+              runAlert("Oh No...!!!",data,"error");
+            },
+            beforeSend: function (xhr) {
+              showHideLoader('block');
+            },
+            complete: function (jqXHR, textStatus) {
+              showHideLoader('none');
+            }
+          });
+        }
+      });
+  
+    } catch (e) {
+      runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+    }
+  }
+  
