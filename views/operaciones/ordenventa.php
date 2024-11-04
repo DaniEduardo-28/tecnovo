@@ -193,6 +193,23 @@ if (!isset($_SESSION['id_trabajador'])) {
                 </div>
 
                 <div class="form-group col-sm-12">
+                  <label for="id_operador">Operador</label>
+                  <select class="form-control" id="id_operador" name="id_operador">
+                  <option value="all">Seleccione...</option>
+                    <?php
+                    $dataOperador = $OBJ_MAQUINARIA->showOperators("activo");
+                    if ($dataOperador["error"] == "NO") {
+                      foreach ($dataOperador["data"] as $key) {
+                    ?>
+                        <option value="<?= $key['id_operador']; ?>"><?= $key['nombre_operador']; ?></option>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <div class="form-group col-sm-12">
                   <label for="cboServicioForm">Servicio:</label>
                   <select name="cboServicioForm" id="cboServicioForm" class="form-control" required="true">
                   <option value="all">Seleccione...</option>
