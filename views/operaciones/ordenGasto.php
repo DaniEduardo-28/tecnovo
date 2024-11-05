@@ -84,20 +84,21 @@ if (!isset($_SESSION['id_trabajador'])) {
                     </nav>
                   </div>
 
-                  <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions" name="panelOptions">
+                  <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions"
+                    name="panelOptions">
                     <?php
-                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("ordenventa"));
+                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("ordengasto"));
                     if ($access_options[0]['error'] == "NO") {
                       if ($access_options[0]['flag_agregar']) {
-                    ?>
-                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top"
-                          title="" data-original-title="Nueva Orden" id="btnAdd">
+                        ?>
+                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
+                          data-original-title="Nueva Orden" id="btnAdd">
                           <i class="fe fe-plus-circle btn btn-icon text-primary"></i>
                         </a>
-                      <?php
+                        <?php
                       }
                       if ($access_options[0]['flag_descargar']) {
-                      ?>
+                        ?>
                         <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
                           data-original-title="Descargar reporte en pdf" id="btnReportePdf">
                           <i class="fa fa-file-pdf-o btn btn-icon text-danger"></i>
@@ -106,7 +107,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           data-original-title="Descargar reporte en excel" id="btnReporteExcel">
                           <i class="fa fa-file-excel-o btn btn-icon text-success"></i>
                         </a>
-                    <?php
+                        <?php
                       }
                     }
                     ?>
@@ -151,8 +152,8 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                               <div class="form-group col-md-4 col-sm-6">
                                 <label for="codigo_documento_venta">Doc. Compra(*)</label>
-                                <select class="form-control" name="codigo_documento_venta"
-                                  id="codigo_documento_venta" required>
+                                <select class="form-control" name="codigo_documento_venta" id="codigo_documento_venta"
+                                  required>
                                   <option value="">Seleccione</option>
                                   <?php
                                   include('core/models/ClassDocumentoVenta.php');
@@ -175,7 +176,31 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <label for="correlativo">Correlativo</label>
                                 <input type="text" name="correlativo" id="correlativo" class="form-control">
                               </div>
-                              <div class="form-group col-md-4 col-sm-6">
+
+                              <div class="form-group col-md-12">
+                                <label for="proveedor">Proveedor (*)</label>
+                                <div class="input-group">
+                                  <!-- Botón para seleccionar proveedor -->
+                                  <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-info" id="btnSeleccionarProveedor">
+                                      Seleccionar Proveedor
+                                    </button>
+                                  </div>
+
+                                  <!-- Campo de visualización del proveedor seleccionado -->
+                                  <input type="text" class="form-control" id="campo_proveedor" name="campo_proveedor"
+                                    placeholder="Nombre y Apellido del Proveedor Seleccionado" readonly>
+
+                                  <!-- Imagen del proveedor seleccionado -->
+                                  <div class="input-group-append">
+                                    <img id="img_proveedor" src="resources/global/images/sin_imagen.png" alt="Proveedor"
+                                      style="width: 40px; height: 40px; border-radius: 50%;">
+                                  </div>
+                                </div>
+                              </div>
+
+
+                              <!-- <div class="form-group col-md-4 col-sm-6">
                                 <label for="codigo_documento_cliente">Doc. Proveedor (*)</label>
                                 <select class="form-control" name="codigo_documento_cliente"
                                   id="codigo_documento_cliente" required>
@@ -220,16 +245,15 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <label for="correo">E-mail</label>
                                 <input type="email" name="correo" id="correo"
                                   class="form-control" autocomplete="off">
-                              </div>
+                              </div> -->
                               <div class="form-group col-md-4 col-sm-6">
                                 <label for="fecha">Fecha(*)</label>
-                                <input type="date" name="fecha" id="fecha"
-                                  class="form-control" required value="<?= date("Y-m-d"); ?>">
+                                <input type="date" name="fecha" id="fecha" class="form-control" required
+                                  value="<?= date("Y-m-d"); ?>">
                               </div>
                               <div class="form-group col-md-4 col-sm-6">
                                 <label for="codigo_moneda">Moneda(*)</label>
-                                <select class="form-control" name="codigo_moneda"
-                                  id="codigo_moneda" required>
+                                <select class="form-control" name="codigo_moneda" id="codigo_moneda" required>
                                   <option value="">Seleccione</option>
                                   <?php
                                   include('core/models/ClassMoneda.php');
@@ -258,15 +282,17 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <div class="form-group col-md-12">
                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                   <label class="btn btn-info active">
-                                    <input type="radio" name="opcion_busqueda" value="servicio" id="opcion_servicio" autocomplete="off" checked> servicio
+                                    <input type="radio" name="opcion_busqueda" value="servicio" id="opcion_servicio"
+                                      autocomplete="off" checked> servicio
                                   </label>
                                   <label class="btn btn-info">
-                                    <input type="radio" name="opcion_busqueda" value="producto" id="opcion_producto" autocomplete="off"> producto
+                                    <input type="radio" name="opcion_busqueda" value="producto" id="opcion_producto"
+                                      autocomplete="off"> producto
                                   </label>
                                 </div>
-                                <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
-                                <button type="button" onclick="mostrarModalSeleccion('servicio')" class="btn btn-info">Servicio</button>
-                                <button type="button" onclick="mostrarModalSeleccion('producto')" class="btn btn-info">Producto</button>
+                                <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle"
+                                  class="btn btn-success"><span class="fa fa-plus"></span></button>
+
 
                               </div>
 
@@ -305,25 +331,29 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <div class="form-group row">
                                   <label for="txtTotalDescuento" class="col-sm-4 col-form-label">Descuento Total</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="txtTotalDescuento" readonly style="text-align:right;">
+                                    <input type="text" class="form-control" id="txtTotalDescuento" readonly
+                                      style="text-align:right;">
                                   </div>
                                 </div>
                                 <div class="form-group row">
                                   <label for="txtGravada" class="col-sm-4 col-form-label">Gravada</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="txtGravada" readonly style="text-align:right;">
+                                    <input type="text" class="form-control" id="txtGravada" readonly
+                                      style="text-align:right;">
                                   </div>
                                 </div>
                                 <div class="form-group row">
                                   <label for="txtIgv" class="col-sm-4 col-form-label">IGV</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="txtIgv" readonly style="text-align:right;">
+                                    <input type="text" class="form-control" id="txtIgv" readonly
+                                      style="text-align:right;">
                                   </div>
                                 </div>
                                 <div class="form-group row">
                                   <label for="txtTotal" class="col-sm-4 col-form-label">Total</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="txtTotal" readonly style="text-align:right;">
+                                    <input type="text" class="form-control" id="txtTotal" readonly
+                                      style="text-align:right;">
                                   </div>
                                 </div>
 
@@ -338,8 +368,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <div class="form-group row">
                                   <label for="txtVuelto" class="col-sm-4 col-form-label">Vuelto</label>
                                   <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="txtVuelto"
-                                      style="text-align:right;" value="0.00" readonly>
+                                    <input type="text" class="form-control" id="txtVuelto" style="text-align:right;"
+                                      value="0.00" readonly>
                                   </div>
                                 </div>
 
@@ -348,9 +378,15 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                             <div class="row">
                               <div class="form-group col-md-12">
-                                <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar y Pagar</button>
-                                <button type="submit" name="btnSaveBorrador" id="btnSaveBorrador" name="button" class="btn btn-warning float-right"> <span class="fa fa-save"></span> Guardar Borrador</button>
-                                <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-arrow-left"></span> Volver</button>
+                                <button type="submit" name="btnSave" id="btnSave" name="button"
+                                  class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar y
+                                  Pagar</button>
+                                <button type="submit" name="btnSaveBorrador" id="btnSaveBorrador" name="button"
+                                  class="btn btn-warning float-right"> <span class="fa fa-save"></span> Guardar
+                                  Borrador</button>
+                                <button type="reset" name="btnCancel" id="btnCancel" name="button"
+                                  class="btn btn-danger float-right"> <span class="fa fa-arrow-left"></span>
+                                  Volver</button>
                               </div>
                             </div>
 
@@ -396,7 +432,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="form-group col-md-3 col-sm-6">
                             <label for="txtFechaInicio">Fecha de Inicio</label>
                             <input type="date" id="txtFechaInicio"
-                              value="<?= date("Y-m-d", strtotime(date('Y-m-d') . "- 1 month")); ?>" class="form-control">
+                              value="<?= date("Y-m-d", strtotime(date('Y-m-d') . "- 1 month")); ?>"
+                              class="form-control">
                           </div>
 
                           <div class="form-group col-md-3 col-sm-6">
@@ -407,8 +444,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-xs-12">
                             <label for="">&nbsp;</label>
                             <div class="input-group mb-3">
-                              <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username"
-                                aria-describedby="basic-addon2" id="txtBuscar" name="txtBuscar">
+                              <input type="text" class="form-control" placeholder="Search..."
+                                aria-label="Recipient's username" aria-describedby="basic-addon2" id="txtBuscar"
+                                name="txtBuscar">
                               <div class="input-group-append">
                                 <button class="btn btn-outline-primary" id="btnSearch" type="button">Buscar</button>
                               </div>
@@ -477,7 +515,8 @@ if (!isset($_SESSION['id_trabajador'])) {
   </div>
   <!-- end app -->
 
-  <div class="modal fade" id="modalAgregarDetalle" tabindex="-1" role="dialog" aria-labelledby="modalAgregarDetalleTitle" aria-hidden="true">
+  <div class="modal fade" id="modalAgregarDetalle" tabindex="-1" role="dialog"
+    aria-labelledby="modalAgregarDetalleTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -529,7 +568,7 @@ if (!isset($_SESSION['id_trabajador'])) {
         <div class="modal-body">
           <div class="col-sm-12">
             <div class="table-responsive">
-              <table id="modalTable" class="table table-bordered">
+              <table id="tabla_productos" class="display">
                 <thead>
                   <tr>
                     <th style="text-align:center;">#</th>
@@ -559,6 +598,10 @@ if (!isset($_SESSION['id_trabajador'])) {
     $("#menuoperaciones").addClass('active');
     $("#submenuordengasto").addClass('active');
   </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
 
 </body>
 

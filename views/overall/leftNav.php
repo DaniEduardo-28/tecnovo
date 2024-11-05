@@ -181,10 +181,10 @@
           </a>
           <ul aria-expanded="false">
             <?php if ($flag_ordencompra): ?>
-              <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
+              <li id="submenuordencompra"><a href="?view=ordencompra">Registro de Gastos</a></li>
             <?php endif; ?>
             <?php if ($flag_ordengasto): ?>
-              <li id="submenuordengasto"> <a href="?view=ordengasto">Registro de Gastos</a></li>
+              <li id="submenuordengasto"> <a href="?view=ordengasto">Orden de Compra</a></li>
             <?php endif; ?>
             <?php if ($flag_ordenventa): ?>
               <li id="submenucronograma"><a href="?view=ordenventa">Cronograma de Cosechas</a></li>

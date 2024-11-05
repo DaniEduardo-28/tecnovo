@@ -2,7 +2,7 @@
 
   try {
 
-    $id_orden_compra = isset($_POST["id_orden_gasto"])	? $_POST["id_orden_gasto"]	: "";
+    $id_orden_gasto = isset($_POST["id_orden_gasto"])	? $_POST["id_orden_gasto"]	: "";
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordengasto"));
 
