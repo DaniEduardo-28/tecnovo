@@ -564,7 +564,7 @@ function get_data_callback_detalle(){
       }
     },
 		type:"POST",
-		url:'ajax.php?accion=showDetalleParaOrdenGasto'
+		url:'ajax.php?accion=showDetalleParaOrdenCompra'
 	}).done(function(data,textStatus,jqXHR){
     try {
       var data1 = JSON.parse(data);

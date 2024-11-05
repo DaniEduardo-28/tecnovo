@@ -10,7 +10,7 @@
     $fecha_fin = isset($_POST["fecha_fin"])	? $_POST["fecha_fin"]	: "";
     $tipo_busqueda = isset($_POST["tipo_busqueda"])	? $_POST["tipo_busqueda"]	: "";
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ingresogasto"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ingreso"));
 
     if ($access_options[0]['error']=="NO") {
       if ($access_options[0]['flag_agregar']==false) {
