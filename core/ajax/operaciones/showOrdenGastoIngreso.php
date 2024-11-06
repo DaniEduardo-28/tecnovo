@@ -39,7 +39,7 @@
           "name_proveedor" => $key['nombre_proveedor'],
           "fecha_gasto" => date('d/m/Y H:i', strtotime($key['fecha_gasto'])),
           "num_registros" => '&nbsp;&nbsp;' . $key['num_registros'],
-          "total" => $key['signo_moneda'] . ' ' . $key['total'],
+          "monto_total" => $key['signo_moneda'] . ' ' . $key['monto_total'],
           "options" => "$options"
         );
         $count++;

@@ -257,6 +257,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     <th style="width:40px;">Precio Unit.</th>
                                     <th style="width:40px;">Descuento</th>
                                     <th style="width:40px;">Sub Total</th>
+                                    <th style="width:40px;">num</th>
                                     <th style="width:40px;">Tipo IGV</th>
                                     <th style="width:40px;">IGV</th>
                                     <th style="width:60px;">Total</th>

@@ -38,7 +38,7 @@
         $retorno_array[] =array(
           "num" => "$count",
           "descripcion" => $key['descripcion'],
-          "cod_gasto" => $key['cod_gasto'],
+          "cod_producto" => $key['cod_producto'],
           "seleccionar" => "$flag_seleccionar",
         );
         $count++;
