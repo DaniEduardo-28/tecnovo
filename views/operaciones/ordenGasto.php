@@ -523,6 +523,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th>Sub total</th>
                                 <th>IGV</th>
                                 <th>Total</th>
+                                <th>T.C.</th>
                                 <th>Acciones</th>
                               </tr>
                             </thead>

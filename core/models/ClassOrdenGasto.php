@@ -91,7 +91,6 @@ class ClassOrdenGasto extends Conexion
 			$valor = "%$valor%";
 			$parametros = null;
 			$sql = "SELECT o.*,p.nombre_proveedor,mon.signo as signo_moneda,
-							(SELECT COUNT(*) FROM tb_detalle_gasto dc WHERE dc.id_orden_gasto = o.id_orden_gasto) AS num_registros,
 							(SELECT SUM(dc.precio_unitario*dc.cantidad) FROM tb_detalle_gasto dc WHERE dc.id_orden_gasto = o.id_orden_gasto) AS sub_total
 							FROM `tb_orden_gasto` o
 							INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
@@ -235,7 +234,6 @@ class ClassOrdenGasto extends Conexion
 			$valor = "%$valor%";
 			$parametros = null;
 			$sql = "SELECT o.*,p.nombre_proveedor,mon.signo as signo_moneda,
-							(SELECT COUNT(*) FROM tb_detalle_gasto dc WHERE dc.id_orden_gasto = o.id_orden_gasto) AS num_registros,
 							(SELECT SUM((dc.precio_unitario * dc.cantidad - dc.descuento) - ((dc.precio_unitario * dc.cantidad - dc.descuento) * dc.igv)) FROM tb_detalle_gasto dc WHERE dc.id_orden_gasto = o.id_orden_gasto)  AS total
 							FROM `tb_orden_gasto` o
 							INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
