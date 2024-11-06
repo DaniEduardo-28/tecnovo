@@ -185,3 +185,53 @@ CREATE TABLE tb_orden_gasto (
 
 ALTER TABLE `tb_orden_gasto` CHANGE `igv` `igv_total` DECIMAL(18,2) NOT NULL;
 ALTER TABLE `tb_orden_gasto` CHANGE `total` `monto_total` DECIMAL(18,2) NOT NULL;
+
+-- Creación de la vista vw_trabajadores
+-- Por cambios anteriores, este se corrompió por lo que se hizo un cambio en su diseño
+
+CREATE VIEW vw_trabajdores AS SELECT
+    `t`.`id_trabajador` AS `id_trabajador`,
+    `t`.`id_persona` AS `id_persona`,
+    `t`.`id_grupo` AS `id_grupo`,
+    `t`.`name_user` AS `name_user`,
+    `t`.`pass_user` AS `pass_user`,
+    `t`.`cod_recuperacion` AS `cod_recuperacion`,
+    `t`.`fecha_activacion` AS `fecha_activacion`,
+    `t`.`fecha_recuperacion` AS `fecha_recuperacion`,
+    `t`.`src_imagen` AS `src_imagen`,
+    `t`.`estado` AS `estado`,
+    `t`.`flag_medico` AS `flag_medico`,
+    `t`.`link_facebook` AS `link_facebook`,
+    `t`.`link_instagram` AS `link_instagram`,
+    `t`.`link_twitter` AS `link_twitter`,
+    `t`.`descripcion` AS `descripcion`,
+    `p`.`id_documento` AS `id_documento`,
+    `p`.`num_documento` AS `num_documento`,
+    `p`.`nombres` AS `nombres_trabajador`,
+    `p`.`apellidos` AS `apellidos_trabajador`,
+    `p`.`direccion` AS `direccion_trabajador`,
+    `p`.`telefono` AS `telefono_trabajador`,
+    `p`.`correo` AS `correo_trabajador`,
+    `p`.`fecha_nacimiento` AS `fecha_nacimiento_trabajador`,
+    `p`.`sexo` AS `sexo_trabajador`,
+    `d`.`name_documento` AS `name_documento_trabajador`
+FROM
+    (
+        (
+            `syscos`.`tb_trabajador` `t`
+        JOIN `syscos`.`tb_persona` `p`
+        ON
+            ((`p`.`id_persona` = `t`.`id_persona`))
+        )
+    JOIN `syscos`.`tb_documento_identidad` `d`
+    ON
+        (
+            (
+                `d`.`id_documento` = `p`.`id_documento`
+            )
+        )
+    )
+
+
+    -- ASIMISMO UN ÚLTIMO MÉTODO, sería utilizar la borrada orden de venta para ser el nuevo registro de gastos
+    -- ya que comparten misma estructura solicitada.
