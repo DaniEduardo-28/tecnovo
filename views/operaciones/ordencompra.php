@@ -239,7 +239,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <table class="table table-bordered" id="table_form">
                                 <thead>
                                   <tr>
-                                    <!-- <th style="width:50px; text-align: center;">#</th>
+                                    <th style="width:50px; text-align: center;">#</th>
                                     <th>Id Producto</th>
                                     <th>Producto</th>
                                     <th style="width:20px;">Stock</th>
@@ -247,20 +247,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     <th style="width:100px;">Cantidad</th>
                                     <th>Notas</th>
                                     <th style="width:60px;">Total</th>
-                                    <th style="width:20px;">Eliminar</th> -->
-                                    <th style="width:50px; text-align: center;">#</th>
-                                    <th>Id Producto</th>
-                                    <th>Nombre Tabla</th>
-                                    <th style="width:100px;">Producto</th>
-                                    <th style="width:100px; text-align:left;">Producto</th>
-                                    <th style="width:100px;">Cantidad</th>
-                                    <th style="width:40px;">Precio Unit.</th>
-                                    <th style="width:40px;">Descuento</th>
-                                    <th style="width:40px;">Sub Total</th>
-                                    <th style="width:40px;">Tipo IGV</th>
-                                    <th style="width:40px;">IGV</th>
-                                    <th style="width:60px;">Total</th>
-                                    <th style="width:20px;">X</th>
+                                    <th style="width:20px;">Eliminar</th>
+                                    
                                   </tr>
                                 </thead>
 
@@ -500,7 +488,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <table class="table table-bordered" id="tabla_listado">
                             <thead>
                               <tr>
-                                <!-- <th>#</th>
+                                <th>#</th>
                                 <th>Id Orden</th>
                                 <th>Proveedor</th>
                                 <th>Usuario</th>
@@ -510,18 +498,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th># Productos</th>
                                 <th>Total</th>
                                 <th>Estado</th>
-                                <th>Acciones</th> -->
-                                <th>#</th>
-                                <th>Id Orden</th>
-                                <th>Doc. Compra</th>
-                                <th>Doc. Identidad</th>
-                                <th>Proveedor</th>
-                                <th>Fecha</th>
-                                <th>Moneda</th>
-                                <th>Sub total</th>
-                                <th>IGV</th>
-                                <th>Total</th>
                                 <th>Acciones</th>
+
                               </tr>
                             </thead>
                           </table>
@@ -572,20 +550,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <table class="table table-bordered" id="tabla_productos">
                             <thead>
                               <tr>
-                                <!-- <th style="width:20px;">#</th>
+                                <th style="width:20px;">#</th>
                                 <th>Id Producto</th>
                                 <th>Producto</th>
                                 <th style="width:60px;">Stock</th>
                                 <th style="width:40px;">Precio Unitario</th>
                                 <th style="width:90px;">Cantidad</th>
-                                <th style="width:10px;">Seleccionar</th>
-                                <th>Nombre Producto</th> -->
-                                <th style="width:20px;">#</th>
-                                <th>Id Producto</th>
-                                <th>Producto</th>
-                                <th style="width:60px;">1</th>
-                                <th style="width:40px;">2</th>
-                                <th style="width:90px;">3</th>
                                 <th style="width:10px;">Seleccionar</th>
                                 <th>Nombre Producto</th>
                               </tr>

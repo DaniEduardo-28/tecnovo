@@ -369,6 +369,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-4 col-sm-4">
                             <label for="cboDocuProveedor" class="label-control">Documento</label>
                             <select class="form-control" name="cboDocuProveedor" id="cboDocuProveedor">
+                            <option value="">Todos...</option>
                               <?php
                               $resultDocumentos = $OBJ_DOCUMENTO_IDENTIDAD->show("activo");
                               if ($resultDocumentos['error'] == "NO") {
