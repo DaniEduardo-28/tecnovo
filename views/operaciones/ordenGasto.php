@@ -490,10 +490,10 @@
               <div class="form-group col-sm-4">
 
               </div>
-              <div class="col-sm-8">
+              <div class="col-xs-12">
                 <label for="">&nbsp;</label>
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" placeholder="Search..." aria-label="Recipient's username"
+                  <input type="text" class="form-control" placeholder="Buscando..." aria-label="Recipient's username"
                   aria-describedby="basic-addon2" id="txtBuscarDetalle" name="txtBuscarDetalle">
                   <div class="input-group-append">
                     <button class="btn btn-outline-primary" id="btnSearchDetalle" type="button">Buscar</button>
