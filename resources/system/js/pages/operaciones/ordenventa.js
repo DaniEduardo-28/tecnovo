@@ -59,29 +59,6 @@ var table_detalle = $('#example1').DataTable({
   ]
 });
 
-/* var table_detalle_modal = $('#example2').DataTable({
-  language: languageSpanish,
-  destroy : true,
-  searching : false,
-  paging : false,
-  ordering : false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'cod_producto' },
-    { 'data': 'descripcion' },
-    { 'data': 'cantidad' },
-    { 'data': 'precio_unitario' },
-    { 'data': 'precio_unitario_string' },
-    { 'data': 'seleccionar' }
-  ],
-  columnDefs: [
-    {
-      "targets": [1,4],
-      "visible": false,
-      "searchable": false
-    }
-  ]
-}); */
 
 var table_detalle_modal = $('#example2').DataTable({
   language: languageSpanish,
@@ -139,7 +116,7 @@ $(document).ready(function(){
         "eliminar_item": botonEliminar
       }).draw();
 
-      generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + descripcion + ' al precio de ' + precio_unitario + ' c/u.</h6>');
+      generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + 'Se añadió ' + descripcion + ' de la tabla ' + name_tabla + ' a la orden!.</h6>');
       calcularTotal();
 
     } catch (e) {
@@ -211,23 +188,6 @@ $(document).ready(function(){
       $("#direccion").val("");
     }
   
-    // Resto del código original (consolidado)
-    $('#example2 tbody').on('click', '#btnSeleccionar', function() {
-      // Código para la selección en `example2`
-      // ...
-    });
-  
-    $('#example1 tbody').on('click', '#botonEliminar', function() {
-      // Código para eliminar de `example1`
-      // ...
-    });
-  
-    $("#codigo_documento_proveedor").change(function() {
-      changeOption();
-    });
-  
-    // Funciones adicionales como `calcularTotal`, `changeOption`, etc.
-    // ...
   });
   
 

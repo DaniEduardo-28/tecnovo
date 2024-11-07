@@ -176,7 +176,7 @@ $(document).ready(function(){
         "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
       }).draw();
 
-      generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + data["name_producto_string"] + ' al precio de ' + precio_unitario + ' c/u.</h6>');
+      generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + data["name_producto_string"] + ' de la tabla' + name_tabla + ' c/u.</h6>');
       calcularTotal();
 
     } catch (e) {
