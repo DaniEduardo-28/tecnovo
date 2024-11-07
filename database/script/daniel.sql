@@ -235,3 +235,10 @@ FROM
 
     -- ASIMISMO UN ÚLTIMO MÉTODO, sería utilizar la borrada orden de venta para ser el nuevo registro de gastos
     -- ya que comparten misma estructura solicitada.
+
+    ALTER TABLE `tb_venta` CHANGE `id_trabajador` `id_trabajador` BIGINT UNSIGNED NULL;
+    ALTER TABLE `tb_venta` CHANGE `id_fundo` `id_fundo` BIGINT UNSIGNED NULL;
+    ALTER TABLE `tb_venta` CHANGE `id_documento_cliente` `id_documento_proveedor` BIGINT UNSIGNED NOT NULL;
+    ALTER TABLE `tb_venta` CHANGE `name_documento_cliente` `name_documento_proveedor` BIGINT UNSIGNED NOT NULL;
+    ALTER TABLE `tb_venta` CHANGE `codigo_documento_cliente` `codigo_documento_proveedor` BIGINT UNSIGNED NOT NULL;
+    ALTER TABLE `tb_venta` CHANGE `numero_documento_cliente` `numero_documento_proveedor` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;

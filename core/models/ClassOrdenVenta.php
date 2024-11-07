@@ -6,7 +6,145 @@ class ClassOrdenVenta extends Conexion
 	//constructor de la clase
 	public function __construct() {}
 
-	public function getCount($id_fundo, $id_trabajador, $id_doc_venta, $id_doc_cliente, $estado, $valor, $fecha_inicio, $fecha_fin)
+	public function getCount($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $fecha_inicio, $fecha_fin)
+{
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+        $valor = "%$valor%";
+        $parametros = [];
+        $sql = "SELECT COUNT(*) as cantidad FROM tb_venta WHERE 
+            (CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_proveedor LIKE ? OR
+            proveedor LIKE ?) AND fecha BETWEEN ? AND ? ";
+
+        $parametros[] = $valor;
+        $parametros[] = $valor;
+        $parametros[] = $valor;
+        $parametros[] = $fecha_inicio;
+        $parametros[] = $fecha_fin;
+
+        if ($id_doc_venta != "") {
+            $sql .= " AND id_documento_venta = ?";
+            $parametros[] = $id_doc_venta;
+        }
+
+        if ($id_doc_proveedor != "") {
+            $sql .= " AND id_documento_proveedor = ?";
+            $parametros[] = $id_doc_proveedor;
+        }
+
+        if ($id_trabajador != "all") {
+            $sql .= " AND id_trabajador = ?";
+            $parametros[] = $id_trabajador;
+        }
+
+        if ($estado != "all") {
+            $sql .= " AND estado = ?";
+            $parametros[] = $estado;
+        }
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute($parametros);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($result) == 0 || $result[0]['cantidad'] == 0) {
+            throw new Exception("No se encontraron datos.");
+        }
+
+        $VD1['error'] = "NO";
+        $VD1['message'] = "Success";
+        $VD1['data'] = $result;
+        $VD = $VD1;
+    } catch (PDOException $e) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $e->getMessage();
+        $VD = $VD1;
+    } catch (Exception $exception) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $exception->getMessage();
+        $VD = $VD1;
+    } finally {
+        $conexionClass->Close();
+    }
+
+    return $VD;
+}
+
+
+public function show($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $offset, $limit, $fecha_inicio, $fecha_fin)
+{
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+        $valor = "%$valor%";
+        $parametros = [];
+        $sql = "SELECT * FROM tb_venta WHERE 
+            (CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_proveedor LIKE ? OR
+            proveedor LIKE ?) AND fecha BETWEEN ? AND ? ";
+
+        $parametros[] = $valor;
+        $parametros[] = $valor;
+        $parametros[] = $valor;
+        $parametros[] = $fecha_inicio;
+        $parametros[] = $fecha_fin;
+
+        if ($id_doc_venta != "") {
+            $sql .= " AND id_documento_venta = ?";
+            $parametros[] = $id_doc_venta;
+        }
+
+        if ($id_doc_proveedor != "") {
+            $sql .= " AND id_documento_proveedor = ?";
+            $parametros[] = $id_doc_proveedor;
+        }
+
+        if ($id_trabajador != "all") {
+            $sql .= " AND id_trabajador = ?";
+            $parametros[] = $id_trabajador;
+        }
+
+        if ($estado != "all") {
+            $sql .= " AND estado = ?";
+            $parametros[] = $estado;
+        }
+
+        $sql .= " ORDER BY serie, correlativo DESC LIMIT ?, ?";
+        $parametros[] = $offset;
+        $parametros[] = $limit;
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute($parametros);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($result) == 0) {
+            throw new Exception("No se encontraron datos.");
+        }
+
+        $VD1['error'] = "NO";
+        $VD1['message'] = "Success";
+        $VD1['data'] = $result;
+        $VD = $VD1;
+    } catch (PDOException $e) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $e->getMessage();
+        $VD = $VD1;
+    } catch (Exception $exception) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $exception->getMessage();
+        $VD = $VD1;
+    } finally {
+        $conexionClass->Close();
+    }
+
+    return $VD;
+}
+
+
+	public function showReporte($id_fundo, $id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $fecha_inicio, $fecha_fin)
 	{
 
 		$conexionClass = new Conexion();
@@ -17,9 +155,9 @@ class ClassOrdenVenta extends Conexion
 
 			$valor = "%$valor%";
 			$parametros = null;
-			$sql = "SELECT COUNT(*) as cantidad FROM tb_venta WHERE id_fundo = ? AND
-				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_cliente LIKE ? OR
-				cliente LIKE ?) AND fecha BETWEEN ? AND ? ";
+			$sql = "SELECT * FROM tb_venta WHERE 
+				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_proveedor LIKE ? OR
+				proveedor LIKE ?) AND fecha BETWEEN ? AND ? ";
 
 			$parametros[] = $id_fundo;
 			$parametros[] = $valor;
@@ -33,159 +171,9 @@ class ClassOrdenVenta extends Conexion
 				$parametros[] = $id_doc_venta;
 			}
 
-			if ($id_doc_cliente != "") {
-				$sql .= " AND id_documento_cliente = ?";
-				$parametros[] = $id_doc_cliente;
-			}
-
-			if ($id_trabajador != "all") {
-				$sql .= " AND id_trabajador = ?";
-				$parametros[] = $id_trabajador;
-			}
-
-			if ($estado != "all") {
-				$sql .= " AND estado = ?";
-				$parametros[] = $estado;
-			}
-
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos");
-			} else {
-				if ($result[0]['cantidad'] == 0) {
-					throw new Exception("No se encontraron datos.");
-				}
-			}
-
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-		} catch (PDOException $e) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-		} catch (Exception $exception) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-	}
-
-	public function show($id_fundo, $id_trabajador, $id_doc_venta, $id_doc_cliente, $estado, $valor, $offset, $limit, $fecha_inicio, $fecha_fin)
-	{
-
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
-
-		try {
-
-			$valor = "%$valor%";
-			$parametros = null;
-			$sql = "SELECT * FROM tb_venta WHERE id_fundo = ? AND
-				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_cliente LIKE ? OR
-				cliente LIKE ?) AND fecha BETWEEN ? AND ? ";
-
-			$parametros[] = $id_fundo;
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-			$parametros[] = $fecha_inicio;
-			$parametros[] = $fecha_fin;
-
-			if ($id_doc_venta != "") {
-				$sql .= " AND id_documento_venta = ?";
-				$parametros[] = $id_doc_venta;
-			}
-
-			if ($id_doc_cliente != "") {
-				$sql .= " AND id_documento_cliente = ?";
-				$parametros[] = $id_doc_cliente;
-			}
-
-			if ($id_trabajador != "all") {
-				$sql .= " AND id_trabajador = ?";
-				$parametros[] = $id_trabajador;
-			}
-
-			if ($estado != "all") {
-				$sql .= " AND estado = ?";
-				$parametros[] = $estado;
-			}
-
-			$sql .= " ORDER BY serie,correlativo DESC ";
-
-			$sql .= " LIMIT $offset, $limit ";
-
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos.");
-			}
-
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-		} catch (PDOException $e) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-		} catch (Exception $exception) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-	}
-
-	public function showReporte($id_fundo, $id_trabajador, $id_doc_venta, $id_doc_cliente, $estado, $valor, $fecha_inicio, $fecha_fin)
-	{
-
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
-
-		try {
-
-			$valor = "%$valor%";
-			$parametros = null;
-			$sql = "SELECT * FROM tb_venta WHERE id_fundo = ? AND
-				(CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_cliente LIKE ? OR
-				cliente LIKE ?) AND fecha BETWEEN ? AND ? ";
-
-			$parametros[] = $id_fundo;
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-			$parametros[] = $fecha_inicio;
-			$parametros[] = $fecha_fin;
-
-			if ($id_doc_venta != "") {
-				$sql .= " AND id_documento_venta = ?";
-				$parametros[] = $id_doc_venta;
-			}
-
-			if ($id_doc_cliente != "") {
-				$sql .= " AND id_documento_cliente = ?";
-				$parametros[] = $id_doc_cliente;
+			if ($id_doc_proveedor != "") {
+				$sql .= " AND id_documento_proveedor = ?";
+				$parametros[] = $id_doc_proveedor;
 			}
 
 			if ($id_trabajador != "all") {
@@ -229,141 +217,129 @@ class ClassOrdenVenta extends Conexion
 		return $VD;
 	}
 
-	public function getCountDetalleParaOrden($id_fundo, $tipo, $valor)
-	{
+	public function getCountDetalleParaOrden($tipo, $valor)
+{
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
 
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
+    try {
+        $valor = "%$valor%";
+        $sql = "";
+        $parametros = [];
 
-		try {
+        switch ($tipo) {
+            case 'producto':
+                $sql .= "SELECT count(*) as cantidad FROM tb_gasto WHERE name_gasto LIKE ?";
+                $parametros[] = $valor;
+                break;
+            case 'accesorio':
+                $sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE name_accesorio LIKE ?";
+                $parametros[] = $valor;
+                break;
+            case 'servicio':
+                $sql .= "SELECT count(*) as cantidad FROM tb_servicio WHERE name_servicio LIKE ?";
+                $parametros[] = $valor;
+                break;
+            default:
+                throw new Exception("Error al validar la búsqueda de la tabla.");
+                break;
+        }
 
-			$valor = "%$valor%";
-			$sql = "";
-			$parametros = null;
-			switch ($tipo) {
-				case 'medicamento':
-					$sql .= "SELECT count(*) as cantidad FROM tb_medicamento WHERE id_fundo = ? AND name_medicamento LIKE ? ";
-					$parametros[] = $id_fundo;
-					$parametros[] = $valor;
-					break;
-				case 'accesorio':
-					$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_fundo = ? AND name_accesorio LIKE ? ";
-					$parametros[] = $id_fundo;
-					$parametros[] = $valor;
-					break;
-				case 'servicio':
-					$sql .= "SELECT count(*) as cantidad FROM tb_servicio WHERE name_servicio LIKE ? ";
-					$parametros[] = $valor;
-					break;
-				default:
-					throw new Exception("Error al validar la busqueda de la tabla.");
-					break;
-			}
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute($parametros);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (count($result) == 0 || $result[0]['cantidad'] == 0) {
+            throw new Exception("No se encontraron datos.");
+        }
 
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos");
-			} else {
-				if ($result[0]['cantidad'] == 0) {
-					throw new Exception("No se encontraron datos.");
-				}
-			}
+        $VD1['error'] = "NO";
+        $VD1['message'] = "Success";
+        $VD1['data'] = $result;
+        $VD = $VD1;
+    } catch (PDOException $e) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $e->getMessage();
+        $VD = $VD1;
+    } catch (Exception $exception) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $exception->getMessage();
+        $VD = $VD1;
+    } finally {
+        $conexionClass->Close();
+    }
 
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-		} catch (PDOException $e) {
+    return $VD;
+}
 
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-		} catch (Exception $exception) {
 
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-		} finally {
-			$conexionClass->Close();
-		}
+public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
+{
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
 
-		return $VD;
-	}
+    try {
+        $valor = "%$valor%";
+        $sql = "";
+        $parametros = [];
 
-	public function showDetalleParaOrden($id_fundo, $tipo, $valor, $offset, $limit)
-	{
+        switch ($tipo) {
+            case 'producto':
+                $sql .= "SELECT name_gasto as descripcion, id_gasto as cod_producto
+                         FROM tb_gasto WHERE name_gasto LIKE ?";
+                $parametros[] = $valor;
+                break;
+            case 'accesorio':
+                $sql .= "SELECT name_accesorio as descripcion, id_accesorio as cod_producto,
+                         precio_venta as precio_unitario
+                         FROM tb_accesorio WHERE name_accesorio LIKE ?";
+                $parametros[] = $valor;
+                break;
+            case 'servicio':
+                $sql .= "SELECT name_servicio as descripcion, id_servicio as cod_producto
+                         FROM tb_servicio WHERE name_servicio LIKE ?";
+                $parametros[] = $valor;
+                break;
+            default:
+                throw new Exception("Error al validar la búsqueda de la tabla.");
+                break;
+        }
 
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
+        $sql .= " LIMIT ?, ?";
+        $parametros[] = $offset;
+        $parametros[] = $limit;
 
-		try {
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute($parametros);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			$valor = "%$valor%";
-			$sql = "";
-			$parametros = null;
-			switch ($tipo) {
-				case 'medicamento':
-					$sql .= "SELECT name_medicamento as descripcion,id_medicamento as cod_producto,
-										id_moneda,precio_venta as precio_unitario
-										FROM tb_medicamento WHERE id_fundo = ? AND name_medicamento LIKE ? ";
-					$parametros[] = $id_fundo;
-					$parametros[] = $valor;
-					break;
-				case 'accesorio':
-					$sql .= "SELECT name_accesorio as descripcion,id_accesorio as cod_producto,
-										id_moneda,precio_venta as precio_unitario
-										FROM tb_accesorio WHERE id_fundo = ? AND name_accesorio LIKE ? ";
-					$parametros[] = $id_fundo;
-					$parametros[] = $valor;
-					break;
-				case 'servicio':
-					$sql .= "SELECT name_servicio as descripcion,id_servicio as cod_producto,
-										id_moneda,precio as precio_unitario
-						 				FROM tb_servicio WHERE name_servicio LIKE ? ";
-					$parametros[] = $valor;
-					break;
-				default:
-					throw new Exception("Error al validar la busqueda de la tabla.");
-					break;
-			}
+        if (count($result) == 0) {
+            throw new Exception("No se encontraron datos");
+        }
 
-			$sql .= " LIMIT $offset, $limit ";
+        $VD1['error'] = "NO";
+        $VD1['message'] = "Success";
+        $VD1['data'] = $result;
+        $VD = $VD1;
+    } catch (PDOException $e) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $e->getMessage();
+        $VD = $VD1;
+    } catch (Exception $exception) {
+        $VD1['error'] = "SI";
+        $VD1['message'] = $exception->getMessage();
+        $VD = $VD1;
+    } finally {
+        $conexionClass->Close();
+    }
 
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $VD;
+}
 
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos");
-			}
 
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-		} catch (PDOException $e) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-		} catch (Exception $exception) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-	}
-
-	public function insert($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
+	public function insert($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
 	{
 
 		$conexionClass = new Conexion();
@@ -375,7 +351,7 @@ class ClassOrdenVenta extends Conexion
 			$conexion->beginTransaction();
 
 			$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_documento = ? AND num_documento = ?");
-			$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente]);
+			$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			$id_persona = 0;
@@ -384,7 +360,7 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona = ? ");
 				$stmt->execute([$id_persona]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -399,13 +375,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -421,18 +397,18 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 
-					$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+					$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-					$sql .= "?,?,?,now(),?,?";
+					$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+					$sql .= "?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
-					$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+					$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("Error al registrar el cliente en la base de datos.");
+						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
 					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -451,13 +427,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ?");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -473,7 +449,7 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 				}
 			} else {
@@ -487,13 +463,13 @@ class ClassOrdenVenta extends Conexion
 					}
 				}
 
-				$name_user = $numero_documento_cliente . "@gmail.com";
+				$name_user = $numero_documento_proveedor . "@gmail.com";
 
 				if (trim($correo) != "") {
 					$name_user = $correo;
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE name_user = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor`");
 				$stmt->execute([$name_user]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) > 0) {
@@ -506,9 +482,9 @@ class ClassOrdenVenta extends Conexion
 				$sql .= "?,?,?,?,?,?,?,now(),?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
+				$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("1. Error al registrar los datos del cliente.");
+					throw new Exception("1. Error al registrar los datos del proveedor.");
 				}
 
 				$stmt = $conexion->prepare("SELECT MAX(p.id_persona) as id_persona FROM `tb_persona` p");
@@ -520,15 +496,15 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+				$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 				$sql .= "(";
-				$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-				$sql .= "?,?,?,now(),?,?";
+				$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+				$sql .= "?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+				$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("Error al registrar el cliente en la base de datos.");
+					throw new Exception("Error al registrar el proveedor en la base de datos.");
 				}
 
 				$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -552,15 +528,15 @@ class ClassOrdenVenta extends Conexion
 			$flag_doc_interno = $result[0]['flag_doc_interno'];
 
 
-			$id_documento_cliente = $codigo_documento_cliente;
+			$id_documento_proveedor = $codigo_documento_proveedor;
 			$stmt = $conexion->prepare("SELECT * FROM `tb_documento_identidad` WHERE id_documento = ?");
-			$stmt->execute([$id_documento_cliente]);
+			$stmt->execute([$id_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de documento cliente.");
+				throw new Exception("Error al obtener el id de documento proveedor.");
 			}
-			$name_documento_cliente = $result[0]['name_documento'];
-			$codigo_documento_cliente = $result[0]['codigo_sunat'];
+			$name_documento_proveedor = $result[0]['name_documento'];
+			$codigo_documento_proveedor = $result[0]['codigo_sunat'];
 
 
 			$id_forma_pago = $codigo_forma_pago;
@@ -573,9 +549,9 @@ class ClassOrdenVenta extends Conexion
 			$name_forma_pago = $result[0]['name_forma_pago'];
 			$codigo_forma_pago = $result[0]['cod_sunat'];
 
-			$cliente = $nombres . " " . $apellidos;
+			$proveedor = $nombres . " " . $apellidos;
 			if (strtoupper($name_documento_venta) == "RUC") {
-				$cliente = $nombres;
+				$proveedor = $nombres;
 			}
 
 			$pdf = "NOK";
@@ -611,9 +587,9 @@ class ClassOrdenVenta extends Conexion
 
 			$sql = "INSERT INTO tb_venta (`id_venta`, `id_fundo`, `id_trabajador`, `id_documento_venta`,
 								`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
-								`id_documento_cliente`,`name_documento_cliente`, `codigo_documento_cliente`,
-								`numero_documento_cliente`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
-								`cliente`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
+								`id_documento_proveedor`,`name_documento_proveedor`, `codigo_documento_proveedor`,
+								`numero_documento_proveedor`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
+								`proveedor`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
 								`descuento_total`, `sub_total`, `igv`, `total`, `estado`, `pdf`, `xml`, `cdr`, `ruta`,
 								`token`, `flag_doc_interno`,`monto_recibido`, `vuelto`, `id_moneda`,
 								`codigo_moneda`, `signo_moneda`, `abreviatura_moneda`, `flag_enviado`, `monto_tipo_cambio`) VALUES ";
@@ -630,14 +606,14 @@ class ClassOrdenVenta extends Conexion
 				$codigo_documento_venta,
 				$serie,
 				$correlativo,
-				$id_documento_cliente,
-				$name_documento_cliente,
-				$codigo_documento_cliente,
-				$numero_documento_cliente,
+				$id_documento_proveedor,
+				$name_documento_proveedor,
+				$codigo_documento_proveedor,
+				$numero_documento_proveedor,
 				$id_forma_pago,
 				$codigo_forma_pago,
 				$name_forma_pago,
-				$cliente,
+				$proveedor,
 				$direccion,
 				$telefono,
 				$correo,
@@ -689,7 +665,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->total
 					]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
+						throw new Exception("2. Error al registrar la orden en la base de datos.");
 					}
 				}
 			}
@@ -698,7 +674,7 @@ class ClassOrdenVenta extends Conexion
 			$stmt->execute([]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de venta.");
+				throw new Exception("Error al obtener el id.");
 			}
 			$id_venta = $result[0]['id_venta'];
 
@@ -730,7 +706,7 @@ class ClassOrdenVenta extends Conexion
 		return $VD;
 	}
 
-	public function update($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
+	public function update($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
 	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -744,14 +720,14 @@ class ClassOrdenVenta extends Conexion
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result) == 0) {
-				throw new Exception("No se encontró la orden de venta ó ya fue eliminada.");
+				throw new Exception("No se encontró la orden ó ya fue eliminada.");
 			}
 			if ($result[0]['estado'] == "2" || $result[0]['estado'] == "3") {
-				throw new Exception("No se puede editar está venta, ya se encuentra pagada o anulada.");
+				throw new Exception("No se puede editar está orden, ya se encuentra pagada o anulada.");
 			}
 
 			$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_documento = ? AND num_documento = ?");
-			$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente]);
+			$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			$id_persona = 0;
@@ -760,7 +736,7 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona = ? ");
 				$stmt->execute([$id_persona]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -775,13 +751,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -797,18 +773,18 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 
-					$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+					$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-					$sql .= "?,?,?,now(),?,?";
+					$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+					$sql .= "?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
-					$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+					$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("Error al registrar el cliente en la base de datos.");
+						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
 					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -827,13 +803,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -849,7 +825,7 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 				}
 			} else {
@@ -863,13 +839,13 @@ class ClassOrdenVenta extends Conexion
 					}
 				}
 
-				$name_user = $numero_documento_cliente . "@gmail.com";
+				$name_user = $numero_documento_proveedor . "@gmail.com";
 
 				if (trim($correo) != "") {
 					$name_user = $correo;
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE name_user = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor`");
 				$stmt->execute([$name_user]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) > 0) {
@@ -882,9 +858,9 @@ class ClassOrdenVenta extends Conexion
 				$sql .= "?,?,?,?,?,?,?,now(),?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
+				$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("1. Error al registrar los datos del cliente.");
+					throw new Exception("1. Error al registrar los datos del proveedor.");
 				}
 
 				$stmt = $conexion->prepare("SELECT MAX(p.id_persona) as id_persona FROM `tb_persona` p");
@@ -896,15 +872,15 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+				$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
 				$sql .= "(";
-				$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
+				$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
 				$sql .= "?,?,?,now(),?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("Error al registrar el cliente en la base de datos.");
+					throw new Exception("Error al registrar el proveedor en la base de datos.");
 				}
 
 				$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -928,15 +904,15 @@ class ClassOrdenVenta extends Conexion
 			$flag_doc_interno = $result[0]['flag_doc_interno'];
 
 
-			$id_documento_cliente = $codigo_documento_cliente;
+			$id_documento_proveedor = $codigo_documento_proveedor;
 			$stmt = $conexion->prepare("SELECT * FROM `tb_documento_identidad` WHERE id_documento = ?");
-			$stmt->execute([$id_documento_cliente]);
+			$stmt->execute([$id_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de documento cliente.");
+				throw new Exception("Error al obtener el id de documento proveedor.");
 			}
-			$name_documento_cliente = $result[0]['name_documento'];
-			$codigo_documento_cliente = $result[0]['codigo_sunat'];
+			$name_documento_proveedor = $result[0]['name_documento'];
+			$codigo_documento_proveedor = $result[0]['codigo_sunat'];
 
 
 			$id_forma_pago = $codigo_forma_pago;
@@ -949,9 +925,9 @@ class ClassOrdenVenta extends Conexion
 			$name_forma_pago = $result[0]['name_forma_pago'];
 			$codigo_forma_pago = $result[0]['cod_sunat'];
 
-			$cliente = $nombres . " " . $apellidos;
+			$proveedor = $nombres . " " . $apellidos;
 			if (strtoupper($name_documento_venta) == "RUC") {
-				$cliente = $nombres;
+				$proveedor = $nombres;
 			}
 
 			$pdf = "NOK";
@@ -992,14 +968,14 @@ class ClassOrdenVenta extends Conexion
 											`codigo_documento_venta` = ?,
 											`serie` = ?,
 											`correlativo` = ?,
-											`id_documento_cliente` = ?,
-											`name_documento_cliente` = ?,
-											`codigo_documento_cliente` = ?,
-											`numero_documento_cliente` = ?,
+											`id_documento_proveedor` = ?,
+											`name_documento_proveedor` = ?,
+											`codigo_documento_proveedor` = ?,
+											`numero_documento_proveedor` = ?,
 											`id_forma_pago` = ?,
 											`codigo_forma_pago` = ?,
 											`name_forma_pago` = ?,
-											`cliente` = ?,
+											`proveedor` = ?,
 											`direccion` = ?,
 											`telefono` = ?,
 											`correo` = ?,
@@ -1031,14 +1007,14 @@ class ClassOrdenVenta extends Conexion
 				$codigo_documento_venta,
 				$serie,
 				$correlativo,
-				$id_documento_cliente,
-				$name_documento_cliente,
-				$codigo_documento_cliente,
-				$numero_documento_cliente,
+				$id_documento_proveedor,
+				$name_documento_proveedor,
+				$codigo_documento_proveedor,
+				$numero_documento_proveedor,
 				$id_forma_pago,
 				$codigo_forma_pago,
 				$name_forma_pago,
-				$cliente,
+				$proveedor,
 				$direccion,
 				$telefono,
 				$correo,
@@ -1097,7 +1073,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->total
 					]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
+						throw new Exception("2. Error al registrar la orden en la base de datos.");
 					}
 				}
 			}
@@ -1191,7 +1167,7 @@ class ClassOrdenVenta extends Conexion
 		return $VD;
 	}
 
-	public function insert_1($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
+	public function insert_1($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
 	{
 
 		$conexionClass = new Conexion();
@@ -1203,7 +1179,7 @@ class ClassOrdenVenta extends Conexion
 			$conexion->beginTransaction();
 
 			$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_documento = ? AND num_documento = ?");
-			$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente]);
+			$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			$id_persona = 0;
@@ -1212,7 +1188,7 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona = ? ");
 				$stmt->execute([$id_persona]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1227,13 +1203,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -1249,18 +1225,18 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 
-					$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+					$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-					$sql .= "?,?,?,now(),?,?";
+					$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+					$sql .= "?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
-					$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+					$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("Error al registrar el cliente en la base de datos.");
+						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
 					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -1279,13 +1255,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -1301,7 +1277,7 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 				}
 			} else {
@@ -1315,13 +1291,13 @@ class ClassOrdenVenta extends Conexion
 					}
 				}
 
-				$name_user = $numero_documento_cliente . "@gmail.com";
+				$name_user = $numero_documento_proveedor . "@gmail.com";
 
 				if (trim($correo) != "") {
 					$name_user = $correo;
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE name_user = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor`");
 				$stmt->execute([$name_user]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) > 0) {
@@ -1334,9 +1310,9 @@ class ClassOrdenVenta extends Conexion
 				$sql .= "?,?,?,?,?,?,?,now(),?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
+				$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("1. Error al registrar los datos del cliente.");
+					throw new Exception("1. Error al registrar los datos del proveedor.");
 				}
 
 				$stmt = $conexion->prepare("SELECT MAX(p.id_persona) as id_persona FROM `tb_persona` p");
@@ -1348,15 +1324,15 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+				$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 				$sql .= "(";
-				$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-				$sql .= "?,?,?,now(),?,?";
+				$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+				$sql .= "?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+				$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("Error al registrar el cliente en la base de datos.");
+					throw new Exception("Error al registrar el proveedor en la base de datos.");
 				}
 
 				$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -1371,7 +1347,7 @@ class ClassOrdenVenta extends Conexion
 			$stmt->execute([$id_documento_venta]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de documento venta.");
+				throw new Exception("Error al obtener el id de documento.");
 			}
 			$name_documento_venta = $result[0]['nombre_corto'];
 			$codigo_documento_venta = $result[0]['cod_sunat'];
@@ -1380,15 +1356,15 @@ class ClassOrdenVenta extends Conexion
 			$flag_doc_interno = $result[0]['flag_doc_interno'];
 
 
-			$id_documento_cliente = $codigo_documento_cliente;
+			$id_documento_proveedor = $codigo_documento_proveedor;
 			$stmt = $conexion->prepare("SELECT * FROM `tb_documento_identidad` WHERE id_documento = ?");
-			$stmt->execute([$id_documento_cliente]);
+			$stmt->execute([$id_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de documento cliente.");
+				throw new Exception("Error al obtener el id de documento proveedor.");
 			}
-			$name_documento_cliente = $result[0]['name_documento'];
-			$codigo_documento_cliente = $result[0]['codigo_sunat'];
+			$name_documento_proveedor = $result[0]['name_documento'];
+			$codigo_documento_proveedor = $result[0]['codigo_sunat'];
 
 
 			$id_forma_pago = $codigo_forma_pago;
@@ -1401,9 +1377,9 @@ class ClassOrdenVenta extends Conexion
 			$name_forma_pago = $result[0]['name_forma_pago'];
 			$codigo_forma_pago = $result[0]['cod_sunat'];
 
-			$cliente = $nombres . " " . $apellidos;
+			$proveedor = $nombres . " " . $apellidos;
 			if (strtoupper($name_documento_venta) == "RUC") {
-				$cliente = $nombres;
+				$proveedor = $nombres;
 			}
 
 
@@ -1450,13 +1426,13 @@ class ClassOrdenVenta extends Conexion
 					"serie"                             => "$serie",
 					"numero"				                    => "$correlativo",
 					"sunat_transaction"			            => "1",
-					"cliente_tipo_de_documento"		      => "$codigo_documento_cliente",
-					"cliente_numero_de_documento"	      => "$numero_documento_cliente",
-					"cliente_denominacion"              => "$cliente",
-					"cliente_direccion"                 => "$direccion",
-					"cliente_email"                     => "$correo",
-					"cliente_email_1"                   => "",
-					"cliente_email_2"                   => "",
+					"proveedor_tipo_de_documento"		      => "$codigo_documento_proveedor",
+					"proveedor_numero_de_documento"	      => "$numero_documento_proveedor",
+					"proveedor_denominacion"              => "$proveedor",
+					"proveedor_direccion"                 => "$direccion",
+					"proveedor_email"                     => "$correo",
+					"proveedor_email_1"                   => "",
+					"proveedor_email_2"                   => "",
 					"fecha_de_emision"                  => date('d-m-Y', strtotime($fecha)),
 					"fecha_de_vencimiento"              => "",
 					"moneda"                            => $codigo_moneda,
@@ -1484,7 +1460,7 @@ class ClassOrdenVenta extends Conexion
 					"tipo_de_nota_de_credito"           => "",
 					"tipo_de_nota_de_debito"            => "",
 					"enviar_automaticamente_a_la_sunat" => "true",
-					"enviar_automaticamente_al_cliente" => "$flag_envia_correo",
+					"enviar_automaticamente_al_proveedor" => "$flag_envia_correo",
 					"codigo_unico"                      => "",
 					"condiciones_de_pago"               => "",
 					"medio_de_pago"                     => "$name_forma_pago",
@@ -1514,12 +1490,12 @@ class ClassOrdenVenta extends Conexion
 								}
 								$id_unidad_medida = $result[0]['id_unidad_medida'];
 								break;
-							case 'medicamento':
-								$stmt = $conexion->prepare("SELECT * FROM `tb_medicamento` WHERE id_medicamento = ?");
+							case 'producto':
+								$stmt = $conexion->prepare("SELECT * FROM `tb_gasto` WHERE id_gasto = ?");
 								$stmt->execute([$codigo_producto]);
 								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 								if (count($result) == 0) {
-									throw new Exception("Error al obtener el id de medicamento.");
+									throw new Exception("Error al obtener el id de producto.");
 								}
 								$id_unidad_medida = $result[0]['id_unidad_medida'];
 								break;
@@ -1589,9 +1565,9 @@ class ClassOrdenVenta extends Conexion
 
 			$sql = "INSERT INTO tb_venta (`id_venta`, `id_fundo`, `id_trabajador`, `id_documento_venta`,
 								`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
-								`id_documento_cliente`,`name_documento_cliente`, `codigo_documento_cliente`,
-								`numero_documento_cliente`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
-								`cliente`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
+								`id_documento_proveedor`,`name_documento_proveedor`, `codigo_documento_proveedor`,
+								`numero_documento_proveedor`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
+								`proveedor`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
 								`descuento_total`, `sub_total`, `igv`, `total`, `estado`, `pdf`, `xml`, `cdr`, `ruta`,
 								`token`, `flag_doc_interno`,`monto_recibido`, `vuelto`, `id_moneda`,
 								`codigo_moneda`, `signo_moneda`, `abreviatura_moneda`, `flag_enviado`, `monto_tipo_cambio`,
@@ -1612,14 +1588,14 @@ class ClassOrdenVenta extends Conexion
 				$codigo_documento_venta,
 				$serie,
 				$correlativo,
-				$id_documento_cliente,
-				$name_documento_cliente,
-				$codigo_documento_cliente,
-				$numero_documento_cliente,
+				$id_documento_proveedor,
+				$name_documento_proveedor,
+				$codigo_documento_proveedor,
+				$numero_documento_proveedor,
 				$id_forma_pago,
 				$codigo_forma_pago,
 				$name_forma_pago,
-				$cliente,
+				$proveedor,
 				$direccion,
 				$telefono,
 				$correo,
@@ -1645,7 +1621,7 @@ class ClassOrdenVenta extends Conexion
 				$mensaje_sunat
 			]);
 			if ($stmt->rowCount() == 0) {
-				throw new Exception("1. Error al registrar la orden de venta en la base de datos.");
+				throw new Exception("1. Error al registrar la orden en la base de datos.");
 			}
 
 			foreach ($detalle_venta as $key) {
@@ -1672,7 +1648,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->total
 					]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("2. Error al registrar el detalle de la orden de venta en la base de datos.");
+						throw new Exception("2. Error al registrar el detalle de la orden en la base de datos.");
 					}
 
 					$name_tabla = $key1->name_tabla;
@@ -1684,11 +1660,11 @@ class ClassOrdenVenta extends Conexion
 								throw new Exception("Ocurrió un error al actualizar el stock.");
 							}
 							break;
-						case 'medicamento':
-							$sql = "UPDATE tb_medicamento SET stock = stock - ? where id_medicamento = ?";
+						case 'producto':
+							$sql = "UPDATE tb_gasto where id_gasto = ?";
 							$stmt = $conexion->prepare($sql);
 							if ($stmt->execute([$key1->cantidad, $key1->cod_producto]) == false) {
-								throw new Exception("Ocurrió un error al actualizar el stock.");
+								throw new Exception("Ocurrió un error.");
 							}
 							break;
 					}
@@ -1734,7 +1710,7 @@ class ClassOrdenVenta extends Conexion
 		return $VD;
 	}
 
-	public function update_1($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
+	public function update_1($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
 	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -1748,14 +1724,14 @@ class ClassOrdenVenta extends Conexion
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result) == 0) {
-				throw new Exception("No se encontró la orden de venta ó ya fue eliminada.");
+				throw new Exception("No se encontró la orden ó ya fue eliminada.");
 			}
 			if ($result[0]['estado'] == "2" || $result[0]['estado'] == "3") {
-				throw new Exception("No se puede editar está venta, ya se encuentra pagada o anulada.");
+				throw new Exception("No se puede editar está orden, ya se encuentra pagada o anulada.");
 			}
 
 			$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_documento = ? AND num_documento = ?");
-			$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente]);
+			$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			$id_persona = 0;
@@ -1764,7 +1740,7 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona = ? ");
 				$stmt->execute([$id_persona]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -1779,13 +1755,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -1801,18 +1777,18 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 
-					$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+					$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-					$sql .= "?,?,?,now(),?,?";
+					$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+					$sql .= "?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
-					$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+					$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("Error al registrar el cliente en la base de datos.");
+						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
 					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -1831,13 +1807,13 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_cliente . "@gmail.com";
+					$name_user = $numero_documento_proveedor . "@gmail.com";
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
 					}
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
 					$stmt->execute([$id_persona, $name_user]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -1853,7 +1829,7 @@ class ClassOrdenVenta extends Conexion
 					$sql .= " WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([$nombres, $apellidos, $direccion, $correo, $telefono, $id_persona]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
+						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 				}
 			} else {
@@ -1867,13 +1843,13 @@ class ClassOrdenVenta extends Conexion
 					}
 				}
 
-				$name_user = $numero_documento_cliente . "@gmail.com";
+				$name_user = $numero_documento_proveedor . "@gmail.com";
 
 				if (trim($correo) != "") {
 					$name_user = $correo;
 				}
 
-				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE name_user = ? ");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` ");
 				$stmt->execute([$name_user]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) > 0) {
@@ -1886,9 +1862,9 @@ class ClassOrdenVenta extends Conexion
 				$sql .= "?,?,?,?,?,?,?,now(),?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$codigo_documento_cliente, $numero_documento_cliente, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
+				$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("1. Error al registrar los datos del cliente.");
+					throw new Exception("1. Error al registrar los datos del proveedor.");
 				}
 
 				$stmt = $conexion->prepare("SELECT MAX(p.id_persona) as id_persona FROM `tb_persona` p");
@@ -1900,15 +1876,15 @@ class ClassOrdenVenta extends Conexion
 
 				$id_persona = $result[0]['id_persona'];
 
-				$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `name_user`, `pass_user`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
+				$sql = "INSERT INTO tb_proveedor (`id_proveedor`, `id_persona`, `estado`, `src_imagen`) VALUES ";
 				$sql .= "(";
-				$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-				$sql .= "?,?,?,now(),?,?";
+				$sql .= "(SELECT CASE COUNT(c.id_proveedor) WHEN 0 THEN 1 ELSE (MAX(c.id_proveedor) + 1) end FROM `tb_proveedor` c),";
+				$sql .= "?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_persona, $name_user, "1234", 1, "resources/global/images/default-profile.png"]);
+				$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("Error al registrar el cliente en la base de datos.");
+					throw new Exception("Error al registrar el proveedor en la base de datos.");
 				}
 
 				$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
@@ -1932,15 +1908,15 @@ class ClassOrdenVenta extends Conexion
 			$flag_doc_interno = $result[0]['flag_doc_interno'];
 
 
-			$id_documento_cliente = $codigo_documento_cliente;
+			$id_documento_proveedor = $codigo_documento_proveedor;
 			$stmt = $conexion->prepare("SELECT * FROM `tb_documento_identidad` WHERE id_documento = ?");
-			$stmt->execute([$id_documento_cliente]);
+			$stmt->execute([$id_documento_proveedor]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de documento cliente.");
+				throw new Exception("Error al obtener el id de documento proveedor.");
 			}
-			$name_documento_cliente = $result[0]['name_documento'];
-			$codigo_documento_cliente = $result[0]['codigo_sunat'];
+			$name_documento_proveedor = $result[0]['name_documento'];
+			$codigo_documento_proveedor = $result[0]['codigo_sunat'];
 
 
 			$id_forma_pago = $codigo_forma_pago;
@@ -1953,9 +1929,9 @@ class ClassOrdenVenta extends Conexion
 			$name_forma_pago = $result[0]['name_forma_pago'];
 			$codigo_forma_pago = $result[0]['cod_sunat'];
 
-			$cliente = $nombres . " " . $apellidos;
+			$proveedor = $nombres . " " . $apellidos;
 			if (strtoupper($name_documento_venta) == "RUC") {
-				$cliente = $nombres;
+				$proveedor = $nombres;
 			}
 
 			$stmt = $conexion->prepare("SELECT * FROM `tb_fundo` WHERE id_fundo = ?");
@@ -2000,13 +1976,13 @@ class ClassOrdenVenta extends Conexion
 					"serie"                             => "$serie",
 					"numero"				                    => "$correlativo",
 					"sunat_transaction"			            => "1",
-					"cliente_tipo_de_documento"		      => "$codigo_documento_cliente",
-					"cliente_numero_de_documento"	      => "$numero_documento_cliente",
-					"cliente_denominacion"              => "$cliente",
-					"cliente_direccion"                 => "$direccion",
-					"cliente_email"                     => "$correo",
-					"cliente_email_1"                   => "",
-					"cliente_email_2"                   => "",
+					"proveedor_tipo_de_documento"		      => "$codigo_documento_proveedor",
+					"proveedor_numero_de_documento"	      => "$numero_documento_proveedor",
+					"proveedor_denominacion"              => "$proveedor",
+					"proveedor_direccion"                 => "$direccion",
+					"proveedor_email"                     => "$correo",
+					"proveedor_email_1"                   => "",
+					"proveedor_email_2"                   => "",
 					"fecha_de_emision"                  => date('d-m-Y', strtotime($fecha)),
 					"fecha_de_vencimiento"              => "",
 					"moneda"                            => $codigo_moneda,
@@ -2034,7 +2010,7 @@ class ClassOrdenVenta extends Conexion
 					"tipo_de_nota_de_credito"           => "",
 					"tipo_de_nota_de_debito"            => "",
 					"enviar_automaticamente_a_la_sunat" => "true",
-					"enviar_automaticamente_al_cliente" => "$flag_envia_correo",
+					"enviar_automaticamente_al_proveedor" => "$flag_envia_correo",
 					"codigo_unico"                      => "",
 					"condiciones_de_pago"               => "",
 					"medio_de_pago"                     => "$name_forma_pago",
@@ -2064,12 +2040,12 @@ class ClassOrdenVenta extends Conexion
 								}
 								$id_unidad_medida = $result[0]['id_unidad_medida'];
 								break;
-							case 'medicamento':
-								$stmt = $conexion->prepare("SELECT * FROM `tb_medicamento` WHERE id_medicamento = ?");
+							case 'producto':
+								$stmt = $conexion->prepare("SELECT * FROM `tb_gasto` WHERE id_gasto = ?");
 								$stmt->execute([$codigo_producto]);
 								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 								if (count($result) == 0) {
-									throw new Exception("Error al obtener el id de medicamento.");
+									throw new Exception("Error al obtener el id de producto.");
 								}
 								$id_unidad_medida = $result[0]['id_unidad_medida'];
 								break;
@@ -2144,14 +2120,14 @@ class ClassOrdenVenta extends Conexion
 											`codigo_documento_venta` = ?,
 											`serie` = ?,
 											`correlativo` = ?,
-											`id_documento_cliente` = ?,
-											`name_documento_cliente` = ?,
-											`codigo_documento_cliente` = ?,
-											`numero_documento_cliente` = ?,
+											`id_documento_proveedor` = ?,
+											`name_documento_proveedor` = ?,
+											`codigo_documento_proveedor` = ?,
+											`numero_documento_proveedor` = ?,
 											`id_forma_pago` = ?,
 											`codigo_forma_pago` = ?,
 											`name_forma_pago` = ?,
-											`cliente` = ?,
+											`proveedor` = ?,
 											`direccion` = ?,
 											`telefono` = ?,
 											`correo` = ?,
@@ -2186,14 +2162,14 @@ class ClassOrdenVenta extends Conexion
 				$codigo_documento_venta,
 				$serie,
 				$correlativo,
-				$id_documento_cliente,
-				$name_documento_cliente,
-				$codigo_documento_cliente,
-				$numero_documento_cliente,
+				$id_documento_proveedor,
+				$name_documento_proveedor,
+				$codigo_documento_proveedor,
+				$numero_documento_proveedor,
 				$id_forma_pago,
 				$codigo_forma_pago,
 				$name_forma_pago,
-				$cliente,
+				$proveedor,
 				$direccion,
 				$telefono,
 				$correo,
@@ -2220,13 +2196,13 @@ class ClassOrdenVenta extends Conexion
 				$id_venta
 			]);
 			if ($flag_update == false) {
-				throw new Exception("1. Error al registrar la orden de venta en la base de datos.");
+				throw new Exception("1. Error al registrar la orden en la base de datos.");
 			}
 
 			$sql = "DELETE FROM tb_detalle_venta WHERE id_venta = ?";
 			$stmt = $conexion->prepare($sql);
 			if ($stmt->execute([$id_venta]) == false) {
-				throw new Exception("Ocurrió un error al eliminar el detalle de la orden de venta.");
+				throw new Exception("Ocurrió un error al eliminar el detalle de la orden.");
 			}
 
 			foreach ($detalle_venta as $key) {
@@ -2266,8 +2242,8 @@ class ClassOrdenVenta extends Conexion
 								throw new Exception("Ocurrió un error al actualizar el stock.");
 							}
 							break;
-						case 'medicamento':
-							$sql = "UPDATE tb_medicamento SET stock = stock - ? where id_medicamento = ?";
+						case 'producto':
+							$sql = "UPDATE tb_gasto where id_gasto = ?";
 							$stmt = $conexion->prepare($sql);
 							if ($stmt->execute([$key1->cantidad, $key1->cod_producto]) == false) {
 								throw new Exception("Ocurrió un error al actualizar el stock.");
@@ -2322,7 +2298,7 @@ class ClassOrdenVenta extends Conexion
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result) == 0) {
-				throw new Exception("1. No se encontró el registro de la venta a editar el enlace.");
+				throw new Exception("1. No se encontró el registro a editar el enlace.");
 			}
 
 			$sql = "UPDATE tb_venta SET ";
@@ -2360,7 +2336,7 @@ class ClassOrdenVenta extends Conexion
 			$stmt->execute([$id_venta]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
-				throw new Exception("1. No se encontró el registro de la venta.");
+				throw new Exception("1. No se encontró el registro.");
 			}
 
 			if ($result[0]['estado'] != "1") {
@@ -2370,13 +2346,13 @@ class ClassOrdenVenta extends Conexion
 			$stmt = $conexion->prepare("DELETE FROM tb_detalle_venta WHERE id_venta = ?");
 			$stmt->execute([$id_venta]);
 			if ($stmt->rowCount() == 0) {
-				throw new Exception("Ocurrió un error al eliminar el detalle de la orden de venta.");
+				throw new Exception("Ocurrió un error al eliminar el detalle de la orden.");
 			}
 
 			$stmt = $conexion->prepare("DELETE FROM tb_venta WHERE id_venta = ?");
 			$stmt->execute([$id_venta]);
 			if ($stmt->rowCount() == 0) {
-				throw new Exception("Ocurrió un error al eliminar la orden de venta.");
+				throw new Exception("Ocurrió un error al eliminar la orden.");
 			}
 
 			$VD = "OK";
@@ -2478,8 +2454,8 @@ class ClassOrdenVenta extends Conexion
 							throw new Exception("Ocurrió un error al actualizar el stock.");
 						}
 						break;
-					case 'medicamento':
-						$sql = "UPDATE tb_medicamento SET stock = stock + ? where id_medicamento = ?";
+					case 'producto':
+						$sql = "UPDATE tb_gasto  where id_gasto = ?";
 						$stmt = $conexion->prepare($sql);
 						if ($stmt->execute([$key['cantidad'], $key['cod_producto']]) == false) {
 							throw new Exception("Ocurrió un error al actualizar el stock.");

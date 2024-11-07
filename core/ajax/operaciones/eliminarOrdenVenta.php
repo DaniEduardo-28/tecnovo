@@ -14,7 +14,7 @@
     }
 
     if (empty($id_venta)) {
-        throw new Exception("No se recibió el campo id orden venta.");
+        throw new Exception("No se recibió el campo id orden.");
     }
 
     require_once "core/models/ClassOrdenVenta.php";

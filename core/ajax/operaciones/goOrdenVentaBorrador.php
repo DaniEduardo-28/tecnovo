@@ -5,8 +5,8 @@
   $codigo_documento_venta = isset($_POST["codigo_documento_venta"]) ? $_POST["codigo_documento_venta"] : null;
   $serie = isset($_POST["serie"]) ? $_POST["serie"] : null;
   $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : null;
-  $codigo_documento_cliente = isset($_POST["codigo_documento_cliente"]) ? $_POST["codigo_documento_cliente"] : null;
-  $numero_documento_cliente = isset($_POST["numero_documento_cliente"]) ? $_POST["numero_documento_cliente"] : null;
+  $codigo_documento_proveedor = isset($_POST["codigo_documento_proveedor"]) ? $_POST["codigo_documento_proveedor"] : null;
+  $numero_documento_proveedor = isset($_POST["numero_documento_proveedor"]) ? $_POST["numero_documento_proveedor"] : null;
   $nombres = isset($_POST["nombres"]) ? $_POST["nombres"] : null;
   $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : null;
   $direccion = isset($_POST["direccion"]) ? $_POST["direccion"] : null;
@@ -54,16 +54,16 @@
       throw new Exception("Campo obligatorio : Documento de venta.");
     }
 
-    if (empty(trim($codigo_documento_cliente))) {
-      throw new Exception("Campo obligatorio : Documento de Cliente.");
+    if (empty(trim($codigo_documento_proveedor))) {
+      throw new Exception("Campo obligatorio : Documento de proveedor.");
     }
 
-    if (empty(trim($numero_documento_cliente))) {
-      throw new Exception("Campo obligatorio : Número de Documento Cliente.");
+    if (empty(trim($numero_documento_proveedor))) {
+      throw new Exception("Campo obligatorio : Número de Documento proveedor.");
     }
 
     if (empty(trim($nombres))) {
-      throw new Exception("Campo obligatorio : Nombres ó Razón Social del Cliente.");
+      throw new Exception("Campo obligatorio : Nombres ó Razón Social del proveedor.");
     }
 
     if (empty(trim($codigo_moneda))) {
@@ -75,15 +75,15 @@
     }
 
     if ($array_detalle==null) {
-      throw new Exception("1. No se recibió los detalles de la orden de venta.");
+      throw new Exception("1. No se recibió los detalles de la orden.");
     }
 
     if (count($detalle_venta->datos)==0) {
-      throw new Exception("2. No se recibió los detalles de la orden de venta.");
+      throw new Exception("2. No se recibió los detalles de la orden.");
     }
 
     require_once "core/models/ClassDocumentoIdentidad.php";
-    $resultDoc1 = $OBJ_DOCUMENTO_IDENTIDAD->getDocumentoForId($codigo_documento_cliente);
+    $resultDoc1 = $OBJ_DOCUMENTO_IDENTIDAD->getDocumentoForId($codigo_documento_proveedor);
     if ($resultDoc1['error']=="SI") {
       throw new Exception($resultDoc1['message']);
     }
@@ -91,24 +91,24 @@
     $dataResultDoc1 = $resultDoc1['data'];
 
     if ($dataResultDoc1[0]['flag_exacto']=="1") {
-      if ($dataResultDoc1[0]['size']!=strlen($numero_documento_cliente)) {
+      if ($dataResultDoc1[0]['size']!=strlen($numero_documento_proveedor)) {
         throw new Exception("El número de documento de identidad tiene que tener " . $dataResultDoc1[0]['size'] . " dígitos.");
       }
     }else {
-      if ($dataResultDoc1[0]['size']<strlen($numero_documento_cliente)) {
+      if ($dataResultDoc1[0]['size']<strlen($numero_documento_proveedor)) {
         throw new Exception("El documento de identidad tiene que ser menor o igual de " . $dataResultDoc1[0]['size'] . " dígitos.");
       }
     }
 
     if ($dataResultDoc1[0]['flag_numerico']=="1") {
-      if (validar_number($numero_documento_cliente)==false) {
+      if (validar_number($numero_documento_proveedor)==false) {
         throw new Exception("El documento de identidad tiene que ser sólo números.");
       }
     }
 
     if (strtoupper($dataResultDoc1[0]['name_documento'])=="RUC") {
       if (empty(trim($direccion))) {
-        throw new Exception("Campo obligatorio : Dirección del cliente obligatorio para RUC.");
+        throw new Exception("Campo obligatorio : Dirección del proveedor obligatorio para RUC.");
       }
     }
 
@@ -119,10 +119,10 @@
     $VD;
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_VENTA->insert($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
+        $VD = $OBJ_ORDEN_VENTA->insert($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_proveedor,$numero_documento_proveedor,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_VENTA->update($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
+        $VD = $OBJ_ORDEN_VENTA->update($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_proveedor,$numero_documento_proveedor,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
         break;
       default:
         $VD1['error'] = "SI";

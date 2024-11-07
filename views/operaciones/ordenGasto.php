@@ -172,9 +172,9 @@
                                               <input type="text" name="correlativo" id="correlativo" readonly class="form-control">
                                             </div>
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="codigo_documento_cliente">Doc. Proveedor (*)</label>
-                                              <select class="form-control" name="codigo_documento_cliente"
-                                                    id="codigo_documento_cliente" required>
+                                              <label for="codigo_documento_proveedor">Doc. Proveedor (*)</label>
+                                              <select class="form-control" name="codigo_documento_proveedor"
+                                                    id="codigo_documento_proveedor" required>
                                                 <option value="">Seleccione</option>
                                                 <?php
                                                   include('core/models/ClassDocumentoIdentidad.php');
@@ -188,8 +188,8 @@
                                               </select>
                                             </div>
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="numero_documento_cliente">N° Documento(*)</label>
-                                              <input type="text" name="numero_documento_cliente" id="numero_documento_cliente"
+                                              <label for="numero_documento_proveedor">N° Documento(*)</label>
+                                              <input type="text" name="numero_documento_proveedor" id="numero_documento_proveedor"
                                               class="form-control" required autocomplete="off">
                                             </div>
                                             <div class="form-group col-md-4 col-sm-6">
@@ -488,22 +488,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="form-group col-sm-4">
-                <label for="sucursal_buscar">Sucursal (cambiarlo)</label>
-                <select class="form-control" name="sucursal_buscar" id="sucursal_buscar">
-                  <?php
-                    include("core/models/ClassSucursal.php");
-                    $dataSucursal = $OBJ_SUCURSAL->show(1,"all");
-                    if ($dataSucursal["error"]=="NO") {
-                      foreach ($dataSucursal["data"] as $key) {
-                        if ($_SESSION['id_fundo']==$key['id_fundo']) {
-                          echo '<option value="' . $key['id_fundo'] . '" selected>' . $key['nombre'] . '</option>';
-                        }else {
-                          echo '<option value="' . $key['id_fundo'] . '">' . $key['nombre'] . '</option>';
-                        }
-                      }
-                    }
-                  ?>
-                </select>
+
               </div>
               <div class="col-sm-8">
                 <label for="">&nbsp;</label>
