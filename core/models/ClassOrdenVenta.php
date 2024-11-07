@@ -4,144 +4,146 @@ class ClassOrdenVenta extends Conexion
 {
 
 	//constructor de la clase
-	public function __construct() {}
+	public function __construct()
+	{
+	}
 
 	public function getCount($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $fecha_inicio, $fecha_fin)
-{
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
-    $VD = "";
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
 
-    try {
-        $valor = "%$valor%";
-        $parametros = [];
-        $sql = "SELECT COUNT(*) as cantidad FROM tb_venta WHERE 
+		try {
+			$valor = "%$valor%";
+			$parametros = [];
+			$sql = "SELECT COUNT(*) as cantidad FROM tb_venta WHERE 
             (CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_proveedor LIKE ? OR
             proveedor LIKE ?) AND fecha BETWEEN ? AND ? ";
 
-        $parametros[] = $valor;
-        $parametros[] = $valor;
-        $parametros[] = $valor;
-        $parametros[] = $fecha_inicio;
-        $parametros[] = $fecha_fin;
+			$parametros[] = $valor;
+			$parametros[] = $valor;
+			$parametros[] = $valor;
+			$parametros[] = $fecha_inicio;
+			$parametros[] = $fecha_fin;
 
-        if ($id_doc_venta != "") {
-            $sql .= " AND id_documento_venta = ?";
-            $parametros[] = $id_doc_venta;
-        }
+			if ($id_doc_venta != "") {
+				$sql .= " AND id_documento_venta = ?";
+				$parametros[] = $id_doc_venta;
+			}
 
-        if ($id_doc_proveedor != "") {
-            $sql .= " AND id_documento_proveedor = ?";
-            $parametros[] = $id_doc_proveedor;
-        }
+			if ($id_doc_proveedor != "") {
+				$sql .= " AND id_documento_proveedor = ?";
+				$parametros[] = $id_doc_proveedor;
+			}
 
-        if ($id_trabajador != "all") {
-            $sql .= " AND id_trabajador = ?";
-            $parametros[] = $id_trabajador;
-        }
+			if ($id_trabajador != "all") {
+				$sql .= " AND id_trabajador = ?";
+				$parametros[] = $id_trabajador;
+			}
 
-        if ($estado != "all") {
-            $sql .= " AND estado = ?";
-            $parametros[] = $estado;
-        }
+			if ($estado != "all") {
+				$sql .= " AND estado = ?";
+				$parametros[] = $estado;
+			}
 
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute($parametros);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($result) == 0 || $result[0]['cantidad'] == 0) {
-            throw new Exception("No se encontraron datos.");
-        }
+			if (count($result) == 0 || $result[0]['cantidad'] == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
 
-        $VD1['error'] = "NO";
-        $VD1['message'] = "Success";
-        $VD1['data'] = $result;
-        $VD = $VD1;
-    } catch (PDOException $e) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $e->getMessage();
-        $VD = $VD1;
-    } catch (Exception $exception) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $exception->getMessage();
-        $VD = $VD1;
-    } finally {
-        $conexionClass->Close();
-    }
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
 
-    return $VD;
-}
+		return $VD;
+	}
 
 
-public function show($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $offset, $limit, $fecha_inicio, $fecha_fin)
-{
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
-    $VD = "";
+	public function show($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $offset, $limit, $fecha_inicio, $fecha_fin)
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
 
-    try {
-        $valor = "%$valor%";
-        $parametros = [];
-        $sql = "SELECT * FROM tb_venta WHERE 
+		try {
+			$valor = "%$valor%";
+			$parametros = [];
+			$sql = "SELECT * FROM tb_venta WHERE 
             (CONCAT(serie,'-',correlativo) LIKE ? OR numero_documento_proveedor LIKE ? OR
             proveedor LIKE ?) AND fecha BETWEEN ? AND ? ";
 
-        $parametros[] = $valor;
-        $parametros[] = $valor;
-        $parametros[] = $valor;
-        $parametros[] = $fecha_inicio;
-        $parametros[] = $fecha_fin;
+			$parametros[] = $valor;
+			$parametros[] = $valor;
+			$parametros[] = $valor;
+			$parametros[] = $fecha_inicio;
+			$parametros[] = $fecha_fin;
 
-        if ($id_doc_venta != "") {
-            $sql .= " AND id_documento_venta = ?";
-            $parametros[] = $id_doc_venta;
-        }
+			if ($id_doc_venta != "") {
+				$sql .= " AND id_documento_venta = ?";
+				$parametros[] = $id_doc_venta;
+			}
 
-        if ($id_doc_proveedor != "") {
-            $sql .= " AND id_documento_proveedor = ?";
-            $parametros[] = $id_doc_proveedor;
-        }
+			if ($id_doc_proveedor != "") {
+				$sql .= " AND id_documento_proveedor = ?";
+				$parametros[] = $id_doc_proveedor;
+			}
 
-        if ($id_trabajador != "all") {
-            $sql .= " AND id_trabajador = ?";
-            $parametros[] = $id_trabajador;
-        }
+			if ($id_trabajador != "all") {
+				$sql .= " AND id_trabajador = ?";
+				$parametros[] = $id_trabajador;
+			}
 
-        if ($estado != "all") {
-            $sql .= " AND estado = ?";
-            $parametros[] = $estado;
-        }
+			if ($estado != "all") {
+				$sql .= " AND estado = ?";
+				$parametros[] = $estado;
+			}
 
-        $sql .= " ORDER BY serie, correlativo DESC LIMIT ?, ?";
-        $parametros[] = $offset;
-        $parametros[] = $limit;
+			$sql .= " ORDER BY serie, correlativo DESC LIMIT ?, ?";
+			$parametros[] = $offset;
+			$parametros[] = $limit;
 
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute($parametros);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($result) == 0) {
-            throw new Exception("No se encontraron datos.");
-        }
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
 
-        $VD1['error'] = "NO";
-        $VD1['message'] = "Success";
-        $VD1['data'] = $result;
-        $VD = $VD1;
-    } catch (PDOException $e) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $e->getMessage();
-        $VD = $VD1;
-    } catch (Exception $exception) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $exception->getMessage();
-        $VD = $VD1;
-    } finally {
-        $conexionClass->Close();
-    }
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
 
-    return $VD;
-}
+		return $VD;
+	}
 
 
 	public function showReporte($id_fundo, $id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, $valor, $fecha_inicio, $fecha_fin)
@@ -218,114 +220,109 @@ public function show($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, 
 	}
 
 	public function getCountDetalleParaOrden($tipo, $valor)
-{
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
-    $VD = "";
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
 
-    try {
-        $valor = "%$valor%";
-        $sql = "";
-        $parametros = [];
+		try {
+			$valor = "%$valor%";
+			$sql = "";
+			$parametros = [];
 
-        switch ($tipo) {
-            case 'producto':
-                $sql .= "SELECT count(*) as cantidad FROM tb_gasto WHERE name_gasto LIKE ?";
-                $parametros[] = $valor;
-                break;
-            case 'servicio':
-                $sql .= "SELECT count(*) as cantidad FROM tb_servicio WHERE name_servicio LIKE ?";
-                $parametros[] = $valor;
-                break;
-            default:
-                throw new Exception("Error al validar la búsqueda de la tabla.");
-        }
+			// Modificar para incluir solo `producto` y `servicio`
+			if ($tipo === 'producto') {
+				$sql = "SELECT count(*) as cantidad FROM tb_gasto WHERE name_gasto LIKE ?";
+				$parametros[] = $valor;
+			} elseif ($tipo === 'servicio') {
+				$sql = "SELECT count(*) as cantidad FROM tb_servicio WHERE name_servicio LIKE ?";
+				$parametros[] = $valor;
+			} else {
+				throw new Exception("Tipo de búsqueda inválido.");
+			}
 
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute($parametros);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($result) == 0 || $result[0]['cantidad'] == 0) {
-            throw new Exception("No se encontraron datos.");
-        }
+			if (count($result) === 0) {
+				throw new Exception("No se encontraron datos.");
+			} elseif ($result[0]['cantidad'] == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
 
-        $VD1['error'] = "NO";
-        $VD1['message'] = "Success";
-        $VD1['data'] = $result;
-        $VD = $VD1;
-    } catch (PDOException $e) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $e->getMessage();
-        $VD = $VD1;
-    } catch (Exception $exception) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $exception->getMessage();
-        $VD = $VD1;
-    } finally {
-        $conexionClass->Close();
-    }
+			$VD = [
+				"error" => "NO",
+				"message" => "Success",
+				"data" => $result
+			];
 
-    return $VD;
-}
+		} catch (PDOException $e) {
+			$VD = ["error" => "SI", "message" => $e->getMessage()];
+		} catch (Exception $e) {
+			$VD = ["error" => "SI", "message" => $e->getMessage()];
+		} finally {
+			$conexionClass->Close();
+		}
 
+		return $VD;
+	}
 
-public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
-{
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
-    $VD = "";
-
-    try {
-        $valor = "%$valor%";
-        $sql = "";
-        $parametros = [];
-
-        switch ($tipo) {
-            case 'producto':
-                $sql .= "SELECT name_gasto as descripcion, id_gasto as cod_producto
-                         FROM tb_gasto WHERE name_gasto LIKE ?";
-                $parametros[] = $valor;
-                break;
-            case 'servicio':
-                $sql .= "SELECT name_servicio as descripcion, id_servicio as cod_producto
-                         FROM tb_servicio WHERE name_servicio LIKE ?";
-                $parametros[] = $valor;
-                break;
-            default:
-                throw new Exception("Error al validar la búsqueda de la tabla.");
-        }
-
-        $sql .= " LIMIT ?, ?";
-        $parametros[] = $offset;
-        $parametros[] = $limit;
-
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute($parametros);
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        if (count($result) == 0) {
-            throw new Exception("No se encontraron datos");
-        }
-
-        $VD1['error'] = "NO";
-        $VD1['message'] = "Success";
-        $VD1['data'] = $result;
-        $VD = $VD1;
-    } catch (PDOException $e) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $e->getMessage();
-        $VD = $VD1;
-    } catch (Exception $exception) {
-        $VD1['error'] = "SI";
-        $VD1['message'] = $exception->getMessage();
-        $VD = $VD1;
-    } finally {
-        $conexionClass->Close();
-    }
-
-    return $VD;
-}
-
+	public function showDetalleParaOrden($tipo, $valor, $offset, $limit) {
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+	
+		try {
+			$valor = "%$valor%";
+			$parametros = null;
+			$sql = "";
+			
+			switch ($tipo) {
+				case 'producto':
+					$sql .= "SELECT name_gasto AS descripcion, id_gasto AS cod_producto 
+							 FROM tb_gasto WHERE name_gasto LIKE ? ";
+					$parametros[] = $valor;
+					break;
+				case 'servicio':
+					$sql .= "SELECT name_servicio AS descripcion, id_servicio AS cod_producto 
+							 FROM tb_servicio WHERE name_servicio LIKE ? ";
+					$parametros[] = $valor;
+					break;
+				default:
+					throw new Exception("Error al validar la búsqueda de la tabla.");
+			}
+	
+			// Agregar el límite y el offset
+			$sql .= " LIMIT " . intval($offset) . ", " . intval($limit);
+	
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos");
+			}
+	
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
+	
+		return $VD;
+	}
+	
 
 	public function insert($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio)
 	{
@@ -1409,53 +1406,53 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 			if ($flag_doc_interno == "0") {
 
 				$data = array(
-					"operacion"				                  => "generar_comprobante",
-					"tipo_de_comprobante"               => "$codigo_documento_venta",
-					"serie"                             => "$serie",
-					"numero"				                    => "$correlativo",
-					"sunat_transaction"			            => "1",
-					"proveedor_tipo_de_documento"		      => "$codigo_documento_proveedor",
-					"proveedor_numero_de_documento"	      => "$numero_documento_proveedor",
-					"proveedor_denominacion"              => "$proveedor",
-					"proveedor_direccion"                 => "$direccion",
-					"proveedor_email"                     => "$correo",
-					"proveedor_email_1"                   => "",
-					"proveedor_email_2"                   => "",
-					"fecha_de_emision"                  => date('d-m-Y', strtotime($fecha)),
-					"fecha_de_vencimiento"              => "",
-					"moneda"                            => $codigo_moneda,
-					"tipo_de_cambio"                    => $tipo_cambio,
-					"porcentaje_de_igv"                 => "18.00",
-					"descuento_global"                  => "$total_descuento",
-					"total_descuento"                   => "$total_descuento",
-					"total_anticipo"                    => "",
-					"total_gravada"                     => $total_gravada,
-					"total_inafecta"                    => "",
-					"total_exonerada"                   => "",
-					"total_igv"                         => $total_igv,
-					"total_gratuita"                    => "",
-					"total_otros_cargos"                => "",
-					"total"                             => $total_total,
-					"percepcion_tipo"                   => "",
-					"percepcion_base_imponible"         => "",
-					"total_percepcion"                  => "",
-					"total_incluido_percepcion"         => "",
-					"detraccion"                        => "false",
-					"observaciones"                     => "",
-					"documento_que_se_modifica_tipo"    => "",
-					"documento_que_se_modifica_serie"   => "",
-					"documento_que_se_modifica_numero"  => "",
-					"tipo_de_nota_de_credito"           => "",
-					"tipo_de_nota_de_debito"            => "",
+					"operacion" => "generar_comprobante",
+					"tipo_de_comprobante" => "$codigo_documento_venta",
+					"serie" => "$serie",
+					"numero" => "$correlativo",
+					"sunat_transaction" => "1",
+					"proveedor_tipo_de_documento" => "$codigo_documento_proveedor",
+					"proveedor_numero_de_documento" => "$numero_documento_proveedor",
+					"proveedor_denominacion" => "$proveedor",
+					"proveedor_direccion" => "$direccion",
+					"proveedor_email" => "$correo",
+					"proveedor_email_1" => "",
+					"proveedor_email_2" => "",
+					"fecha_de_emision" => date('d-m-Y', strtotime($fecha)),
+					"fecha_de_vencimiento" => "",
+					"moneda" => $codigo_moneda,
+					"tipo_de_cambio" => $tipo_cambio,
+					"porcentaje_de_igv" => "18.00",
+					"descuento_global" => "$total_descuento",
+					"total_descuento" => "$total_descuento",
+					"total_anticipo" => "",
+					"total_gravada" => $total_gravada,
+					"total_inafecta" => "",
+					"total_exonerada" => "",
+					"total_igv" => $total_igv,
+					"total_gratuita" => "",
+					"total_otros_cargos" => "",
+					"total" => $total_total,
+					"percepcion_tipo" => "",
+					"percepcion_base_imponible" => "",
+					"total_percepcion" => "",
+					"total_incluido_percepcion" => "",
+					"detraccion" => "false",
+					"observaciones" => "",
+					"documento_que_se_modifica_tipo" => "",
+					"documento_que_se_modifica_serie" => "",
+					"documento_que_se_modifica_numero" => "",
+					"tipo_de_nota_de_credito" => "",
+					"tipo_de_nota_de_debito" => "",
 					"enviar_automaticamente_a_la_sunat" => "true",
 					"enviar_automaticamente_al_proveedor" => "$flag_envia_correo",
-					"codigo_unico"                      => "",
-					"condiciones_de_pago"               => "",
-					"medio_de_pago"                     => "$name_forma_pago",
-					"placa_vehiculo"                    => "",
-					"orden_compra_servicio"             => "",
-					"tabla_personalizada_codigo"        => "",
-					"formato_de_pdf"                    => "",
+					"codigo_unico" => "",
+					"condiciones_de_pago" => "",
+					"medio_de_pago" => "$name_forma_pago",
+					"placa_vehiculo" => "",
+					"orden_compra_servicio" => "",
+					"tabla_personalizada_codigo" => "",
+					"formato_de_pdf" => "",
 					"items" => array()
 				);
 
@@ -1943,53 +1940,53 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 			if ($flag_doc_interno == "0") {
 
 				$data = array(
-					"operacion"				                  => "generar_comprobante",
-					"tipo_de_comprobante"               => "$codigo_documento_venta",
-					"serie"                             => "$serie",
-					"numero"				                    => "$correlativo",
-					"sunat_transaction"			            => "1",
-					"proveedor_tipo_de_documento"		      => "$codigo_documento_proveedor",
-					"proveedor_numero_de_documento"	      => "$numero_documento_proveedor",
-					"proveedor_denominacion"              => "$proveedor",
-					"proveedor_direccion"                 => "$direccion",
-					"proveedor_email"                     => "$correo",
-					"proveedor_email_1"                   => "",
-					"proveedor_email_2"                   => "",
-					"fecha_de_emision"                  => date('d-m-Y', strtotime($fecha)),
-					"fecha_de_vencimiento"              => "",
-					"moneda"                            => $codigo_moneda,
-					"tipo_de_cambio"                    => $tipo_cambio,
-					"porcentaje_de_igv"                 => "18.00",
-					"descuento_global"                  => "$total_descuento",
-					"total_descuento"                   => "$total_descuento",
-					"total_anticipo"                    => "",
-					"total_gravada"                     => $total_gravada,
-					"total_inafecta"                    => "",
-					"total_exonerada"                   => "",
-					"total_igv"                         => $total_igv,
-					"total_gratuita"                    => "",
-					"total_otros_cargos"                => "",
-					"total"                             => $total_total,
-					"percepcion_tipo"                   => "",
-					"percepcion_base_imponible"         => "",
-					"total_percepcion"                  => "",
-					"total_incluido_percepcion"         => "",
-					"detraccion"                        => "false",
-					"observaciones"                     => "",
-					"documento_que_se_modifica_tipo"    => "",
-					"documento_que_se_modifica_serie"   => "",
-					"documento_que_se_modifica_numero"  => "",
-					"tipo_de_nota_de_credito"           => "",
-					"tipo_de_nota_de_debito"            => "",
+					"operacion" => "generar_comprobante",
+					"tipo_de_comprobante" => "$codigo_documento_venta",
+					"serie" => "$serie",
+					"numero" => "$correlativo",
+					"sunat_transaction" => "1",
+					"proveedor_tipo_de_documento" => "$codigo_documento_proveedor",
+					"proveedor_numero_de_documento" => "$numero_documento_proveedor",
+					"proveedor_denominacion" => "$proveedor",
+					"proveedor_direccion" => "$direccion",
+					"proveedor_email" => "$correo",
+					"proveedor_email_1" => "",
+					"proveedor_email_2" => "",
+					"fecha_de_emision" => date('d-m-Y', strtotime($fecha)),
+					"fecha_de_vencimiento" => "",
+					"moneda" => $codigo_moneda,
+					"tipo_de_cambio" => $tipo_cambio,
+					"porcentaje_de_igv" => "18.00",
+					"descuento_global" => "$total_descuento",
+					"total_descuento" => "$total_descuento",
+					"total_anticipo" => "",
+					"total_gravada" => $total_gravada,
+					"total_inafecta" => "",
+					"total_exonerada" => "",
+					"total_igv" => $total_igv,
+					"total_gratuita" => "",
+					"total_otros_cargos" => "",
+					"total" => $total_total,
+					"percepcion_tipo" => "",
+					"percepcion_base_imponible" => "",
+					"total_percepcion" => "",
+					"total_incluido_percepcion" => "",
+					"detraccion" => "false",
+					"observaciones" => "",
+					"documento_que_se_modifica_tipo" => "",
+					"documento_que_se_modifica_serie" => "",
+					"documento_que_se_modifica_numero" => "",
+					"tipo_de_nota_de_credito" => "",
+					"tipo_de_nota_de_debito" => "",
 					"enviar_automaticamente_a_la_sunat" => "true",
 					"enviar_automaticamente_al_proveedor" => "$flag_envia_correo",
-					"codigo_unico"                      => "",
-					"condiciones_de_pago"               => "",
-					"medio_de_pago"                     => "$name_forma_pago",
-					"placa_vehiculo"                    => "",
-					"orden_compra_servicio"             => "",
-					"tabla_personalizada_codigo"        => "",
-					"formato_de_pdf"                    => "",
+					"codigo_unico" => "",
+					"condiciones_de_pago" => "",
+					"medio_de_pago" => "$name_forma_pago",
+					"placa_vehiculo" => "",
+					"orden_compra_servicio" => "",
+					"tabla_personalizada_codigo" => "",
+					"formato_de_pdf" => "",
 					"items" => array()
 				);
 
@@ -2439,15 +2436,16 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 	}
 
 
-	public function guardarCita($datos) {
+	public function guardarCita($datos)
+	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-	
+
 		try {
 			$sql = "INSERT INTO tb_cronograma (nombres, apellidos, direccion, id_fundo, precio, cantidad_hc, fecha_inicio, hora_inicio, fecha_termino, hora_fin, observaciones) 
 					VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			$stmt = $conexion->prepare($sql);
-			
+
 			$stmt->execute([
 				$datos['nombres'],
 				$datos['apellidos'],
@@ -2461,7 +2459,7 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 				$datos['hora_fin'],
 				$datos['observaciones']
 			]);
-	
+
 			return $stmt->rowCount() > 0;
 		} catch (PDOException $e) {
 			throw new Exception("Error al guardar la cita: " . $e->getMessage());
@@ -2469,7 +2467,7 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 			$conexionClass->Close();
 		}
 	}
-	
+
 }
 
 $OBJ_ORDEN_VENTA = new ClassOrdenVenta();

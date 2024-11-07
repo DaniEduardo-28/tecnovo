@@ -427,10 +427,10 @@
                                                 <th>Doc. Compra</th>
                                                 <th>Doc. Identidad</th>
                                                 <th>Proveedor</th>
-                                                <th>1</th>
+                                                <th>Dirección</th>
                                                 <th>Fecha</th>
                                                 <th>Moneda</th>
-                                                <th>2</th>
+                                                <th>M. Pago</th>
                                                 <th>Sub Total</th>
                                                 <th>IGV</th>
                                                 <th>Total</th>
@@ -508,9 +508,6 @@
                       <th style="text-align:center;">#</th>
                       <th>Código</th>
                       <th>Descripción</th>
-                      <!-- <th>Cantidad</th>
-                      <th>Precio Unit.</th>
-                      <th>Precio Unit.</th> -->
                       <th style="width:30px;">Seleccionar</th>
                     </tr>
                   </thead>
