@@ -59,7 +59,7 @@ var table_detalle = $('#example1').DataTable({
   ]
 });
 
-var table_detalle_modal = $('#example2').DataTable({
+/* var table_detalle_modal = $('#example2').DataTable({
   language: languageSpanish,
   destroy : true,
   searching : false,
@@ -81,7 +81,22 @@ var table_detalle_modal = $('#example2').DataTable({
       "searchable": false
     }
   ]
+}); */
+
+var table_detalle_modal = $('#example2').DataTable({
+  language: languageSpanish,
+  destroy: true,
+  searching: false,
+  paging: false,
+  ordering: false,
+  columns: [
+    { 'data': 'num' },
+    { 'data': 'cod_producto' },
+    { 'data': 'descripcion' },
+    { 'data': 'seleccionar' }
+  ]
 });
+
 
 $(document).ready(function(){
 
@@ -734,51 +749,44 @@ function get_data_callback(){
 	});
 }
 
-function showListaAgregarDetalle(){
-
+function showListaAgregarDetalle() {
   table_detalle_modal.clear().draw();
   $("#divPaginador_Modal").addClass("d-none");
   paginador = $("#paginador_modal");
   var items = 10, numeros = 6;
-  init_paginator(paginador,items,numeros);
+  init_paginator(paginador, items, numeros);
   set_callback(get_data_callback_detalle);
   cargaPagina(0);
-
 }
 
-function get_data_callback_detalle(){
+function get_data_callback_detalle() {
   table_detalle_modal.clear().draw();
-  var id_sucursal = $("#sucursal_buscar").val();
-  var id_moneda = $("#codigo_moneda").val();
   var valor = $("#txtBuscarDetalle").val();
   var tipo = $('input:radio[name=opcion_busqueda]:checked').val();
   $("#divPaginador_Modal").addClass("d-none");
   $.ajax({
-		data:{
-  		limit: itemsPorPagina,
-  		offset: desde,
-      id_sucursal: id_sucursal,
-      id_moneda: id_moneda,
+    data: {
+      limit: itemsPorPagina,
+      offset: desde,
       valor: valor,
       tipo: tipo
-		},
-    beforeSend: function (xhr) {
+    },
+    beforeSend: function(xhr) {
       showHideLoader('block');
     },
-    complete: function (jqXHR, textStatus) {
+    complete: function(jqXHR, textStatus) {
       showHideLoader('none');
-      if (totalPaginas==1 && pagina==0) {
+      if (totalPaginas == 1 && pagina == 0) {
         paginador.find(".next_link").hide();
       }
     },
-		type:"POST",
-		url:'ajax.php?accion=showDetalleParaOrden'
-	}).done(function(data,textStatus,jqXHR){
+    type: "POST",
+    url: 'ajax.php?accion=showDetalleParaOrden'
+  }).done(function(data, textStatus, jqXHR) {
     try {
       var data1 = JSON.parse(data);
-      if (data1["error"]=="NO") {
-
-        if(pagina==0){
+      if (data1["error"] == "NO") {
+        if (pagina == 0) {
           creaPaginador(data1["cantidad"]);
         }
 
@@ -786,31 +794,27 @@ function get_data_callback_detalle(){
         for (var i = 0; i < o.length; i++) {
           table_detalle_modal.row.add({
             "num": o[i].num,
-            "descripcion": o[i].descripcion,
             "cod_producto": o[i].cod_producto,
-            "precio_unitario": o[i].precio_unitario,
-            "cantidad": '<input class="form-control" type="number" min="1" value="1">',
-            "precio_unitario_string": o[i].precio_unitario_string,
+            "descripcion": o[i].descripcion,
             "seleccionar": o[i].seleccionar
           }).draw();
         }
 
         $("#divPaginador_Modal").removeClass("d-none");
 
-      }else {
+      } else {
         console.log(data1["message"]);
         $("#divPaginador_Modal").addClass("d-none");
       }
-    }
-    catch(err) {
-      runAlert("Message",err+data,"warning");
+    } catch (err) {
+      runAlert("Message", err + data, "warning");
       $("#divPaginador_Modal").addClass("d-none");
     }
-
-	}).fail(function(jqXHR,textStatus,textError){
-    runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
-	});
+  }).fail(function(jqXHR, textStatus, textError) {
+    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+  });
 }
+
 
 function saveOperation(){
 

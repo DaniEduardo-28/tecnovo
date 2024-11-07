@@ -44,7 +44,6 @@
           break;
         default:
           throw new Exception("Acción no recibida.");
-          break;
       }
     }else {
       throw new Exception("Error al verificar los permisos.");

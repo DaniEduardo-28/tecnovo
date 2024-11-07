@@ -233,17 +233,12 @@ public function show($id_trabajador, $id_doc_venta, $id_doc_proveedor, $estado, 
                 $sql .= "SELECT count(*) as cantidad FROM tb_gasto WHERE name_gasto LIKE ?";
                 $parametros[] = $valor;
                 break;
-            case 'accesorio':
-                $sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE name_accesorio LIKE ?";
-                $parametros[] = $valor;
-                break;
             case 'servicio':
                 $sql .= "SELECT count(*) as cantidad FROM tb_servicio WHERE name_servicio LIKE ?";
                 $parametros[] = $valor;
                 break;
             default:
                 throw new Exception("Error al validar la búsqueda de la tabla.");
-                break;
         }
 
         $stmt = $conexion->prepare($sql);
@@ -291,12 +286,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
                          FROM tb_gasto WHERE name_gasto LIKE ?";
                 $parametros[] = $valor;
                 break;
-            case 'accesorio':
-                $sql .= "SELECT name_accesorio as descripcion, id_accesorio as cod_producto,
-                         precio_venta as precio_unitario
-                         FROM tb_accesorio WHERE name_accesorio LIKE ?";
-                $parametros[] = $valor;
-                break;
             case 'servicio':
                 $sql .= "SELECT name_servicio as descripcion, id_servicio as cod_producto
                          FROM tb_servicio WHERE name_servicio LIKE ?";
@@ -304,7 +293,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
                 break;
             default:
                 throw new Exception("Error al validar la búsqueda de la tabla.");
-                break;
         }
 
         $sql .= " LIMIT ?, ?";
@@ -1481,15 +1469,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 						$codigo_producto = $key1->cod_producto;
 
 						switch ($name_tabla) {
-							case 'accesorio':
-								$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_accesorio = ?");
-								$stmt->execute([$codigo_producto]);
-								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-								if (count($result) == 0) {
-									throw new Exception("Error al obtener el id de accesorio.");
-								}
-								$id_unidad_medida = $result[0]['id_unidad_medida'];
-								break;
 							case 'producto':
 								$stmt = $conexion->prepare("SELECT * FROM `tb_gasto` WHERE id_gasto = ?");
 								$stmt->execute([$codigo_producto]);
@@ -1653,13 +1632,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 
 					$name_tabla = $key1->name_tabla;
 					switch ($name_tabla) {
-						case 'accesorio':
-							$sql = "UPDATE tb_accesorio SET stock = stock - ? where id_accesorio = ?";
-							$stmt = $conexion->prepare($sql);
-							if ($stmt->execute([$key1->cantidad, $key1->cod_producto]) == false) {
-								throw new Exception("Ocurrió un error al actualizar el stock.");
-							}
-							break;
 						case 'producto':
 							$sql = "UPDATE tb_gasto where id_gasto = ?";
 							$stmt = $conexion->prepare($sql);
@@ -2031,15 +2003,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 						$codigo_producto = $key1->cod_producto;
 
 						switch ($name_tabla) {
-							case 'accesorio':
-								$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_accesorio = ?");
-								$stmt->execute([$codigo_producto]);
-								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-								if (count($result) == 0) {
-									throw new Exception("Error al obtener el id de accesorio.");
-								}
-								$id_unidad_medida = $result[0]['id_unidad_medida'];
-								break;
 							case 'producto':
 								$stmt = $conexion->prepare("SELECT * FROM `tb_gasto` WHERE id_gasto = ?");
 								$stmt->execute([$codigo_producto]);
@@ -2235,13 +2198,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 
 					$name_tabla = $key1->name_tabla;
 					switch ($name_tabla) {
-						case 'accesorio':
-							$sql = "UPDATE tb_accesorio SET stock = stock - ? where id_accesorio = ?";
-							$stmt = $conexion->prepare($sql);
-							if ($stmt->execute([$key1->cantidad, $key1->cod_producto]) == false) {
-								throw new Exception("Ocurrió un error al actualizar el stock.");
-							}
-							break;
 						case 'producto':
 							$sql = "UPDATE tb_gasto where id_gasto = ?";
 							$stmt = $conexion->prepare($sql);
@@ -2447,13 +2403,6 @@ public function showDetalleParaOrden($tipo, $valor, $offset, $limit)
 
 				$name_tabla = $key['name_tabla'];
 				switch ($name_tabla) {
-					case 'accesorio':
-						$sql = "UPDATE tb_accesorio SET stock = stock + ? where id_accesorio = ?";
-						$stmt = $conexion->prepare($sql);
-						if ($stmt->execute([$key['cantidad'], $key['cod_producto']]) == false) {
-							throw new Exception("Ocurrió un error al actualizar el stock.");
-						}
-						break;
 					case 'producto':
 						$sql = "UPDATE tb_gasto  where id_gasto = ?";
 						$stmt = $conexion->prepare($sql);

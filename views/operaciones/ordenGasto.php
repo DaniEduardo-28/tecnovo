@@ -258,10 +258,7 @@
                                                   <input type="radio" name="opcion_busqueda" value="servicio" id="opcion_servicio" autocomplete="off" checked> Servicio
                                                 </label>
                                                 <label class="btn btn-info">
-                                                  <input type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Accesorio (guiable)
-                                                </label>
-                                                <label class="btn btn-info">
-                                                  <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Producto
+                                                  <input type="radio" name="opcion_busqueda" value="producto" id="opcion_producto" autocomplete="off"> Producto
                                                 </label>
                                               </div>
                                               <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
@@ -511,9 +508,9 @@
                       <th style="text-align:center;">#</th>
                       <th>Código</th>
                       <th>Descripción</th>
-                      <th>Cantidad</th>
+                      <!-- <th>Cantidad</th>
                       <th>Precio Unit.</th>
-                      <th>Precio Unit.</th>
+                      <th>Precio Unit.</th> -->
                       <th style="width:30px;">Seleccionar</th>
                     </tr>
                   </thead>
@@ -529,23 +526,6 @@
             </div>
           </div>
           <div class="modal-body">
-          <div class="col-sm-12">
-            <div class="table-responsive">
-              <table id="modalTable" class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th style="text-align:center;">#</th>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th style="width:30px;">Seleccionar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Aquí se llenarán los datos dinámicamente -->
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
           <div class="modal-footer">
 

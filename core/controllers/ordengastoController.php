@@ -1,7 +1,7 @@
 <?php
 
 	require("core/models/ClassAccesoOpcion.php");
-	$flag = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("ordengasto"));
+	$flag = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("ordenventa"));
 	if ($flag) {
 		require("views/operaciones/ordengasto.php");
 	}else{
