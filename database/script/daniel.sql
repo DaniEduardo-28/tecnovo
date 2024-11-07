@@ -243,4 +243,5 @@ FROM
     ALTER TABLE `tb_venta` CHANGE `codigo_documento_cliente` `codigo_documento_proveedor` BIGINT UNSIGNED NOT NULL;
     ALTER TABLE `tb_venta` CHANGE `numero_documento_cliente` `numero_documento_proveedor` VARCHAR(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
 
+    ALTER TABLE `tb_venta` CHANGE `cliente` `proveedor` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
     ALTER TABLE `tb_venta` CHANGE `id_venta` `id_venta` INT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id_venta`);

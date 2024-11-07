@@ -496,83 +496,97 @@ $(document).ready(function(){
 
 });
 
-function calcularVuelto(){
-  try{
-    var monto_recibido = parseFloat($("#txtMontoRecibido").val());
-    var total = parseFloat($("#txtTotal").val());
-    if (monto_recibido == 0 || monto_recibido == "") {
-      $("#txtMontoRecibido").val("0");
-      $("#txtVuelto").val("0");
+// --- Sección de funciones para agregar productos y calcular totales ---
+
+function addProductToDetalle(button) {
+  var num = table_detalle.data().count() + 1;
+  var data = table_detalle_modal.row(button.parents('tr')).data();
+  var cod_producto = data["cod_producto"];
+  var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
+
+  if (num > 1 && verificarproductoontable(name_tabla, cod_producto)) {
+      generateAlert('warning', 'El Producto ya se encuentra agregado a la lista.');
       return;
-    }
-    var vuelto = parseFloat(monto_recibido - total);
-    $("#txtMontoRecibido").val(monto_recibido.toFixed(2));
-    $("#txtVuelto").val(vuelto.toFixed(2));
-  }catch(e) {
-    console.log(e);
-    $("#txtMontoRecibido").val("0");
-    $("#txtVuelto").val("0");
-  }
-}
-
-function calcularTotal(){
-
-  $("#txtTotalDescuento").val("0");
-  $("#txtGravada").val("0");
-  $("#txtIgv").val("0");
-  $("#txtTotal").val("0");
-
-  try {
-
-    var count = table_detalle.data().count();
-    var num = 1;
-    var total_descuento = 0;
-    var total_gravada = 0;
-    var total_igv = 0;
-    var total_total = 0;
-
-    if (count > 0) {
-
-      $('#example1 > tbody  > tr').each(function(){
-
-        var cantidad = $(this).find("td").eq(1).find("input").val();
-        var precio_unitario = $(this).find("td").eq(2).html();
-        var descuento = $(this).find("td").eq(3).find("input").val();
-        var gravada = ((cantidad*precio_unitario)-descuento).toFixed(2);
-        var igv = (gravada * 0.18).toFixed(2);
-        var total = (parseFloat(gravada) + parseFloat(igv)).toFixed(2);
-
-        total_descuento = parseFloat(total_descuento) + parseFloat(descuento);
-        total_gravada = parseFloat(total_gravada) + parseFloat(gravada);
-        total_igv = parseFloat(total_igv) + parseFloat(igv);
-        total_total = parseFloat(total_total) + parseFloat(total);
-
-        table_detalle.cell(num-1,6).data(gravada).draw();
-        table_detalle.cell(num-1,8).data(igv).draw();
-        table_detalle.cell(num-1,9).data(total).draw();
-
-        num++;
-
-      });
-
-    }
-
-    $("#txtTotalDescuento").val(total_descuento.toFixed(2));
-    $("#txtGravada").val(total_gravada.toFixed(2));
-    $("#txtIgv").val(total_igv.toFixed(2));
-    $("#txtTotal").val(total_total.toFixed(2));
-    $("#txtMontoRecibido").val(total_total.toFixed(2));
-    calcularVuelto();
-
-  } catch (e) {
-    runAlert("Oh No...!!!","Error en TryCatch Calcular Total: " + e,"error");
-    $("#txtTotalDescuento").val("0");
-    $("#txtGravada").val("0");
-    $("#txtIgv").val("0");
-    $("#txtTotal").val("0");
   }
 
+  var descripcion = data["descripcion"];
+  var cantidad = button.parents("tr").find("td").eq(2).find("input").val() || 1;
+  var precio_unitario = parseFloat(data["precio_unitario"]) || 0; // Asegura que precio_unitario sea numérico
+  
+  // Calculos
+  var sub_total = (precio_unitario * cantidad).toFixed(2);
+  var igv = (sub_total * 0.18).toFixed(2);
+  var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
+
+  table_detalle.row.add({
+      "name_tabla": name_tabla,
+      "codigo": cod_producto,
+      "descripcion": descripcion,
+      "cantidad": generateInput('cantidad', cantidad),
+      "precio_unitario": generateInput('precio_unitario', precio_unitario),
+      "descuento": generateInput('descuento', 0),
+      "subtotal": sub_total,
+      "tipo_igv": 1,
+      "igv": igv,
+      "total": total,
+      "eliminar_item": generateDeleteButton()
+  }).draw();
+
+  generateAlert('success', 'Producto agregado correctamente');
+  calcularTotal();
 }
+
+
+// Modificar función `generateInput` para recibir un tipo personalizado de `min` (puede ser 1 o 0 dependiendo de los requisitos)
+function generateInput(name, value) {
+  return `<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="${value}" class="form-control" min="${name === 'cantidad' ? 1 : 0}" name="${name}" style="width:90px;">`;
+}
+
+
+function generateDeleteButton() {
+  return '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
+}
+
+function calcularVuelto() {
+  var monto_recibido = parseFloat($("#txtMontoRecibido").val()) || 0;
+  var total = parseFloat($("#txtTotal").val()) || 0;
+  var vuelto = (monto_recibido - total).toFixed(2);
+  $("#txtVuelto").val(vuelto > 0 ? vuelto : 0);
+}
+
+function calcularTotal() {
+  var total_descuento = 0;
+  var total_gravada = 0;
+  var total_igv = 0;
+  var total_total = 0;
+
+  $('#example1 > tbody > tr').each(function() {
+      var cantidad = parseFloat($(this).find("input[name='cantidad']").val()) || 0;
+      var precio_unitario = parseFloat($(this).find("input[name='precio_unitario']").val()) || 0;  // Obtener precio_unitario editable
+      var descuento = parseFloat($(this).find("input[name='descuento']").val()) || 0;
+      var sub_total = (cantidad * precio_unitario - descuento).toFixed(2);
+      var igv = (sub_total * 0.18).toFixed(2);
+      var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
+
+      total_descuento += descuento;
+      total_gravada += parseFloat(sub_total);
+      total_igv += parseFloat(igv);
+      total_total += parseFloat(total);
+
+      // Actualizar valores en las celdas de la tabla
+      $(this).find("td").eq(4).text(sub_total);  // Subtotal actualizado
+      $(this).find("td").eq(5).text(igv);        // IGV actualizado
+      $(this).find("td").eq(6).text(total);      // Total actualizado
+  });
+
+  $("#txtTotalDescuento").val(total_descuento.toFixed(2));
+  $("#txtGravada").val(total_gravada.toFixed(2));
+  $("#txtIgv").val(total_igv.toFixed(2));
+  $("#txtTotal").val(total_total.toFixed(2));
+  $("#txtMontoRecibido").val(total_total.toFixed(2));
+  calcularVuelto();
+}
+
 
 function verificarproductoontable(name_tabla,cod_producto){
 
