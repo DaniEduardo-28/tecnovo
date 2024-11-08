@@ -299,13 +299,13 @@
                                               <div class="form-group row">
                                                 <label for="txtTotalDescuento" class="col-sm-4 col-form-label">Descuento Total</label>
                                                 <div class="col-sm-8">
-                                                  <input type="text" class="form-control" id="txtTotalDescuento" readonly style="text-align:right;">
+                                                <input type="text" class="form-control" id="txtTotalDescuento" readonly style="text-align:right;" value="0.00">
                                                 </div>
                                               </div>
                                               <div class="form-group row">
                                                 <label for="txtGravada" class="col-sm-4 col-form-label">Gravada</label>
                                                 <div class="col-sm-8">
-                                                  <input type="text" class="form-control" id="txtGravada" readonly style="text-align:right;">
+                                                <input type="text" class="form-control" id="txtGravada" readonly style="text-align:right;" value="0.00">
                                                 </div>
                                               </div>
                                               <div class="form-group row">

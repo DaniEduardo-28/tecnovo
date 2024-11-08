@@ -34,7 +34,7 @@
       switch ($accion) {
         case 'add':
           if ($access_options[0]['flag_agregar']==false) {
-            throw new Exception("No tienes permisos para registrar la orden.");
+            throw new Exception(message: "No tienes permisos para registrar la orden.");
           }
           break;
         case 'edit':

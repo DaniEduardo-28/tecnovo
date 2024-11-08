@@ -101,6 +101,7 @@ $(document).ready(function(){
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
       var precio_unitario = data["precio_unitario"];
+      var inputPrecioUnitario = `<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="${precio_unitario}" class="form-control" min="0" style="width:90px;">`;
       var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
       var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="0" class="form-control" min="0" style="width:90px;">';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
@@ -115,14 +116,14 @@ $(document).ready(function(){
         "codigo": cod_producto,
         "descripcion": descripcion,
         "cantidad": inputCantidad,
-        "precio_unitario": precio_unitario,
+        "precio_unitario": inputPrecioUnitario, // Cambiado a input editable
         "descuento": inputDescuento,
         "subtotal": sub_total,
         "tipo_igv": 1,
         "igv": igv,
         "total": total,
         "eliminar_item": botonEliminar
-      }).draw();
+    }).draw();
 
       generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + descripcion + ' al precio de ' + precio_unitario + ' c/u.</h6>');
       calcularTotal();
