@@ -52,7 +52,7 @@ var table_detalle = $('#example1').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [0, 1, 7],
+      "targets": [7],
       "visible": false,
       "searchable": false
     }
@@ -71,6 +71,13 @@ var table_detalle_modal = $('#example2').DataTable({
     { 'data': 'cod_producto' },
     { 'data': 'descripcion' },
     { 'data': 'seleccionar' }
+  ],
+  columnDefs: [
+    {
+      "targets": [1],
+      "visible": false,
+      "searchable": false
+    }
   ]
 });
 
@@ -591,9 +598,9 @@ function calcularTotal() {
     total_total += parseFloat(total);
 
     // Asigna los valores calculados a las celdas correspondientes
-    $(this).find("td").eq(4).text(sub_total); // Sub Total en índice 6
-    $(this).find("td").eq(5).text(igv);       // IGV en índice 8
-    $(this).find("td").eq(6).text(total);     // Total en índice 9
+    $(this).find("td").eq(6).text(sub_total); // Sub Total en índice 6
+    $(this).find("td").eq(7).text(igv);       // IGV en índice 8
+    $(this).find("td").eq(8).text(total);     // Total en índice 9
   });
 
   // Actualiza los campos de totales en la parte inferior
