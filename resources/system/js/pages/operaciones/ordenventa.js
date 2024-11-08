@@ -93,9 +93,9 @@ $(document).ready(function () {
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
       var precio_unitario = parseFloat(data["precio_unitario"]) || 0;
-      var inputCantidad = `<input type="number" name="cantidad" value="${cantidad}" class="form-control" onchange="calcularTotal();" onkeypress="calcularTotal();" style="width:90px;">`;
-      var inputPrecioUnitario = `<input type="number" name="precio_unitario" value="${parseFloat(precio_unitario).toFixed(2)}" class="form-control" onchange="calcularTotal();" onkeypress="calcularTotal();" style="width:90px;">`;
-      var inputDescuento = `<input type="number" name="descuento" value="0.00" class="form-control" onchange="calcularTotal();" onkeypress="calcularTotal();" min="0" style="width:90px;">`;
+      var inputCantidad = `<input type="number" name="cantidad" value="${cantidad}" class="form-control" onchange="calcularTotal();" style="width:90px;">`;
+      var inputPrecioUnitario = `<input type="number" name="precio_unitario" value="${parseFloat(precio_unitario).toFixed(2)}" class="form-control" onblur="this.value=parseFloat(this.value).toFixed(2);" onchange="calcularTotal();" style="width:90px;">`;
+      var inputDescuento = `<input type="number" name="descuento" value="0.00" class="form-control" min="0" onblur="this.value=parseFloat(this.value).toFixed(2);" onchange="calcularTotal();" style="width:90px;">`;
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
       precio_unitario = (precio_unitario / 1.18).toFixed(3);
@@ -515,9 +515,9 @@ function addProductToDetalle(button) {
   var descripcion = data["descripcion"];
   var cantidad = 1; // Valor inicial, puede ser cambiado
   var precio_unitario = parseFloat(data["precio_unitario"]) || 0;
-  var inputCantidad = `<input type="number" name="cantidad" value="${cantidad}" class="form-control" onchange="calcularTotal();" onkeypress="calcularTotal();" style="width:90px;">`;
-  var inputPrecioUnitario = `<input type="number" name="precio_unitario" value="${parseFloat(precio_unitario).toFixed(2)}" class="form-control" onchange="calcularTotal();" onkeypress="calcularTotal();" style="width:90px;">`;
-  var inputDescuento = `<input type="number" name="descuento" value="0.00" class="form-control" onchange="calcularTotal();" onkeypress="calcularTotal();" min="0" style="width:90px;">`;
+  var inputCantidad = `<input type="number" name="cantidad" value="${cantidad}" class="form-control" onchange="calcularTotal();" style="width:90px;">`;
+  var inputPrecioUnitario = `<input type="number" name="precio_unitario" value="${parseFloat(precio_unitario).toFixed(2)}" class="form-control" onblur="this.value=parseFloat(this.value).toFixed(2);" onchange="calcularTotal();" style="width:90px;">`;
+  var inputDescuento = `<input type="number" name="descuento" value="0.00" class="form-control" min="0" onblur="this.value=parseFloat(this.value).toFixed(2);" onchange="calcularTotal();" style="width:90px;">`;
   var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
   // Calcula los totales iniciales
@@ -571,43 +571,39 @@ function calcularTotal() {
   var total_total = 0;
 
   $('#example1 > tbody > tr').each(function () {
-    // Obtener valores de cantidad, precio_unitario y descuento
     var cantidad = parseFloat($(this).find("input[name='cantidad']").val()) || 0;
     var precio_unitario = parseFloat($(this).find("input[name='precio_unitario']").val()) || 0;
     var descuento = parseFloat($(this).find("input[name='descuento']").val()) || 0;
 
-    // Calcular subtotal según la fórmula ((precio_unitario * cantidad) - descuento)
-    var sub_total = ((precio_unitario * cantidad) - descuento).toFixed(2);
+    // Calcula Subtotal
+    var sub_total = (precio_unitario * cantidad - descuento).toFixed(2);
 
-    // Calcular IGV basado en el subtotal
+    // Calcula IGV
     var igv = (sub_total * 0.18).toFixed(2);
 
-    // Calcular total como la suma de subtotal e IGV
+    // Calcula Total
     var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
 
-    // Acumular valores para gravada y descuento total
+    // Acumula los totales
     total_descuento += descuento;
     total_gravada += parseFloat(sub_total);
     total_igv += parseFloat(igv);
     total_total += parseFloat(total);
 
-    // Actualizar valores en las celdas correspondientes de la tabla
-    $(this).find("td").eq(6).text(sub_total);  // Columna Subtotal
-    $(this).find("td").eq(7).text(igv);        // Columna IGV
-    $(this).find("td").eq(8).text(total);      // Columna Total
+    // Asigna los valores calculados a las celdas correspondientes
+    $(this).find("td").eq(4).text(sub_total); // Sub Total en índice 6
+    $(this).find("td").eq(5).text(igv);       // IGV en índice 8
+    $(this).find("td").eq(6).text(total);     // Total en índice 9
   });
 
-  // Actualizar los valores de Gravada, Descuento Total, IGV y Total en los campos correspondientes
+  // Actualiza los campos de totales en la parte inferior
   $("#txtTotalDescuento").val(total_descuento.toFixed(2));
   $("#txtGravada").val(total_gravada.toFixed(2));
   $("#txtIgv").val(total_igv.toFixed(2));
   $("#txtTotal").val(total_total.toFixed(2));
-
-  // Asegurar que el valor de Monto Recibido esté sincronizado con el Total
   $("#txtMontoRecibido").val(total_total.toFixed(2));
   calcularVuelto();
 }
-
 
 
 function verificarproductoontable(name_tabla, cod_producto) {
@@ -883,10 +879,10 @@ function saveOperation() {
     var datos = [];
     var objeto = {};
 
-    $('#example1 > tbody  > tr').each(function () {
-
-      var cantidad = $(this).find("td").eq(1).find("input").val();
-      var descuento = $(this).find("td").eq(3).find("input").val();
+    $('#example1 > tbody > tr').each(function () {
+      var cantidad = $(this).find("input[name='cantidad']").val();
+      var precio_unitario = $(this).find("input[name='precio_unitario']").val();
+      var descuento = $(this).find("input[name='descuento']").val();
       var data = table_detalle.row($(this)).data();
 
       datos.push({
@@ -894,14 +890,13 @@ function saveOperation() {
         "cod_producto": data['codigo'],
         "descripcion": data['descripcion'],
         "cantidad": cantidad,
-        "precio_unitario": data['precio_unitario'],
+        "precio_unitario": precio_unitario,
         "descuento": descuento,
-        "sub_total": data['subtotal'],
+        "sub_total": $(this).find("td").eq(6).text(),
         "tipo_igv": data['tipo_igv'],
-        "igv": data['igv'],
-        "total": data['total']
+        "igv": $(this).find("td").eq(8).text(),
+        "total": $(this).find("td").eq(9).text()
       });
-
     });
 
     objeto.datos = datos;
@@ -1040,10 +1035,10 @@ function saveOperationBorrador() {
     var datos = [];
     var objeto = {};
 
-    $('#example1 > tbody  > tr').each(function () {
-
-      var cantidad = $(this).find("td").eq(1).find("input").val();
-      var descuento = $(this).find("td").eq(3).find("input").val();
+    $('#example1 > tbody > tr').each(function () {
+      var cantidad = $(this).find("input[name='cantidad']").val();
+      var precio_unitario = $(this).find("input[name='precio_unitario']").val();
+      var descuento = $(this).find("input[name='descuento']").val();
       var data = table_detalle.row($(this)).data();
 
       datos.push({
@@ -1051,14 +1046,13 @@ function saveOperationBorrador() {
         "cod_producto": data['codigo'],
         "descripcion": data['descripcion'],
         "cantidad": cantidad,
-        "precio_unitario": data['precio_unitario'],
+        "precio_unitario": precio_unitario,
         "descuento": descuento,
-        "sub_total": data['subtotal'],
+        "sub_total": $(this).find("td").eq(6).text(),
         "tipo_igv": data['tipo_igv'],
-        "igv": data['igv'],
-        "total": data['total']
+        "igv": $(this).find("td").eq(8).text(),
+        "total": $(this).find("td").eq(9).text()
       });
-
     });
 
     objeto.datos = datos;
