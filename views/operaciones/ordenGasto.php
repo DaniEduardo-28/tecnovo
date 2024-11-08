@@ -1,8 +1,11 @@
 <?php
+function checkSession() {
   if (!isset($_SESSION['id_trabajador'])) {
     header('location: ?view=logout');
     exit();
   }
+}
+checkSession();
 ?>
 <!DOCTYPE html>
 <html>

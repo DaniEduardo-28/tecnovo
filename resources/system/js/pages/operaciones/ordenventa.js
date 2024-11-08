@@ -919,7 +919,7 @@ function saveOperation() {
 
     Swal.fire({
       title: '¿Seguro de confirmar la operación?',
-      text: "Se guardará la operación y se realizará el pago correspondiente, si no es documento interno se enviará al OSE(Operador de servicios electrónicos).",
+      text: "Se guardará la operación en el sistema.",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#22c63b',

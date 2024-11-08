@@ -1,152 +1,135 @@
 <?php
 
-  $id_venta = isset($_POST["id_venta"]) ? $_POST["id_venta"] : null;
-  $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
-  $codigo_documento_venta = isset($_POST["codigo_documento_venta"]) ? $_POST["codigo_documento_venta"] : null;
-  $serie = isset($_POST["serie"]) ? $_POST["serie"] : null;
-  $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : null;
-  $codigo_documento_proveedor = isset($_POST["codigo_documento_proveedor"]) ? $_POST["codigo_documento_proveedor"] : null;
-  $numero_documento_proveedor = isset($_POST["numero_documento_proveedor"]) ? $_POST["numero_documento_proveedor"] : null;
-  $nombres = isset($_POST["nombres"]) ? $_POST["nombres"] : null;
-  $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : null;
-  $direccion = isset($_POST["direccion"]) ? $_POST["direccion"] : null;
-  $telefono = isset($_POST["telefono"]) ? $_POST["telefono"] : null;
-  $correo = isset($_POST["correo"]) ? $_POST["correo"] : null;
-  $fecha = isset($_POST["fecha"]) ? $_POST["fecha"] : null;
-  $codigo_moneda = isset($_POST["codigo_moneda"]) ? $_POST["codigo_moneda"] : null;
-  $codigo_forma_pago = isset($_POST["codigo_forma_pago"]) ? $_POST["codigo_forma_pago"] : null;
-  $total_descuento = isset($_POST["total_descuento"]) ? $_POST["total_descuento"] : null;
-  $total_gravada = isset($_POST["total_gravada"]) ? $_POST["total_gravada"] : null;
-  $total_igv = isset($_POST["total_igv"]) ? $_POST["total_igv"] : null;
-  $total_total = isset($_POST["total_total"]) ? $_POST["total_total"] : null;
-  $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
-  $detalle_venta = json_decode($array_detalle);
-  $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : 0;
-  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : 0;
+$id_venta = $_POST["id_venta"] ?? null;
+$accion = $_POST["accion"] ?? "";
+$codigo_documento_venta = $_POST["codigo_documento_venta"] ?? null;
+$serie = $_POST["serie"] ?? null;
+$correlativo = $_POST["correlativo"] ?? null;
+$codigo_documento_proveedor = $_POST["codigo_documento_proveedor"] ?? null;
+$numero_documento_proveedor = $_POST["numero_documento_proveedor"] ?? null;
+$nombres = $_POST["nombres"] ?? null;
+$apellidos = $_POST["apellidos"] ?? null;
+$direccion = $_POST["direccion"] ?? null;
+$telefono = $_POST["telefono"] ?? null;
+$correo = $_POST["correo"] ?? null;
+$fecha = $_POST["fecha"] ?? null;
+$codigo_moneda = $_POST["codigo_moneda"] ?? null;
+$codigo_forma_pago = $_POST["codigo_forma_pago"] ?? null;
+$total_descuento = $_POST["total_descuento"] ?? null;
+$total_gravada = $_POST["total_gravada"] ?? null;
+$total_igv = $_POST["total_igv"] ?? null;
+$total_total = $_POST["total_total"] ?? null;
+$array_detalle = $_POST["array_detalle"] ?? null;
+$detalle_venta = json_decode($array_detalle);
+$id_trabajador = $_SESSION["id_trabajador"] ?? 0;
+$id_fundo = $_SESSION["id_fundo"] ?? 0;
+$monto_recibido = $_POST["monto_recibido"] ?? 0;
+$vuelto = $_POST["vuelto"] ?? 0;
 
-  $monto_recibido = isset($_POST["monto_recibido"]) ? $_POST["monto_recibido"] : 0;
-  $vuelto = isset($_POST["vuelto"]) ? $_POST["vuelto"] : 0;
+try {
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("ordenventa"));
 
-  try {
-
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordenventa"));
-    if ($access_options[0]['error']=="NO") {
-      switch ($accion) {
-        case 'add':
-          if ($access_options[0]['flag_agregar']==false) {
-            throw new Exception(message: "No tienes permisos para registrar la orden.");
-          }
-          break;
-        case 'edit':
-          if ($access_options[0]['flag_editar']==false) {
-            throw new Exception("No tienes permisos para modificar la orden.");
-          }
-          break;
-        default:
-          throw new Exception("Acción no recibida.");
-      }
-    }else {
-      throw new Exception("Error al verificar los permisos.");
+    if ($access_options[0]['error'] == "NO") {
+        if (($accion == 'add' && !$access_options[0]['flag_agregar']) || 
+            ($accion == 'edit' && !$access_options[0]['flag_editar'])) {
+            throw new Exception("No tienes permisos para realizar esta acción.");
+        }
+    } else {
+        throw new Exception("Error al verificar los permisos.");
     }
 
-    if (empty(trim($codigo_documento_venta))) {
-      throw new Exception("Campo obligatorio : Documento de venta.");
-    }
+    validateRequiredFields([
+        "codigo_documento_venta" => $codigo_documento_venta,
+        "codigo_documento_proveedor" => $codigo_documento_proveedor,
+        "numero_documento_proveedor" => $numero_documento_proveedor,
+        "nombres" => $nombres,
+        "codigo_moneda" => $codigo_moneda,
+        "codigo_forma_pago" => $codigo_forma_pago
+    ]);
 
-    if (empty(trim($codigo_documento_proveedor))) {
-      throw new Exception("Campo obligatorio : Documento de proveedor.");
-    }
-
-    if (empty(trim($numero_documento_proveedor))) {
-      throw new Exception("Campo obligatorio : Número de Documento proveedor.");
-    }
-
-    if (empty(trim($nombres))) {
-      throw new Exception("Campo obligatorio : Nombres ó Razón Social del proveedor.");
-    }
-
-    if (empty(trim($codigo_moneda))) {
-      throw new Exception("Campo obligatorio : Moneda.");
-    }
-
-    if (empty(trim($codigo_forma_pago))) {
-      throw new Exception("Campo obligatorio : Método de Pago.");
-    }
-
-    if ($array_detalle==null) {
-      throw new Exception("1. No se recibió los detalles de la orden.");
-    }
-
-    if (count($detalle_venta->datos)==0) {
-      throw new Exception("2. No se recibió los detalles de la orden.");
+    if ($array_detalle === null || empty($detalle_venta->datos)) {
+        throw new Exception("No se recibieron los detalles de la orden.");
     }
 
     require_once "core/models/ClassDocumentoIdentidad.php";
     $resultDoc1 = $OBJ_DOCUMENTO_IDENTIDAD->getDocumentoForId($codigo_documento_proveedor);
-    if ($resultDoc1['error']=="SI") {
-      throw new Exception($resultDoc1['message']);
+
+    if ($resultDoc1['error'] == "SI") {
+        throw new Exception($resultDoc1['message']);
     }
 
     $dataResultDoc1 = $resultDoc1['data'];
+    validateDocument($numero_documento_proveedor, $dataResultDoc1);
 
-    if ($dataResultDoc1[0]['flag_exacto']=="1") {
-      if ($dataResultDoc1[0]['size']!=strlen($numero_documento_proveedor)) {
-        throw new Exception("El número de documento de identidad tiene que tener " . $dataResultDoc1[0]['size'] . " dígitos.");
-      }
-    }else {
-      if ($dataResultDoc1[0]['size']<strlen($numero_documento_proveedor)) {
-        throw new Exception("El documento de identidad tiene que ser menor o igual de " . $dataResultDoc1[0]['size'] . " dígitos.");
-      }
-    }
-
-    if ($dataResultDoc1[0]['flag_numerico']=="1") {
-      if (validar_number($numero_documento_proveedor)==false) {
-        throw new Exception("El documento de identidad tiene que ser sólo números.");
-      }
-    }
-
-    if (strtoupper($dataResultDoc1[0]['name_documento'])=="RUC") {
-      if (empty(trim($direccion))) {
-        throw new Exception("Campo obligatorio : Dirección del proveedor obligatorio para RUC.");
-      }
+    if (strtoupper($dataResultDoc1[0]['name_documento']) == "RUC" && empty(trim($direccion))) {
+        throw new Exception("Campo obligatorio: Dirección del proveedor para RUC.");
     }
 
     require_once "core/models/ClassOrdenVenta.php";
     require_once "core/models/ClassMoneda.php";
     $tipo_cambio = $OBJ_MONEDA->getTipoCambio($codigo_moneda);
 
-    $VD;
     switch ($accion) {
-      case 'add':
-        $VD = $OBJ_ORDEN_VENTA->insert($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_proveedor,$numero_documento_proveedor,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
-        break;
-      case 'edit':
-        $VD = $OBJ_ORDEN_VENTA->update($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_proveedor,$numero_documento_proveedor,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_fundo,$monto_recibido,$vuelto,$tipo_cambio);
-        break;
-      default:
-        $VD1['error'] = "SI";
-        $VD1['message'] = "No se encontró la operación a realizar";
-        $VD = $VD1;
-        break;
+        case 'add':
+            $VD = $OBJ_ORDEN_VENTA->insert($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio);
+            break;
+        case 'edit':
+            $VD = $OBJ_ORDEN_VENTA->update($id_venta, $codigo_documento_venta, $serie, $correlativo, $codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, $fecha, $codigo_moneda, $codigo_forma_pago, $total_descuento, $total_gravada, $total_igv, $total_total, $detalle_venta, $id_trabajador, $id_fundo, $monto_recibido, $vuelto, $tipo_cambio);
+            break;
+        default:
+            throw new Exception("Acción no válida.");
     }
 
-    if ($VD['error']=="SI") {
-      throw new Exception($VD['message']);
+    if ($VD['error'] == "SI") {
+        throw new Exception($VD['message']);
     }
 
-    $data["error"]="NO";
-    $data["message"]=$VD['message'];
-    $data["id_venta"] = $VD['id_venta'];
-    $data["serie"] = $VD['serie'];
-    $data["correlativo"] = $VD['correlativo'];
-    echo json_encode($data);
+    responderJson("NO", $VD['message'], [
+        "id_venta" => $VD['id_venta'],
+        "serie" => $VD['serie'],
+        "correlativo" => $VD['correlativo']
+    ]);
 
-  } catch (\Exception $e) {
+} catch (Exception $e) {
+    responderJson("SI", $e->getMessage(), null);
+}
 
-    $data["error"]="SI";
-    $data["message"]=$e->getMessage();
-    echo json_encode($data);
+/**
+ * Función para validar campos requeridos.
+ */
+function validateRequiredFields($fields) {
+    foreach ($fields as $field => $value) {
+        if (empty(trim($value))) {
+            throw new Exception("Campo obligatorio: $field.");
+        }
+    }
+}
 
-  }
+/**
+ * Función para validar el documento de identidad del proveedor.
+ */
+function validateDocument($documento, $data) {
+    if ($data[0]['flag_exacto'] == "1" && strlen($documento) != $data[0]['size']) {
+        throw new Exception("El número de documento de identidad debe tener exactamente {$data[0]['size']} dígitos.");
+    } elseif ($data[0]['flag_exacto'] != "1" && strlen($documento) > $data[0]['size']) {
+        throw new Exception("El documento de identidad debe tener un máximo de {$data[0]['size']} dígitos.");
+    }
 
- ?>
+    if ($data[0]['flag_numerico'] == "1" && !ctype_digit($documento)) {
+        throw new Exception("El documento de identidad debe contener solo números.");
+    }
+}
+
+/**
+ * Función auxiliar para construir respuestas JSON.
+ */
+function responderJson($error, $message, $data) {
+    echo json_encode([
+        "error" => $error,
+        "message" => $message,
+        "data" => $data
+    ]);
+    exit();
+}
+
+?>
