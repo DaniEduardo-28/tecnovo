@@ -395,27 +395,27 @@ class ClassOrdenVenta extends Conexion
 						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
-					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
-					$stmt = $conexion->prepare($sql);
-					if ($stmt->execute([]) == false) {
-						throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
-					}
+					/* $sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
+																							   $stmt = $conexion->prepare($sql);
+																							   if ($stmt->execute([]) == false) {
+																								   throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
+																							   } */
 				} else {
 
 					/* if (trim($correo) != "") {
-						$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
-						$stmt->execute([$id_persona, $correo]);
-						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-						if (count($result) > 0) {
-							throw new Exception("El correo ya se encuentra registrado en el sistema.");
-						}
-					}
+																								  $stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
+																								  $stmt->execute([$id_persona, $correo]);
+																								  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+																								  if (count($result) > 0) {
+																									  throw new Exception("El correo ya se encuentra registrado en el sistema.");
+																								  }
+																							  }
 
-					$name_user = $numero_documento_proveedor . "@gmail.com";
+																							  $name_user = $numero_documento_proveedor . "@gmail.com";
 
-					if (trim($correo) != "") {
-						$name_user = $correo;
-					} */
+																							  if (trim($correo) != "") {
+																								  $name_user = $correo;
+																							  }  */
 
 					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ?");
 					$stmt->execute([$id_persona]);
@@ -439,31 +439,31 @@ class ClassOrdenVenta extends Conexion
 			} else {
 
 				/* if (trim($correo) != "") {
-					$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE correo = ? ");
-					$stmt->execute([$correo]);
-					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-					if (count($result) > 0) {
-						throw new Exception("El correo ya se encuentra registrado en el sistema.");
-					}
-				}
+																				$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE correo = ? ");
+																				$stmt->execute([$correo]);
+																				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+																				if (count($result) > 0) {
+																					throw new Exception("El correo ya se encuentra registrado en el sistema.");
+																				}
+																			}
 
-				$name_user = $numero_documento_proveedor . "@gmail.com";
+																			$name_user = $numero_documento_proveedor . "@gmail.com";
 
-				if (trim($correo) != "") {
-					$name_user = $correo;
-				} */
+																			if (trim($correo) != "") {
+																				$name_user = $correo;
+																			} */
 
 				/* $stmt = $conexion->prepare("SELECT * FROM `tb_proveedor`");
-				$stmt->execute([$name_user]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (count($result) > 0) {
-					throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
-				} */
+																			$stmt->execute([$name_user]);
+																			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+																			if (count($result) > 0) {
+																				throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
+																			} */
 
-				$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `sexo`) VALUES ";
+				$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `sexo`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(p.id_persona) WHEN 0 THEN 1 ELSE (MAX(p.id_persona) + 1) end FROM `tb_persona` p),";
-				$sql .= "?,?,?,?,?,?,?,now(),?";
+				$sql .= "?,?,?,?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
@@ -471,7 +471,7 @@ class ClassOrdenVenta extends Conexion
 					throw new Exception("1. Error al registrar los datos del proveedor.");
 				}
 
-				$stmt = $conexion->prepare("SELECT MAX(p.id_persona) as id_persona FROM `tb_persona` p");
+				$stmt = $conexion->prepare("SELECT COALESCE(MAX(p.id_persona), 0) as id_persona FROM `tb_persona` p");
 				$stmt->execute([]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) == 0) {
@@ -488,6 +488,7 @@ class ClassOrdenVenta extends Conexion
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 				if ($stmt->rowCount() == 0) {
+					print_r($stmt->errorInfo());
 					throw new Exception("Error al registrar el proveedor en la base de datos.");
 				}
 
@@ -565,22 +566,24 @@ class ClassOrdenVenta extends Conexion
 			if (count($result) == 0) {
 				throw new Exception("Error al obtener el id de forma de pago.");
 			}
+
 			$codigo_moneda = $result[0]['cod_sunat'];
 			$signo_moneda = $result[0]['signo'];
 			$abreviatura_moneda = $result[0]['abreviatura'];
 
 			$sql = "INSERT INTO tb_venta (`id_venta`, `id_fundo`, `id_trabajador`, `id_documento_venta`,
-								`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
-								`id_documento_proveedor`,`name_documento_proveedor`, `codigo_documento_proveedor`,
-								`numero_documento_proveedor`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
-								`proveedor`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
-								`descuento_total`, `sub_total`, `igv`, `total`, `estado`, `pdf`, `xml`, `cdr`, `ruta`,
-								`token`, `flag_doc_interno`,`monto_recibido`, `vuelto`, `id_moneda`,
-								`codigo_moneda`, `signo_moneda`, `abreviatura_moneda`, `flag_enviado`, `monto_tipo_cambio`) VALUES ";
+            			`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
+            			`id_documento_proveedor`, `name_documento_proveedor`, `codigo_documento_proveedor`,
+            			`numero_documento_proveedor`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
+            			`proveedor`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
+            			`descuento_total`, `sub_total`, `igv`, `total`, `estado`, `pdf`, `xml`, `cdr`, `ruta`,
+            			`token`, `flag_doc_interno`, `monto_recibido`, `vuelto`, `id_moneda`,
+            			`codigo_moneda`, `signo_moneda`, `abreviatura_moneda`, `flag_enviado`, `monto_tipo_cambio`) VALUES ";
 			$sql .= "(";
-			$sql .= "(SELECT CASE COUNT(o.id_venta) WHEN 0 THEN 1 ELSE (MAX(o.id_venta) + 1) end FROM `tb_venta` o),";
+			$sql .= "(SELECT CASE COUNT(o.id_venta) WHEN 0 THEN 1 ELSE (MAX(o.id_venta) + 1) END FROM `tb_venta` o),";
 			$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,null,?,?,?,?,1,?,?,?,?,?,?,?,?,?,?,?,?,0,?";
 			$sql .= ")";
+
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([
 				$id_fundo,
@@ -602,10 +605,12 @@ class ClassOrdenVenta extends Conexion
 				$telefono,
 				$correo,
 				date('Y-m-d', strtotime($fecha)),
+				null,
 				$total_descuento,
 				$total_gravada,
 				$total_igv,
 				$total_total,
+				1,
 				$pdf,
 				$xml,
 				$cdr,
@@ -618,25 +623,35 @@ class ClassOrdenVenta extends Conexion
 				$codigo_moneda,
 				$signo_moneda,
 				$abreviatura_moneda,
+				0,
 				$tipo_cambio
 			]);
 			if ($stmt->rowCount() == 0) {
+				print_r($stmt->errorInfo());
 				throw new Exception("1. Error al registrar la orden de venta en la base de datos.");
 			}
 
 
+			// Obtener id_venta previamente para evitar problemas de concurrencia
+			$stmt = $conexion->prepare("SELECT MAX(id_venta) as max_id_venta FROM `tb_venta`");
+			$stmt->execute();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			if (!$result) {
+				throw new Exception("Error al obtener el id_venta para tb_detalle_venta.");
+			}
+			$id_venta = $result['max_id_venta'];
+
 			foreach ($detalle_venta as $key) {
 				foreach ($key as $key1) {
 					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
-														  `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-														  `igv`, `total`) VALUES ";
-					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
-					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,?,?,?,?,?";
-					$sql .= ")";
+                                              `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
+                                              `igv`, `total`) VALUES 
+                ((SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) END FROM `tb_detalle_venta` o),
+                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
+						$id_venta,                 // Usar id_venta ya obtenido
 						$key1->name_tabla,
 						$key1->cod_producto,
 						$key1->descripcion,
@@ -648,12 +663,13 @@ class ClassOrdenVenta extends Conexion
 						$key1->igv,
 						$key1->total
 					]);
+
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("2. Error al registrar la orden en la base de datos.");
+						throw new Exception("Error al registrar el detalle de la venta en la base de datos.");
 					}
 				}
 			}
-			
+
 
 			$stmt = $conexion->prepare("SELECT MAX(id_venta) as id_venta FROM `tb_venta`");
 			$stmt->execute([]);
@@ -1179,7 +1195,7 @@ class ClassOrdenVenta extends Conexion
 
 				if (count($result) == 0) {
 
-					if (trim($correo) != "") {
+					/* if (trim($correo) != "") {
 						$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
 						$stmt->execute([$id_persona, $correo]);
 						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1192,14 +1208,14 @@ class ClassOrdenVenta extends Conexion
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
-					}
+					} */
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
+					/* $stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
 					$stmt->execute([$id_persona]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
 						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, ingrese otro nombre de usuario.");
-					}
+					} */
 
 					$sql = "UPDATE tb_persona SET ";
 					$sql .= " nombres = ?, ";
@@ -1224,14 +1240,14 @@ class ClassOrdenVenta extends Conexion
 						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
-					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
+					/* $sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([]) == false) {
 						throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
-					}
+					} */
 				} else {
 
-					if (trim($correo) != "") {
+					/* if (trim($correo) != "") {
 						$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
 						$stmt->execute([$id_persona, $correo]);
 						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1244,9 +1260,9 @@ class ClassOrdenVenta extends Conexion
 
 					if (trim($correo) != "") {
 						$name_user = $correo;
-					}
+					} */
 
-					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
+					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ?");
 					$stmt->execute([$id_persona]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					if (count($result) > 0) {
@@ -1267,7 +1283,7 @@ class ClassOrdenVenta extends Conexion
 				}
 			} else {
 
-				if (trim($correo) != "") {
+				/* if (trim($correo) != "") {
 					$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE correo = ? ");
 					$stmt->execute([$correo]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1287,12 +1303,12 @@ class ClassOrdenVenta extends Conexion
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) > 0) {
 					throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
-				}
+				} */
 
-				$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `sexo`) VALUES ";
+				$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `sexo`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(p.id_persona) WHEN 0 THEN 1 ELSE (MAX(p.id_persona) + 1) end FROM `tb_persona` p),";
-				$sql .= "?,?,?,?,?,?,?,now(),?";
+				$sql .= "?,?,?,?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$codigo_documento_proveedor, $numero_documento_proveedor, $nombres, $apellidos, $direccion, $telefono, $correo, "masculino"]);
@@ -1300,7 +1316,7 @@ class ClassOrdenVenta extends Conexion
 					throw new Exception("1. Error al registrar los datos del proveedor.");
 				}
 
-				$stmt = $conexion->prepare("SELECT MAX(p.id_persona) as id_persona FROM `tb_persona` p");
+				$stmt = $conexion->prepare("SELECT COALESCE(MAX(p.id_persona), 0) as id_persona FROM `tb_persona` p");
 				$stmt->execute([]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 				if (count($result) == 0) {
@@ -1317,6 +1333,7 @@ class ClassOrdenVenta extends Conexion
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_persona, 1, "resources/global/images/default-profile.png"]);
 				if ($stmt->rowCount() == 0) {
+					print_r($stmt->errorInfo());
 					throw new Exception("Error al registrar el proveedor en la base de datos.");
 				}
 
@@ -1540,17 +1557,16 @@ class ClassOrdenVenta extends Conexion
 			}
 
 			$sql = "INSERT INTO tb_venta (`id_venta`, `id_fundo`, `id_trabajador`, `id_documento_venta`,
-								`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
-								`id_documento_proveedor`,`name_documento_proveedor`, `codigo_documento_proveedor`,
-								`numero_documento_proveedor`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
-								`proveedor`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
-								`descuento_total`, `sub_total`, `igv`, `total`, `estado`, `pdf`, `xml`, `cdr`, `ruta`,
-								`token`, `flag_doc_interno`,`monto_recibido`, `vuelto`, `id_moneda`,
-								`codigo_moneda`, `signo_moneda`, `abreviatura_moneda`, `flag_enviado`, `monto_tipo_cambio`,
-							  `mensaje_sunat`) VALUES ";
+            			`name_documento_venta`, `codigo_documento_venta`, `serie`, `correlativo`,
+            			`id_documento_proveedor`, `name_documento_proveedor`, `codigo_documento_proveedor`,
+            			`numero_documento_proveedor`, `id_forma_pago`, `codigo_forma_pago`, `name_forma_pago`,
+            			`proveedor`, `direccion`, `telefono`, `correo`, `fecha`, `fecha_vencimiento`,
+            			`descuento_total`, `sub_total`, `igv`, `total`, `estado`, `pdf`, `xml`, `cdr`, `ruta`,
+            			`token`, `flag_doc_interno`, `monto_recibido`, `vuelto`, `id_moneda`,
+            			`codigo_moneda`, `signo_moneda`, `abreviatura_moneda`, `flag_enviado`, `monto_tipo_cambio`) VALUES ";
 			$sql .= "(";
-			$sql .= "(SELECT CASE COUNT(o.id_venta) WHEN 0 THEN 1 ELSE (MAX(o.id_venta) + 1) end FROM `tb_venta` o),";
-			$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,null,?,?,?,?,2,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?";
+			$sql .= "(SELECT CASE COUNT(o.id_venta) WHEN 0 THEN 1 ELSE (MAX(o.id_venta) + 1) END FROM `tb_venta` o),";
+			$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,null,?,?,?,?,1,?,?,?,?,?,?,?,?,?,?,?,?,0,?";
 			$sql .= ")";
 
 			//$stmt = $conexion->prepare(query: $sql);
@@ -1576,10 +1592,12 @@ class ClassOrdenVenta extends Conexion
 				$telefono,
 				$correo,
 				date('Y-m-d', strtotime($fecha)),
+				null,
 				$total_descuento,
 				$total_gravada,
 				$total_igv,
 				$total_total,
+				1,
 				$pdf,
 				$xml,
 				$cdr,
@@ -1592,26 +1610,33 @@ class ClassOrdenVenta extends Conexion
 				$codigo_moneda,
 				$signo_moneda,
 				$abreviatura_moneda,
-				$flag_envia_sunat,
-				$tipo_cambio,
-				$mensaje_sunat
+				0,
+				$tipo_cambio
 			]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("1. Error al registrar la orden en la base de datos.");
 			}
 
+			// Obtener id_venta previamente para evitar problemas de concurrencia
+			$stmt = $conexion->prepare("SELECT MAX(id_venta) as max_id_venta FROM `tb_venta`");
+			$stmt->execute();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			if (!$result) {
+				throw new Exception("Error al obtener el id_venta para tb_detalle_venta.");
+			}
+			$id_venta = $result['max_id_venta'];
+
 			foreach ($detalle_venta as $key) {
 				foreach ($key as $key1) {
 					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
-																									`cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-																									`igv`, `total`) VALUES ";
-					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
-					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,?,?,?,?,?";
-					$sql .= ")";
+                                              `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
+                                              `igv`, `total`) VALUES 
+                ((SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) END FROM `tb_detalle_venta` o),
+                 ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
+						$id_venta,                 // Usar id_venta ya obtenido
 						$key1->name_tabla,
 						$key1->cod_producto,
 						$key1->descripcion,
@@ -1623,19 +1648,9 @@ class ClassOrdenVenta extends Conexion
 						$key1->igv,
 						$key1->total
 					]);
-					if ($stmt->rowCount() == 0) {
-						throw new Exception("2. Error al registrar el detalle de la orden en la base de datos.");
-					}
 
-					$name_tabla = $key1->name_tabla;
-					switch ($name_tabla) {
-						case 'producto':
-							$sql = "UPDATE tb_gasto where id_gasto = ?";
-							$stmt = $conexion->prepare($sql);
-							if ($stmt->execute([$key1->cantidad, $key1->cod_producto]) == false) {
-								throw new Exception("Ocurrió un error.");
-							}
-							break;
+					if ($stmt->rowCount() == 0) {
+						throw new Exception("Error al registrar el detalle de la venta en la base de datos.");
 					}
 				}
 			}
