@@ -247,3 +247,7 @@ FROM
     ALTER TABLE `tb_venta` CHANGE `id_venta` `id_venta` INT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id_venta`);
 
     ALTER TABLE `tb_detalle_venta` CHANGE `id_detalle` `id_detalle` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id_detalle`);
+ALTER TABLE `tb_unidad_medida` CHANGE `id_unidad_medida` `id_unidad_medida` INT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id_unidad_medida`);
+INSERT INTO `tb_unidad_medida` (`id_unidad_medida`, `name_unidad`, `cod_sunat`, `estado`) VALUES ('1', 'UNIDADES', 'NIU', '1'), ('2', 'KILOGRAMOS', 'KGM', '1'), ('3', 'CAJAS', 'BX', '1');
+
+

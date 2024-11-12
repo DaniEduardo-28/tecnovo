@@ -1,5 +1,6 @@
-<?php
 
+<?php
+include_once 'ruta/del/archivo_con_enviarDocumento.php';
 class ClassOrdenVenta extends Conexion
 {
 
@@ -351,19 +352,19 @@ class ClassOrdenVenta extends Conexion
 				if (count($result) == 0) {
 
 					/* if (trim($correo) != "") {
-						$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
-						$stmt->execute([$id_persona, $correo]);
-						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-						if (count($result) > 0) {
-							throw new Exception("El correo ya se encuentra registrado en el sistema.");
-						}
-					}
+									   $stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
+									   $stmt->execute([$id_persona, $correo]);
+									   $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+									   if (count($result) > 0) {
+										   throw new Exception("El correo ya se encuentra registrado en el sistema.");
+									   }
+								   }
 
-					$name_user = $numero_documento_proveedor . "@gmail.com";
+								   $name_user = $numero_documento_proveedor . "@gmail.com";
 
-					if (trim($correo) != "") {
-						$name_user = $correo;
-					} */
+								   if (trim($correo) != "") {
+									   $name_user = $correo;
+								   } */
 
 					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? ");
 					$stmt->execute([$id_persona]);
@@ -396,26 +397,26 @@ class ClassOrdenVenta extends Conexion
 					}
 
 					/* $sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
-																							   $stmt = $conexion->prepare($sql);
-																							   if ($stmt->execute([]) == false) {
-																								   throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
-																							   } */
+																											  $stmt = $conexion->prepare($sql);
+																											  if ($stmt->execute([]) == false) {
+																												  throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
+																											  } */
 				} else {
 
 					/* if (trim($correo) != "") {
-																								  $stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
-																								  $stmt->execute([$id_persona, $correo]);
-																								  $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-																								  if (count($result) > 0) {
-																									  throw new Exception("El correo ya se encuentra registrado en el sistema.");
-																								  }
-																							  }
+																												 $stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
+																												 $stmt->execute([$id_persona, $correo]);
+																												 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+																												 if (count($result) > 0) {
+																													 throw new Exception("El correo ya se encuentra registrado en el sistema.");
+																												 }
+																											 }
 
-																							  $name_user = $numero_documento_proveedor . "@gmail.com";
+																											 $name_user = $numero_documento_proveedor . "@gmail.com";
 
-																							  if (trim($correo) != "") {
-																								  $name_user = $correo;
-																							  }  */
+																											 if (trim($correo) != "") {
+																												 $name_user = $correo;
+																											 }  */
 
 					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ?");
 					$stmt->execute([$id_persona]);
@@ -439,26 +440,26 @@ class ClassOrdenVenta extends Conexion
 			} else {
 
 				/* if (trim($correo) != "") {
-																				$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE correo = ? ");
-																				$stmt->execute([$correo]);
-																				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-																				if (count($result) > 0) {
-																					throw new Exception("El correo ya se encuentra registrado en el sistema.");
-																				}
-																			}
+																							$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE correo = ? ");
+																							$stmt->execute([$correo]);
+																							$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+																							if (count($result) > 0) {
+																								throw new Exception("El correo ya se encuentra registrado en el sistema.");
+																							}
+																						}
 
-																			$name_user = $numero_documento_proveedor . "@gmail.com";
+																						$name_user = $numero_documento_proveedor . "@gmail.com";
 
-																			if (trim($correo) != "") {
-																				$name_user = $correo;
-																			} */
+																						if (trim($correo) != "") {
+																							$name_user = $correo;
+																						} */
 
 				/* $stmt = $conexion->prepare("SELECT * FROM `tb_proveedor`");
-																			$stmt->execute([$name_user]);
-																			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-																			if (count($result) > 0) {
-																				throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
-																			} */
+																						$stmt->execute([$name_user]);
+																						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+																						if (count($result) > 0) {
+																							throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
+																						} */
 
 				$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `sexo`) VALUES ";
 				$sql .= "(";
@@ -1195,7 +1196,7 @@ class ClassOrdenVenta extends Conexion
 
 				if (count($result) == 0) {
 
-					/* if (trim($correo) != "") {
+					if (trim($correo) != "") {
 						$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
 						$stmt->execute([$id_persona, $correo]);
 						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1204,18 +1205,6 @@ class ClassOrdenVenta extends Conexion
 						}
 					}
 
-					$name_user = $numero_documento_proveedor . "@gmail.com";
-
-					if (trim($correo) != "") {
-						$name_user = $correo;
-					} */
-
-					/* $stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ? AND name_user = ? ");
-					$stmt->execute([$id_persona]);
-					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-					if (count($result) > 0) {
-						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, ingrese otro nombre de usuario.");
-					} */
 
 					$sql = "UPDATE tb_persona SET ";
 					$sql .= " nombres = ?, ";
@@ -1240,14 +1229,14 @@ class ClassOrdenVenta extends Conexion
 						throw new Exception("Error al registrar el proveedor en la base de datos.");
 					}
 
-					/* $sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
+					$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int + 1 where id_parametro = 25";
 					$stmt = $conexion->prepare($sql);
 					if ($stmt->execute([]) == false) {
 						throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
-					} */
+					}
 				} else {
 
-					/* if (trim($correo) != "") {
+					if (trim($correo) != "") {
 						$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND correo = ? ");
 						$stmt->execute([$id_persona, $correo]);
 						$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1255,12 +1244,6 @@ class ClassOrdenVenta extends Conexion
 							throw new Exception("El correo ya se encuentra registrado en el sistema.");
 						}
 					}
-
-					$name_user = $numero_documento_proveedor . "@gmail.com";
-
-					if (trim($correo) != "") {
-						$name_user = $correo;
-					} */
 
 					$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor` WHERE id_persona != ?");
 					$stmt->execute([$id_persona]);
@@ -1283,7 +1266,7 @@ class ClassOrdenVenta extends Conexion
 				}
 			} else {
 
-				/* if (trim($correo) != "") {
+				if (trim($correo) != "") {
 					$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE correo = ? ");
 					$stmt->execute([$correo]);
 					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1291,19 +1274,6 @@ class ClassOrdenVenta extends Conexion
 						throw new Exception("El correo ya se encuentra registrado en el sistema.");
 					}
 				}
-
-				$name_user = $numero_documento_proveedor . "@gmail.com";
-
-				if (trim($correo) != "") {
-					$name_user = $correo;
-				}
-
-				$stmt = $conexion->prepare("SELECT * FROM `tb_proveedor`");
-				$stmt->execute([$name_user]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (count($result) > 0) {
-					throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
-				} */
 
 				$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `sexo`) VALUES ";
 				$sql .= "(";
@@ -1368,31 +1338,22 @@ class ClassOrdenVenta extends Conexion
 			$name_documento_proveedor = $result[0]['name_documento'];
 			$codigo_documento_proveedor = $result[0]['codigo_sunat'];
 
-
-			$id_forma_pago = $codigo_forma_pago;
-			$stmt = $conexion->prepare("SELECT * FROM `tb_forma_pago` WHERE id_forma_pago = ?");
-			$stmt->execute([$id_forma_pago]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			if (count($result) == 0) {
-				throw new Exception("Error al obtener el id de forma de pago.");
-			}
-			$name_forma_pago = $result[0]['name_forma_pago'];
-			$codigo_forma_pago = $result[0]['cod_sunat'];
-
 			$proveedor = $nombres . " " . $apellidos;
 			if (strtoupper($name_documento_venta) == "RUC") {
 				$proveedor = $nombres;
 			}
 
 
-			$stmt = $conexion->prepare("SELECT * FROM `` WHERE id_fundo = ?");
+			/* $stmt = $conexion->prepare("SELECT * FROM `tb_fundo` WHERE id_fundo = ?");
 			$stmt->execute([$id_fundo]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 			if (count($result) == 0) {
 				throw new Exception("Error al obtener el id de sucursal.");
-			}
-			$ruta = $result[0]['ruta'];
-			$token = $result[0]['token'];
+			} */
+			/* $ruta = $result[0]['ruta'];
+			$token = $result[0]['token']; */
+			$ruta = 'default_ruta';
+			$token = 'default_token';
 
 
 			$id_moneda = $codigo_moneda;
@@ -1465,7 +1426,7 @@ class ClassOrdenVenta extends Conexion
 					"enviar_automaticamente_al_proveedor" => "$flag_envia_correo",
 					"codigo_unico" => "",
 					"condiciones_de_pago" => "",
-					"medio_de_pago" => "$name_forma_pago",
+					"medio_de_pago" => "",
 					"placa_vehiculo" => "",
 					"orden_compra_servicio" => "",
 					"tabla_personalizada_codigo" => "",
@@ -1488,16 +1449,16 @@ class ClassOrdenVenta extends Conexion
 								$stmt->execute([$codigo_producto]);
 								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 								if (count($result) == 0) {
-									throw new Exception("Error al obtener el id de producto.");
+									$id_unidad_medida = 0; // Valor predeterminado o mensaje de error
+								} else {
+									$id_unidad_medida = $result[0]['id_unidad_medida'];
 								}
-								$id_unidad_medida = $result[0]['id_unidad_medida'];
-								break;
 							case 'servicio':
 								$id_unidad_medida = 0;
 								break;
 						}
 
-						if ($id_unidad_medida != 0) {
+						/* if ($id_unidad_medida != 0) {
 							$stmt = $conexion->prepare("SELECT * FROM `tb_unidad_medida` WHERE id_unidad_medida = ?");
 							$stmt->execute([$id_unidad_medida]);
 							$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -1505,10 +1466,10 @@ class ClassOrdenVenta extends Conexion
 								throw new Exception("Error al obtener el id de unidad medida.");
 							}
 							$unidad_medida = $result[0]['cod_sunat'];
-						}
+						} */
 
 						$dataDetalle[] = array(
-							"unidad_de_medida" => "$unidad_medida",
+							"unidad_de_medida" => "ZZ",
 							"codigo" => substr(strtoupper($key1->name_tabla), 0, 1) . $codigo_producto,
 							"descripcion" => $key1->descripcion,
 							"cantidad" => $key1->cantidad,
