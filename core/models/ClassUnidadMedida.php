@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -56,7 +56,7 @@
 		public function insert($id_unidad_medida,$name_unidad,$cod_sunat,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -84,7 +84,7 @@
 		public function update($id_unidad_medida,$name_unidad,$cod_sunat,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -112,11 +112,18 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
 				$conexion->beginTransaction();
+
+				$stmt = $conexion->prepare("SELECT * FROM `tb_medicamento` WHERE id_unidad_medida = ?");
+				$stmt->execute([$id_unidad_medida]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				if (count($result)>0) {
+					throw new Exception("Esta unidad de medida tiene medicamentos registrados con esta unidad.");
+				}
 
 				$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_unidad_medida = ?");
 				$stmt->execute([$id_unidad_medida]);

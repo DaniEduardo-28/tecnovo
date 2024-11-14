@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$valor = "%$valor%";
@@ -73,7 +73,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$valor = "%$valor%";
@@ -131,53 +131,11 @@
 			return $VD;
 		}
 
-
-		public function listarClientes() {
-
-			$conexionClass = new Conexion();
-			$conexion = $conexionClass->Open();
-			$VD = "";
-
-			try {
-
-				$sql = "SELECT * FROM vw_clientes ORDER BY apellidos_cliente ASC";
-				$stmt = $conexion->prepare($sql);
-				$stmt->execute([]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				if (count($result)==0) {
-					throw new Exception("No se encontraron datos.");
-				}
-
-				$VD1['error'] = "NO";
-				$VD1['message'] = "Success";
-				$VD1['data'] = $result;
-				$VD = $VD1;
-
-			} catch(PDOException $e) {
-
-				$VD1['error'] = "SI";
-				$VD1['message'] = $e->getMessage();
-				$VD = $VD1;
-
-			} catch (Exception $exception) {
-
-				$VD1['error'] = "SI";
-				$VD1['message'] = $exception->getMessage();
-				$VD = $VD1;
-
-    	} finally {
-				$conexionClass->Close();
-			}
-
-			return $VD;
-		}
-
 		public function getDataEditCliente($id_cliente) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$sql = "SELECT p.*,c.id_cliente,c.name_user,
@@ -217,10 +175,10 @@
 			return $VD;
 		}
 
-		public function insert($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$nickname,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
+		public function insert($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -250,12 +208,17 @@
 							throw new Exception("El correo ya se encuentra registrado en el sistema.");
 						}
 					}
-			
+
+					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_persona != ? AND name_user = ? ");
+					$stmt->execute([$id_persona,$name_user]);
+					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					if (count($result)>0) {
+						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, ingrese otro nombre de usuario.");
+					}
 
 					$sql = "UPDATE tb_persona SET ";
 					$sql .=" nombres = ?, ";
 					$sql .=" apellidos = ?, ";
-					$sql .=" nickname = ?, ";
 					$sql .=" direccion = ?, ";
 					$sql .=" correo = ?, ";
 					$sql .=" telefono = ?, ";
@@ -263,7 +226,7 @@
 					$sql .=" sexo = ? ";
 					$sql .=" WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
-					if ($stmt->execute([$nombres,$apellidos,$nickname,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$id_persona])==false) {
+					if ($stmt->execute([$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$id_persona])==false) {
 						throw new Exception("Ocurrió un error al actualizar los datos del cliente.");
 					}
 
@@ -278,14 +241,20 @@
 						}
 					}
 
+					$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE name_user = ? ");
+					$stmt->execute([$name_user]);
+					$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					if (count($result)>0) {
+						throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, intente ingresar otro nombre de usuario.");
+					}
 
-					$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `nickname`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `sexo`) VALUES ";
+					$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `sexo`) VALUES ";
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(p.id_persona) WHEN 0 THEN 1 ELSE (MAX(p.id_persona) + 1) end FROM `tb_persona` p),";
-					$sql .= "?,?,?,?,?,?,?,?,?,?";
+					$sql .= "?,?,?,?,?,?,?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
-					$stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$nickname,$direccion,$telefono,$correo,$fecha_nacimiento,$sexo]);
+					$stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha_nacimiento,$sexo]);
 					if ($stmt->rowCount()==0) {
 						throw new Exception("1. Error al registrar los datos del cliente.");
 					}
@@ -337,7 +306,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$sql = "SELECT p.*,c.id_cliente,c.name_user,
@@ -377,10 +346,10 @@
 			return $VD;
 		}
 
-		public function update($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$nickname,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
+		public function update($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -410,6 +379,13 @@
 					}
 				}
 
+				$stmt = $conexion->prepare("SELECT * FROM `tb_cliente` WHERE id_cliente != ? AND name_user = ? ");
+				$stmt->execute([$id_cliente,$name_user]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				if (count($result)>0) {
+					throw new Exception("El nombre de usuario ya se encuentra registrado en el sistema, por favor ingrese otro nombre de usuario.");
+				}
+
 				$stmt = $conexion->prepare("SELECT * FROM `tb_persona` WHERE id_persona != ? AND id_documento = ? AND num_documento = ?");
 				$stmt->execute([$id_persona,$id_documento,$num_documento]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -423,7 +399,6 @@
 				$sql .=" num_documento = ?, ";
 				$sql .=" nombres = ?, ";
 				$sql .=" apellidos = ?, ";
-				$sql .=" nickname = ?, ";
 				$sql .=" direccion = ?, ";
 				$sql .=" correo = ?, ";
 				$sql .=" telefono = ?, ";
@@ -431,7 +406,7 @@
 				$sql .=" sexo = ? ";
 				$sql .=" WHERE id_persona = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$nickname,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$id_persona])==false) {
+				if ($stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$id_persona])==false) {
 					throw new Exception("1. Error al actualizar los datos del cliente.");
 				}
 
@@ -470,33 +445,22 @@
 		public function delete($id_cliente) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 				$conexion->beginTransaction();
 
-				// First, get the id_persona associated 
-				$stmt = $conexion->prepare("SELECT id_persona FROM tb_cliente WHERE id_cliente = ?");
+				$stmt = $conexion->prepare("SELECT * FROM `tb_mascota` WHERE id_cliente = ?");
 				$stmt->execute([$id_cliente]);
-				$result = $stmt->fetch(PDO::FETCH_ASSOC);
-		
-				if (!$result) {
-					throw new Exception("No se encontró el cliente con el ID especificado.");
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+				if (count($result)>0) {
+					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Mascotas.");
 				}
-		
-				$id_persona = $result['id_persona'];
-		
 
 				$stmt = $conexion->prepare("DELETE FROM tb_cliente WHERE id_cliente = ?");
 				$stmt->execute([$id_cliente]);
 				if ($stmt->rowCount()==0) {
-					throw new Exception("Ocurrió un error al eliminar el registro.");
-				}
-
-				// Delete from tb_persona
-				$stmt = $conexion->prepare("DELETE FROM tb_persona WHERE id_persona = ?");
-				$stmt->execute([$id_persona]);
-				if ($stmt->rowCount() == 0) {
-					throw new Exception("Ocurrió un error al eliminar el registro de la persona asociada.");
+					throw new Exception("2. Ocurrió un error al eliminar el registro.");
 				}
 
 				$sql = "UPDATE tb_parametros_generales SET valor_int = valor_int - 1 where id_parametro = 25";
@@ -523,7 +487,7 @@
 		public function addPromocion($id_cliente,$titulo,$descripcion,$fecha_inicio,$fecha_fin,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD ;
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -558,7 +522,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -599,7 +563,7 @@
 		public function deletePromocion($id_promocion) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 

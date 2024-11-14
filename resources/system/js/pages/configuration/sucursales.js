@@ -4,7 +4,7 @@ var table = $('#example').DataTable({
   destroy : true,
   columns: [
     { 'data': 'num' },
-    { 'data': 'id_fundo' },
+    { 'data': 'id_sucursal' },
     { 'data': 'id_empresa' },
     { 'data': 'nombre' },
     { 'data': 'cod_ubigeo' },
@@ -34,7 +34,7 @@ $(document).ready(function(){
   });
 
   $('#btnAdd').click(function(){
-    $("#id_fundo").val("0");
+    $("#id_sucursal").val("0");
     $("#accion").val("add");
     addClassDiv();
   });
@@ -46,7 +46,7 @@ $(document).ready(function(){
 
   $('#btnCancel').click(function(){
     removeClassDiv();
-    $("#id_fundo").val("0");
+    $("#id_sucursal").val("0");
     $("#accion").val("add");
     $("#frmDatos")[0].reset();
     $("#estado").prop('checked', false);
@@ -55,7 +55,7 @@ $(document).ready(function(){
   $('#example tbody').on( 'click', '#btnEdit', function () {
     try {
       var data = table.row( $(this).parents('tr') ).data();
-      $("#id_fundo").val(data["id_fundo"]);
+      $("#id_sucursal").val(data["id_sucursal"]);
       $("#accion").val("edit");
       $("#nombre").val(data["nombre"]);
       $("#cod_ubigeo").val(data["cod_ubigeo"]);
@@ -79,10 +79,10 @@ $(document).ready(function(){
     try {
 
       var data = table.row( $(this).parents('tr') ).data();
-      var id_fundo = data["id_fundo"];
+      var id_sucursal = data["id_sucursal"];
       var nombre = data["nombre"];
       var parametros = {
-        "id_fundo" : id_fundo
+        "id_sucursal" : id_sucursal
       };
 
       Swal.fire({
@@ -160,7 +160,7 @@ function showData(){
           for (var i = 0; i < o.length; i++) {
             table.row.add({
               "num": o[i].num,
-              "id_fundo": o[i].id_fundo,
+              "id_sucursal": o[i].id_sucursal,
               "id_empresa": o[i].id_empresa,
               "nombre": o[i].nombre,
               "cod_ubigeo": o[i].cod_ubigeo,

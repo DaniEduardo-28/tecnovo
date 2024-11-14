@@ -2,7 +2,7 @@
 
   $id_mascota = isset($_POST["id_mascota"]) ? $_POST["id_mascota"] : 0;
   $id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : 0;
-  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : 0;
+  $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : 0;
   $id_servicio = isset($_POST["cboServicioForm"]) ? $_POST["cboServicioForm"] : 0;
   $fecha_inicio = isset($_POST["txtFechaInicio"]) ? $_POST["txtFechaInicio"] : 0;
   $hora_inicio = isset($_POST["txtHoraInicio"]) ? $_POST["txtHoraInicio"] : 0;
@@ -37,7 +37,7 @@
     $fecha_2 = date('Y-m-d H:i', strtotime("$fecha_fin $hora_fin"));
 
     require_once "core/models/ClassCita.php";
-    $VD = $OBJ_CITA->registrarCitaAdmin($id_mascota,$id_trabajador,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_fundo);
+    $VD = $OBJ_CITA->registrarCitaAdmin($id_mascota,$id_trabajador,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_sucursal);
 
     if ($VD!="OK") {
       throw new Exception($VD);

@@ -54,13 +54,15 @@ function get_data_callback(){
   var valor = $("#txtBuscar").val();
   var id_documento = $("#cboDocumentoBuscar").val();
   var id_grupo = $("#cboGrupoBuscar").val();
+  var id_especialidad = $("#cboEspecialidadBuscar").val();
   $.ajax({
 		data:{
   		limit: itemsPorPagina,
   		offset: desde,
       valor: valor,
       id_documento: id_documento,
-      id_grupo: id_grupo
+      id_grupo: id_grupo,
+      id_especialidad: id_especialidad
 		},
     beforeSend: function (xhr) {
       showHideLoader('block');
@@ -87,7 +89,7 @@ function get_data_callback(){
         var o = data1["data"];
 
         for (var i = 0; i < o.length; i++) {
-          innerdivHtml += '<div class="col-xxl-4 col-xl-4  col-sm-6">';
+          innerdivHtml += '<div class="col-xxl-3 col-xl-4  col-sm-6">';
           innerdivHtml += '<div class="card card-statistics contact-contant">';
           innerdivHtml += '<div class="card-body py-4">';
           innerdivHtml += '<div class="d-flex align-items-center">';
@@ -286,6 +288,7 @@ function getDataEdit(id_trabajador){
           $("#pass_user_old").val(o[0].pass_user);
           $("#pass_user").val(o[0].pass_user);
           $("#name_user").val(o[0].name_user);
+          $("#id_especialidad").val(o[0].id_especialidad);
           $("#id_grupo").val(o[0].id_grupo);
           $("#descripcion").val(o[0].descripcion);
           $("#link_facebook").val(o[0].link_facebook);

@@ -37,6 +37,7 @@
           "cod_producto" => $key['cod_producto'],
           "name_producto" => $key['name_producto'],
           "stock" => $key['stock'],
+          "precio_unitario" => $key['precio_unitario'],
           "cantidad_solicitada" => $key['cantidad_solicitada'],
           "name_tabla" => $key['name_tabla'],
           "id_moneda" => $key['id_moneda'],

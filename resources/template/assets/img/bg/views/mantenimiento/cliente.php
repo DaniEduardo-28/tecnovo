@@ -100,7 +100,7 @@
 
                         <div class="form-group col-sm-1">
                           &nbsp;
-                        </div> 
+                        </div>
 
                         <div class="form-group col-sm-6">
 
@@ -117,7 +117,7 @@
                                   }
                                 }
                                ?>
-                            </select> 
+                            </select>
                           </div>
 
                           <div class="form-group col-xs-12">

@@ -16,7 +16,7 @@
 <!-- Noty-->
 <link rel="stylesheet" href="resources/global/js/vendor/needim/noty/lib/noty.css?v=<?=APP_VERSION;?>">
 <!-- Favicon-->
-<link rel="shortcut icon" href="resources/template/assets/img/logo-xs.png">
+<link rel="shortcut icon" href="resources/template/assets/img/logo-icon.png">
 <!-- Datatable-->
 <link rel="stylesheet" href="resources/global/css/datatable.css?v=<?=APP_VERSION;?>">
 <!-- app main -->

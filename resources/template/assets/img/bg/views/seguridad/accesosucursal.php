@@ -160,7 +160,7 @@
                                     ?>
                                       <tr>
                                         <td><?=$num;?></td>
-                                        <td><?=$key['id_fundo'];?></td>
+                                        <td><?=$key['id_sucursal'];?></td>
                                         <td><?=strtoupper($key['nombre']);?></td>
                                         <td><label class="container-label"><input type="checkbox"><span class="checkmark"></span></label></td>
                                       </tr>
@@ -207,7 +207,7 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/seguridad/accesofundo.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/seguridad/accesosucursal.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#tabmenuSeguridad").attr("aria-expanded",true);
       $("#tabmenuSeguridad1").addClass('show');

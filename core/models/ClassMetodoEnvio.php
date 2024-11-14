@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -56,7 +56,7 @@
 		public function insert($name_metodo,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -84,7 +84,7 @@
 		public function update($id_metodo_envio,$name_metodo,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -112,7 +112,7 @@
 		public function delete($id_metodo_envio) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 				$conexion->beginTransaction();
 

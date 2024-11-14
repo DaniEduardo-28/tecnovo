@@ -3,7 +3,7 @@
   $id_orden_compra = isset($_POST["id_orden_compra"]) ? $_POST["id_orden_compra"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
   $id_tipo_docu = isset($_POST["id_tipo_docu"]) ? $_POST["id_tipo_docu"] : "";
-  $id_fundo = isset($_SESSION["id_fundo"]) ? $_SESSION["id_fundo"] : "";
+  $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : "";
   $num_documento = isset($_POST["num_documento"]) ? $_POST["num_documento"] : "";
   $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
   $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
@@ -28,7 +28,7 @@
       throw new Exception("Campo obligatorio : Id. Trabajador.");
     }
 
-    if (empty(trim($id_fundo))) {
+    if (empty(trim($id_sucursal))) {
       throw new Exception("Campo obligatorio : Seleccionar sucursal.");
     }
 
@@ -49,7 +49,7 @@
     }
 
     require_once "core/models/ClassIngreso.php";
-    $VD = $OBJ_INGRESO->insert($id_fundo,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$detalle_compra);
+    $VD = $OBJ_INGRESO->insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$detalle_compra);
 
     if ($VD!="OK") {
       throw new Exception($VD);

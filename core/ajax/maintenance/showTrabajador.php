@@ -8,6 +8,7 @@
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $id_documento = isset($_POST["id_documento"])	? $_POST["id_documento"]	: "";
     $id_grupo = isset($_POST["id_grupo"])	? $_POST["id_grupo"]	: "";
+    $id_especialidad = isset($_POST["id_especialidad"])	? $_POST["id_especialidad"]	: "";
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("trabajador"));
 
@@ -20,11 +21,11 @@
     }
 
     require_once "core/models/ClassTrabajador.php";
-    $DataCantidad = $OBJ_TRABAJADOR->getCount("all",$id_documento,$id_grupo,$valor);
+    $DataCantidad = $OBJ_TRABAJADOR->getCount("all",$id_documento,$id_grupo,$id_especialidad,$valor);
 
     if ($DataCantidad["error"]=="NO") {
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_TRABAJADOR->show("all",$id_documento,$id_grupo,$valor,$offset,$limit);
+      $Resultado = $OBJ_TRABAJADOR->show("all",$id_documento,$id_grupo,$id_especialidad,$valor,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {
@@ -52,6 +53,7 @@
           "src_imagen" => $key['src_imagen'],
           "id_trabajador" => $key['id_trabajador'],
           "id_grupo" => $key['id_grupo'],
+          "id_especialidad" => $key['id_especialidad'],
           "name_user" => $key['name_user'],
           "pass_user" => $key['pass_user'],
           "estado" => $estado,
@@ -78,4 +80,4 @@
     exit();
   }
 
-?>
+ ?>

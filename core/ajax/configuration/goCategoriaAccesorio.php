@@ -1,6 +1,6 @@
 <?php
 
-  
+  sleep(1);
 
   $id_categoria = isset($_POST["id_categoria"]) ? $_POST["id_categoria"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;
@@ -9,7 +9,7 @@
 
   try {
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tipoproducto"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("categoriaaccesorio"));
     if ($access_options[0]['error']=="NO") {
       switch ($accion) {
         case 'add':

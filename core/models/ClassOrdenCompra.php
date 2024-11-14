@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -20,7 +20,7 @@
 				$valor = "%$valor%";
 				$parametros = null;
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_compra` o
-								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
 
 				$parametros[] = $fecha_inicio;
@@ -82,7 +82,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -95,7 +95,7 @@
 								(SELECT SUM(dc.precio_unitario*dc.cantidad_solicitada) FROM tb_detalle_compra dc WHERE dc.id_orden_compra = o.id_orden_compra) AS total
 								FROM `tb_orden_compra` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
-								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
 								INNER JOIN tb_metodo_envio m ON m.id_metodo_envio = o.id_metodo_envio
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
@@ -158,7 +158,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -167,7 +167,7 @@
 				$valor = "%$valor%";
 				$parametros = null;
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_orden_compra` o
-								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.estado in ('0','1')
 								AND o.id_sucursal = ? ";
 
@@ -230,7 +230,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -243,7 +243,7 @@
 								(SELECT SUM(dc.precio_unitario*dc.cantidad_solicitada) FROM tb_detalle_compra dc WHERE dc.id_orden_compra = o.id_orden_compra) AS total
 								FROM `tb_orden_compra` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
-								INNER JOIN vw_proveedores p ON p.id_proveedor = o.id_proveedor
+								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
 								INNER JOIN tb_metodo_envio m ON m.id_metodo_envio = o.id_metodo_envio
 								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.estado in ('0','1')
@@ -306,7 +306,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -356,7 +356,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -398,7 +398,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -461,7 +461,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -503,7 +503,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -553,7 +553,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -618,7 +618,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -667,7 +667,7 @@
 		public function update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -731,7 +731,7 @@
 		public function delete($id_orden_compra) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();

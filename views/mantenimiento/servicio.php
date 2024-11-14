@@ -172,11 +172,11 @@
                                                 autocomplete="off" required data-msg="Campo obligatorio...">
                                               </div>
 
-                                              <!-- <div class="form-group col-xs-12">
+                                              <div class="form-group col-xs-12">
                                                 <label for="descripcion_breve" class="label-control">Descripción Breve</label>
                                                 <input id="descripcion_breve" type="text" name="descripcion_breve"
                                                 class="form-control" autocomplete="off" maxlength="300">
-                                              </div> -->
+                                              </div>
 
                                             </div>
 

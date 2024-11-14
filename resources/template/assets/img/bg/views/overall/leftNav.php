@@ -22,13 +22,13 @@
       <i class="fa fa-cog"></i>Configuración</a>
       <ul id="tabmenuConfiguracion1" class="collapse list-unstyled">
         <li id="mybusiness"><a href="mybusiness">Mi Empresa</a></li>
-        <li id="fundos"><a href="fundos">Fundos</a></li>
+        <li id="sucursales"><a href="sucursales">Sucursales</a></li>
         <li id="monedas"><a href="monedas">Monedas</a></li>
         <li id="identitydocuments"> <a href="identitydocuments">Documentos de Identidad</a> </li>
-        <!-- <li id="especialidad"> <a href="especialidad">Cargo Trabajador</a> </li>
+        <li id="especialidad"> <a href="especialidad">Cargo Trabajador</a> </li>
         <li id="tipocambio"> <a href="tipocambio">Tipo de Cambio</a> </li>
         <li id="documentoventa"> <a href="documentoventa">Documentos de Sunat</a></li>
-       --></ul>
+      </ul>
     </li>
     <li><a href="#tabmenuMantenimiento1" id="tabmenuMantenimiento" aria-expanded="false" data-toggle="collapse">
       <i class="fa fa-database"></i>Mantenimiento</a>

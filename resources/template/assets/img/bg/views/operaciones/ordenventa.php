@@ -146,13 +146,13 @@
                                           <div class="row">
 
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="codigo_documento_venta">Doc. Compra(*)</label>
+                                              <label for="codigo_documento_venta">Doc. Venta(*)</label>
                                               <select class="form-control" name="codigo_documento_venta"
                                                     id="codigo_documento_venta" required>
                                                 <option value="">Seleccione</option>
                                                 <?php
                                                   include('core/models/ClassDocumentoVenta.php');
-                                                  $dataDocuVenta = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_fundo'],"1");
+                                                  $dataDocuVenta = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'],"1");
                                                   if ($dataDocuVenta["error"]=="NO") {
                                                     foreach ($dataDocuVenta["data"] as $key) {
                                                       if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
@@ -327,7 +327,7 @@
                                           <select name="cboTipoDocVentaBuscar" id="cboTipoDocVentaBuscar" class="form-control">
                                             <option value="">Todos</option>
                                             <?php
-                                              $dataDocuVenta = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_fundo'],"all");
+                                              $dataDocuVenta = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'],"all");
                                               if ($dataDocuVenta["error"]=="NO") {
                                                 foreach ($dataDocuVenta["data"] as $key) {
                                                   if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
@@ -380,7 +380,7 @@
                                                 <th style="width:90px;">Acciones</th>
                                                 <th>Id Venta</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
-                                                <th>Doc. Compra</th>
+                                                <th>Doc. Venta</th>
                                                 <th>Doc. Identidad</th>
                                                 <th>Cliente</th>
                                                 <th>Dirección</th>
@@ -448,10 +448,10 @@
                     $dataSucursal = $OBJ_SUCURSAL->show(ID_EMPRESA,"1");
                     if ($dataSucursal["error"]=="NO") {
                       foreach ($dataSucursal["data"] as $key) {
-                        if ($_SESSION['id_fundo']==$key['id_fundo']) {
-                          echo '<option value="' . $key['id_fundo'] . '" selected>' . $key['nombre'] . '</option>';
+                        if ($_SESSION['id_sucursal']==$key['id_sucursal']) {
+                          echo '<option value="' . $key['id_sucursal'] . '" selected>' . $key['nombre'] . '</option>';
                         }else {
-                          echo '<option value="' . $key['id_fundo'] . '">' . $key['nombre'] . '</option>';
+                          echo '<option value="' . $key['id_sucursal'] . '">' . $key['nombre'] . '</option>';
                         }
                       }
                     }

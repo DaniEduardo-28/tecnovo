@@ -1,12 +1,12 @@
 <?php
 
-  
+  sleep(1);
 
   $id_categoria = isset($_POST["id_categoria"]) ? $_POST["id_categoria"] : "";
 
   try {
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("tipoproducto"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("categoriaaccesorio"));
     if ($access_options[0]['error']=="NO") {
       if ($access_options[0]['flag_eliminar']==false) {
         throw new Exception("No tienes permiso a eliminar.");

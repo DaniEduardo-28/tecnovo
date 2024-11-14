@@ -12,7 +12,7 @@
 
     $valor = isset($_GET["valor"])	? $_GET["valor"]	: "";
     $id_categoria = isset($_GET["id_categoria"])	? $_GET["id_categoria"]	: "";
-    $id_fundo = isset($_SESSION["id_fundo"])	? $_SESSION["id_fundo"]	: 0;
+    $id_sucursal = isset($_SESSION["id_sucursal"])	? $_SESSION["id_sucursal"]	: 0;
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("vistareporteaccesorios"));
 
@@ -32,7 +32,7 @@
     $empresa = $ResultadoEmpresa["data"];
 
     require_once "core/models/ClassAccesorio.php";
-    $Resultado = $OBJ_ACCESORIO->showReporte("all",$id_categoria,$valor,$id_fundo);
+    $Resultado = $OBJ_ACCESORIO->showReporte("all",$id_categoria,$valor,$id_sucursal);
     if ($Resultado["error"]=="SI") {
       throw new Exception($Resultado["message"]);
     }

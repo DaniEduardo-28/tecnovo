@@ -58,7 +58,7 @@
                                       Configuración
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Fundos
+                                      Sucursales
                                     </li>
                                   </ol>
                                 </nav>
@@ -102,7 +102,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Fundos</h4>
+                                        <h4 class="card-title">Sucursales</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -114,12 +114,12 @@
 
                                         <form class="form-validate" action="#" method="post" id="frmDatos" name="frmDatos">
 
-                                          <input type="hidden" name="id_fundo" id="id_fundo" value="">
+                                          <input type="hidden" name="id_sucursal" id="id_sucursal" value="">
                                           <input type="hidden" name="accion" id="accion" value="add">
 
                                           <div class="row">
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="nombre" class="label-control">Fundo</label>
+                                              <label for="nombre" class="label-control">Sucursal</label>
                                               <input id="nombre" type="text" name="nombre" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
@@ -146,6 +146,22 @@
                                                 <label for="estado" class="form-check-label">Activo</label>
                                               </div>
                                             </div>
+                                            <div class="form-group col-sm-6">
+                                              <label for="ruta" class="label-control">Ruta</label>
+                                              <input id="ruta" type="text" name="ruta" class="form-control"
+                                              autocomplete="off" data-msg="Campo obligatorio...">
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                              <label for="token" class="label-control">Token</label>
+                                              <input id="token" type="text" name="token" class="form-control"
+                                              autocomplete="off" data-msg="Campo obligatorio...">
+                                            </div>
+                                            <div class="form-group col-md-12 d-none">
+                                              <label for="mapa" class="label-control">Mapa</label>
+                                              <input id="mapa" type="text" name="mapa" class="form-control"
+                                              autocomplete="off" data-msg="Campo obligatorio...">
+                                            </div>
+
                                             <div class="form-group col-md-12">
                                               <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar</button>
                                               <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-close"></span> Cancelar</button>

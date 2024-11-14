@@ -1,7 +1,7 @@
 <?php
 
   $id_documento_venta = isset($_POST["id_documento_venta"]) ? $_POST["id_documento_venta"] : "";
-  $id_fundo = $_SESSION['id_fundo'];
+  $id_sucursal = $_SESSION['id_sucursal'];
   $estado = isset($_POST["estado"]) ? '1' : '0';
   $flag_doc_interno = isset($_POST["flag_doc_interno"]) ? '1' : '0';
   $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
@@ -54,10 +54,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_DOCUMENTO_VENTA->insert($id_documento_venta,$id_fundo,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo);
+        $VD = $OBJ_DOCUMENTO_VENTA->insert($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo);
         break;
       case 'edit':
-        $VD = $OBJ_DOCUMENTO_VENTA->update($id_documento_venta,$id_fundo,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo);
+        $VD = $OBJ_DOCUMENTO_VENTA->update($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo);
         break;
       default:
         $VD = "Tipo de Operación no encontrada.";

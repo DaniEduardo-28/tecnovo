@@ -19,7 +19,7 @@
     if ($Resultado["error"]=="NO") {
       foreach ($Resultado["data"] as $key) {
         $retorno_array[] =array(
-          "id_fundo" => $key['id_fundo'],
+          "id_sucursal" => $key['id_sucursal'],
           "opcion" => '<label class="container-label"><input type="checkbox" checked="checked"><span class="checkmark"></span></label>',
         );
       }

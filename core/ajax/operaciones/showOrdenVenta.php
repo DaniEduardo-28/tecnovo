@@ -5,11 +5,11 @@
     // obtiene los valores para realizar la paginacion
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 10;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
-    $id_doc_proveedor = isset($_POST["id_doc_proveedor"])	? $_POST["id_doc_proveedor"]	: "";
+    $id_doc_cliente = isset($_POST["id_doc_cliente"])	? $_POST["id_doc_cliente"]	: "";
     $id_doc_venta = isset($_POST["id_doc_venta"])	? $_POST["id_doc_venta"]	: "";
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $estado = isset($_POST["estado"])	? $_POST["estado"]	: "all";
-    $id_fundo = isset($_SESSION['id_fundo']) ? $_SESSION['id_fundo'] : 0;
+    $id_sucursal = isset($_SESSION['id_sucursal']) ? $_SESSION['id_sucursal'] : 0;
     $id_trabajador = isset($_SESSION['id_trabajador']) ? $_SESSION['id_trabajador'] : "0";
     $fecha_inicio = isset($_POST["fecha_inicio"])	? $_POST["fecha_inicio"]	: date("Y-m-d");
     $fecha_fin = isset($_POST["fecha_fin"])	? $_POST["fecha_fin"]	: date("Y-m-d");
@@ -28,12 +28,12 @@
     }
 
     require_once "core/models/ClassOrdenVenta.php";
-    $DataCantidad = $OBJ_ORDEN_VENTA->getCount($id_trabajador,$id_doc_venta,$id_doc_proveedor,$estado,$valor,$fecha_inicio,$fecha_fin);
+    $DataCantidad = $OBJ_ORDEN_VENTA->getCount($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_ORDEN_VENTA->show($id_trabajador,$id_doc_venta,$id_doc_proveedor,$estado,$valor,$offset,$limit,$fecha_inicio,$fecha_fin);
+      $Resultado = $OBJ_ORDEN_VENTA->show($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$offset,$limit,$fecha_inicio,$fecha_fin);
 
       $count = 1 + $offset;
       foreach ($Resultado["data"] as $key) {
@@ -77,18 +77,18 @@
         $retorno_array[] =array(
           "num" => "$count",
           "id_venta" => $key['id_venta'],
-          "id_fundo" => $key['id_fundo'],
+          "id_sucursal" => $key['id_sucursal'],
           "id_trabajador" => $key['id_trabajador'],
           "name_documento_venta" => $key['name_documento_venta'],
           "codigo_documento_venta" => $key['codigo_documento_venta'],
           "serie" => $key['serie'],
           "correlativo" => substr('0000000' . $key['correlativo'],-8),
-          "name_documento_proveedor" => $key['name_documento_proveedor'],
-          "codigo_documento_proveedor" => $key['codigo_documento_proveedor'],
-          "numero_documento_proveedor" => $key['numero_documento_proveedor'],
+          "name_documento_cliente" => $key['name_documento_cliente'],
+          "codigo_documento_cliente" => $key['codigo_documento_cliente'],
+          "numero_documento_cliente" => $key['numero_documento_cliente'],
           "codigo_forma_pago" => $key['codigo_forma_pago'],
           "name_forma_pago" => $key['name_forma_pago'],
-          "proveedor" => $key['proveedor'],
+          "cliente" => $key['cliente'],
           "direccion" => $key['direccion'],
           "telefono" => $key['telefono'],
           "correo" => $key['correo'],

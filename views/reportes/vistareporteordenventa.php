@@ -128,7 +128,7 @@
                                             <option value="">Todos</option>
                                             <?php
                                               include("core/models/ClassDocumentoVenta.php");
-                                              $dataDocuVenta = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_fundo'],"all");
+                                              $dataDocuVenta = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'],"all");
                                               if ($dataDocuVenta["error"]=="NO") {
                                                 foreach ($dataDocuVenta["data"] as $key) {
                                                   if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
@@ -192,7 +192,7 @@
                                                 <th style="width:90px;">Acciones</th>
                                                 <th>Id Venta</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
-                                                <th>Doc. Compra</th>
+                                                <th>Doc. Venta</th>
                                                 <th>Doc. Identidad</th>
                                                 <th>Cliente</th>
                                                 <th>Dirección</th>

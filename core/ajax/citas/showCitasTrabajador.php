@@ -16,7 +16,7 @@
     }
 
     require_once "core/models/ClassCita.php";
-    $Resultado = $OBJ_CITA->showCitas($id_trabajador,$id_documento,$valor,$_SESSION['id_fundo']);
+    $Resultado = $OBJ_CITA->showCitas($id_trabajador,$id_documento,$valor,$_SESSION['id_sucursal']);
 
     if ($Resultado["error"]=="SI") {
       throw new Exception($Resultado["message"]);

@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -56,7 +56,7 @@
 		public function insert($name_grupo,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -94,7 +94,7 @@
 		public function update($id_grupo,$name_grupo,$estado) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -122,7 +122,7 @@
 		public function delete($id_grupo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 				$conexion->beginTransaction();
 

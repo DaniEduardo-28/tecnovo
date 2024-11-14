@@ -7,7 +7,7 @@
             <a href="#" class="mobile-toggle"><i class="ti ti-align-right"></i></a>
             <a class="navbar-brand" href="?view=home">
                 <img src="resources/template/assets/img/logo.png" class="img-fluid logo-desktop" alt="logo" />
-                <img src="resources/template/assets/img/logo-xs.png" class="img-fluid logo-mobile" alt="logo" />
+                <img src="resources/template/assets/img/petspace-circle.png" class="img-fluid logo-mobile" alt="logo" />
             </a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -28,7 +28,7 @@
                 <ul class="navbar-nav nav-left">
                   <li class="nav-item">
                     <a href="#" class="nav-link expand">
-                      <h4>BIENVENIDO <?=strtoupper($_SESSION['nombres']);?></h4>
+                      <h4><?=strtoupper($_SESSION['nombre_sucursal']);?></h4>
                     </a>
                   </li>
                 </ul>
@@ -44,7 +44,7 @@
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="mr-1">
                                         <h4 class="text-white mb-0"><?=$_SESSION['nombres'];?></h4>
-                                        <small class="text-white"><?=strtoupper($_SESSION['name_grupo']) /* . ' - ' . strtoupper($_SESSION['name_especialidad']) */;?></small>
+                                        <small class="text-white"><?=strtoupper($_SESSION['name_grupo']) . ' - ' . strtoupper($_SESSION['name_especialidad']);?></small>
                                     </div>
                                     <a href="?view=logout" class="text-white font-20 tooltip-wrapper" data-toggle="tooltip" data-placement="top" title="" data-original-title="Cerrar Sesión"> <i
                                       class="zmdi zmdi-power"></i></a>
@@ -55,7 +55,7 @@
                                   <i class="fa fa-user pr-2 text-success"></i> Mi Perfil</a>
                                 <a class="dropdown-item d-flex nav-link" href="?view=changepassword">
                                   <i class="fa fa-key pr-2 text-warning"></i> Cambiar Contraseña</a>
-                                <a class="dropdown-item d-flex nav-link" href="https://www.tecnovoperu.com/contacto.php"
+                                <a class="dropdown-item d-flex nav-link" href="https://www.oxerva.com/contacto.php"
                                   target="_blank">
                                   <i class="fa fa-compass pr-2 text-primary"></i> ¿Necesitas ayuda?</a>
                                 <a class="dropdown-item d-flex nav-link" href="?view=logout">

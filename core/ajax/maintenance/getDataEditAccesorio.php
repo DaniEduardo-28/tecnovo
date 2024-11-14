@@ -35,7 +35,7 @@
           "precio_compra" => $key['precio_compra'],
           "precio_venta" => $key['precio_venta'],
           "estado" => $key['estado'],
-          "id_fundo" => $key['id_fundo'],
+          "id_sucursal" => $key['id_sucursal'],
           "id_moneda" => $key['id_moneda'],
           "id_unidad_medida" => $key['id_unidad_medida'],
           "signo_moneda" => $key['signo_moneda'],

@@ -170,7 +170,7 @@
                                               <label for="" class="label-control">Documento</label>
                                               <select class="form-control" id="id_tipo_docu_form" name="id_tipo_docu_form">
                                                 <?php
-                                                  $resultTipoDocu = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_fundo'],1);
+                                                  $resultTipoDocu = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'],1);
                                                   if ($resultTipoDocu['error']=="NO") {
                                                     foreach ($resultTipoDocu['data'] as $key) {
                                                       ?>

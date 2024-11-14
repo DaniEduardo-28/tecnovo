@@ -10,7 +10,7 @@
     unset($_SESSION["name_grupo"]);
     unset($_SESSION["name_especialidad"]);
     unset($_SESSION["src_image"]);
-    unset($_SESSION["id_fundo"]);
+    unset($_SESSION["id_sucursal"]);
     unset($_SESSION["id_empresa"]);
     unset($_SESSION["nombre_sucursal"]);
     header('location: ' . APP_URL);

@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = null;
+			$VD;
 
 			try {
 
@@ -63,7 +63,7 @@
 		public function insert($id_vacuna,$id_tipo_mascota,$name_vacuna,$descripcion,$edad_minima,$edad_maxima,$estado,$tipo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = null;
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -119,7 +119,7 @@
 		public function update($id_vacuna,$id_tipo_mascota,$name_vacuna,$descripcion,$edad_minima,$edad_maxima,$estado,$tipo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = null;
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -185,7 +185,7 @@
 		public function delete($id_vacuna) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = null;
+			$VD;
 
 			try {
 

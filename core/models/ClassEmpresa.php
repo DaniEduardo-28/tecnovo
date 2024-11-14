@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$stmt = $conexion->prepare("SELECT e.*,di.name_documento as name_documento_empresa,di1.name_documento as name_documento_representante FROM `tb_empresa` e INNER JOIN tb_documento_identidad di ON di.id_documento = e.id_documento INNER JOIN tb_documento_identidad di1 ON di1.id_documento = e.id_documento_representante limit 1");
@@ -48,7 +48,7 @@
 		public function update($id_empresa,$id_documento,$num_documento,$razon_social,$nombre_comercial,$direccion,$fono01,$fono02,$correo01,$correo02,$web,$id_documento_representante,$num_documento_representante,$nombres_representante,$apellidos_representante,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();

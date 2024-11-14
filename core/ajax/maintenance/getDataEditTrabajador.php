@@ -38,6 +38,7 @@
           "src_imagen" => $key['src_imagen'],
           "id_trabajador" => $key['id_trabajador'],
           "id_grupo" => $key['id_grupo'],
+          "id_especialidad" => $key['id_especialidad'],
           "name_user" => $key['name_user'],
           "pass_user" => $key['pass_user'],
           "estado" => $key['estado'],

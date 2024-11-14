@@ -11,10 +11,9 @@ class ClassUsuario extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
-
+		$VD;
 		try {
-			$stmt = $conexion->prepare("SELECT p.*,t.name_user,t.pass_user,t.estado,g.estado as estado_grupo,t.id_trabajador,g.name_grupo,g.id_grupo FROM tb_persona p INNER JOIN tb_trabajador t ON t.id_persona=p.id_persona INNER JOIN tb_grupo_usuario g ON g.id_grupo=t.id_grupo WHERE ? in (t.name_user)");
+			$stmt = $conexion->prepare("SELECT p.*,e.id_especialidad,e.name_especialidad,t.name_user,t.pass_user,t.estado,g.estado as estado_grupo,t.id_trabajador,g.name_grupo,g.id_grupo FROM tb_persona p INNER JOIN tb_trabajador t ON t.id_persona=p.id_persona INNER JOIN tb_grupo_usuario g ON g.id_grupo=t.id_grupo INNER JOIN tb_especialidad e ON e.id_especialidad=t.id_especialidad WHERE ? in (t.name_user)");
 			$stmt->execute([$name_user]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -49,7 +48,7 @@ class ClassUsuario extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
+		$VD;
 		try {
 			$stmt = $conexion->prepare("SELECT p.*,c.name_user,c.id_cliente,c.pass_user,c.src_imagen,c.estado from tb_persona p inner join tb_cliente c on c.id_persona=p.id_persona WHERE ? in (c.name_user)");
 			$stmt->execute([$name_user]);
@@ -86,7 +85,7 @@ class ClassUsuario extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
+		$VD;
 		try {
 			$stmt = $conexion->prepare("SELECT * FROM tb_trabajador WHERE id_trabajador = ?");
 			$stmt->execute([$id_trabajador]);
@@ -119,7 +118,7 @@ class ClassUsuario extends Conexion {
 	public function updateProfile($id_persona,$txtAddress,$txtDateNac,$txtEmail,$txtPhone) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
+		$VD;
 
 		try {
 
@@ -147,7 +146,7 @@ class ClassUsuario extends Conexion {
 	public function updateProfileCliente($id_persona,$txtAddress,$txtDateNac,$sexo,$txtPhone) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
+		$VD;
 
 		try {
 
@@ -175,7 +174,7 @@ class ClassUsuario extends Conexion {
 	public function updateImageProfile($id_trabajador,$src) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
+		$VD;
 
 		try {
 
@@ -205,7 +204,7 @@ class ClassUsuario extends Conexion {
 	public function updateImageProfileCliente($id_cliente,$src) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
+		$VD;
 
 		try {
 
@@ -235,8 +234,7 @@ class ClassUsuario extends Conexion {
 	public function UpdatePassword($id_trabajador,$txtPassOld,$txtNewPass) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
-
+		$VD;
 		try {
 
 			$conexion->beginTransaction();
@@ -272,8 +270,7 @@ class ClassUsuario extends Conexion {
 	public function UpdatePasswordCliente($id_cliente,$txtPassOld,$txtNewPass) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
-
+		$VD;
 		try {
 
 			$conexion->beginTransaction();
@@ -310,8 +307,7 @@ class ClassUsuario extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD = ['error' => 'NO', 'message' => '', 'data' => []];
-
+		$VD;
 		try {
 			$stmt = $conexion->prepare("SELECT p.*,d.name_documento FROM tb_persona p INNER JOIN tb_documento_identidad d ON d.id_documento=p.id_documento WHERE p.id_persona = ?");
 			$stmt->execute([$id_persona]);

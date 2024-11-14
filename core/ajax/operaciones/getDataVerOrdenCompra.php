@@ -11,7 +11,7 @@
         throw new Exception("No tienes permisos para ver este registro.");
       }
     }else {
-      throw new Exception(message: "Error al verificar los permisos.");
+      throw new Exception("Error al verificar los permisos.");
     }
 
     if ($id_orden_compra=="") {

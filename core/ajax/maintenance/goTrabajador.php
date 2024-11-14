@@ -2,6 +2,7 @@
 
   $id_persona = isset($_POST["id_persona"]) ? $_POST["id_persona"] : "";
   $id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : "";
+  $id_especialidad = isset($_POST["id_especialidad"]) ? $_POST["id_especialidad"] : "";
   $id_grupo = isset($_POST["id_grupo"]) ? $_POST["id_grupo"] : "";
   $id_documento = isset($_POST["id_documento"]) ? $_POST["id_documento"] : "";
   $num_documento = isset($_POST["num_documento"]) ? $_POST["num_documento"] : "";
@@ -52,6 +53,10 @@
 
     if (empty(trim($id_documento))) {
       throw new Exception("Campo obligatorio : Documento Identidad.");
+    }
+
+    if (empty(trim($id_especialidad))) {
+      throw new Exception("Campo obligatorio : Especialidad.");
     }
 
     if (empty(trim($id_grupo))) {
@@ -160,10 +165,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_TRABAJADOR->insert($id_persona,$id_trabajador,$id_grupo,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
+        $VD = $OBJ_TRABAJADOR->insert($id_persona,$id_trabajador,$id_grupo,$id_especialidad,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
         break;
       case 'edit':
-        $VD = $OBJ_TRABAJADOR->update($id_persona,$id_trabajador,$id_grupo,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
+        $VD = $OBJ_TRABAJADOR->update($id_persona,$id_trabajador,$id_grupo,$id_especialidad,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user,$flag_medico,$descripcion,$link_facebook,$link_instagram,$link_twitter);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

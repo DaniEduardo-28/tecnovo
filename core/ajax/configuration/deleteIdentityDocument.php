@@ -1,6 +1,6 @@
 <?php
 
-  
+  sleep(1);
 
   $id_documento = isset($_POST["id_documento"]) ? $_POST["id_documento"] : "";
 

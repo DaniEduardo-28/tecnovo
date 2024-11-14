@@ -2,7 +2,7 @@
 
   $id_mascota = isset($_POST["id_mascota"]) ? $_POST["id_mascota"] : 0;
   $id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : 0;
-  $id_fundo = isset($_POST["id_fundo"]) ? $_POST["id_fundo"] : 0;
+  $id_sucursal = isset($_POST["id_sucursal"]) ? $_POST["id_sucursal"] : 0;
   $name_sucursal = isset($_POST["name_sucursal"]) ? $_POST["name_sucursal"] : "";
   $id_cliente = isset($_SESSION["id_cliente"]) ? $_SESSION["id_cliente"] : 0;
   $id_servicio = isset($_POST["cboServicioForm"]) ? $_POST["cboServicioForm"] : 0;
@@ -22,7 +22,7 @@
       throw new Exception("Campo obligatorio : Seleccionar Mascota");
     }
 
-    if ($id_fundo==0) {
+    if ($id_sucursal==0) {
       throw new Exception("Campo obligatorio : Seleccionar una sucursal.");
     }
 
@@ -42,7 +42,7 @@
     $fecha_2 = date('Y-m-d H:i', strtotime("$fecha_fin $hora_fin"));
 
     require_once "admin/core/models/ClassCita.php";
-    $VD = $OBJ_CITA->registrarCitaCliente($id_mascota,$id_trabajador,$id_cliente,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_fundo);
+    $VD = $OBJ_CITA->registrarCitaCliente($id_mascota,$id_trabajador,$id_cliente,$id_servicio,$fecha_1,$fecha_2,$sintomas,$id_sucursal);
 
     if ($VD!="OK") {
       throw new Exception($VD);

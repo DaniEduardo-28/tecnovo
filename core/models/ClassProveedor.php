@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$valor = "%$valor%";
@@ -73,7 +73,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$valor = "%$valor%";
@@ -134,7 +134,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$sql = "SELECT p.*,c.id_proveedor,c.estado,c.src_imagen
@@ -176,7 +176,7 @@
 		public function insert($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -282,7 +282,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 				$sql = "SELECT p.*,c.id_proveedor,c.estado,c.src_imagen
@@ -324,7 +324,7 @@
 		public function update($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -409,34 +409,16 @@
 		public function delete($id_proveedor) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
 				$conexion->beginTransaction();
 
-				// First, get the id_persona associated 
-				$stmt = $conexion->prepare("SELECT id_persona FROM tb_proveedor WHERE id_proveedor = ?");
-				$stmt->execute([$id_proveedor]);
-				$result = $stmt->fetch(PDO::FETCH_ASSOC);
-		
-				if (!$result) {
-					throw new Exception("No se encontró el cliente con el ID especificado.");
-				}
-		
-				$id_persona = $result['id_persona'];
-
 				$stmt = $conexion->prepare("DELETE FROM tb_proveedor WHERE id_proveedor = ?");
 				$stmt->execute([$id_proveedor]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Ocurrió un error al eliminar el registro.");
-				}
-
-				// Delete from tb_persona
-				$stmt = $conexion->prepare("DELETE FROM tb_persona WHERE id_persona = ?");
-				$stmt->execute([$id_persona]);
-				if ($stmt->rowCount() == 0) {
-					throw new Exception("Ocurrió un error al eliminar el registro de la persona asociada.");
 				}
 
 				$VD = "OK";
@@ -457,7 +439,7 @@
 		public function addObservacion($id_proveedor,$observacion) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 			try {
 
 				$conexion->beginTransaction();
@@ -492,7 +474,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 
@@ -532,7 +514,7 @@
 		public function deleteObservacion($id_detalle) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD = "";
+			$VD;
 
 			try {
 

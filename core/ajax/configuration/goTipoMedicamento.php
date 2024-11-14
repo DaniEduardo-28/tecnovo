@@ -1,6 +1,6 @@
 <?php
 
-  
+  sleep(1);
 
   $id_tipo_medicamento = isset($_POST["id_tipo_medicamento"]) ? $_POST["id_tipo_medicamento"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;

@@ -1,5 +1,7 @@
 <?php
 
+  sleep(1);
+
   $id_grupo = isset($_POST["id_grupo"]) ? $_POST["id_grupo"] : "";
 
   try {

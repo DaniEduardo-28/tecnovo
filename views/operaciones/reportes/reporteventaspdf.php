@@ -15,7 +15,7 @@
     $estado = isset($_GET["estado"])	? $_GET["estado"]	: "all";
     $fecha_inicio = isset($_GET["fecha_inicio"])	? $_GET["fecha_inicio"]	: date("Y-m-d");
     $fecha_fin = isset($_GET["fecha_fin"])	? $_GET["fecha_fin"]	: date("Y-m-d");
-    $id_fundo = isset($_SESSION['id_fundo']) ? $_SESSION['id_fundo'] : 0;
+    $id_sucursal = isset($_SESSION['id_sucursal']) ? $_SESSION['id_sucursal'] : 0;
     $id_trabajador = isset($_SESSION['id_trabajador']) ? $_SESSION['id_trabajador'] : "0";
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordenventa"));
@@ -36,7 +36,7 @@
     $empresa = $ResultadoEmpresa["data"];
 
     require_once "core/models/ClassOrdenVenta.php";
-    $Resultado = $OBJ_ORDEN_VENTA->showReporte($id_fundo,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin);
+    $Resultado = $OBJ_ORDEN_VENTA->showReporte($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin);
     if ($Resultado["error"]=="SI") {
       throw new Exception($Resultado["message"]);
     }

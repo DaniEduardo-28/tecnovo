@@ -1,6 +1,6 @@
 <?php
 
-  $id_fundo = isset($_POST["id_fundo"]) ? $_POST["id_fundo"] : "";
+  $id_sucursal = isset($_POST["id_sucursal"]) ? $_POST["id_sucursal"] : "";
   $id_empresa = ID_EMPRESA;
   $estado = isset($_POST["estado"]) ? '1' : '0';
   $nombre = isset($_POST["nombre"]) ? $_POST["nombre"] : "";
@@ -47,10 +47,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_SUCURSAL->insert($id_fundo,$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta);
+        $VD = $OBJ_SUCURSAL->insert($id_sucursal,$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta);
         break;
       case 'edit':
-        $VD = $OBJ_SUCURSAL->update($id_fundo,$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta);
+        $VD = $OBJ_SUCURSAL->update($id_sucursal,$id_empresa,$estado,$nombre,$cod_ubigeo,$direccion,$telefono,$mapa,$token,$ruta);
         break;
       default:
         $VD = "Tipo de Operación no encontrada.";

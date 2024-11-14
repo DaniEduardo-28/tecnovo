@@ -9,7 +9,7 @@
   <head>
 
     <?php include("views/overall/header.php"); ?>
-    <title>Fundos | <?=APP_TITLE;?> </title>
+    <title>Sucursales | <?=APP_TITLE;?> </title>
 
   </head>
   <body>
@@ -24,7 +24,7 @@
         <div class="page-header">
           <div class="row">
             <div class="col-sm-6">
-              <h4>Fundos</h4>
+              <h4>Sucursales</h4>
             </div>
             <div class="col-sm-6" id="panelOptions" name="panelOptions">
               <?php
@@ -62,7 +62,7 @@
 
                     <form class="form-validate" action="#" method="post" id="frmDatos" name="frmDatos">
 
-                      <input type="hidden" name="id_fundo" id="id_fundo" value="">
+                      <input type="hidden" name="id_sucursal" id="id_sucursal" value="">
                       <input type="hidden" name="accion" id="accion" value="add">
 
                       <div class="row">

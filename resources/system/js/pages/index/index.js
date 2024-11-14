@@ -17,7 +17,7 @@ function goLogin(e){
             }
           });
         }else {
-          $("#__ajax__").html('<label style="color: #017701" class="label-control">Accediendo al sistema ...</label>');
+          $("#__ajax__").html('<label style="color: #9e61da" class="label-control">Accediendo al sistema ...</label>');
           setTimeout(function () {
             location.href='?view=home';
           }, 2000);

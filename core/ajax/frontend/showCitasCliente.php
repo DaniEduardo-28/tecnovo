@@ -1,7 +1,7 @@
 <?php
 
   $id_trabajador = isset($_POST['id_medico']) ? $_POST['id_medico'] : 0;
-  $id_fundo = isset($_POST['id_fundo']) ? $_POST['id_fundo'] : 0;
+  $id_sucursal = isset($_POST['id_sucursal']) ? $_POST['id_sucursal'] : 0;
 
   try {
 
@@ -14,7 +14,7 @@
     }
 
     require_once "admin/core/models/ClassCita.php";
-    $Resultado = $OBJ_CITA->showCitasTrabajador($id_fundo,$id_trabajador);
+    $Resultado = $OBJ_CITA->showCitasTrabajador($id_sucursal,$id_trabajador);
 
     if ($Resultado["error"]=="SI") {
       throw new Exception($Resultado["message"]);
