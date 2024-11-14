@@ -59,7 +59,7 @@ $(document).ready(function(){
   
   }
   
-  function get_data_callback(){
+  function get_data_callback() {
     var valor = $("#txtBuscar").val();
     var id_documento = $("#cboDocumentoBuscar").val();
     $.ajax({
@@ -67,12 +67,13 @@ $(document).ready(function(){
             limit: itemsPorPagina,
             offset: desde,
             valor: valor,
-            id_documento: id_documento
+            id_documento: id_documento,
+            accion: "show"  // Asegúrate de que el valor de accion sea "show"
         },
-        beforeSend: function (xhr) {
+        beforeSend: function(xhr) {
             showHideLoader('block');
         },
-        complete: function (jqXHR, textStatus) {
+        complete: function(jqXHR, textStatus) {
             showHideLoader('none');
             if (totalPaginas == 1 && pagina == 0) {
                 paginador.find(".next_link").hide();
@@ -81,12 +82,11 @@ $(document).ready(function(){
         type: "POST",
         url: 'ajax.php?accion=showOperador'
     }).done(function(data, textStatus, jqXHR) {
-        try {
-          console.log("Respuesta del servidor:", data); // Verifica el JSON en la consola
-          var data1 = JSON.parse(data);
-          console.log("Parsed data:", data1); // Muestra el JSON parseado en la consola
-          
-            if (data1["error"] == "NO") {
+      try {
+        console.log("Respuesta del servidor:", data); // Verifica el JSON en la consola
+        var data1 = JSON.parse(data);
+        console.log("Parsed data:", data1); // Muestra el JSON parseado en la consola
+        if (data1["error"] == "NO") {
                 if (pagina == 0) {
                     creaPaginador(data1["cantidad"]);
                 }
@@ -153,7 +153,7 @@ $(document).ready(function(){
                 $("#divSinDatos").addClass("d-none");
                 $("#divPaginador").removeClass("d-none");
 
-            } else {
+              } else {
                 console.log(data1["message"]);
                 $("#divSinDatos").removeClass("d-none");
                 $("#divPaginador").addClass("d-none");
@@ -166,7 +166,6 @@ $(document).ready(function(){
             $("#divPaginador").addClass("d-none");
             $("#divDatos").html("");
         }
-
     }).fail(function(jqXHR, textStatus, textError) {
         runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
     });
@@ -324,60 +323,61 @@ $(document).ready(function(){
     });
   }
   
-  function getDataEdit(id_operador){
+  function getDataEdit(id_operador) {
+    // Aquí puedes configurar la solicitud AJAX para obtener los detalles del operador
     $.ajax({
-      type: "POST",
-      data:{
-            id_operador: id_operador
-          },
-  
-      url: "ajax.php?accion=getDataEditOperador",
-      success : function(data) {
-        try {
-          var data1 = JSON.parse(data);
-          if (data1["error"]=="NO") {
-            var o = data1["data"];
-            $("#id_documento").val(o[0].id_documento);
-            $("#num_documento").val(o[0].num_documento);
-            $("#nombres").val(o[0].nombres);
-            $("#apellidos").val(o[0].apellidos);
-            $("#direccion").val(o[0].direccion);
-            $("#telefono").val(o[0].telefono);
-            $("#correo").val(o[0].correo);
-            $("#fecha_nacimiento").val(o[0].fecha_nacimiento);
-            $("#id_persona").val(o[0].id_persona);
-            $("#id_operador").val(o[0].id_operador);
-            $("#accion").val("edit");
-            $("#flag_imagen").val("0");
-            $("#pass_user_old").val(o[0].pass_user);
-            $("#pass_user").val(o[0].pass_user);
-            $("#name_user").val(o[0].name_user);
-            var sexo = o[0].sexo;
-            var estado = o[0].estado;
-            sexo=="masculino" ? $("#rdbM").prop('checked', true) : $("#rdbF").prop('checked', true);
-            estado=="activo" ? $("#estado").prop('checked', true) : $("#estado").prop('checked', false);
-            $('#img_destino').attr('src', o[0].src_imagen);
-            changeOption();
-            addClassDiv();
-          }else {
-            runAlert("Message",data1["message"],"warning");
-          }
-        } catch (e) {
-          runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
-          showHideLoader('none');
+        type: "POST",
+        data: { id_operador: id_operador },
+        url: "ajax.php?accion=getDataEditOperador",
+        success: function(data) {
+            try {
+                var data1 = JSON.parse(data);
+                if (data1["error"] == "NO") {
+                    var o = data1["data"];
+                    // Llenar los campos del formulario con los datos obtenidos
+                    $("#id_documento").val(o[0].id_documento);
+                    $("#num_documento").val(o[0].num_documento);
+                    $("#nombres").val(o[0].nombres);
+                    $("#apellidos").val(o[0].apellidos);
+                    $("#direccion").val(o[0].direccion);
+                    $("#telefono").val(o[0].telefono);
+                    $("#correo").val(o[0].correo);
+                    $("#fecha_nacimiento").val(o[0].fecha_nacimiento);
+                    $("#id_persona").val(o[0].id_persona);
+                    $("#id_operador").val(o[0].id_operador);
+                    $("#accion").val("edit");
+                    $("#flag_imagen").val("0");
+                    $("#pass_user_old").val(o[0].pass_user);
+                    $("#pass_user").val(o[0].pass_user);
+                    $("#name_user").val(o[0].name_user);
+                    var sexo = o[0].sexo;
+                    var estado = o[0].estado;
+                    sexo == "masculino" ? $("#rdbM").prop("checked", true) : $("#rdbF").prop("checked", true);
+                    estado == "activo" ? $("#estado").prop("checked", true) : $("#estado").prop("checked", false);
+                    $('#img_destino').attr('src', o[0].src_imagen);
+                    changeOption();
+                    addClassDiv();
+                } else {
+                    runAlert("Message", data1["message"], "warning");
+                }
+            } catch (e) {
+                console.error("Error en TryCatch:", e, " - Data:", data);
+                runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
+            }
+        },
+        beforeSend: function(xhr) {
+            showHideLoader("block");
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error("Error de petición:", jqXHR);
+            runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
+        },
+        complete: function(jqXHR, textStatus) {
+            showHideLoader("none");
         }
-      },
-      beforeSend: function (xhr) {
-        showHideLoader('block');
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
-      },
-      complete: function (jqXHR, textStatus) {
-        showHideLoader('none');
-      }
     });
-  }
+}
+
   
   function deleteRegistro(id_operador,operador){
   
