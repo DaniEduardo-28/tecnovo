@@ -48,3 +48,23 @@ UPDATE `tb_opcion` SET `name_opcion` = 'Operador', `estado` = 'activo' WHERE `tb
 ALTER TABLE `tb_maquinaria` ADD `id_operador` INT NOT NULL AFTER `id_maquinaria`;
 
 UPDATE `tb_opcion` SET `name_opcion` = 'Maquinaria', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 211;
+
+-- Vista de operadores 
+-- Este último para facilitar el llamado de los datos del operador
+CREATE VIEW vw_operadores AS SELECT
+    o.id_operador AS id_operador,
+    o.id_persona AS id_persona_operador,
+    o.estado AS estado_operador,
+    p.id_documento AS id_documento_operador,
+    p.num_documento AS num_documento_operador,
+    CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador,
+    p.direccion AS direccion_operador,
+    p.telefono AS telefono_operador,
+    p.correo AS correo_operador,
+    p.fecha_nacimiento AS fecha_nacimiento_operador,
+    p.sexo AS sexo_operador,
+    o.src_imagen AS src_imagen_operador
+FROM
+    tb_operador o
+JOIN tb_persona p ON
+    o.id_persona = p.id_persona;

@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 
 try {
     // Obtener parámetros para la paginación y filtrado
@@ -25,6 +27,12 @@ try {
     if ($DataCantidad["error"] == "NO") {
         $cantidad = isset($DataCantidad["data"][0]["cantidad"]) ? $DataCantidad["data"][0]["cantidad"] : 0;
         $Resultado = $OBJ_MAQUINARIA->show("all", $id_operador, $valor, $offset, $limit);
+
+        // Depuración temporal para revisar el contenido de Resultado
+        echo "<pre>";
+        print_r($Resultado);
+        echo "</pre>";
+        exit; // Detenemos la ejecución para revisar la salida
 
         $retorno_array = [];
         $count = $offset + 1; // Ajuste para paginación
@@ -70,15 +78,14 @@ try {
         throw new Exception($DataCantidad["message"]);
     }
 
-} catch (Exception $e) {
-    // Respuesta en caso de error
-    $data = array(
-        "error" => "SI",
-        "message" => $e->getMessage(),
-        "data" => []
-    );
-    echo json_encode($data);
-    exit();
-}
-
+}catch (Exception $e) {
+        // Envía la respuesta de error como JSON
+        $data = array(
+            "error" => "SI",
+            "message" => $e->getMessage(),
+            "data" => []
+        );
+        echo json_encode($data); // Enviar el error en formato JSON
+        exit(); // Termina el script
+    }
 ?>

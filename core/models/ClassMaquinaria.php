@@ -65,9 +65,10 @@ class ClassMaquinaria extends Conexion {
         try {
             $valor = "%$valor%";
             $parametros = null;
-            $sql = "SELECT m.*, o.nombre_operador
+            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM tb_maquinaria m
-                    INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
+                    INNER JOIN tb_operador o ON o.id_operador = m.id_operador
+                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona
                     WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?)";
             $parametros[] = $valor;
             $parametros[] = $valor;
@@ -160,9 +161,10 @@ class ClassMaquinaria extends Conexion {
         $VD = "";
 
         try {
-            $sql = "SELECT m.*, o.nombre_operador
+            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM tb_maquinaria m
-                    INNER JOIN vw_operadores o ON o.id_operador = m.id_operador
+                    INNER JOIN tb_operador o ON o.id_operador = m.id_operador
+                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona
                     WHERE m.id_maquinaria = ?";
             $stmt = $conexion->prepare($sql);
             $stmt->execute([$id_maquinaria]);
@@ -305,9 +307,10 @@ class ClassMaquinaria extends Conexion {
         $VD = "";
 
         try {
-            $sql = "SELECT m.*, o.nombre_operador
+            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM `tb_maquinaria` m
-                    INNER JOIN vw_operadores o ON o.id_operador = m.id_operador";
+                    INNER JOIN tb_operador o ON o.id_operador = m.id_operador
+                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona";
             $stmt = $conexion->prepare($sql);
             $stmt->execute([]);
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);

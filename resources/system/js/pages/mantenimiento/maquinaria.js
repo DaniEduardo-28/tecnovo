@@ -82,31 +82,33 @@ var table = $('#example').DataTable({
         success: function(data) {
             table.clear().draw();
             try {
-                var data1 = JSON.parse(data);
+                // Si data ya es un objeto JSON no es necesario el parseo
+                var data1 = typeof data === "string" ? JSON.parse(data) : data;
                 if (data1["error"] == "NO") {
-                    var o = data1["data"];
-                    o.forEach(function(row) {
-                        table.row.add(row).draw();
-                    });
+                    if (data1["data"].length > 0) {
+                        data1["data"].forEach(function(row) {
+                            table.row.add(row).draw();
+                        });
+                    } else {
+                        runAlert("Mensaje", "No se encontraron datos.", "warning");
+                    }
                 } else {
                     runAlert("Mensaje", data1["message"], "warning");
                 }
             } catch (e) {
-                runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
+                runAlert("Oh No...!!!", "Error en TryCatch: " + e.message + "\nDatos: " + JSON.stringify(data), "error");
             }
         },
-        beforeSend: function() {
-            showHideLoader('block');
-        },
         error: function(jqXHR) {
-            runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
+            runAlert("Oh No...!!!", "Error de petición: " + jqXHR.responseText, "warning");
         },
         complete: function() {
             showHideLoader('none');
         }
     });
-  }
-  
+}
+
+
   function saveOperation() {
     console.log("Acción:", $("#accion").val());
     console.log("ID Maquinaria:", $("#id_maquinaria").val());
