@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Tipos de Mascotas | <?=APP_TITLE;?> </title>
+    <title>Tipos de Operaciones | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Configuración
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Tipos de Mascotas
+                                      Tipos de Operaciones
                                     </li>
                                   </ol>
                                 </nav>
@@ -102,7 +102,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Tipos de Mascotas</h4>
+                                        <h4 class="card-title">Tipos de Operaciones</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -118,7 +118,7 @@
 
                                           <div class="row">
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="name_tipo" class="label-control">Tipo Mascota</label>
+                                              <label for="name_tipo" class="label-control">Tipo Operación</label>
                                               <input id="name_tipo" type="text" name="name_tipo" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
@@ -148,7 +148,7 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id</th>
-                                                <th>Tipo Mascota</th>
+                                                <th>Tipo Operación</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
                                                 <th style="width:90px;">Options</th>
                                               </tr>

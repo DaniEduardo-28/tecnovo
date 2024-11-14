@@ -232,7 +232,7 @@
               <li id="submenureporteordenventa"><a href="?view=vistareporteordenventa">Ventas</a></li>
             <?php endif; ?>
             <?php if ($flag_vistareporteaccesorios): ?>
-              <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Accesorios</a></li>
+              <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>
             <?php endif; ?>
             <?php if ($flag_observacionesproveedor): ?>
               <li id="submenuobservacionesproveedor"><a href="?view=observacionesproveedor">Observaciones de Proveedor</a>

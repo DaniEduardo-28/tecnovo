@@ -61,7 +61,7 @@ function showData(){
 var innerdivHtml1 = '<table class="table clients-contant-table mb-0">';
 innerdivHtml1 += '<thead>';
 innerdivHtml1 += '<tr>';
-innerdivHtml1 += '<th scope="col">Accesorio</th>';
+innerdivHtml1 += '<th scope="col">Producto</th>';
 innerdivHtml1 += '<th scope="col">Categoria</th>';
 innerdivHtml1 += '<th scope="col">Descripción</th>';
 innerdivHtml1 += '<th scope="col">Stock</th>';
@@ -110,7 +110,7 @@ function get_data_callback(){
         var innerdivHtml = '<table class="table clients-contant-table mb-0">';
         innerdivHtml += '<thead>';
         innerdivHtml += '<tr>';
-        innerdivHtml += '<th scope="col">Accesorio</th>';
+        innerdivHtml += '<th scope="col">Producto</th>';
         innerdivHtml += '<th scope="col">Categoria</th>';
         innerdivHtml += '<th scope="col">Descripción</th>';
         innerdivHtml += '<th scope="col">Stock</th>';
@@ -326,7 +326,7 @@ function deleteRegistro(id_accesorio,accesorio){
     };
 
     Swal.fire({
-      title: '¿Seguro de eliminar el Accesorio : ' + accesorio + '?',
+      title: '¿Seguro de eliminar el Producto : ' + accesorio + '?',
       text: "No podrás revertir esta operación.",
       type: 'warning',
       showCancelButton: true,

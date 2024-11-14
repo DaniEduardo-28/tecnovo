@@ -31,7 +31,7 @@
     }
 
     if (empty(trim($name_tipo))) {
-      throw new Exception("Campo Obligatorio : Nombre de Tipo de Mascota.");
+      throw new Exception("Campo Obligatorio : Nombre de Tipo de Operación.");
     }
 
     require_once "core/models/ClassTipoMascota.php";

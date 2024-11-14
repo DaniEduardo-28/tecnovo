@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Ordenes de Venta | <?=APP_TITLE;?> </title>
+    <title>Facturación | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -74,7 +74,7 @@
                                       Operaciones
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Ordenes de Venta
+                                      Facturación
                                     </li>
                                   </ol>
                                 </nav>
@@ -119,7 +119,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Ordenes de Venta</h4>
+                                        <h4 class="card-title">Facturación</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -242,7 +242,7 @@
                                                 ?>
                                               </select>
                                             </div>
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            <div class="form-group col-md-4 col-sm-6 d-none">
                                               <label for="codigo_forma_pago">Método de Pago(*)</label>
                                               <select class="form-control" name="codigo_forma_pago"
                                                     id="codigo_forma_pago" required>
@@ -273,9 +273,9 @@
                                                   <input type="radio" name="opcion_busqueda" value="servicio" id="opcion_servicio" autocomplete="off" checked> Servicio
                                                 </label>
                                                 <label class="btn btn-info">
-                                                  <input type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Accesorio
+                                                  <input type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Producto
                                                 </label>
-                                                <label class="btn btn-info">
+                                                <label class="btn btn-info d-none">
                                                   <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Medicamento
                                                 </label>
                                               </div>

@@ -52,7 +52,7 @@
         }
 
         $data[]=array(
-          "title" => 'Mascota : ' . $elemento['nombre'],
+          "title" => 'Operación : ' . $elemento['nombre'],
           "start" => date('Y-m-d H:i', strtotime($elemento['fecha_cita'])),
           "end" => date('Y-m-d H:i', strtotime($elemento['fecha_termino_cita'])),
           "color" => $color,

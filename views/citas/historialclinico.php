@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Historial Clínico | <?=APP_TITLE;?> </title>
+    <title>Historial  | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -57,7 +57,7 @@
                                       Citas
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Historial Clínico
+                                      Historial 
                                     </li>
                                   </ol>
                                 </nav>
@@ -74,7 +74,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Historial Clínico de Mascotas</h4>
+                                        <h4 class="card-title">Historial  de Operaciones</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -85,7 +85,7 @@
 
                                       <div class="row">
                                         <div class="form-group col-md-3 col-sm-6" hidden>
-                                          <label for="cboTipoBuscar" class="label-control">Tipo de Mascota</label>
+                                          <label for="cboTipoBuscar" class="label-control">Tipo de Operación</label>
                                           <select name="cboTipoBuscar" id="cboTipoBuscar" class="form-control">
                                             <option value="">Todos</option>
                                             <?php
@@ -139,9 +139,9 @@
                                             <thead>
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
-                                                <th>Id Mascota</th>
+                                                <th>Id Operación</th>
                                                 <th>Cliente</th>
-                                                <th>Tipo de Mascota</th>
+                                                <th>Tipo de Operación</th>
                                                 <th>Nombre</th>
                                                 <th style="width:30px; text-align: center;">Raza</th>
                                                 <th style="width:30px; text-align: center;">Color</th>

@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Mascotas | <?=APP_TITLE;?> </title>
+    <title>Operaciones | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Mascotas
+                                      Operaciones
                                     </li>
                                   </ol>
                                 </nav>
@@ -105,7 +105,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Mascotas</h4>
+                                        <h4 class="card-title">Operaciones</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -126,10 +126,10 @@
                                             <div class="col-sm-6">
                                               <div class="form-group">
                                                 <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                                alt="Imagen Mascota" class="img-fluid rounded-circle"
+                                                alt="Imagen Operación" class="img-fluid rounded-circle"
                                                 style="width:200px;height:200px;">
                                                 <br>
-                                                <label for="">Imagen Mascota</label>
+                                                <label for="">Imagen Operación</label>
                                                 <br>
                                                 <div class="form-group">
                                                   <input type="file" name="src_imagen" id="src_imagen" accept="image/jpeg"
@@ -194,7 +194,7 @@
                                                   <label class="input-group-text" for="id_tipo_mascota">&nbsp;&nbsp;<span class="fa fa-list"></span>&nbsp;</label>
                                                 </div>
                                                 <select class="custom-select form-control" id="id_tipo_mascota" name="id_tipo_mascota">
-                                                  <option value="">Tipo de Mascota</option>
+                                                  <option value="">Tipo de Operación</option>
                                                   <?php
                                                     include("core/models/ClassTipoMascota.php");
                                                     $dataTipoMascota = $OBJ_TIPO_MASCOTA->show("all");
@@ -211,7 +211,7 @@
                                             <div class="form-group col-sm-6">
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-paw"></i></span>
-                                                    <input type="text" class="form-control" name="nombre_mascota" placeholder="Nombre Mascota"
+                                                    <input type="text" class="form-control" name="nombre_mascota" placeholder="Nombre Operación"
                         														required="required" autocomplete="off" id="nombre_mascota">
                                                 </div>
                                             </div>
@@ -296,7 +296,7 @@
 
                                       <div class="row">
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoBuscar" class="label-control">Tipo de Mascota</label>
+                                          <label for="cboTipoBuscar" class="label-control">Tipo de Operación</label>
                                           <select name="cboTipoBuscar" id="cboTipoBuscar" class="form-control">
                                             <option value="">Todos</option>
                                             <?php
@@ -348,9 +348,9 @@
                                             <thead>
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
-                                                <th>Id Mascota</th>
+                                                <th>Id Operación</th>
                                                 <th>Cliente</th>
-                                                <th>Tipo de Mascota</th>
+                                                <th>Tipo de Operación</th>
                                                 <th>Nombre</th>
                                                 <th style="width:30px; text-align: center;">Raza</th>
                                                 <th style="width:30px; text-align: center;">Color</th>

@@ -71,7 +71,7 @@ $(document).ready(function(){
   $('#btnImprimir').click(function(){
     var id_mascota = $('#id_mascota').val();
     var url = '?view=fichamascotaprint&id_mascota=' + id_mascota;
-    window.open(url, "Ficha de Mascota");
+    window.open(url, "Ficha de Operación");
   });
 
   $('#btnSave').click(function(e){

@@ -22,8 +22,7 @@
 		"url": "git://github.com/needim/noty.git"
 	},
 	"main": "js/noty/packaged/jquery.noty.packaged.js",
-	"dependencies": {
-	},
+	"dependencies": {},
 	"devDependencies": {
 		"grunt": "~1.0.0",
 		"grunt-contrib-uglify": "~1.0.1",

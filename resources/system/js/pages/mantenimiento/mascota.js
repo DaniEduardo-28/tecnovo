@@ -323,7 +323,7 @@ function deleteRegistro(id_mascota,mascota){
     };
 
     Swal.fire({
-      title: '¿Seguro de eliminar la Mascota : ' + mascota + '?',
+      title: '¿Seguro de eliminar la Operación : ' + mascota + '?',
       text: "Al realizar la operación se eliminarán todos sus registros de vacunas, atenciones y todo lo correspondiente con esta mascota.",
       type: 'warning',
       showCancelButton: true,

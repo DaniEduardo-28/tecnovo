@@ -152,7 +152,7 @@
                                                  Seleccionar&nbsp;<span class="fa fa-ellipsis-h"></span>
                                               </button>
                                             </div>
-                                            <div class="form-group col-md-3 col-sm-4">
+                                            <div class="form-group col-md-3 col-sm-4 d-none">
                                               <label for="" class="label-control">Forma de Envío</label>
                                               <select class="form-control" name="cboFormaEnvioForm"
                                                id="cboFormaEnvioForm">
@@ -245,11 +245,11 @@
                                               <div class="form-group col-md-12">
                                                 <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                                   <label class="btn btn-info active">
-                                                    <input checked type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Accesorio
+                                                    <input checked type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Producto
                                                   </label>
-                                                  <label class="btn btn-info">
+                                                  <!-- <label class="btn btn-info">
                                                     <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Medicamento
-                                                  </label>
+                                                  </label> -->
                                                 </div>
                                                 <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
                                               </div>
@@ -404,7 +404,7 @@
                                               <th>Usuario</th>
                                               <th>Fecha Orden</th>
                                               <th>Fecha Entrega</th>
-                                              <th>Forma de Envío</th>
+                                              <!-- <th>Forma de Envío</th> -->
                                               <th># Productos</th>
                                               <th>Total</th>
                                               <th>Estado</th>

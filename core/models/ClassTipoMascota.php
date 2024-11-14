@@ -129,7 +129,7 @@
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				if (count($result)>0) {
-					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Mascotas.");
+					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Operaciones.");
 				}
 
 				$stmt = $conexion->prepare("DELETE FROM tb_tipo_mascota WHERE id_tipo_mascota = ?");

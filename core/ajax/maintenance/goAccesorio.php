@@ -41,7 +41,7 @@
     }
 
     if (empty(trim($id_categoria))) {
-      throw new Exception("Campo obligatorio : Categoria de Accesorio.");
+      throw new Exception("Campo obligatorio : Categoria de Producto, Servicios y Gastos.");
     }
 
     if (empty(trim($id_sucursal))) {
@@ -57,7 +57,7 @@
     }
 
     if (empty(trim($name_accesorio))) {
-      throw new Exception("Campo obligatorio : Nombre de Accesorio.");
+      throw new Exception("Campo obligatorio : Nombre de Producto.");
     }
 
     if ($flag_imagen=="1") {

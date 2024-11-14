@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Ficha de Mascotas | <?=APP_TITLE;?> </title>
+    <title>Ficha de Operaciones | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Operaciones
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Ficha de Mascotas
+                                      Ficha de Operaciones
                                     </li>
                                   </ol>
                                 </nav>
@@ -93,10 +93,10 @@
                                             <div class="col-sm-6">
                                               <div class="form-group">
                                                 <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                                alt="Imagen Mascota" class="img-fluid rounded-circle"
+                                                alt="Imagen Operación" class="img-fluid rounded-circle"
                                                 style="width:200px;height:200px;">
                                                 <br>
-                                                <label for="">Imagen Mascota</label>
+                                                <label for="">Imagen Operación</label>
                                               </div>
                                             </div>
 
@@ -109,7 +109,7 @@
                                                     <label class="input-group-text" for="id_tipo_mascota">&nbsp;&nbsp;<span class="fa fa-list"></span>&nbsp;Tipo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                                   </div>
                                                   <select class="custom-select form-control" id="id_tipo_mascota" name="id_tipo_mascota" disabled>
-                                                    <option value="">Tipo de Mascota</option>
+                                                    <option value="">Tipo de Operación</option>
                                                     <?php
                                                       include("core/models/ClassTipoMascota.php");
                                                       $dataTipoMascota = $OBJ_TIPO_MASCOTA->show("all");
@@ -126,7 +126,7 @@
                                               <div class="form-group">
                                                   <div class="input-group">
                                                       <span class="input-group-addon"><i class="fa fa-paw"></i>&nbsp;Nombre</span>
-                                                      <input type="text" class="form-control" name="nombre_mascota" placeholder="Nombre Mascota"
+                                                      <input type="text" class="form-control" name="nombre_mascota" placeholder="Nombre Operación"
                                                       required="required" autocomplete="off" id="nombre_mascota" disabled>
                                                   </div>
                                               </div>
@@ -211,7 +211,7 @@
                                                   <tr>
                                                     <th style="width:90px;">Acciones</th>
                                                     <th style="width:50px; text-align: center;">#</th>
-                                                    <th>Id Mascota Vacuna</th>
+                                                    <th>Id Operación Vacuna</th>
                                                     <th>Id Vacuna</th>
                                                     <th>Vacuna</th>
                                                     <th>Fecha Mínima</th>
@@ -246,7 +246,7 @@
 
                                       <div class="row">
                                         <div class="form-group col-md-3 col-sm-6" hidden>
-                                          <label for="cboTipoBuscar" class="label-control">Tipo de Mascota</label>
+                                          <label for="cboTipoBuscar" class="label-control">Tipo de Operación</label>
                                           <select name="cboTipoBuscar" id="cboTipoBuscar" class="form-control">
                                             <option value="">Todos</option>
                                             <?php
@@ -299,9 +299,9 @@
                                             <thead>
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
-                                                <th>Id Mascota</th>
+                                                <th>Id Operación</th>
                                                 <th>Cliente</th>
-                                                <th>Tipo de Mascota</th>
+                                                <th>Tipo de Operación</th>
                                                 <th>Nombre</th>
                                                 <th style="width:30px; text-align: center;">Raza</th>
                                                 <th style="width:30px; text-align: center;">Color</th>

@@ -85,10 +85,10 @@
                                   <div class="col-sm-6">
                                     <div class="form-group">
                                       <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                      alt="Imagen Mascota" class="img-fluid rounded-circle"
+                                      alt="Imagen Operación" class="img-fluid rounded-circle"
                                       style="width:200px;height:200px;">
                                       <br>
-                                      <label for="">Imagen Mascota</label>
+                                      <label for="">Imagen Operación</label>
                                     </div>
                                   </div>
 
@@ -101,7 +101,7 @@
                                           <label class="input-group-text" for="id_tipo_mascota">&nbsp;&nbsp;<span class="fa fa-list"></span>&nbsp;Tipo&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                                         </div>
                                         <select class="custom-select form-control" id="id_tipo_mascota" name="id_tipo_mascota" disabled>
-                                          <option value="">Tipo de Mascota</option>
+                                          <option value="">Tipo de Operación</option>
                                           <?php
                                             include("core/models/ClassTipoMascota.php");
                                             $dataTipoMascota = $OBJ_TIPO_MASCOTA->show("all");
@@ -118,7 +118,7 @@
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-paw"></i>&nbsp;Nombre</span>
-                                            <input type="text" class="form-control" name="nombre_mascota" placeholder="Nombre Mascota"
+                                            <input type="text" class="form-control" name="nombre_mascota" placeholder="Nombre Operación"
                                             required="required" autocomplete="off" id="nombre_mascota" disabled>
                                         </div>
                                     </div>
@@ -330,7 +330,7 @@
                   </div>
 
                   <div class="form-group col-sm-12">
-                    <label for="name_mascota">Mascota:</label>
+                    <label for="name_mascota">Operación:</label>
                     <input type="text" id="name_mascota" value="" class="form-control" readonly>
                   </div>
 

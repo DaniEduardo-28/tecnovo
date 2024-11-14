@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Accesorios | <?=APP_TITLE;?> </title>
+    <title>Productos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -75,7 +75,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Accesorios
+                                      Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -109,7 +109,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Accesorios</h4>
+                                        <h4 class="card-title">Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -132,10 +132,10 @@
 
                                             <div class="form-group col-sm-4">
                                               <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                              alt="Imagen Accesorio" class="img-fluid rounded-circle"
+                                              alt="Imagen Producto" class="img-fluid rounded-circle"
                                               style="width:200px;height:200px;">
                                               <br>
-                                              <label for="">Imagen Accesorio</label>
+                                              <label for="">Imagen Producto</label>
                                               <br>
                                               <div class="form-group">
                                                 <input type="file" name="src_imagen" id="src_imagen" accept="image/jpeg"
@@ -150,7 +150,7 @@
                                             <div class="form-group col-sm-6">
 
                                               <div class="form-group col-xs-12">
-                                                <label for="id_categoria" class="label-control">Categoria de Accesorio</label>
+                                                <label for="id_categoria" class="label-control">Categoria de Producto, Servicios y Gastos</label>
                                                 <select name="id_categoria" id="id_categoria" class="form-control" required>
                                                   <option value="">Seleccione...</option>
                                                   <?php
@@ -166,7 +166,7 @@
                                               </div>
 
                                               <div class="form-group col-xs-12">
-                                                <label for="name_accesorio" class="label-control">Nombre de Accesorio</label>
+                                                <label for="name_accesorio" class="label-control">Nombre de Producto</label>
                                                 <input id="name_accesorio" type="text" name="name_accesorio" class="form-control"
                                                 autocomplete="off" required data-msg="Campo obligatorio...">
                                               </div>
@@ -276,7 +276,7 @@
                                       <div class="row">
                                         <div class="col-md-4 col-sm-4">
                                           <div class="form-group">
-                                            <label for="cboCategoriaBuscar" class="label-control">Categoria de Accesorio</label>
+                                            <label for="cboCategoriaBuscar" class="label-control">Categoria de Producto, Servicios y Gastos</label>
                                             <select class="form-control" name="cboCategoriaBuscar" id="cboCategoriaBuscar">
                                               <option value="">Todos...</option>
                                               <?php

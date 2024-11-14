@@ -120,7 +120,7 @@
                                           <div class="row">
 
                                             <div class="form-group col-md-4 col-sm-4" hidden>
-                                              <label for="id_tipo_mascota" class="label-control">Tipo de Mascota</label>
+                                              <label for="id_tipo_mascota" class="label-control">Tipo de Operación</label>
                                               <select name="id_tipo_mascota" id="id_tipo_mascota" class="form-control" required>
                                               <option selected="true" value="1"> Perro</option>
                                                 <!-- <option value="">Seleccione...</option> -->
@@ -190,7 +190,7 @@
 
                                     <div class="col-md-12" id="panelTabla">
                                       <div class="form-group col-md-4 col-sm-4" hidden>
-                                        <label for="cboTipoBuscar" class="label-control">Tipo de Mascota</label>
+                                        <label for="cboTipoBuscar" class="label-control">Tipo de Operación</label>
                                         <select name="cboTipoBuscar" id="cboTipoBuscar" class="form-control" required>
                                           <option value="all">Todos</option>
                                           <?php
@@ -210,8 +210,8 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id Vacuna</th>
-                                                <th>Id Tipo Mascota</th>
-                                                <th>Tipo de Mascota</th>
+                                                <th>Id Tipo Operación</th>
+                                                <th>Tipo de Operación</th>
                                                 <th>Vacuna</th>
                                                 <th>Descrición</th>
                                                 <th style="width:30px; text-align: center;">Edad Min.</th>

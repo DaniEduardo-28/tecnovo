@@ -121,7 +121,7 @@
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				if (count($result)>0) {
-					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Accesorios.");
+					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Productos.");
 				}
 
 				$stmt = $conexion->prepare("DELETE FROM tb_categoria_accesorio WHERE id_categoria = ?");

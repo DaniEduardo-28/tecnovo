@@ -1198,7 +1198,7 @@ VALUES
   (515, NULL, '', NULL, 0, NULL),
   (600, 'Operaciones', 'activo', NULL, 0, NULL),
   (601, '', 'inactivo', NULL, 0, NULL),
-  (602, 'Ordenes de Venta', 'activo', NULL, 0, NULL),
+  (602, 'Facturación', 'activo', NULL, 0, NULL),
   (
     603,
     'Ordenes de Compra',

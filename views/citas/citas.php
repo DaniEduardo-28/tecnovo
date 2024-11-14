@@ -213,13 +213,13 @@
                       aria-label="Recipient's username" aria-describedby="basic-addon2"
                       id="num_documento" name="num_documento">
                       <div class="input-group-append">
-                        <button class="btn btn-outline-primary" id="btnBuscarMascotas" type="button">Buscar Mascotas</button>
+                        <button class="btn btn-outline-primary" id="btnBuscarMascotas" type="button">Buscar</button>
                       </div>
                     </div>
                   </div>
 
-                  <div class="form-group col-sm-12">
-                    <label for="id_mascota">Mascota:</label>
+                  <div class="form-group col-sm-12 d-none">
+                    <label for="id_mascota">Operación:</label>
                     <select name="id_mascota" id="id_mascota"
                       class="form-control" required="true">
 
@@ -267,7 +267,7 @@
               <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
 
               <input type="submit" name="btnSave" id="btnSave"
-              value="Guardar Cita" class="btn btn-success">
+              value="Guardar Registro" class="btn btn-success">
 
             </div>
           </div>
@@ -317,7 +317,7 @@
                   </div>
 
                   <div class="form-group col-sm-12">
-                    <label for="name_mascota">Mascota:</label>
+                    <label for="name_mascota">Operación:</label>
                     <input type="text" id="name_mascota" value="" class="form-control" readonly>
                   </div>
 

@@ -82,7 +82,7 @@
     }
 
     if (empty(trim($nombre_mascota))) {
-      throw new Exception("Campo obligatorio : Nombre de Mascota.");
+      throw new Exception("Campo obligatorio : Nombre de Operación.");
     }
 
     if ($flag_imagen=="1") {

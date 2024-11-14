@@ -46,7 +46,7 @@
     $html1 .= '<html lang="en">';
     $html1 .= '<head>';
     $html1 .= '<meta charset="utf-8">';
-    $html1 .= '<title>Ficha de Mascota</title>';
+    $html1 .= '<title>Ficha de Operación</title>';
     $html1 .= '<link rel="stylesheet" href="views/operaciones/reportes/style.css" media="all" />';
     $html1 .= '</head>';
     $html1 .= '<body>';

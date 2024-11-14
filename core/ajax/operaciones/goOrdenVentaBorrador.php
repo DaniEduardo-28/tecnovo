@@ -14,7 +14,7 @@
   $correo = isset($_POST["correo"]) ? $_POST["correo"] : null;
   $fecha = isset($_POST["fecha"]) ? $_POST["fecha"] : null;
   $codigo_moneda = isset($_POST["codigo_moneda"]) ? $_POST["codigo_moneda"] : null;
-  $codigo_forma_pago = isset($_POST["codigo_forma_pago"]) ? $_POST["codigo_forma_pago"] : null;
+  $codigo_forma_pago = 1;
   $total_descuento = isset($_POST["total_descuento"]) ? $_POST["total_descuento"] : null;
   $total_gravada = isset($_POST["total_gravada"]) ? $_POST["total_gravada"] : null;
   $total_igv = isset($_POST["total_igv"]) ? $_POST["total_igv"] : null;
@@ -70,9 +70,9 @@
       throw new Exception("Campo obligatorio : Moneda.");
     }
 
-    if (empty(trim($codigo_forma_pago))) {
-      throw new Exception("Campo obligatorio : Método de Pago.");
-    }
+    // if (empty(trim($codigo_forma_pago))) {
+    //   throw new Exception("Campo obligatorio : Método de Pago.");
+    // }
 
     if ($array_detalle==null) {
       throw new Exception("1. No se recibió los detalles de la orden de venta.");

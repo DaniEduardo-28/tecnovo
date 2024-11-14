@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Ordenes de Venta | <?=APP_TITLE;?> </title>
+    <title>Facturación | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -74,7 +74,7 @@
                                       Operaciones
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Ordenes de Venta
+                                      Facturación
                                     </li>
                                   </ol>
                                 </nav>
@@ -119,7 +119,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Ordenes de Venta</h4>
+                                        <h4 class="card-title">Facturación</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -273,7 +273,7 @@
                                                   <input type="radio" name="opcion_busqueda" value="servicio" id="opcion_servicio" autocomplete="off" checked> Servicio
                                                 </label>
                                                 <label class="btn btn-info">
-                                                  <input type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Accesorio
+                                                  <input type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Producto
                                                 </label>
                                                 <label class="btn btn-info">
                                                   <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Medicamento

@@ -43,11 +43,11 @@
   	$objPHPExcel->getProperties()
           ->setCreator("TECNOVO PERU SAC")
           ->setLastModifiedBy("TECNOVO PERU SAC")
-          ->setTitle("Reporte de Accesorios")
-          ->setSubject("Reporte de Accesorios")
+          ->setTitle("Reporte de Productos")
+          ->setSubject("Reporte de Productos")
           ->setDescription("Documento generado con PHPExcel")
           ->setKeywords("excel phpexcel php")
-          ->setCategory("Reporte de Accesorios");
+          ->setCategory("Reporte de Productos");
 
     $objPHPExcel->setActiveSheetIndex(0);
   	$objPHPExcel->getActiveSheet()->setTitle('Hoja 1');
@@ -95,7 +95,7 @@
   	}
 
     header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    header('Content-Disposition: attachment;filename="' . $empresa[0]['razon_social'] . " - " . $_SESSION['nombre_sucursal'] . " - " . ' Reporte de Accesorios' .  '.xlsx"');
+    header('Content-Disposition: attachment;filename="' . $empresa[0]['razon_social'] . " - " . $_SESSION['nombre_sucursal'] . " - " . ' Reporte de Productos' .  '.xlsx"');
     header('Cache-Control: max-age=0');
 
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');

@@ -19,7 +19,7 @@
     }
 
     if ($id_mascota==0) {
-      throw new Exception("Campo obligatorio : Seleccionar Mascota");
+      throw new Exception("Campo obligatorio : Seleccionar Operación");
     }
 
     if ($id_fundo==0) {

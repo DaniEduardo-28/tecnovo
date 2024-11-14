@@ -1752,7 +1752,7 @@ VALUES
   ),
   (
     108,
-    'Tipos de Mascotas',
+    'Tipos de Operaciones',
     'activo',
     NULL,
     8,
@@ -1796,7 +1796,7 @@ VALUES
   (200, 'Mantenimiento', 'activo', NULL, 0, NULL),
   (201, 'Clientes', 'activo', NULL, 0, NULL),
   (202, 'Servicios', 'activo', NULL, 0, NULL),
-  (203, 'Accesorios', 'activo', NULL, 0, NULL),
+  (203, 'Productos', 'activo', NULL, 0, NULL),
   (204, 'Medicamentos', 'activo', NULL, 0, NULL),
   (
     205,
@@ -1807,7 +1807,7 @@ VALUES
     NULL
   ),
   (206, 'Vacunas', 'activo', NULL, 0, NULL),
-  (207, 'Mascotas', 'activo', NULL, 0, NULL),
+  (207, 'Operaciones', 'activo', NULL, 0, NULL),
   (208, 'Proveedores', 'activo', NULL, 0, NULL),
   (209, NULL, '', NULL, 0, NULL),
   (210, NULL, '', NULL, 0, NULL),
@@ -1888,7 +1888,7 @@ VALUES
   ),
   (
     503,
-    'Historial Clínico',
+    'Historial ',
     'activo',
     NULL,
     0,
@@ -1909,13 +1909,13 @@ VALUES
   (600, 'Operaciones', 'activo', NULL, 0, NULL),
   (
     601,
-    'Ficha de Mascota y Vacunas',
+    'Ficha de Operación y Vacunas',
     'activo',
     NULL,
     0,
     NULL
   ),
-  (602, 'Ordenes de Venta', 'activo', NULL, 0, NULL),
+  (602, 'Facturación', 'activo', NULL, 0, NULL),
   (
     603,
     'Ordenes de Compra',
@@ -1969,7 +1969,7 @@ VALUES
   ),
   (
     703,
-    'Reporte de Accesorios',
+    'Reporte de Productos',
     'activo',
     NULL,
     0,

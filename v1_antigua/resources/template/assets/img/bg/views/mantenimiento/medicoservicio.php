@@ -126,7 +126,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Usuario - Servicios
+                                      Operadores - Servicios
                                     </li>
                                   </ol>
                                 </nav>
@@ -143,7 +143,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Usuario - Servicios</h4>
+                                        <h4 class="card-title">Operadores - Servicios</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">

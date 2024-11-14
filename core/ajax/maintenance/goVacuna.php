@@ -40,7 +40,7 @@
     }
 
     if (empty(trim($id_tipo_mascota))) {
-      throw new Exception("Campo Obligatorio : Tipo de Mascota.");
+      throw new Exception("Campo Obligatorio : Tipo de Operación.");
     }
 
     if (empty(trim($edad_minima))) {

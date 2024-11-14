@@ -781,11 +781,6 @@ function saveOperation(){
       return;
     }
 
-    if (codigo_forma_pago == "") {
-      runAlert("Faltan Datos","Tiene que seleccionar una método de pago realizar la operación.","warning")
-      return;
-    }
-
     if (countRows==0) {
       runAlert("Faltan Datos","Tiene que tener por lo menos un detalle para guardar la orden de venta.","warning")
       return;
@@ -935,11 +930,6 @@ function saveOperationBorrador(){
 
     if (codigo_moneda == "") {
       runAlert("Faltan Datos","Tiene que seleccionar una moneda para realizar la operación.","warning")
-      return;
-    }
-
-    if (codigo_forma_pago == "") {
-      runAlert("Faltan Datos","Tiene que seleccionar una método de pago realizar la operación.","warning")
       return;
     }
 

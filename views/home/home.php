@@ -253,7 +253,7 @@
                                           <div class="media align-items-center w-100">
                                               <div class="text-left">
                                                   <h3 class="mb-0"><?=$Resultado['data'][0]['total_accesorios'];?></h3>
-                                                  <span>Accesorios</span>
+                                                  <span>Productos</span>
                                               </div>
                                               <div class="img-icon bg-orange ml-auto">
                                                   <i class="ti ti-dropbox text-white"></i>
