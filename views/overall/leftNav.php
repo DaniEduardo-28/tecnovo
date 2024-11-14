@@ -101,13 +101,16 @@
             $flag_mostar_menu = false;
             $flag_cliente = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("cliente"));
             $flag_proveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("proveedor"));
+            $flag_operador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("operador"));
+            $flag_fundos = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("fundos"));
+            $flag_maquinaria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("maquinaria"));
             $flag_servicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("servicio"));
             $flag_accesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("accesorio"));
             $flag_medicamento = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("medicamento"));
             $flag_medicoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("medicoservicio"));
             $flag_vacuna = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vacuna"));
             $flag_mascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("mascota"));
-            if ($flag_proveedor || $flag_cliente || $flag_servicio || $flag_accesorio || $flag_medicamento || $flag_medicoservicio || $flag_vacuna || $flag_mascota) {
+            if ($flag_proveedor || $flag_cliente || $flag_operador || $flag_fundos || $flag_maquinaria || $flag_servicio || $flag_accesorio || $flag_medicamento || $flag_medicoservicio || $flag_vacuna || $flag_mascota) {
           		$flag_mostar_menu = true;
           	}else{
           		$flag_mostar_menu = false;
@@ -128,6 +131,15 @@
                     <?php endif; ?>
                     <?php if ($flag_proveedor): ?>
                       <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_operador): ?>
+                      <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_fundos): ?>
+                      <li id="menufundo"> <a href="?view=fundos">Fundos</a> </li>
+                    <?php endif; ?>
+                    <?php if ($flag_maquinaria): ?>
+                      <li id="menumaquinaria"> <a href="?view=maquinaria">Maquinaria</a> </li>
                     <?php endif; ?>
                     <?php if ($flag_servicio): ?>
                       <li id="menuservicio"> <a href="?view=servicio">Servicios</a> </li>
