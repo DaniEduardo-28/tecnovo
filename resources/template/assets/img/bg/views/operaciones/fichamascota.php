@@ -219,7 +219,7 @@
                                                     <th style="width:150px;">Observaciones</th>
                                                     <th>Estado</th>
                                                     <th>Sucursal</th>
-                                                    <th>Médico</th>
+                                                    <th>Usuario</th>
                                                     <th>Fecha Aplicación</th>
                                                   </tr>
                                                 </thead>

@@ -310,7 +310,7 @@
                   <input type="hidden" id="id_cita" name="id_cita" value="">
 
                   <div class="form-group col-sm-12">
-                   <label for="name_medico">Médico</label>
+                   <label for="name_medico">Usuario</label>
                    <input type="text" id="name_medico" value="" class="form-control" readonly>
                   </div>
 

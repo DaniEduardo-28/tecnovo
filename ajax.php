@@ -122,39 +122,38 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/getDataEditCliente.php");
         break;
-        case 'showOperador':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/maintenance/showOperador.php");
-          break;
-        case 'goOperador':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/maintenance/goOperador.php");
-          break;
-        case 'deleteOperador':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/maintenance/deleteOperador.php");
-          break;
-        case 'getDataEditOperador':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/maintenance/getDataEditOperador.php");
-          break;
-
-          case 'showMaquinaria':
-            require("core/models/ClassAccesoOpcion.php");
-            require("core/ajax/maintenance/showMaquinaria.php");
-            break;
-          case 'goMaquinaria':
-            require("core/models/ClassAccesoOpcion.php");
-            require("core/ajax/maintenance/goMaquinaria.php");
-            break;
-          case 'deleteMaquinaria':
-            require("core/models/ClassAccesoOpcion.php");
-            require("core/ajax/maintenance/deleteMaquinaria.php");
-            break;
-          case 'getDataEditMaquinaria':
-            require("core/models/ClassAccesoOpcion.php");
-            require("core/ajax/maintenance/getDataEditMaquinaria.php");
-            break;
+      case 'showOperador':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/showOperador.php");
+        break;
+      case 'goOperador':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/goOperador.php");
+        break;
+      case 'deleteOperador':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/deleteOperador.php");
+        break;
+      case 'getDataEditOperador':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/getDataEditOperador.php");
+        break;
+      case 'showMaquinaria':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/showMaquinaria.php");
+        break;
+      case 'goMaquinaria':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/goMaquinaria.php");
+        break;
+      case 'deleteMaquinaria':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/deleteMaquinaria.php");
+        break;
+      case 'getDataEditMaquinaria':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/getDataEditMaquinaria.php");
+        break;
       case 'showTrabajador':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showTrabajador.php");
@@ -614,6 +613,12 @@ try {
       case 'deleteIngreso':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteIngreso.php");
+        break;
+      case 'buscar-dni':
+        require("core/ajax/utils/buscarDNI.php");
+        break;
+      case 'buscar-ruc':
+        require("core/ajax/utils/buscarRUC.php");
         break;
 
       default:

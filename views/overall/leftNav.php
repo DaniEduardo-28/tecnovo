@@ -61,19 +61,13 @@
                     <li id="menuidentitydocuments"> <a href="?view=identitydocuments">Documentos de Identidad</a> </li>
                   <?php endif; ?>
                   <?php if ($flag_especialidad): ?>
-                    <li id="menuespecialidad"> <a href="?view=especialidad">Especialidades</a> </li>
+                    <li id="menuespecialidad"> <a href="?view=especialidad">Cargos usuarios</a> </li>
                   <?php endif; ?>
                   <?php if ($flag_categoriaaccesorio): ?>
-                    <li id="menucategoriaaccesorio"> <a href="?view=categoriaaccesorio">Categorias de Accesorios</a> </li>
+                    <li id="menucategoriaaccesorio"> <a href="?view=categoriaaccesorio">Categorias de Productos</a> </li>
                   <?php endif; ?>
                   <?php if ($flag_tiposervicio): ?>
                     <li id="menutiposervicio"> <a href="?view=tiposervicio">Tipos de Servicio</a> </li>
-                  <?php endif; ?>
-                  <?php if ($flag_tipomascota): ?>
-                    <li id="menutipomascota"> <a href="?view=tipomascota">Tipos de Mascotas</a> </li>
-                  <?php endif; ?>
-                  <?php if ($flag_tipomedicamento): ?>
-                    <li id="menutipomedicamento"> <a href="?view=tipomedicamento">Tipos de Medicamentos</a> </li>
                   <?php endif; ?>
                   <?php if ($flag_formapago): ?>
                     <li id="menuformapago"> <a href="?view=formapago">Métodos de Pago</a> </li>
@@ -86,9 +80,6 @@
                   <?php endif; ?>
                   <?php if ($flag_unidadmedida): ?>
                     <li id="menuunidadmedida"> <a href="?view=unidadmedida">Unidades de Medida</a></li>
-                  <?php endif; ?>
-                  <?php if ($flag_unidadmedida): ?>
-                    <li id="menumetodoenvio"> <a href="?view=metodoenvio">Métodos de Envío</a></li>
                   <?php endif; ?>
                 </ul>
             </li>
@@ -109,6 +100,7 @@
             $flag_medicamento = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("medicamento"));
             $flag_medicoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("medicoservicio"));
             $flag_vacuna = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vacuna"));
+            $flag_trabajador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("trabajador"));
             $flag_mascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("mascota"));
             if ($flag_proveedor || $flag_cliente || $flag_operador || $flag_fundos || $flag_maquinaria || $flag_servicio || $flag_accesorio || $flag_medicamento || $flag_medicoservicio || $flag_vacuna || $flag_mascota) {
           		$flag_mostar_menu = true;
@@ -126,14 +118,14 @@
                   <span class="nav-title">Mantenimiento</span>
                 </a>
                 <ul aria-expanded="false">
+                <?php if ($flag_trabajador): ?>
+                      <li id="menutrabajador"> <a href="?view=trabajador">Trabajadores</a> </li>
+                    <?php endif; ?>
                     <?php if ($flag_cliente): ?>
                       <li id="menucliente"> <a href="?view=cliente">Clientes</a> </li>
                     <?php endif; ?>
                     <?php if ($flag_proveedor): ?>
                       <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
-                    <?php endif; ?>
-                    <?php if ($flag_operador): ?>
-                      <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
                     <?php endif; ?>
                     <?php if ($flag_fundos): ?>
                       <li id="menufundo"> <a href="?view=fundos">Fundos</a> </li>
@@ -145,19 +137,10 @@
                       <li id="menuservicio"> <a href="?view=servicio">Servicios</a> </li>
                     <?php endif; ?>
                     <?php if ($flag_accesorio): ?>
-                      <li id="menuaccesorio"> <a href="?view=accesorio">Accesorios</a> </li>
-                    <?php endif; ?>
-                    <?php if ($flag_medicamento): ?>
-                      <li id="menumedicamento"> <a href="?view=medicamento">Medicamentos</a> </li>
+                      <li id="menuaccesorio"> <a href="?view=accesorio">Productos</a> </li>
                     <?php endif; ?>
                     <?php if ($flag_medicoservicio): ?>
-                      <li id="menumedicoservicio"> <a href="?view=medicoservicio">Medicos - Servicios</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_vacuna): ?>
-                      <li id="menuvacuna"> <a href="?view=vacuna">Vacunas</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_mascota): ?>
-                      <li id="menumascota"> <a href="?view=mascota">Mascotas</a></li>
+                      <li id="menumedicoservicio"> <a href="?view=medicoservicio">Usuarios - Servicios</a></li>
                     <?php endif; ?>
                 </ul>
             </li>
@@ -197,64 +180,10 @@
                     <?php if ($flag_accesosucursal): ?>
                       <li id="menuaccesosucursal"> <a href="?view=accesosucursal">Acceos a Sucursales</a> </li>
                     <?php endif; ?>
-                    <?php if ($flag_trabajador): ?>
-                      <li id="menutrabajador"> <a href="?view=trabajador">Trabajadores</a> </li>
-                    <?php endif; ?>
                 </ul>
             </li>
 
           <?php endif; ?>
-
-
-          <?php
-
-            $flag_mostar_menu = false;
-            $flag_webcabezera = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webcabezera"));
-            $flag_webredessociales = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webredessociales"));
-            $flag_webgaleria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webgaleria"));
-            $flag_websocio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("websocio"));
-            $flag_webtestimonio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webtestimonio"));
-            $flag_webcontacto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("webcontacto"));
-            if ($flag_webcabezera || $flag_webredessociales || $flag_webgaleria || $flag_websocio || $flag_webtestimonio || $flag_webcontacto) {
-          		$flag_mostar_menu = true;
-          	}else{
-          		$flag_mostar_menu = false;
-          	}
-
-          ?>
-
-          <?php if ($flag_mostar_menu): ?>
-
-            <li id="menupaginaweb">
-                <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                  <i class="nav-icon fa fa-globe"></i>
-                  <span class="nav-title">Página Web</span>
-                </a>
-                <ul aria-expanded="false">
-                    <?php if ($flag_webcabezera): ?>
-                      <li id="menuwebcabezera"> <a href="?view=webcabezera">Cabezera</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_webredessociales): ?>
-                      <li id="menuwebredessociales"> <a href="?view=webredessociales">Redes Sociales</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_webgaleria): ?>
-                      <li id="menuwebgaleria"> <a href="?view=webgaleria">Galeria</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_websocio): ?>
-                      <li id="menuwebsocio"> <a href="?view=websocio">Socios</a></li>
-                    <?php endif; ?>
-                    <?php if ($flag_webtestimonio): ?>
-                      <li id="menuwebtestimonio"> <a href="?view=webtestimonio">Testimonios</a> </li>
-                    <?php endif; ?>
-                    <?php if ($flag_webcontacto): ?>
-                      <li id="menuwebcontacto"> <a href="?view=webcontacto">Datos de Contacto</a></li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-
-          <?php endif; ?>
-
-
 
           <?php
 
@@ -275,17 +204,17 @@
             <li id="menucitas">
                 <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
                   <i class="nav-icon fa fa-calendar"></i>
-                  <span class="nav-title">Citas</span>
+                  <span class="nav-title">Cronogramas de Trabajo</span>
                 </a>
                 <ul aria-expanded="false">
                     <?php if ($flag_citas): ?>
-                      <li id="submenucitas"> <a href="?view=citas">Gestionar Citas</a></li>
+                      <li id="submenucitas"> <a href="?view=citas">Gestionar Cronograma</a></li>
                     <?php endif; ?>
                     <?php if ($flag_atencioncitas): ?>
-                      <li id="submenuatencioncitas"> <a href="?view=atencioncitas">Atención de Citas</a></li>
+                      <li id="submenuatencioncitas"> <a href="?view=atencioncitas">Atención de Cronograma</a></li>
                     <?php endif; ?>
                     <?php if ($flag_historialclinico): ?>
-                      <li id="submenuhistorialclinico"> <a href="?view=historialclinico">Historial Clínico</a></li>
+                      <li id="submenuhistorialclinico"> <a href="?view=historialclinico">Historial de Operaciones</a></li>
                     <?php endif; ?>
                 </ul>
             </li>
@@ -318,9 +247,6 @@
                   <span class="nav-title">Operaciones</span>
                 </a>
                 <ul aria-expanded="false">
-                  <?php if ($flag_fichamascota): ?>
-                    <li id="submenufichamascota"><a href="?view=fichamascota">Ficha de Mascotas y Vacunas</a></li>
-                  <?php endif; ?>
                   <?php if ($flag_ordencompra): ?>
                     <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
                   <?php endif; ?>
@@ -329,9 +255,6 @@
                   <?php endif; ?>
                   <?php if ($flag_ordenventa): ?>
                     <li id="submenuordenventa"><a href="?view=ordenventa">Ordenes de venta</a></li>
-                  <?php endif; ?>
-                  <?php if ($flag_promocion): ?>
-                    <li id="submenupromocion"> <a href="?view=promocion">Promociones de Clientes</a></li>
                   <?php endif; ?>
                 </ul>
             </li>
@@ -371,13 +294,7 @@
                     <li id="submenureporteordenventa"><a href="?view=vistareporteordenventa">Ventas</a></li>
                   <?php endif; ?>
                   <?php if ($flag_vistareporteaccesorios): ?>
-                    <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Accesorios</a></li>
-                  <?php endif; ?>
-                  <?php if ($flag_vistareportemedicamentos): ?>
-                    <li id="submenureportemedicamentos"><a href="?view=vistareportemedicamentos">Medicamentos</a></li>
-                  <?php endif; ?>
-                  <?php if ($flag_observacionesproveedor): ?>
-                    <li id="submenuobservacionesproveedor"><a href="?view=observacionesproveedor">Observaciones de Proveedor</a></li>
+                    <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>
                   <?php endif; ?>
                 </ul>
             </li>

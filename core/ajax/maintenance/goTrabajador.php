@@ -56,7 +56,7 @@
     }
 
     if (empty(trim($id_especialidad))) {
-      throw new Exception("Campo obligatorio : Especialidad.");
+      throw new Exception("Campo obligatorio : Cargo.");
     }
 
     if (empty(trim($id_grupo))) {

@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Especialidades | <?=APP_TITLE;?> </title>
+    <title>Cargos usuarios | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Configuración
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Especialidades
+                                      Cargos usuarios
                                     </li>
                                   </ol>
                                 </nav>
@@ -102,7 +102,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Especialidades</h4>
+                                        <h4 class="card-title">Cargos usuarios</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -118,7 +118,7 @@
 
                                           <div class="row">
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="name_especialidad" class="label-control">Especialidad</label>
+                                              <label for="name_especialidad" class="label-control">Cargo</label>
                                               <input id="name_especialidad" type="text" name="name_especialidad" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
@@ -148,7 +148,7 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id</th>
-                                                <th>Especialidad</th>
+                                                <th>Cargo</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
                                                 <th style="width:90px;">Options</th>
                                               </tr>

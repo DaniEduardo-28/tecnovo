@@ -219,7 +219,7 @@
                                                     <th style="width:150px;">Observaciones</th>
                                                     <th>Estado</th>
                                                     <th>Sucursal</th>
-                                                    <th>Médico</th>
+                                                    <th>Usuario</th>
                                                     <th>Fecha Aplicación</th>
                                                   </tr>
                                                 </thead>
@@ -245,7 +245,7 @@
                                     <div class="col-md-12" id="panelTabla">
 
                                       <div class="row">
-                                        <div class="form-group col-md-3 col-sm-6">
+                                        <div class="form-group col-md-3 col-sm-6" hidden>
                                           <label for="cboTipoBuscar" class="label-control">Tipo de Mascota</label>
                                           <select name="cboTipoBuscar" id="cboTipoBuscar" class="form-control">
                                             <option value="">Todos</option>

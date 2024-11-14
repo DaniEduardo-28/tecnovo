@@ -31,7 +31,7 @@
     }
 
     if (empty(trim($name_especialidad))) {
-      throw new Exception("Campo Obligatorio : Nombre de Especialidad.");
+      throw new Exception("Campo Obligatorio : Nombre de Cargo.");
     }
 
     require_once "core/models/ClassEspecialidad.php";

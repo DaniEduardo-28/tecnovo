@@ -119,10 +119,11 @@
 
                                           <div class="row">
 
-                                            <div class="form-group col-md-4 col-sm-4">
+                                            <div class="form-group col-md-4 col-sm-4" hidden>
                                               <label for="id_tipo_mascota" class="label-control">Tipo de Mascota</label>
                                               <select name="id_tipo_mascota" id="id_tipo_mascota" class="form-control" required>
-                                                <option value="">Seleccione...</option>
+                                              <option selected="true" value="1"> Perro</option>
+                                                <!-- <option value="">Seleccione...</option> -->
                                                 <?php
                                                   include("core/models/ClassTipoMascota.php");
                                                   $dataTipoMascota = $OBJ_TIPO_MASCOTA->show("all");
@@ -188,7 +189,7 @@
                                     </div>
 
                                     <div class="col-md-12" id="panelTabla">
-                                      <div class="form-group col-md-4 col-sm-4">
+                                      <div class="form-group col-md-4 col-sm-4" hidden>
                                         <label for="cboTipoBuscar" class="label-control">Tipo de Mascota</label>
                                         <select name="cboTipoBuscar" id="cboTipoBuscar" class="form-control" required>
                                           <option value="all">Todos</option>

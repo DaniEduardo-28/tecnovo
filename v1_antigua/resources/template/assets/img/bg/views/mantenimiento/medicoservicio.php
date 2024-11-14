@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Médico - Servicio | <?=APP_TITLE;?> </title>
+    <title>Usuario - Servicio | <?=APP_TITLE;?> </title>
     <style media="screen">
 
     .container-label {
@@ -126,7 +126,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Médico - Servicios
+                                      Usuario - Servicios
                                     </li>
                                   </ol>
                                 </nav>
@@ -143,7 +143,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Médico - Servicios</h4>
+                                        <h4 class="card-title">Usuario - Servicios</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -151,7 +151,7 @@
                                   <div class="row">
 
                                     <div class="form-group col-md-4 col-sm-6">
-                                      <label for="cboTrabajador" class="label-control">Médico</label>
+                                      <label for="cboTrabajador" class="label-control">Usuario</label>
                                       <select class="form-control" name="cboTrabajador" id="cboTrabajador">
                                         <?php
                                             $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("medicoservicio"));

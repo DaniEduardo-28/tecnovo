@@ -27,7 +27,7 @@
     }
 
     if ($id_trabajador==0) {
-      throw new Exception("Campo obligatorio : Seleccionar Médico de Cita..");
+      throw new Exception("Campo obligatorio : Seleccionar Usuario de Cita..");
     }
 
     if ($id_servicio==0) {

@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Categoria de Accesorios | <?=APP_TITLE;?> </title>
+    <title>Categoria de Productos | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Configuración
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Categoria de Accesorios
+                                      Categoria de Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -114,7 +114,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Categoria de Accesorios</h4>
+                                        <h4 class="card-title">Categoria de Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">

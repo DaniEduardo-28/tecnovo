@@ -48,7 +48,7 @@ $(document).ready(function(){
     });
   
   });
-  
+
   function showData(){
   
     paginador = $(".pagination");

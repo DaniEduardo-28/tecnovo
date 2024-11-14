@@ -2,12 +2,11 @@
     <!-- begin navbar -->
     <nav class="navbar navbar-expand-md">
 
-        <!-- begin navbar-header -->
         <div class="navbar-header d-flex align-items-center">
             <a href="#" class="mobile-toggle"><i class="ti ti-align-right"></i></a>
             <a class="navbar-brand" href="?view=home">
                 <img src="resources/template/assets/img/logo.png" class="img-fluid logo-desktop" alt="logo" />
-                <img src="resources/template/assets/img/petspace-circle.png" class="img-fluid logo-mobile" alt="logo" />
+                <img src="resources/template/assets/img/logo-xs.png" class="img-fluid logo-mobile" alt="logo" />
             </a>
         </div>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

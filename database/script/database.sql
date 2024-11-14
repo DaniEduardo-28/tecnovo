@@ -1250,7 +1250,7 @@ CREATE TABLE `tb_especialidad` (
 INSERT INTO
   `tb_especialidad` (`id_especialidad`, `name_especialidad`, `estado`)
 VALUES
-  (1, 'Médico', 'activo'),
+  (1, 'Usuario', 'activo'),
   (2, 'Anestesiología Veterinaria', 'activo'),
   (3, 'Cardiología veterinaria', 'activo'),
   (4, 'Cirugía', 'activo'),
@@ -1392,7 +1392,7 @@ INSERT INTO
   `tb_grupo_usuario` (`id_grupo`, `name_grupo`, `estado`)
 VALUES
   (1, 'Administrador', 'activo'),
-  (2, 'Médico', 'activo'),
+  (2, 'Usuario', 'activo'),
   (3, 'Caja', 'activo');
 
 -- --------------------------------------------------------
@@ -1733,10 +1733,10 @@ VALUES
     4,
     NULL
   ),
-  (105, 'Especialidades', 'activo', NULL, 5, NULL),
+  (105, 'Cargos usuarios', 'activo', NULL, 5, NULL),
   (
     106,
-    'Categorias de Accesorios',
+    'Categorias de Productos',
     'activo',
     NULL,
     6,

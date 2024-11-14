@@ -75,7 +75,7 @@
                          <div class="row">
 
                            <div class="form-group col-sm-6 col-md-4">
-                            <label for="cboMedicoBuscar">Médico</label>
+                            <label for="cboMedicoBuscar">Usuario</label>
                             <select class="form-control" id="cboMedicoBuscar" name="cboMedicoBuscar">
                               <option value="all">Todos</option>
                               <?php
@@ -167,7 +167,7 @@
                 <div class="row">
 
                   <div class="form-group col-sm-12">
-                   <label for="id_trabajador">Médico</label>
+                   <label for="id_trabajador">Usuario</label>
                    <select class="form-control" id="id_trabajador" name="id_trabajador">
                       <?php
                       $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_fundo']);
@@ -297,7 +297,7 @@
                   <input type="hidden" id="id_cita" name="id_cita" value="">
 
                   <div class="form-group col-sm-12">
-                   <label for="name_medico">Médico</label>
+                   <label for="name_medico">Usuario</label>
                    <input type="text" id="name_medico" value="" class="form-control" readonly>
                   </div>
 
