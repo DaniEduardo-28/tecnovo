@@ -36,7 +36,7 @@
         <li id="cliente"> <a href="cliente">Clientes</a> </li>
         <!--<li id="servicio"> <a href="servicio">Servicios</a> </li>
         <li id="accesorio"> <a href="accesorio">Productos</a> </li>
-        <li id="medicamento"> <a href="medicamento">Medicamentos</a> </li>
+        <li id="medicamento"> <a href="medicamento">Productos</a> </li>
         <li id="medicoservicio"> <a href="medicoservicio">Medicos - Servicios</a></li>
         <li id="vacuna"> <a href="vacuna">Vacunas</a></li>
         <li id="mascota"> <a href="mascota">Operaciones</a></li>-->

@@ -184,7 +184,7 @@
                           <div class="col-md-8">
                             <div class="card card-statistics">
                                 <div class="card-header">
-                                    <h4 class="card-title">Medicamentos y Articulos Stock Mínimo</h4>
+                                    <h4 class="card-title">Productos y Articulos Stock Mínimo</h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
@@ -264,7 +264,7 @@
                                           <div class="media align-items-center w-100">
                                               <div class="text-left">
                                                   <h3 class="mb-0"><?=$Resultado['data'][0]['total_medicamentos'];?></h3>
-                                                  <span>Medicamentos</span>
+                                                  <span>Productos</span>
                                               </div>
                                               <div class="img-icon bg-info ml-auto">
                                                   <i class="ti ti-plus text-white"></i>

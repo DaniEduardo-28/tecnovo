@@ -1760,7 +1760,7 @@ VALUES
   ),
   (
     109,
-    'Tipos de Medicamentos',
+    'Tipos de Productos',
     'activo',
     NULL,
     9,
@@ -1797,7 +1797,7 @@ VALUES
   (201, 'Clientes', 'activo', NULL, 0, NULL),
   (202, 'Servicios', 'activo', NULL, 0, NULL),
   (203, 'Productos', 'activo', NULL, 0, NULL),
-  (204, 'Medicamentos', 'activo', NULL, 0, NULL),
+  (204, 'Productos', 'activo', NULL, 0, NULL),
   (
     205,
     'Médicos - Servicios',
@@ -1977,7 +1977,7 @@ VALUES
   ),
   (
     704,
-    'Reporte de Medicamentos',
+    'Reporte de Productos',
     'activo',
     NULL,
     0,

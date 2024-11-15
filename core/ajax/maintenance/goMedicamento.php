@@ -41,11 +41,11 @@
     }
 
     if (empty(trim($id_tipo_medicamento))) {
-      throw new Exception("Campo obligatorio : Tipo de Medicamento.");
+      throw new Exception("Campo obligatorio : Tipo de Producto.");
     }
 
     if (empty(trim($name_medicamento))) {
-      throw new Exception("Campo obligatorio : Nombre de Medicamento.");
+      throw new Exception("Campo obligatorio : Nombre de Producto.");
     }
 
     if (empty(trim($id_sucursal))) {

@@ -64,7 +64,7 @@ function showData(){
 var innerdivHtml1 = '<table class="table clients-contant-table mb-0">';
 innerdivHtml1 += '<thead>';
 innerdivHtml1 += '<tr>';
-innerdivHtml1 += '<th scope="col">Medicamento</th>';
+innerdivHtml1 += '<th scope="col">Producto</th>';
 innerdivHtml1 += '<th scope="col">Tipo</th>';
 innerdivHtml1 += '<th scope="col">Descripción</th>';
 innerdivHtml1 += '<th scope="col">Stock</th>';
@@ -112,7 +112,7 @@ function get_data_callback(){
         var innerdivHtml = '<table class="table clients-contant-table mb-0">';
         innerdivHtml += '<thead>';
         innerdivHtml += '<tr>';
-        innerdivHtml += '<th scope="col">Medicamento</th>';
+        innerdivHtml += '<th scope="col">Producto</th>';
         innerdivHtml += '<th scope="col">Tipo</th>';
         innerdivHtml += '<th scope="col">Descripción</th>';
         innerdivHtml += '<th scope="col">Stock</th>';

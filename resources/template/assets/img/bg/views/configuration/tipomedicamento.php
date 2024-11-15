@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Tipos de Medicamentos | <?=APP_TITLE;?> </title>
+    <title>Tipos de Productos | <?=APP_TITLE;?> </title>
 
   </head>
 
@@ -58,7 +58,7 @@
                                       Configuración
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Tipos de Medicamentos
+                                      Tipos de Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -114,7 +114,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Tipos de Medicamentos</h4>
+                                        <h4 class="card-title">Tipos de Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -130,7 +130,7 @@
 
                                           <div class="row">
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="name_tipo" class="label-control">Tipo Medicamento</label>
+                                              <label for="name_tipo" class="label-control">Tipo Producto</label>
                                               <input id="name_tipo" type="text" name="name_tipo" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
@@ -160,7 +160,7 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id</th>
-                                                <th>Tipo Medicamento</th>
+                                                <th>Tipo Producto</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
                                                 <th style="width:90px;">Options</th>
                                               </tr>

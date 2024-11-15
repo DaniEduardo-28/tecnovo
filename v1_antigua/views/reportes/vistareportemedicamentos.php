@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Reporte de Medicamentos | <?=APP_TITLE;?> </title>
+    <title>Reporte de Productos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -75,7 +75,7 @@
                                       Reportes
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Medicamentos
+                                      Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -113,7 +113,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Reporte de Medicamentos</h4>
+                                        <h4 class="card-title">Reporte de Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -126,7 +126,7 @@
                                       <div class="row">
                                         <div class="col-md-4 col-sm-4">
                                           <div class="form-group">
-                                            <label for="cboTipoBuscar" class="label-control">Tipo de Medicamento</label>
+                                            <label for="cboTipoBuscar" class="label-control">Tipo de Producto</label>
                                             <select class="form-control" name="cboTipoBuscar" id="cboTipoBuscar">
                                               <option value="">Todos...</option>
                                               <?php

@@ -31,7 +31,7 @@
     }
 
     if (empty(trim($name_tipo))) {
-      throw new Exception("Campo Obligatorio : Nombre de Tipo Medicamento.");
+      throw new Exception("Campo Obligatorio : Nombre de Tipo Producto.");
     }
 
     require_once "core/models/ClassTipoMedicamento.php";

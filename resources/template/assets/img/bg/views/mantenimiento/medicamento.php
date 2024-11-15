@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Medicamentos | <?=APP_TITLE;?> </title>
+    <title>Productos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -75,7 +75,7 @@
                                       Mantenimiento
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Medicamentos
+                                      Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -109,7 +109,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Medicamentos</h4>
+                                        <h4 class="card-title">Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -132,10 +132,10 @@
 
                                             <div class="form-group col-sm-4">
                                               <img id="img_destino" src="resources/global/images/sin_imagen.png"
-                                              alt="Imagen Medicamento" class="img-fluid rounded-circle"
+                                              alt="Imagen Producto" class="img-fluid rounded-circle"
                                               style="width:200px;height:200px;">
                                               <br>
-                                              <label for="">Imagen Medicamento</label>
+                                              <label for="">Imagen Producto</label>
                                               <br>
                                               <div class="form-group">
                                                 <input type="file" name="src_imagen" id="src_imagen" accept="image/jpeg"
@@ -150,7 +150,7 @@
                                             <div class="form-group col-sm-6">
 
                                               <div class="form-group col-xs-12">
-                                                <label for="id_tipo_medicamento" class="label-control">Tipo de Medicamento</label>
+                                                <label for="id_tipo_medicamento" class="label-control">Tipo de Producto</label>
                                                 <select name="id_tipo_medicamento" id="id_tipo_medicamento" class="form-control" required>
                                                   <option value="">Seleccione...</option>
                                                   <?php
@@ -166,7 +166,7 @@
                                               </div>
 
                                               <div class="form-group col-xs-12">
-                                                <label for="name_medicamento" class="label-control">Nombre de Medicamento</label>
+                                                <label for="name_medicamento" class="label-control">Nombre de Producto</label>
                                                 <input id="name_medicamento" type="text" name="name_medicamento" class="form-control"
                                                 autocomplete="off" required data-msg="Campo obligatorio...">
                                               </div>
@@ -276,7 +276,7 @@
                                       <div class="row">
                                         <div class="col-md-4 col-sm-4">
                                           <div class="form-group">
-                                            <label for="cboTipoBuscar" class="label-control">Tipo de Medicamento</label>
+                                            <label for="cboTipoBuscar" class="label-control">Tipo de Producto</label>
                                             <select class="form-control" name="cboTipoBuscar" id="cboTipoBuscar">
                                               <option value="">Todos...</option>
                                               <?php
