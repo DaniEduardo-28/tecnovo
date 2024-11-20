@@ -98,11 +98,12 @@
       $flag_servicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("servicio"));
       $flag_accesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesorio"));
       $flag_medicamento = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("medicamento"));
+      $flag_accesofundo = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesofundo"));
       $flag_medicoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("medicoservicio"));
       $flag_vacuna = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vacuna"));
       $flag_trabajador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("trabajador"));
       $flag_mascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("mascota"));
-      if ($flag_proveedor || $flag_cliente || $flag_operador || $flag_fundos || $flag_maquinaria || $flag_servicio || $flag_accesorio || $flag_medicamento || $flag_medicoservicio || $flag_vacuna || $flag_mascota) {
+      if ($flag_proveedor || $flag_cliente || $flag_operador || $flag_fundos || $flag_maquinaria || $flag_servicio || $flag_accesorio || $flag_medicamento || $flag_accesofundo || $flag_medicoservicio || $flag_vacuna || $flag_mascota) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -127,6 +128,9 @@
             <?php if ($flag_proveedor): ?>
               <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
             <?php endif; ?>
+            <?php if ($flag_operador): ?>
+              <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
+            <?php endif; ?>
             <?php if ($flag_fundos): ?>
               <li id="menufundo"> <a href="?view=fundos">Fundos</a> </li>
             <?php endif; ?>
@@ -138,6 +142,9 @@
             <?php endif; ?>
             <?php if ($flag_accesorio): ?>
               <li id="menuaccesorio"> <a href="?view=accesorio">Productos</a> </li>
+            <?php endif; ?>
+            <?php if ($flag_accesofundo): ?>
+              <li id="menuaccesofundo"> <a href="?view=accesosfundo">Acceso a Fundos</a> </li>
             <?php endif; ?>
             <?php if ($flag_medicoservicio): ?>
               <li id="menumedicoservicio"> <a href="?view=medicoservicio">Usuarios - Servicios</a></li>

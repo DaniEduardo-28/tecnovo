@@ -382,6 +382,14 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/seguridad/goAccesoSucursal.php");
         break;
+      case 'showFundoCliente':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/showFundoCliente.php");
+        break;
+      case 'goAccesoFundo':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/maintenance/goAccesoFundo.php");
+        break;
       case 'showMoneda':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/configuration/showMoneda.php");

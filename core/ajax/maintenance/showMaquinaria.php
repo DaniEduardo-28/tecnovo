@@ -28,12 +28,6 @@ try {
         $cantidad = isset($DataCantidad["data"][0]["cantidad"]) ? $DataCantidad["data"][0]["cantidad"] : 0;
         $Resultado = $OBJ_MAQUINARIA->show("all", $id_operador, $valor, $offset, $limit);
 
-        // Depuración temporal para revisar el contenido de Resultado
-        echo "<pre>";
-        print_r($Resultado);
-        echo "</pre>";
-        exit; // Detenemos la ejecución para revisar la salida
-
         $retorno_array = [];
         $count = $offset + 1; // Ajuste para paginación
 

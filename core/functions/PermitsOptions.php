@@ -1,6 +1,6 @@
 <?php
 
-function  printCodeOption($controller)
+function printCodeOption($controller)
 {
   $VD = 0;
 
@@ -76,12 +76,15 @@ function  printCodeOption($controller)
       case 'fundos':
         $VD = 209;
         break;
-        case 'operador':
-          $VD = 210;
+      case 'operador':
+        $VD = 210;
+        break;
+      case 'maquinaria':
+        $VD = 211;
+        break;
+        case 'accesofundo':
+          $VD = 212;
           break;
-          case 'maquinaria':
-            $VD = 211;
-            break;
       case 'grupousuario':
         $VD = 301;
         break;
