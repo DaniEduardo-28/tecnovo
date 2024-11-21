@@ -1,23 +1,22 @@
-$(document).ready(function(){
-
+$(document).ready(function () {
   $("#panelForm").addClass("d-none");
   $("#divSinDatos").addClass("d-none");
 
-  $('#btnSearch').click(function(){
+  $('#btnSearch').click(function () {
     showData();
   });
 
-  $("#txtBuscar").keypress(function(e) {
-    if (e.which == 13 ) {
+  $("#txtBuscar").keypress(function (e) {
+    if (e.which == 13) {
       showData();
     }
   });
 
-  $("#cboTipoBuscar").change(function(){
+  $("#cboTipoBuscar").change(function () {
     showData();
-	});
+  });
 
-  $('#btnAdd').click(function(){
+  $('#btnAdd').click(function () {
     $('#frmDatos')[0].reset();
     $('#img_destino').attr('src', "resources/global/images/sin_imagen.png");
     $("#flag_imagen").val("0");
@@ -25,32 +24,29 @@ $(document).ready(function(){
     addClassDiv();
   });
 
-  $("#frmDatos").submit(function(e) {
+  $("#frmDatos").submit(function (e) {
     e.preventDefault();
     saveOperation();
   });
 
-  $('#btnCancel').click(function(){
+  $('#btnCancel').click(function () {
     removeClassDiv();
   });
 
   showData();
 
-  $("#precio").change(function(){
+  $("#precio").change(function () {
     var element = $("#precio");
     element.val(dosDecimales(element));
   });
-
 });
 
-function showData(){
-
+function showData() {
   paginador = $(".pagination");
   var items = 10, numeros = 6;
-  init_paginator(paginador,items,numeros);
+  init_paginator(paginador, items, numeros);
   set_callback(get_data_callback);
   cargaPagina(0);
-
 }
 
 var innerdivHtml1 = '<table class="table clients-contant-table mb-0">';
@@ -66,40 +62,44 @@ innerdivHtml1 += '</tr>';
 innerdivHtml1 += '</thead>';
 innerdivHtml1 += '<tbody></tbody></table>';
 
-function get_data_callback(){
+function get_data_callback() {
   $("#divPaginador").addClass("d-none");
   $("#divDatos").html(innerdivHtml1);
+
+  // Captura de filtros
   var valor = $("#txtBuscar").val();
   var id_tipo_servicio = $("#cboTipoBuscar").val();
+  var id_maquinaria = $("#id_maquinaria").val() || ""; // Filtro maquinaria
   $.ajax({
-		data:{
-  		limit: itemsPorPagina,
-  		offset: desde,
+    data: {
+      limit: itemsPorPagina,
+      offset: desde,
       valor: valor,
       id_tipo_servicio: id_tipo_servicio,
       id_maquinaria: id_maquinaria
-		},
+    },
     beforeSend: function (xhr) {
       showHideLoader('block');
     },
     complete: function (jqXHR, textStatus) {
       showHideLoader('none');
-      if (totalPaginas==1 && pagina==0) {
+      if (totalPaginas == 1 && pagina == 0) {
         paginador.find(".next_link").hide();
       }
     },
-		type:"POST",
-		url:'ajax.php?accion=showServicio'
-	}).done(function(data,textStatus,jqXHR){
+    type: "POST",
+    url: 'ajax.php?accion=showServicio'
+  }).done(function (data, textStatus, jqXHR) {
     try {
       var data1 = JSON.parse(data);
-      if (data1["error"]=="NO") {
+      console.log(data1); // Depuración para verificar datos
 
-        if(pagina==0){
+      if (data1["error"] == "NO") {
+        if (pagina == 0) {
           creaPaginador(data1["cantidad"]);
         }
 
-        // genera el cuerpo de la tabla
+        // Genera el cuerpo de la tabla
         var innerdivHtml = '<table class="table clients-contant-table mb-0">';
         innerdivHtml += '<thead>';
         innerdivHtml += '<tr>';
@@ -125,7 +125,7 @@ function get_data_callback(){
           innerdivHtml += '</div>';
           innerdivHtml += '</td>';
           innerdivHtml += '<td>' + o[i].name_tipo + '</td>';
-          innerdivHtml += '<td>' + o[i].maquinaria_descripcion + '</td>';
+          innerdivHtml += '<td>' + o[i].maquinaria_descripcion + '</td>'; // Cambio aplicado
           innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio + '</td>';
           innerdivHtml += o[i].estado;
           innerdivHtml += '    <td>';
@@ -140,33 +140,33 @@ function get_data_callback(){
         $("#divDatos").html(innerdivHtml);
         $("#divSinDatos").addClass("d-none");
         $("#divPaginador").removeClass("d-none");
+        console.log(data1.data);
 
-      }else {
+      } else {
         console.log(data1["message"]);
         $("#divSinDatos").removeClass("d-none");
         $("#divPaginador").addClass("d-none");
         $("#divDatos").html("");
       }
-    }
-    catch(err) {
-      runAlert("Message",err+data,"warning");
+    } catch (err) {
+      runAlert("Message", err + data, "warning");
       $("#divSinDatos").removeClass("d-none");
       $("#divPaginador").addClass("d-none");
       $("#divDatos").html("");
     }
 
-	}).fail(function(jqXHR,textStatus,textError){
-    runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
-	});
+  }).fail(function (jqXHR, textStatus, textError) {
+    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+  });
 }
 
-function addClassDiv(){
+function addClassDiv() {
   $("#panelForm").removeClass("d-none");
   $("#panelTabla").addClass("d-none");
   $("#panelOptions").addClass("d-none");
 }
 
-function removeClassDiv(){
+function removeClassDiv() {
   $("#panelForm").addClass("d-none");
   $("#panelTabla").removeClass("d-none");
   $("#panelOptions").removeClass("d-none");
@@ -191,8 +191,7 @@ $("#src_imagen").change(function(){
   mostrarImagen(this);
 });
 
-function saveOperation(){
-
+function saveOperation() {
   Swal.fire({
     title: '¿Seguro de confirmar la operación?',
     text: "No podrás revertir esta operación.",
@@ -200,13 +199,13 @@ function saveOperation(){
     showCancelButton: true,
     confirmButtonColor: '#22c63b',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Si, Realizar ahora!'
-  }).then(function(result) {
+    confirmButtonText: 'Sí, realizar ahora!'
+  }).then(function (result) {
     if (result.value) {
       var form = $("#frmDatos");
       var formdata = false;
-      if (window.FormData){
-          formdata = new FormData(form[0]);
+      if (window.FormData) {
+        formdata = new FormData(form[0]);
       }
       $.ajax({
         type: "POST",
@@ -214,23 +213,23 @@ function saveOperation(){
         contentType: false,
         processData: false,
         data: formdata,
-        success: function(data){
-    			try {
+        success: function (data) {
+          try {
             var response = JSON.parse(data);
-            if (response['error']=="SI") {
-              runAlert("Oh No...!!!",response['message'],"warning");
-            }else {
+            if (response['error'] == "SI") {
+              runAlert("Oh No...!!!", response['message'], "warning");
+            } else {
               removeClassDiv();
               showData();
-              runAlert("Bien hecho...!!!",response['message'],"success");
+              runAlert("Bien hecho...!!!", response['message'], "success");
             }
           } catch (e) {
-            runAlert("Oh No...!!!",e + data,"error");
+            runAlert("Oh No...!!!", e + data, "error");
           }
-    		},
-    		error: function(data){
-          runAlert("Oh No...!!!",data,"error");
-    		},
+        },
+    		error: function (data) {
+          runAlert("Oh No...!!!", data, "error");
+        },
         beforeSend: function (xhr) {
           showHideLoader('block');
         },

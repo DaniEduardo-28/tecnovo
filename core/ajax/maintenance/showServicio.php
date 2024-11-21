@@ -45,7 +45,7 @@
           "descripcion_breve" => $key['descripcion_breve'],
           "descripcion_larga" => $key['descripcion_larga'],
           "name_tipo" => $key['name_tipo'],
-          "descripcion" => $key['maquinaria_descripcion'],
+          "maquinaria_descripcion" => $key['maquinaria_descripcion'],
           "precio" => $key['precio'],
           "signo_moneda" => $key['signo_moneda'],
           "src_imagen" => $key['src_imagen'],
