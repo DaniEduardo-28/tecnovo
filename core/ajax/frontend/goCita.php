@@ -18,9 +18,9 @@
       throw new Exception("Para realizar esta operación tiene que iniciar sesión.");
     }
 
-    if ($id_mascota==0) {
+   /*  if ($id_mascota==0) {
       throw new Exception("Campo obligatorio : Seleccionar Operación");
-    }
+    } */
 
     if ($id_sucursal==0) {
       throw new Exception("Campo obligatorio : Seleccionar una sucursal.");

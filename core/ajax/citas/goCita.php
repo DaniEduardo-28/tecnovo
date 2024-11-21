@@ -21,9 +21,9 @@
       throw new Exception("Error al verificar los permisos.");
     }
 
-    if ($id_mascota==0) {
+/*     if ($id_mascota==0) {
       throw new Exception("Campo obligatorio : Seleccionar Operación");
-    }
+    } */
 
     if ($id_trabajador==0) {
       throw new Exception("Campo obligatorio : Seleccionar Usuario de Cita..");

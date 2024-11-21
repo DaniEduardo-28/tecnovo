@@ -218,14 +218,14 @@
                     </div>
                   </div>
 
-                  <div class="form-group col-sm-12">
+                  <!-- <div class="form-group col-sm-12">
                     <label for="id_mascota">Operación:</label>
                     <select name="id_mascota" id="id_mascota"
                       class="form-control" required="true">
 
                     </select>
                   </div>
-
+ -->
                   <div class="form-group col-sm-6">
                     <label for="txtFechaInicio">Fecha Inicio</label>
                     <input type="date" id="txtFechaInicio" name="txtFechaInicio"
