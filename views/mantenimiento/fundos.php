@@ -128,11 +128,11 @@
                                               <input id="direccion" type="text" name="direccion" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
                                             </div>
-                                            <div class="form-group col-md-4 col-sm-3">
+                                            <!-- <div class="form-group col-md-4 col-sm-3">
                                               <label for="cod_ubigeo" class="label-control">Código Ubigeo</label>
                                               <input id="cod_ubigeo" type="text" name="cod_ubigeo" class="form-control"
                                               autocomplete="off" data-msg="Campo obligatorio...">
-                                            </div>
+                                            </div> -->
                                             <div class="form-group col-md-4 col-sm-6">
                                               <label for="telefono" class="label-control">Teléfono</label>
                                               <input id="telefono" type="number" name="telefono" class="form-control"

@@ -18,7 +18,7 @@ var table = $('#example').DataTable({
     ],
     columnDefs: [
       {
-        "targets": [1,2,7,9,10],
+        "targets": [1,2,4,7,9,10],
         "visible": false,
         "searchable": false
       }

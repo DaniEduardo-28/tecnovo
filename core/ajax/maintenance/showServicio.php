@@ -7,6 +7,7 @@
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $id_tipo_servicio = isset($_POST["id_tipo_servicio"])	? $_POST["id_tipo_servicio"]	: "";
+    $id_maquinaria = isset($_POST["id_maquinaria"])	? $_POST["id_maquinaria"]	: "";
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("servicio"));
 
@@ -19,12 +20,12 @@
     }
 
     require_once "core/models/ClassServicio.php";
-    $DataCantidad = $OBJ_SERVICIO->getCount("all",$id_tipo_servicio,$valor);
+    $DataCantidad = $OBJ_SERVICIO->getCount("all",$id_tipo_servicio,$id_maquinaria,$valor);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_SERVICIO->show("all",$id_tipo_servicio,$valor,$offset,$limit);
+      $Resultado = $OBJ_SERVICIO->show("all",$id_tipo_servicio,$id_maquinaria,$valor,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {
@@ -44,6 +45,7 @@
           "descripcion_breve" => $key['descripcion_breve'],
           "descripcion_larga" => $key['descripcion_larga'],
           "name_tipo" => $key['name_tipo'],
+          "descripcion" => $key['maquinaria_descripcion'],
           "precio" => $key['precio'],
           "signo_moneda" => $key['signo_moneda'],
           "src_imagen" => $key['src_imagen'],

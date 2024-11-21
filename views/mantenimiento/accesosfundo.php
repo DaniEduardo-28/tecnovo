@@ -216,11 +216,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </thead>
                               <tbody>
                                 <?php
-                                require("core/models/ClassSucursal.php");
-                                $dataSucursales = $OBJ_SUCURSAL->show(1, "all");
-                                if ($dataSucursales['error'] == "NO") {
+                                require("core/models/ClassFundo.php");
+                                $dataFundos = $OBJ_FUNDO->show(1, "all");
+                                if ($dataFundos['error'] == "NO") {
                                   $num = 1;
-                                  foreach ($dataSucursales['data'] as $key) {
+                                  foreach ($dataFundos['data'] as $key) {
                                 ?>
                                     <tr>
                                       <td><?= $num; ?></td>

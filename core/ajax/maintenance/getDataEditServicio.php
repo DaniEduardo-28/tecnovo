@@ -27,10 +27,12 @@
         $retorno_array[] =array(
           "id_servicio" => $key['id_servicio'],
           "id_tipo_servicio" => $key['id_tipo_servicio'],
+          "id_maquinaria" => $key['id_maquinaria'],
           "name_servicio" => $key['name_servicio'],
           "descripcion_breve" => $key['descripcion_breve'],
           "descripcion_larga" => $key['descripcion_larga'],
           "name_tipo" => $key['name_tipo'],
+          "maquinaria_descripcion" => $key['maquinaria_descripcion'],
           "precio" => $key['precio'],
           "id_moneda" => $key['id_moneda'],
           "estado" => $key['estado'],

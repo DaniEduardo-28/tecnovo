@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($estado,$id_tipo_servicio,$valor) {
+		public function getCount($estado,$id_tipo_servicio,$id_maquinaria,$valor) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -29,6 +29,10 @@
 				if ($id_tipo_servicio!="") {
 					$sql .= " AND s.id_tipo_servicio = ?";
 					$parametros[] = $id_tipo_servicio;
+				}
+				if ($id_maquinaria!="") {
+					$sql .= " AND s.id_maquinaria = ?";
+					$parametros[] = $id_maquinaria;
 				}
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute($parametros);
@@ -66,7 +70,7 @@
 			return $VD;
 		}
 
-		public function show($estado,$id_tipo_servicio,$valor,$offset,$limit) {
+		public function show($estado,$id_tipo_servicio,$id_maquinaria,$valor,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -75,9 +79,10 @@
 			try {
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT s.*,t.name_tipo,M.name_moneda
+				$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion,M.name_moneda
 								FROM `tb_servicio` s
 							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
+								INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria
 								INNER JOIN tb_moneda M ON M.id_moneda = s.id_moneda
 								WHERE (s.name_servicio LIKE ? OR s.descripcion_breve LIKE ?) ";
 				$parametros[] = $valor;
@@ -90,6 +95,10 @@
 				if ($id_tipo_servicio!="") {
 					$sql .= " AND s.id_tipo_servicio = ?";
 					$parametros[] = $id_tipo_servicio;
+				}
+				if ($id_maquinaria!="") {
+					$sql .= " AND s.id_maquinaria = ?";
+					$parametros[] = $id_maquinaria;
 				}
 
 				$sql .= " LIMIT $offset, $limit ";
@@ -126,6 +135,48 @@
 			return $VD;
 		}
 
+		public function showMaquinas($estado_maquinaria = "all") {
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+		
+			try {
+				$parametros = [];
+				$sql = "SELECT q.id_maquinaria, q.descripcion AS maquinaria_descripcion
+						FROM tb_maquinaria q";
+		
+				if ($estado_maquinaria === "activo") {
+					$sql .= " WHERE q.estado = ?";
+					$parametros[] = "activo";
+				}
+		
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute($parametros);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+				// Agrega esta línea para verificar el resultado en el log de PHP
+				error_log(print_r($result, true));
+		
+				$VD1['data'] = $result ? $result : [];
+				$VD1['error'] = "NO";
+				$VD1['message'] = "Success";
+				$VD = $VD1;
+		
+			} catch (PDOException $e) {
+				$VD1['error'] = "SI";
+				$VD1['message'] = $e->getMessage();
+				$VD1['data'] = [];
+			} catch (Exception $exception) {
+				$VD1['error'] = "SI";
+				$VD1['message'] = $exception->getMessage();
+				$VD1['data'] = [];
+			} finally {
+				$conexionClass->Close();
+			}
+		
+			return $VD;
+		}
+
 		public function getDataEditServicio($id_servicio) {
 
 			$conexionClass = new Conexion();
@@ -133,9 +184,10 @@
 			$VD;
 
 			try {
-				$sql = "SELECT s.*,t.name_tipo
+				$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion
 								FROM tb_servicio s
 								INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
+								INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria
 								WHERE  s.id_servicio = ?";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([$id_servicio]);
@@ -169,7 +221,7 @@
 			return $VD;
 		}
 
-		public function insert($id_servicio,$id_tipo_servicio,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv) {
+		public function insert($id_servicio,$id_tipo_servicio,$id_maquinaria,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;
@@ -177,13 +229,13 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_servicio (`id_servicio`, `id_tipo_servicio`, `name_servicio`, `descripcion_breve`, `descripcion_larga`, `precio`, `src_imagen`, `estado`, `id_moneda`, `flag_igv`, `signo_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_servicio (`id_servicio`, `id_tipo_servicio`, `id_maquinaria`, `name_servicio`, `descripcion_breve`, `descripcion_larga`, `precio`, `src_imagen`, `estado`, `id_moneda`, `flag_igv`, `signo_moneda`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(s.id_servicio) WHEN 0 THEN 1 ELSE (MAX(s.id_servicio) + 1) end FROM `tb_servicio` s),";
-				$sql .= "?,?,?,?,?,?,?,?,?,(SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?)";
+				$sql .= "?,?,?,?,?,?,?,?,?,?,(SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?)";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_tipo_servicio,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$src_imagen,$estado,$id_moneda,$flag_igv,$id_moneda]);
+				$stmt->execute([$id_tipo_servicio,$id_maquinaria,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$src_imagen,$estado,$id_moneda,$flag_igv,$id_moneda]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al registrar el producto en la base de datos.");
 				}
@@ -203,7 +255,7 @@
 			return $VD;
 		}
 
-		public function update($id_servicio,$id_tipo_servicio,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv) {
+		public function update($id_servicio,$id_tipo_servicio,$id_maquinaria,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD;
@@ -221,6 +273,7 @@
 
 				$sql = "UPDATE tb_servicio SET ";
 				$sql .=" id_tipo_servicio = ?, ";
+				$sql .=" id_maquinaria = ?, ";
 				$sql .=" name_servicio = ?, ";
 				$sql .=" descripcion_breve = ?, ";
 				$sql .=" descripcion_larga = ?, ";
@@ -231,7 +284,7 @@
 				$sql .=" precio = ? ";
 				$sql .=" WHERE id_servicio = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_tipo_servicio,$name_servicio,$descripcion_breve,$descripcion_larga,$estado,$flag_igv,$id_moneda,$id_moneda,$precio,$id_servicio])==false) {
+				if ($stmt->execute([$id_tipo_servicio,$id_maquinaria,$name_servicio,$descripcion_breve,$descripcion_larga,$estado,$flag_igv,$id_moneda,$id_moneda,$precio,$id_servicio])==false) {
 					throw new Exception("1. Error al actualizar los datos del producto.");
 				}
 
@@ -294,9 +347,10 @@
 
 			try {
 
-				$sql = "SELECT s.*,t.name_tipo
+				$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion
 								FROM `tb_servicio` s
-							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio";
+							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
+							  INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -337,9 +391,10 @@
 
 			try {
 
-				$sql = "SELECT s.*,t.name_tipo
+				$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion
 								FROM `tb_servicio` s
 							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
+							  INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria
 								WHERE s.estado = 'activo'
 								LIMIT $cantidad";
 				$stmt = $conexion->prepare($sql);
@@ -382,9 +437,10 @@
 
 			try {
 
-				$sql = "SELECT s.*,t.name_tipo
+				$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion
 								FROM `tb_servicio` s
 							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
+							  INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria
 								WHERE s.estado = 'activo'";
 				$stmt = $conexion->prepare($sql);
 				$stmt->execute([]);

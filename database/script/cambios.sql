@@ -5,6 +5,7 @@ CREATE TABLE `tb_maquinaria` (
   `observaciones` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
   `estado` enum('activo', 'inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
 );
+ALTER TABLE `tb_maquinaria` CHANGE `id_maquinaria` `id_maquinaria` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id_maquinaria`);
 
 CREATE TABLE `tb_fundo` (
   `id_fundo` int NOT NULL,
@@ -68,7 +69,10 @@ CREATE TABLE `tb_cliente_fundo` (
   `id_fundo` int DEFAULT NULL,
   `cantidad_hc` float DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
-
+ -- ID volverla PRIMARY KEY
+ALTER TABLE `tb_cliente_fundo` CHANGE `id` `id` BIGINT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id`);
+ -- Añadir su número de opción
+UPDATE `tb_opcion` SET `name_opcion` = 'Acceso a Fundos', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 212;
 
 -- Añadir las siguientes vistas
 -- Vista de clientes
@@ -103,3 +107,8 @@ FROM
             )
         )
     )
+
+-- agregar la nueva unidad de medida de tiempo para medir el 
+    INSERT INTO `tb_unidad_medida` (`id_unidad_medida`, `name_unidad`, `cod_sunat`, `estado`) VALUES (NULL, 'HORAS', 'H', '1');
+ -- Convertir id_maquinaria en llave foránea
+    ALTER TABLE tb_servicio ADD CONSTRAINT fk_id_maquinaria FOREIGN KEY (id_maquinaria) REFERENCES tb_maquinaria (id_maquinaria) ON DELETE CASCADE ON UPDATE CASCADE;
