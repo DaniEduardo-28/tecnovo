@@ -112,3 +112,5 @@ FROM
     INSERT INTO `tb_unidad_medida` (`id_unidad_medida`, `name_unidad`, `cod_sunat`, `estado`) VALUES (NULL, 'HORAS', 'H', '1');
  -- Convertir id_maquinaria en llave foránea
     ALTER TABLE tb_servicio ADD CONSTRAINT fk_id_maquinaria FOREIGN KEY (id_maquinaria) REFERENCES tb_maquinaria (id_maquinaria) ON DELETE CASCADE ON UPDATE CASCADE;
+
+    ALTER TABLE tb_cita DROP FOREIGN KEY tb_cita_id_mascota_foreign;
