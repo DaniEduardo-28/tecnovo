@@ -154,8 +154,7 @@
         aria-labelledby="modal-calendario-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="modal-calendario-label">Nueva Cita</h5>
+            <div class="modal-header">Nueva Cita</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -174,7 +173,7 @@
                       if ($dataMedico["error"]=="NO") {
                          foreach ($dataMedico["data"] as $key) {
                           ?>
-                            <option value="<?=$key['id_trabajador'];?>"><?=$key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] . ' (' . $key['name_especialidad'] . ') ' ?></option>
+                            <option value="<?=$key['id_trabajador'];?>"><?=$key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?></option>
                           <?php
                          }
                       }
@@ -251,7 +250,7 @@
                   </div>
 
                   <div class="form-group col-sm-12">
-                    <label for="txtSintomas">Observaciones y/o Sintomas</label>
+                    <label for="txtSintomas">Observaciones</label>
                     <textarea name="txtSintomas" rows="8" cols="80" class="form-control"
                       id="txtSintomas"></textarea>
                   </div>

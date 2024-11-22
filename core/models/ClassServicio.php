@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= "";
 
 			try {
 				$valor = "%$valor%";
@@ -74,7 +74,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 				$valor = "%$valor%";
@@ -181,7 +181,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 				$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion
@@ -224,7 +224,7 @@
 		public function insert($id_servicio,$id_tipo_servicio,$id_maquinaria,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
@@ -258,7 +258,7 @@
 		public function update($id_servicio,$id_tipo_servicio,$id_maquinaria,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
@@ -313,7 +313,7 @@
 		public function delete($id_servicio) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= "";
 			try {
 
 				$conexion->beginTransaction();
@@ -343,7 +343,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD ="";
 
 			try {
 
@@ -387,7 +387,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -433,7 +433,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD= "";
 
 			try {
 
