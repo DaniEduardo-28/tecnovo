@@ -114,3 +114,20 @@ FROM
     ALTER TABLE tb_servicio ADD CONSTRAINT fk_id_maquinaria FOREIGN KEY (id_maquinaria) REFERENCES tb_maquinaria (id_maquinaria) ON DELETE CASCADE ON UPDATE CASCADE;
 
     ALTER TABLE tb_cita DROP FOREIGN KEY tb_cita_id_mascota_foreign;
+
+
+
+UPDATE `tb_opcion` SET `name_opcion` = 'Tipo de Cosecha', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 115;
+
+
+-- Estructura de tabla para la tabla `tb_tipo_cosecha`
+--
+CREATE TABLE `tb_tipo_cosecha` (
+  `id_tipo_cosecha` bigint UNSIGNED NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL,
+  `estado` enum('activo', 'inactivo') CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+--
+-- Volcado de datos para la tabla `tb_tipo_cosecha`
+--

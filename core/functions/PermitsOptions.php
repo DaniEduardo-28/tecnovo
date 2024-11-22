@@ -49,6 +49,9 @@ function printCodeOption($controller)
       case 'metodoenvio':
         $VD = 114;
         break;
+      case 'tipocosecha':
+        $VD = 115;
+        break;
       case 'cliente':
         $VD = 201;
         break;
@@ -82,9 +85,9 @@ function printCodeOption($controller)
       case 'maquinaria':
         $VD = 211;
         break;
-        case 'accesofundo':
-          $VD = 212;
-          break;
+      case 'accesofundo':
+        $VD = 212;
+        break;
       case 'grupousuario':
         $VD = 301;
         break;

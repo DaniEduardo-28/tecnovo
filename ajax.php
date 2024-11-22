@@ -82,6 +82,19 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/configuration/deleteTipoServicio.php");
         break;
+
+      case 'showTipoCosecha':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/showTipoCosecha.php");
+        break;
+      case 'goTipoCosecha':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/goTipoCosecha.php");
+        break;
+      case 'deleteTipoCosecha':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/deleteTipoCosecha.php");
+        break;
       case 'showTipoMascota':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/configuration/showTipoMascota.php");
