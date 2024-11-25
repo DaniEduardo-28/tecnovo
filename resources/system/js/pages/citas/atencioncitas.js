@@ -167,16 +167,13 @@ function crearCalendario(){
   var id_documento = $('#cboDocumentoBuscar').val();
   var valor = $('#txtBuscar').val();
   var calendario = $('#calendario').fullCalendar({  // assign calendar
-    defaultView: 'agendaWeek',
+    defaultView: 'month',
     editable: false,
     selectable: false,
     allDaySlot: false,
     locale: 'es', // Idioma
     //titleFormat: '[Horario Carrera, Semestre y Sección]', //Título
-    weekends: true, // Oculta fin de semana
-    minTime: '07:00:00', //Hora Mínima Mostrada
-    maxTime: '22:00:00', //Hora Máxima Mostrada
-    slotDuration : '00:15:00', //Intervalo de Tiempo entre Horas
+    weekends: false, // Oculta fin de semana
     displayEventTime: true,
     displayEventEnd: true,
     columnHeader: true,

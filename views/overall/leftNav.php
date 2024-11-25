@@ -224,6 +224,9 @@
             <?php if ($flag_atencioncitas): ?>
               <li id="submenuatencioncitas"> <a href="?view=atencioncitas">Atención de Cronograma</a></li>
             <?php endif; ?>
+            <!-- <?php if ($flag_historialclinico): ?>
+              <li id="submenuhistorialclinico"> <a href="?view=historialclinico">Historial Clínico</a></li>
+            <?php endif; ?> -->
           </ul>
         </li>
 

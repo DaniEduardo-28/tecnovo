@@ -154,7 +154,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                       echo '<option value="' . $key['id_trabajador'] . '">' . $key['nombre_operador'] . '</option>';
                                     }
                                   } else {
-                                    echo '<option value="">No hay trabajadores activos</option>';
+                                    echo '<option value="">No hay operadores activos</option>';
                                   }
                                   ?>
                                 </select>
