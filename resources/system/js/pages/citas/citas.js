@@ -26,6 +26,14 @@ $(document).ready(function(){
   //   cargarServicios();
   // });
 
+  $('#id_maquinaria').change(function () {
+    var id_maquinaria = $(this).val();
+    if (id_maquinaria) {
+        cargarOperadorPorMaquinaria(id_maquinaria); // Llama a la función con el ID de la maquinaria seleccionada
+    }
+});
+
+
   $('#cboDocumentoBuscar').change(function(){
     crearCalendario();
   });
@@ -223,6 +231,34 @@ $(document).ready(function(){
   
 
 });
+
+
+function cargarOperadorPorMaquinaria(id_maquinaria) {
+  console.log("Enviando solicitud para ID de maquinaria:", id_maquinaria);
+  $.ajax({
+      url: 'ajax.php?accion=getOperadorPorMaquinaria',
+      type: 'POST',
+      dataType: 'json',
+      data: { id_maquinaria: id_maquinaria },
+      success: function (response) {
+          console.log("Respuesta del servidor:", response);
+          if (response.error === "NO") {
+              $("#id_trabajador").empty();
+              response.data.forEach(function (operador) {
+                  $("#id_trabajador").append(
+                      `<option value="${operador.id_trabajador}">${operador.nombre}</option>`
+                  );
+              });
+          } else {
+              console.error(response.message);
+          }
+      },
+      error: function (xhr, status, error) {
+          console.error("Error en la solicitud AJAX:", error);
+      }
+  });
+}
+
 
 function validarYEnviar() {
 var number_document = $("#num_documento").val();
@@ -690,7 +726,7 @@ calendarioEvent.on('eventResize', function(event, delta, revertFunc, jsEvent, ui
 
 
 function cargarServicios(){
- $('#cboServicioForm').empty();
+/*  $('#cboServicioForm').empty();
  var id_trabajador = $("#id_trabajador").val();
  $.ajax({
    url: "ajax.php?accion=showServicioMedico",
@@ -723,7 +759,7 @@ function cargarServicios(){
    complete: function (jqXHR, textStatus) {
      showHideLoader('none');
    }
- });
+ }); */
 
 }
 

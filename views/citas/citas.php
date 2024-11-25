@@ -184,7 +184,7 @@
                   </select>
                 </div>
 
-                  <div class="form-group col-sm-12">
+                  <!-- <div class="form-group col-sm-12">
                    <label for="id_trabajador">Operador</label>
                    <select class="form-control" id="id_trabajador" name="id_trabajador">
                       <?php
@@ -198,15 +198,34 @@
                       }
                       ?>
                    </select>
-                  </div>
+                  </div> -->
 
                   <div class="form-group col-sm-12">
+                  <label for="id_trabajador">Operador</label>
+                  <select class="form-control" id="id_trabajador" name="id_trabajador">
+                  <option value="all">Seleccione...</option>
+                    <?php
+                    $dataOperador = $OBJ_MAQUINARIA->showOperators("activo");
+                    if ($dataOperador["error"] == "NO") {
+                      foreach ($dataOperador["data"] as $key) {
+                    ?>
+                        <option value="<?= $key['id_trabajador']; ?>"><?= $key['nombre_operador']; ?></option>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                  <!-- <div class="form-group col-sm-12">
                     <label for="cboServicioForm">Servicio:</label>
                     <select name="cboServicioForm" id="cboServicioForm"
                       class="form-control" required="true">
 
                     </select>
-                  </div>
+                  </div> -->
+
+                  
 
                   <div class="form-group col-sm-12">
                    <label for="id_documento">Documento Cliente</label>

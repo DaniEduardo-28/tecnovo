@@ -364,6 +364,41 @@
 			return $VD;
 		}
 
+		public function getOperadorPorMaquinaria($id_maquinaria) {
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+		
+			try {
+				$sql = "SELECT T.id_trabajador, CONCAT(P.nombres, ' ', P.apellidos) AS nombre
+						FROM tb_trabajador T
+						INNER JOIN tb_maquinaria M ON M.id_trabajador = T.id_trabajador
+						INNER JOIN tb_persona P ON P.id_persona = T.id_persona
+						WHERE M.id_maquinaria = ? AND T.estado = 'activo'";
+				$stmt = $conexion->prepare($sql);
+				$stmt->execute([$id_maquinaria]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+				if (count($result) == 0) {
+					throw new Exception("No se encontraron operadores para la maquinaria.");
+				}
+		
+				$VD['error'] = "NO";
+				$VD['message'] = "Operador encontrado.";
+				$VD['data'] = $result;
+		
+			} catch (Exception $e) {
+				$VD['error'] = "SI";
+				$VD['message'] = $e->getMessage();
+			} finally {
+				$conexionClass->Close();
+			}
+		
+			return $VD;
+		}
+		
+		
+
 	}
 
 	$OBJ_CITA = new ClassCita();
