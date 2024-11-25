@@ -4,7 +4,7 @@ $id_maquinaria = isset($_POST["id_maquinaria"]) ? $_POST["id_maquinaria"] : "";
 $estado = isset($_POST["estado"]) ? 1 : 0;
 $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
 $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
-$id_operador = isset($_POST["id_operador"]) ? $_POST["id_operador"] : "";
+$id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : ""; 
 $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
 try {
@@ -32,8 +32,8 @@ try {
     }
 
     // Validaciones de campos obligatorios
-    if (empty(trim($id_operador))) {
-        throw new Exception("Campo obligatorio: Operador.");
+    if (empty(trim($id_trabajador))) { // Cambiado de id_operador a id_trabajador
+        throw new Exception("Campo obligatorio: Operador."); // Cambiado mensaje
     }
 
     if (empty(trim($descripcion))) {
@@ -47,7 +47,7 @@ try {
     switch ($accion) {
         case 'add':
             error_log("Creando nuevo registro"); // Log temporal para agregar
-            $VD = $OBJ_MAQUINARIA->insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador);
+            $VD = $OBJ_MAQUINARIA->insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador); // Cambiado argumento
             break;
         case 'edit':
             // Validar que se esté recibiendo un id_maquinaria válido para editar
@@ -55,7 +55,7 @@ try {
                 throw new Exception("ID de maquinaria no recibido para la edición.");
             }
             error_log("Actualizando registro con ID: $id_maquinaria"); // Log temporal para editar
-            $VD = $OBJ_MAQUINARIA->update($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador);
+            $VD = $OBJ_MAQUINARIA->update($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador); // Cambiado argumento
             break;
         default:
             throw new Exception("Operación no válida.");

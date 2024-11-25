@@ -143,18 +143,18 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   autocomplete="off" required data-msg="Campo obligatorio...">
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
-                                <label for="id_operador" class="label-control">Operador Seleccionado</label>
-                                <select name="id_operador" id="id_operador" class="form-control" required>
+                                <label for="id_trabajador" class="label-control">Operador Seleccionado</label>
+                                <select name="id_trabajador" id="id_trabajador" class="form-control" required>
                                   <option value="">Seleccione...</option>
                                   <?php
                                   include("core/models/ClassMaquinaria.php");
-                                  $dataOperador = $OBJ_MAQUINARIA->showOperators("activo");
-                                  if ($dataOperador["error"] == "NO" && !empty($dataOperador["data"])) {
-                                    foreach ($dataOperador["data"] as $key) {
-                                      echo '<option value="' . $key['id_operador'] . '">' . $key['nombre_operador'] . '</option>';
+                                  $dataTrabajador = $OBJ_MAQUINARIA->showOperators("activo"); // Llama solo a trabajadores activos
+                                  if ($dataTrabajador["error"] == "NO" && !empty($dataTrabajador["data"])) {
+                                    foreach ($dataTrabajador["data"] as $key) {
+                                      echo '<option value="' . $key['id_trabajador'] . '">' . $key['nombre_operador'] . '</option>';
                                     }
                                   } else {
-                                    echo '<option value="">No hay operadores activos</option>';
+                                    echo '<option value="">No hay trabajadores activos</option>';
                                   }
                                   ?>
                                 </select>

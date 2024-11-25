@@ -71,7 +71,7 @@ function resetForm() {
     $("#accion").val("add");
     $("#descripcion").val("");
     $("#observaciones").val("");
-    $("#id_operador").val("");
+    $("#id_trabajador").val("");
     $("#estado").prop('checked', false);
 }
 
@@ -169,7 +169,7 @@ function editData(id_maquinaria) {
                     $("#id_maquinaria").val(o.id_maquinaria);
                     $("#descripcion").val(o.descripcion);
                     $("#observaciones").val(o.observaciones);
-                    $("#id_operador").val(o.id_operador);
+                    $("#id_trabajador").val(o.id_trabajador); // Cambia a id_trabajador
                     $("#estado").prop('checked', o.estado === "activo");
                     $("#accion").val("edit");
                     addClassDiv();

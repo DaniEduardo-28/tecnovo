@@ -7,7 +7,7 @@ try {
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"]) : 6;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"]) >= 0 ? intval($_POST["offset"]) : 0;
     $valor = isset($_POST["valor"]) ? $_POST["valor"] : "";
-    $id_operador = isset($_POST["id_operador"]) ? $_POST["id_operador"] : "";
+    $id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : ""; // Cambiado de id_operador a id_trabajador
 
     // Verificación de permisos
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinaria"));
@@ -22,11 +22,11 @@ try {
 
     // Importar la clase y obtener la cantidad de registros y los datos
     require_once "core/models/ClassMaquinaria.php";
-    $DataCantidad = $OBJ_MAQUINARIA->getCount("all", $id_operador, $valor);
+    $DataCantidad = $OBJ_MAQUINARIA->getCount("all", $id_trabajador, $valor);
 
     if ($DataCantidad["error"] == "NO") {
         $cantidad = isset($DataCantidad["data"][0]["cantidad"]) ? $DataCantidad["data"][0]["cantidad"] : 0;
-        $Resultado = $OBJ_MAQUINARIA->show("all", $id_operador, $valor, $offset, $limit);
+        $Resultado = $OBJ_MAQUINARIA->show("all", $id_trabajador, $valor, $offset, $limit); // Cambiado argumento
 
         $retorno_array = [];
         $count = $offset + 1; // Ajuste para paginación

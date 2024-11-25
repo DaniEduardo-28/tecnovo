@@ -132,9 +132,9 @@
             <?php if ($flag_proveedor): ?>
               <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
             <?php endif; ?>
-            <?php if ($flag_operador): ?>
+            <!-- <?php if ($flag_operador): ?>
               <li id="menuoperador"> <a href="?view=operador">Operadores</a> </li>
-            <?php endif; ?>
+            <?php endif; ?> -->
             <?php if ($flag_fundos): ?>
               <li id="menufundo"> <a href="?view=fundos">Fundos</a> </li>
             <?php endif; ?>

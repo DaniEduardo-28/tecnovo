@@ -6,7 +6,7 @@ class ClassMaquinaria extends Conexion {
     public function __construct(){
     }
 
-    public function getCount($estado, $id_operador, $valor) {
+    public function getCount($estado, $id_trabajador, $valor) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
         $VD = "";
@@ -24,9 +24,9 @@ class ClassMaquinaria extends Conexion {
                 $sql .= " AND m.estado = ?";
                 $parametros[] = $estado;
             }
-            if ($id_operador != "") {
+            if ($id_trabajador != "") {
                 $sql .= " AND m.id_operador = ?";
-                $parametros[] = $id_operador;
+                $parametros[] = $id_trabajador;
             }
 
             $stmt = $conexion->prepare($sql);
@@ -57,7 +57,7 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
-    public function show($estado, $id_operador, $valor, $offset, $limit) {
+    public function show($estado, $id_trabajador, $valor, $offset, $limit) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
         $VD = "";
@@ -67,9 +67,9 @@ class ClassMaquinaria extends Conexion {
             $parametros = null;
             $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM tb_maquinaria m
-                    INNER JOIN tb_operador o ON o.id_operador = m.id_operador
-                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona
-                    WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?)";
+                    INNER JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
+                    INNER JOIN tb_persona p ON t.id_persona = p.id_persona
+                    WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?) AND t.flag_medico = 1";
             $parametros[] = $valor;
             $parametros[] = $valor;
 
@@ -77,9 +77,9 @@ class ClassMaquinaria extends Conexion {
                 $sql .= " AND m.estado = ?";
                 $parametros[] = $estado;
             }
-            if ($id_operador != "") {
-                $sql .= " AND m.id_operador = ?";
-                $parametros[] = $id_operador;
+            if ($id_trabajador != "") {
+                $sql .= " AND m.id_trabajador = ?";
+                $parametros[] = $id_trabajador;
             }
 
             $sql .= " LIMIT $offset, $limit ";
@@ -119,12 +119,13 @@ class ClassMaquinaria extends Conexion {
     
         try {
             $parametros = [];
-            $sql = "SELECT o.id_operador, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
-                    FROM tb_operador o
-                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona";
+            $sql = "SELECT t.id_trabajador, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
+                    FROM tb_trabajador t
+                    INNER JOIN tb_persona p ON t.id_persona = p.id_persona
+                    WHERE t.flag_medico = 1 AND t.estado = 'activo'"; // Filtrar trabajadores activos
     
             if ($estado_operador === "activo") {
-                $sql .= " WHERE o.estado = ?";
+                $sql .= " AND t.estado = ?";
                 $parametros[] = "activo";
             }
     
@@ -163,8 +164,8 @@ class ClassMaquinaria extends Conexion {
         try {
             $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM tb_maquinaria m
-                    INNER JOIN tb_operador o ON o.id_operador = m.id_operador
-                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona
+                    INNER JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
+                    INNER JOIN tb_persona p ON t.id_persona = p.id_persona
                     WHERE m.id_maquinaria = ?";
             $stmt = $conexion->prepare($sql);
             $stmt->execute([$id_maquinaria]);
@@ -194,7 +195,7 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
-    public function insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador) {
+    public function insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
         $VD = "";
@@ -202,10 +203,10 @@ class ClassMaquinaria extends Conexion {
         try {
             $conexion->beginTransaction();
 
-            $sql = "INSERT INTO tb_maquinaria (`id_maquinaria`, `descripcion`, `observaciones`, `estado`, `id_operador`) VALUES
+            $sql = "INSERT INTO tb_maquinaria (`id_maquinaria`, `descripcion`, `observaciones`, `estado`, `id_trabajador`) VALUES
                     ((SELECT CASE COUNT(m.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(m.id_maquinaria) + 1) END FROM `tb_maquinaria` m), ?, ?, ?, ?)";
             $stmt = $conexion->prepare($sql);
-            $stmt->execute([$descripcion, $observaciones, $estado, $id_operador]);
+            $stmt->execute([$descripcion, $observaciones, $estado, $id_trabajador]);
 
             if ($stmt->rowCount() == 0) {
                 throw new Exception("Ocurrió un error al insertar el registro.");
@@ -227,31 +228,29 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
-    public function update($id_maquinaria, $descripcion, $observaciones, $estado, $id_operador) {
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
+    public function update($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador) {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD = "";
 	
 		try {
 			$conexion->beginTransaction();
-	
-			// Verificar si el ID existe antes de intentar actualizar
-			$stmt = $conexion->prepare("SELECT COUNT(*) FROM `tb_maquinaria` WHERE id_maquinaria = ?");
-			$stmt->execute([$id_maquinaria]);
-			$exists = $stmt->fetchColumn();
+
+            $stmt = $conexion->prepare("SELECT COUNT(*) FROM `tb_maquinaria` WHERE id_maquinaria = ?");
+            $stmt->execute([$id_maquinaria]);
+            $exists = $stmt->fetchColumn();
 	
 			if ($exists == 0) {
-				throw new Exception("No se encontró el registro de maquinaria a editar.");
-			}
-	
-			// Si existe, proceder con la actualización
-			$sql = "UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ?, id_operador = ? WHERE id_maquinaria = ?";
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$descripcion, $observaciones, $estado, $id_operador, $id_maquinaria]);
-	
-			if ($stmt->rowCount() == 0) {
-				throw new Exception("Error al actualizar los datos.");
-			}
+                throw new Exception("No se encontró el registro de maquinaria a editar.");
+            }
+
+            $sql = "UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ?, id_trabajador = ? WHERE id_maquinaria = ?";
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute([$descripcion, $observaciones, $estado, $id_trabajador, $id_maquinaria]);
+
+            if ($stmt->rowCount() == 0) {
+                throw new Exception("Error al actualizar los datos.");
+            }
 	
 			$VD = "OK";
 			$conexion->commit();
@@ -309,10 +308,11 @@ class ClassMaquinaria extends Conexion {
         try {
             $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM `tb_maquinaria` m
-                    INNER JOIN tb_operador o ON o.id_operador = m.id_operador
-                    INNER JOIN tb_persona p ON o.id_persona = p.id_persona";
+                    INNER JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
+                    INNER JOIN tb_persona p ON t.id_persona = p.id_persona
+                    WHERE t.flag_medico = 1";
             $stmt = $conexion->prepare($sql);
-            $stmt->execute([]);
+            $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             if (count($result) == 0) {

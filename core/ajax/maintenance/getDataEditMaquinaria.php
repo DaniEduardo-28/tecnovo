@@ -32,7 +32,7 @@ try {
                 "descripcion" => $key['descripcion'],
                 "observaciones" => $key['observaciones'],
                 "estado" => $key['estado'],
-                "id_operador" => $key['id_operador'],
+                "id_trabajador" => $key['id_trabajador'],
                 "nombre_operador" => $key['nombre_operador']
             );
         }

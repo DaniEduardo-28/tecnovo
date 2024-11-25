@@ -129,5 +129,5 @@ CREATE TABLE `tb_tipo_cosecha` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 --
--- Volcado de datos para la tabla `tb_tipo_cosecha`
---
+-- Cambio en la tabla tb_maquinaria
+ALTER TABLE `tb_maquinaria` CHANGE `id_operador` `id_trabajador` INT NOT NULL;
