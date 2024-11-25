@@ -728,43 +728,6 @@ function cargarServicios(){
 }
 
 function cargarMascotas(){
-// $('#id_mascota').empty();
-// var id_documento = $("#id_documento").val();
-// var num_documento = $("#num_documento").val();
-// $.ajax({
-//   url: "ajax.php?accion=showMascotasDocumento",
-//   type: "POST",
-//   data:{
-//     id_documento: id_documento,
-//     num_documento: num_documento,
-//   },
-//   success : function(data) {
-//     try {
-//       var data1 = JSON.parse(data);
-//       if (data1["error"]=="NO") {
-//         var o = data1["data"];
-//         for (var i = 0; i < o.length; i++) {
-//           $('#id_mascota').append('<option value="' + o[i].id_mascota + '">' + o[i].nombre + '</option>');
-//         }
-//       }else {
-//         console.log(data1["message"]);
-//       }
-//     } catch (e) {
-//       runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
-//       showHideLoader('none');
-//     }
-//   },
-//   beforeSend: function (xhr) {
-//     showHideLoader('block');
-//   },
-//   error: function (jqXHR, textStatus, errorThrown) {
-//     runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
-//   },
-//   complete: function (jqXHR, textStatus) {
-//     showHideLoader('none');
-//   }
-// });
-
 }
 
 function registrarCita(){
