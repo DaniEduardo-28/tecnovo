@@ -75,7 +75,7 @@
                          <div class="row">
 
                            <div class="form-group col-sm-6 col-md-4">
-                            <label for="cboMedicoBuscar">Usuario</label>
+                            <label for="cboMedicoBuscar">Operador</label>
                             <select class="form-control" id="cboMedicoBuscar" name="cboMedicoBuscar">
                               <option value="all">Todos</option>
                               <?php
@@ -84,7 +84,7 @@
                                 if ($dataMedico["error"]=="NO") {
                                    foreach ($dataMedico["data"] as $key) {
                                     ?>
-                                      <option value="<?=$key['id_trabajador'];?>"><?=$key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] . ' (' . $key['name_especialidad'] . ') ' ?></option>
+                                      <option value="<?=$key['id_trabajador'];?>"><?=$key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?></option>
                                     <?php
                                    }
                                 }
@@ -154,7 +154,7 @@
         aria-labelledby="modal-calendario-label" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header">Nueva Cita</h5>
+            <div class="modal-header">Nueva Registro</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -165,8 +165,27 @@
 
                 <div class="row">
 
+
+                <div class="form-group col-sm-12">
+                  <label for="id_maquina">Maquinaria</label>
+                  <select class="form-control" id="id_maquina" name="id_maquina">
+                    <option value="all">Seleccione...</option>
+                    <?php
+                    include("core/models/ClassMaquinaria.php");
+                    $dataMaquinaria = $OBJ_MAQUINARIA->show("activo", "", "", 0, 10);
+                    if ($dataMaquinaria["error"] == "NO") {
+                      foreach ($dataMaquinaria["data"] as $key) {
+                    ?>
+                        <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+
                   <div class="form-group col-sm-12">
-                   <label for="id_trabajador">Usuario</label>
+                   <label for="id_trabajador">Operador</label>
                    <select class="form-control" id="id_trabajador" name="id_trabajador">
                       <?php
                       $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);

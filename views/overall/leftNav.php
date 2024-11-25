@@ -151,7 +151,7 @@
               <li id="menuaccesofundo"> <a href="?view=accesosfundo">Acceso a Fundos</a> </li>
             <?php endif; ?>
             <?php if ($flag_medicoservicio): ?>
-              <li id="menumedicoservicio"> <a href="?view=medicoservicio">Usuarios - Servicios</a></li>
+              <li id="menumedicoservicio"> <a href="?view=medicoservicio">Operadores - Servicios</a></li>
             <?php endif; ?>
           </ul>
         </li>
