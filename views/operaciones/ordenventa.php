@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Facturación | <?=APP_TITLE;?> </title>
+    <title>Salida de Productos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -74,7 +74,7 @@
                                       Operaciones
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Facturación
+                                      Salida de Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -119,7 +119,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Facturación</h4>
+                                        <h4 class="card-title">Salida de Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -146,7 +146,7 @@
                                           <div class="row">
 
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="codigo_documento_venta">Doc. Venta(*)</label>
+                                              <label for="codigo_documento_venta">Doc. Salida(*)</label>
                                               <select class="form-control" name="codigo_documento_venta"
                                                     id="codigo_documento_venta" required>
                                                 <option value="">Seleccione</option>
@@ -172,7 +172,7 @@
                                               <input type="text" name="correlativo" id="correlativo" readonly class="form-control">
                                             </div>
                                             <div class="form-group col-md-4 col-sm-6">
-                                              <label for="codigo_documento_cliente">Doc. Cliente (*)</label>
+                                              <label for="codigo_documento_cliente">Doc. Identidad (*)</label>
                                               <select class="form-control" name="codigo_documento_cliente"
                                                     id="codigo_documento_cliente" required>
                                                 <option value="">Seleccione</option>
@@ -202,12 +202,12 @@
                                               <input type="text" name="apellidos" id="apellidos"
                                               class="form-control" autocomplete="off">
                                             </div>
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            <!-- <div class="form-group col-md-4 col-sm-6">
                                               <label for="direccion">Dirección (Obigatorio para RUC)</label>
                                               <input type="text" name="direccion" id="direccion"
                                               class="form-control" autocomplete="off">
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            </div> -->
+                                            <!-- <div class="form-group col-md-4 col-sm-6">
                                               <label for="telefono">Teléfono</label>
                                               <input type="tel" name="telefono" id="telefono"
                                               class="form-control" autocomplete="off">
@@ -216,13 +216,13 @@
                                               <label for="correo">E-mail</label>
                                               <input type="email" name="correo" id="correo"
                                               class="form-control" autocomplete="off">
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            </div> -->
+                                            <!-- <div class="form-group col-md-4 col-sm-6">
                                               <label for="fecha">Fecha(*)</label>
                                               <input type="date" name="fecha" id="fecha"
                                               class="form-control" required value="<?=date("Y-m-d");?>">
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6">
+                                            </div> -->
+                                            <!-- <div class="form-group col-md-4 col-sm-6">
                                               <label for="codigo_moneda">Moneda(*)</label>
                                               <select class="form-control" name="codigo_moneda"
                                                     id="codigo_moneda" required>
@@ -241,7 +241,7 @@
                                                   }
                                                 ?>
                                               </select>
-                                            </div>
+                                            </div> -->
                                             <div class="form-group col-md-4 col-sm-6 d-none">
                                               <label for="codigo_forma_pago">Método de Pago(*)</label>
                                               <select class="form-control" name="codigo_forma_pago"
@@ -268,16 +268,16 @@
                                             </div>
 
                                             <div class="form-group col-md-12">
-                                              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                              <div class="btn-group btn-group-toggle d-none" data-toggle="buttons">
                                                 <label class="btn btn-info active">
-                                                  <input type="radio" name="opcion_busqueda" value="servicio" id="opcion_servicio" autocomplete="off" checked> Servicio
+                                                  <input type="radio" name="opcion_busqueda" value="producto" id="opcion_accesorio" autocomplete="off" checked> Producto
                                                 </label>
-                                                <label class="btn btn-info">
+                                                <!-- <label class="btn btn-info active">
                                                   <input type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Producto
-                                                </label>
-                                                <label class="btn btn-info d-none">
+                                                </label> -->
+                                                <!-- <label class="btn btn-info d-none">
                                                   <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Producto
-                                                </label>
+                                                </label> -->
                                               </div>
                                               <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
                                             </div>
@@ -313,7 +313,7 @@
                                             <div class="col-sm-8">
                                               <label for="">&nbsp;</label>
                                             </div>
-                                            <div class="col-sm-4">
+                                            <!-- <div class="col-sm-4">
                                               <div class="form-group row">
                                                 <label for="txtTotalDescuento" class="col-sm-4 col-form-label">Descuento Total</label>
                                                 <div class="col-sm-8">
@@ -355,12 +355,12 @@
                                                 </div>
                                               </div>
 
-                                            </div>
+                                            </div> -->
                                           </div>
 
                                           <div class="row">
                                             <div class="form-group col-md-12">
-                                              <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar y Pagar</button>
+                                              <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar</button>
                                               <button type="submit" name="btnSaveBorrador" id="btnSaveBorrador" name="button" class="btn btn-warning float-right"> <span class="fa fa-save"></span> Guardar Borrador</button>
                                               <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-arrow-left"></span> Volver</button>
                                             </div>
@@ -374,7 +374,7 @@
 
                                       <div class="row">
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoDocVentaBuscar" class="label-control">Documento de Venta</label>
+                                          <label for="cboTipoDocVentaBuscar" class="label-control">Documento de Salida</label>
                                           <select name="cboTipoDocVentaBuscar" id="cboTipoDocVentaBuscar" class="form-control">
                                             <option value="">Todos</option>
                                             <?php
@@ -391,7 +391,7 @@
                                         </div>
 
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoDocuClieBuscar">Documento de Cliente</label>
+                                          <label for="cboTipoDocuClieBuscar">Documento de Identidad</label>
                                           <select class="form-control" id="cboTipoDocuClieBuscar" name="cboTipoDocuClieBuscar">
                                             <option value="">Todos</option>
                                             <?php
@@ -495,7 +495,7 @@
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="title_modal">Agregar Servicio</h5>
+            <h5 class="modal-title" id="title_modal">Agregar Producto</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

@@ -29,6 +29,14 @@
         background-color: #ddd;
       }
     </style>
+
+<style>
+  /* Oculta la columna de Precio Venta */
+  .ocultar-precio-venta th:nth-child(7), /* Encabezado de la columna */
+  .ocultar-precio-venta td:nth-child(7)  /* Celdas de la columna */ {
+    display: none;
+  }
+</style>
   </head>
 
   <body>
@@ -235,12 +243,12 @@
                                               step="0.10" >
                                             </div>
 
-                                            <div class="form-group col-md-3 col-sm-4">
+                                            <!-- <div class="form-group col-md-3 col-sm-4">
                                               <label for="precio_venta" class="label-control">Precio Venta (Incluido IGV*)</label>
                                               <input id="precio_venta" type="number" name="precio_venta" class="form-control"
                                               autocomplete="off" value="0.00" required min="0.00" pattern="^\d*(\.\d{0,2})?$"
                                               step="0.10" >
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-group col-md-3 col-sm-4">
                                               <label for="">&nbsp;</label>

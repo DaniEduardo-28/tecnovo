@@ -110,9 +110,12 @@ FROM
 
 -- agregar la nueva unidad de medida de tiempo para medir el 
     INSERT INTO `tb_unidad_medida` (`id_unidad_medida`, `name_unidad`, `cod_sunat`, `estado`) VALUES (NULL, 'HORAS', 'H', '1');
+
  -- Convertir id_maquinaria en llave foránea
     ALTER TABLE tb_servicio ADD CONSTRAINT fk_id_maquinaria FOREIGN KEY (id_maquinaria) REFERENCES tb_maquinaria (id_maquinaria) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
+ALTER TABLE `tb_servicio` ADD `id_maquinaria` INT NOT NULL AFTER `id_tipo_servicio`;
     ALTER TABLE tb_cita DROP FOREIGN KEY tb_cita_id_mascota_foreign;
 
 
@@ -131,3 +134,17 @@ CREATE TABLE `tb_tipo_cosecha` (
 --
 -- Cambio en la tabla tb_maquinaria
 ALTER TABLE `tb_maquinaria` CHANGE `id_operador` `id_trabajador` INT NOT NULL;
+
+ALTER TABLE tb_detalle_venta
+MODIFY COLUMN descuento DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+MODIFY COLUMN sub_total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+MODIFY COLUMN igv DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+MODIFY COLUMN total DECIMAL(10,2) NOT NULL DEFAULT 0.00;
+ALTER TABLE `tb_detalle_venta` CHANGE `sub_total` `sub_total` DECIMAL(18,2) NULL DEFAULT '0.00';
+
+ALTER TABLE `tb_detalle_venta` CHANGE `precio_unitario` `precio_unitario` DECIMAL(18,3) NULL;
+ALTER TABLE `tb_detalle_venta` CHANGE `sub_total` `sub_total` DECIMAL(18,2) NULL DEFAULT '0.00';
+ALTER TABLE `tb_detalle_venta` CHANGE `descuento` `descuento` DECIMAL(18,3) NULL DEFAULT '0.00';
+ALTER TABLE `tb_detalle_venta` CHANGE `tipo_igv` `tipo_igv` VARCHAR(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
+ALTER TABLE `tb_detalle_venta` CHANGE `igv` `igv` DECIMAL(10,2) NULL DEFAULT '0.00';
+ALTER TABLE `tb_detalle_venta` CHANGE `total` `total` DECIMAL(10,2) NULL DEFAULT '0.00';

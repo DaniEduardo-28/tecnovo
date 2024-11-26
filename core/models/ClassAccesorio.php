@@ -244,7 +244,7 @@
 				$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,(SELECT signo FROM tb_moneda WHERE id_moneda = ?)";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda]);
+				$stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,1.15,$estado,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al realizar el registro en la base de datos.");
 				}
@@ -296,7 +296,7 @@
 				$sql .=" signo_moneda = (SELECT signo FROM tb_moneda WHERE id_moneda = ?) ";
 				$sql .=" WHERE id_accesorio = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda,$id_accesorio])==false) {
+				if ($stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,1.00,$estado,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda,$id_accesorio])==false) {
 					throw new Exception("1. Error al actualizar los datos.");
 				}
 

@@ -80,7 +80,7 @@
               <li id="menutipocosecha"> <a href="?view=tipocosecha">Tipos de Cosecha</a> </li>
             <?php endif; ?>
             <?php if ($flag_documentoventa): ?>
-              <li id="menudocumentoventa"> <a href="?view=documentoventa">Documentos de Venta</a></li>
+              <li id="menudocumentoventa"> <a href="?view=documentoventa">Documentos de Salida</a></li>
             <?php endif; ?>
             <?php if ($flag_unidadmedida): ?>
               <li id="menuunidadmedida"> <a href="?view=unidadmedida">Unidades de Medida</a></li>
@@ -265,7 +265,7 @@
               <li id="submenuingreso"> <a href="?view=ingreso">Ingreso de Productos</a></li>
             <?php endif; ?>
             <?php if ($flag_ordenventa): ?>
-              <li id="submenuordenventa"><a href="?view=ordenventa">Facturación</a></li>
+              <li id="submenuordenventa"><a href="?view=ordenventa">Salida de Productos</a></li>
             <?php endif; ?>
           </ul>
         </li>

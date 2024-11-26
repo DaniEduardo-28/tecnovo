@@ -264,7 +264,7 @@
                                           <div class="media align-items-center w-100">
                                               <div class="text-left">
                                                   <h3 class="mb-0"><?=$Resultado['data'][0]['total_medicamentos'];?></h3>
-                                                  <span>Productos</span>
+                                                  <span>Operadores</span>
                                               </div>
                                               <div class="img-icon bg-info ml-auto">
                                                   <i class="ti ti-plus text-white"></i>

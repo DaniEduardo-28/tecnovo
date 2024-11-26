@@ -76,7 +76,7 @@ var table_detalle_modal = $('#example2').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,4],
+      "targets": [1,4,5],
       "visible": false,
       "searchable": false
     }
@@ -105,9 +105,9 @@ $(document).ready(function(){
       var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="0" class="form-control" min="0" style="width:90px;">';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
-      precio_unitario = (precio_unitario/1.18).toFixed(3);
-      var sub_total = (precio_unitario * cantidad).toFixed(2);
-      var igv = (sub_total * 0.18).toFixed(2);
+      precio_unitario = (precio_unitario/1).toFixed(3);
+      var sub_total = (precio_unitario/1).toFixed(2);
+      var igv = (sub_total * 1).toFixed(2);
       var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
 
       table_detalle.row.add({
@@ -131,6 +131,69 @@ $(document).ready(function(){
       runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
     }
   });
+
+  
+    // Consolidar eventos de validación en el campo de número de documento del proveedor
+    $("#numero_documento_cliente").on("keypress blur", function (event) {
+      if (event.type === "keypress" && event.which == 13) {
+        validarYEnviar();
+      } else if (event.type === "blur") {
+        validarYEnviar();
+      }
+    });
+
+    
+    // Función de validación y consulta de datos del proveedor
+    function validarYEnviar() {
+      var number_document = $("#numero_documento_cliente").val();
+      var id_document = $("#codigo_documento_cliente").val();
+
+      // Validar que tenga 8 o 11 dígitos
+      if (number_document.length == 8 || number_document.length == 11) {
+        // Verificar si el tipo de documento es válido
+        if (id_document != 1 && id_document != 3) {
+          console.log("Tipo de documento inválido.");
+          return false;
+        }
+        // Determinar el tipo de documento: DNI o RUC
+        var tipo = id_document == 1 ? 'dni' : 'ruc';
+
+        // Solicitud AJAX
+        $.ajax({
+          url: "ajax.php?accion=buscar-" + tipo,
+          method: "POST",
+          dataType: "json",
+          data: { dni: number_document, ruc: number_document },
+          success: function (response) {
+            if (response.success) {
+              let nombres = id_document == 1 ? response.data.nombres : response.data.nombre_o_razon_social;
+              let apellidos = id_document == 1 ? response.data.apellido_paterno + " " + response.data.apellido_materno : '';
+              let direccion = id_document == 3 ? response.data.direccion_completa : '';
+
+              // Mostrar los datos en los campos correspondientes
+              $("#nombres").val(nombres);
+              $("#apellidos").val(apellidos);
+              $("#direccion").val(direccion);
+            } else {
+              console.log("Error en la API: " + response.error);
+              limpiarCampos();
+            }
+          },
+          error: function (xhr, status, error) {
+            console.log("Error en la solicitud AJAX: " + error);
+            limpiarCampos();
+          }
+        });
+      } else {
+        alert("El número de documento debe tener 8 o 11 dígitos.");
+      }
+    }
+        // Función para limpiar los campos de datos del proveedor
+        function limpiarCampos() {
+          $("#nombres").val("");
+          $("#apellidos").val("");
+          $("#direccion").val("");
+        }
 
   $('#example1 tbody').on( 'click', '#botonEliminar', function () {
       table_detalle.row($(this).parents('tr')).remove().draw();
@@ -480,7 +543,7 @@ function calcularTotal(){
         var precio_unitario = $(this).find("td").eq(2).html();
         var descuento = $(this).find("td").eq(3).find("input").val();
         var gravada = ((cantidad*precio_unitario)-descuento).toFixed(2);
-        var igv = (gravada * 0.18).toFixed(2);
+        var igv = (gravada * 1).toFixed(2);
         var total = (parseFloat(gravada) + parseFloat(igv)).toFixed(2);
 
         total_descuento = parseFloat(total_descuento) + parseFloat(descuento);
@@ -747,7 +810,7 @@ function saveOperation(){
     var fecha = $("#fecha").val();
     var codigo_moneda = $("#codigo_moneda").val();
     var codigo_forma_pago = $("#codigo_forma_pago").val();
-    var total_descuento = $("#txtTotalDescuento").val();
+    var total_descuento = $("#txtTotalDescuento").val() || "0";
     var total_gravada = $("#txtGravada").val();
     var total_igv = $("#txtIgv").val();
     var total_total = $("#txtTotal").val();
@@ -841,14 +904,14 @@ function saveOperation(){
           url: "ajax.php?accion=goOrdenVenta",
           datatype: "json",
           data: form,
-          success: function(data){
+          success: function(data) {
             try {
-              var response = JSON.parse(data);
-              if (response['error']=="SI") {
-                runAlert("Oh No...!!!",response['message'],"warning");
-              } else {
-                runAlert("Bien hecho...!!!",response['message'],"success");
-                $("#id_venta").val(response['id_venta']);
+                var response = JSON.parse(data);
+                if (response['error'] == "SI") {
+                    runAlert("Advertencia", response['message'], "warning");
+                } else {
+                    runAlert("Bien hecho...!!!", response['message'], "success");
+                  $("#id_venta").val(response['id_venta']);
                 $("#serie").val(response['serie']);
                 $("#correlativo").val(response['correlativo']);
                 $("#accion").val("edit");
@@ -858,9 +921,9 @@ function saveOperation(){
                 $("#btnSave").addClass("d-none");
               }
             } catch (e) {
-              runAlert("Oh No...!!!",data + e,"error");
+                console.error("Error procesando la respuesta:", e);
             }
-          },
+        },
           error: function(data){
             runAlert("Oh No...!!!",data,"error");
           },

@@ -134,7 +134,6 @@ $(document).ready(function () {
     }
   });
 
-  $(document).ready(function () {
 
     // Consolidar eventos de validación en el campo de número de documento del proveedor
     $("#numero_documento_proveedor").on("keypress blur", function (event) {
@@ -198,7 +197,6 @@ $(document).ready(function () {
       $("#direccion").val("");
     }
 
-  });
 
 
   $('#example1 tbody').on('click', '#botonEliminar', function () {
