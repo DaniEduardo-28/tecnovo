@@ -225,6 +225,23 @@
                     </select>
                   </div> -->
 
+                  <div class="form-group col-sm-12">
+                  <label for="cboServicioForm">Servicio:</label>
+                  <select name="cboServicioForm" id="cboServicioForm" class="form-control" required="true">
+                  <option value="all">Seleccione...</option>
+                    <?php
+                    include("core/models/ClassServicio.php");
+                    $dataServicio = $OBJ_SERVICIO->show_all();
+                    if ($dataServicio["error"] == "NO") {
+                      foreach ($dataServicio["data"] as $key) {
+                    ?>
+                        <option value="<?= $key['id_servicio']; ?>"><?= $key['name_servicio'] ?></option>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
                   
 
                   <div class="form-group col-sm-12">
