@@ -135,16 +135,10 @@ CREATE TABLE `tb_tipo_cosecha` (
 -- Cambio en la tabla tb_maquinaria
 ALTER TABLE `tb_maquinaria` CHANGE `id_operador` `id_trabajador` INT NOT NULL;
 
-ALTER TABLE tb_detalle_venta
-MODIFY COLUMN descuento DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-MODIFY COLUMN sub_total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-MODIFY COLUMN igv DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-MODIFY COLUMN total DECIMAL(10,2) NOT NULL DEFAULT 0.00;
+ALTER TABLE `tb_detalle_venta` CHANGE `precio_unitario` `precio_unitario` DECIMAL(18,2) NULL DEFAULT NULL;
 ALTER TABLE `tb_detalle_venta` CHANGE `sub_total` `sub_total` DECIMAL(18,2) NULL DEFAULT '0.00';
-
-ALTER TABLE `tb_detalle_venta` CHANGE `precio_unitario` `precio_unitario` DECIMAL(18,3) NULL;
-ALTER TABLE `tb_detalle_venta` CHANGE `sub_total` `sub_total` DECIMAL(18,2) NULL DEFAULT '0.00';
-ALTER TABLE `tb_detalle_venta` CHANGE `descuento` `descuento` DECIMAL(18,3) NULL DEFAULT '0.00';
+ALTER TABLE `tb_detalle_venta` CHANGE `descuento` `descuento` DECIMAL(18,2) NULL DEFAULT '0.00';
 ALTER TABLE `tb_detalle_venta` CHANGE `tipo_igv` `tipo_igv` VARCHAR(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL;
-ALTER TABLE `tb_detalle_venta` CHANGE `igv` `igv` DECIMAL(10,2) NULL DEFAULT '0.00';
-ALTER TABLE `tb_detalle_venta` CHANGE `total` `total` DECIMAL(10,2) NULL DEFAULT '0.00';
+ALTER TABLE `tb_detalle_venta` CHANGE `igv` `igv` DECIMAL(18,2) NULL DEFAULT '0.00';
+ALTER TABLE `tb_detalle_venta` CHANGE `total` `total` DECIMAL(18,2) NULL DEFAULT '0.00';
+

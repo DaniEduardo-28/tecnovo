@@ -1693,29 +1693,26 @@ class ClassOrdenVenta extends Conexion
 
 			foreach ($detalle_venta as $key) {
 				foreach ($key as $key1) {
-					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
-																									`cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-																									`igv`, `total`) VALUES ";
-					$sql .= "(";
-					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
-					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,?,?,?,?,?";
-					$sql .= ")";
+					$sql = "INSERT INTO tb_detalle_venta (
+						`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
+						`cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
+						`igv`, `total`
+					) VALUES (
+						(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) END FROM `tb_detalle_venta` o),
+						(SELECT MAX(id_venta) FROM `tb_venta`),
+						?, ?, ?, ?, 0, 0, 0, 0, 0, 0
+					)";
+			
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
 						$key1->name_tabla,
 						$key1->cod_producto,
 						$key1->descripcion,
-						$key1->cantidad,
-						$key1->precio_unitario,
-						$key1->descuento,
-						$key1->sub_total,
-						$key1->tipo_igv,
-						$key1->igv,
-						$key1->total
+						$key1->cantidad
 					]);
+			
 					if ($stmt->rowCount() == 0) {
-						throw new Exception("2. Error al registrar el detalle de la orden de venta en la base de datos.");
+						throw new Exception("Error al registrar el detalle de la orden de venta en la base de datos.");
 					}
 
 					$name_tabla = $key1->name_tabla;
@@ -1738,6 +1735,9 @@ class ClassOrdenVenta extends Conexion
 
 				}
 			}
+			var_dump($detalle_venta);
+
+			
 
 			$stmt = $conexion->prepare("SELECT MAX(id_venta) as id_venta FROM `tb_venta`");
 			$stmt->execute([]);

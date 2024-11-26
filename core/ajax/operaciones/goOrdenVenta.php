@@ -26,6 +26,7 @@
 
   $monto_recibido = isset($_POST["monto_recibido"]) ? $_POST["monto_recibido"] : 0;
   $vuelto = isset($_POST["vuelto"]) ? $_POST["vuelto"] : 0;
+  
 
   try {
 
