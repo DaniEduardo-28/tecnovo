@@ -559,7 +559,7 @@
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de documento venta.");
 				}
-				$name_documento_venta = $result[0]['nombre_corto'];
+				$name_documento_venta = $result[0]['nombre'];
 				$codigo_documento_venta = $result[0]['cod_sunat'];
 				$serie = $result[0]['serie'];
 				$correlativo = $result[0]['correlativo'];
@@ -909,7 +909,7 @@
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de documento venta.");
 				}
-				$name_documento_venta = $result[0]['nombre_corto'];
+				$name_documento_venta = $result[0]['nombre'];
 				$codigo_documento_venta = $result[0]['cod_sunat'];
 				$serie = $result[0]['serie'];
 				$correlativo = $result[0]['correlativo'];
@@ -1336,7 +1336,7 @@
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de documento venta.");
 				}
-				$name_documento_venta = $result[0]['nombre_corto'];
+				$name_documento_venta = $result[0]['nombre'];
 				$codigo_documento_venta = $result[0]['cod_sunat'];
 				$serie = $result[0]['serie'];
 				$correlativo = $result[0]['correlativo'];
@@ -1862,7 +1862,7 @@
 				if (count($result)==0) {
 					throw new Exception("Error al obtener el id de documento venta.");
 				}
-				$name_documento_venta = $result[0]['nombre_corto'];
+				$name_documento_venta = $result[0]['nombre'];
 				$codigo_documento_venta = $result[0]['cod_sunat'];
 				$serie = $result[0]['serie'];
 				$correlativo = $result[0]['correlativo'];

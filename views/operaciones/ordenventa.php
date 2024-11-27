@@ -156,7 +156,7 @@
                                                   if ($dataDocuVenta["error"]=="NO") {
                                                     foreach ($dataDocuVenta["data"] as $key) {
                                                       if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
-                                                        echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre_corto'] . '</option>';
+                                                        echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre'] . '</option>';
                                                       }
                                                     }
                                                   }
@@ -382,7 +382,7 @@
                                               if ($dataDocuVenta["error"]=="NO") {
                                                 foreach ($dataDocuVenta["data"] as $key) {
                                                   if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
-                                                    echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre_corto'] . '</option>';
+                                                    echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre'] . '</option>';
                                                   }
                                                 }
                                               }

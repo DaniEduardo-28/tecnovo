@@ -23,7 +23,7 @@ var table = $('#example').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [2,14],
+      "targets": [2,7,9,10,11,12,13,14],
       "visible": false,
       "searchable": false
     }
@@ -51,7 +51,7 @@ var table_detalle = $('#example1').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,7],
+      "targets": [0,1,4,7],
       "visible": false,
       "searchable": false
     }
