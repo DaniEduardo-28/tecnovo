@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -82,7 +82,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -158,7 +158,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -230,7 +230,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -306,7 +306,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -356,7 +356,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -398,7 +398,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -418,7 +418,6 @@
 						break;
 					default:
 						throw new Exception("Error al validar la busqueda de la tabla.");
-						break;
 				}
 
 				$stmt = $conexion->prepare($sql);
@@ -461,7 +460,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -503,7 +502,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -553,7 +552,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 
 			try {
 
@@ -577,7 +576,6 @@
 						break;
 					default:
 						throw new Exception("Error al validar la busqueda de la tabla.");
-						break;
 				}
 
 				$sql .= " LIMIT $offset, $limit ";
@@ -618,7 +616,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
@@ -667,7 +665,7 @@
 		public function update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();
@@ -731,7 +729,7 @@
 		public function delete($id_orden_compra) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD="";
 			try {
 
 				$conexion->beginTransaction();

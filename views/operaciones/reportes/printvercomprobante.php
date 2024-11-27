@@ -98,27 +98,27 @@
     $pdfReporte->AddPage();
 
     $pdfReporte->SetFillColor(232,232,232);
-    $pdfReporte->SetFont('Arial','B',7);
+    $pdfReporte->SetFont('Arial','B',12);
 
     $pdfReporte->setX(1);
-    $pdfReporte->setY(2);
+    $pdfReporte->setY(4);
     $pdfReporte->Cell(55,4,strtoupper(utf8_decode($empresa[0]['razon_social'])),0,0,'C',0);
-    $pdfReporte->Ln(4);
+    $pdfReporte->Ln(6);
 
     $pdfReporte->SetFont('Arial','',7);
     $pdfReporte->MultiCell(55,3,strtoupper(utf8_decode($empresa[0]['direccion'])),0,'C',0);
-
+    $pdfReporte->Ln(1);
     $pdfReporte->SetFont('Arial','B',8);
     $pdfReporte->Cell(55,3,'RUC ' . $empresa[0]['num_documento'],0,0,'C',0);
-    $pdfReporte->Ln(3);
+    $pdfReporte->Ln(4);
     $pdfReporte->Cell(55,3,strtoupper($arrayordenventa[0]['name_documento_venta']),0,0,'C',0);
     $pdfReporte->Ln(3);
     $pdfReporte->Cell(55,3,strtoupper($arrayordenventa[0]['serie'] . "-" . substr("0000000000" . $arrayordenventa[0]['correlativo'],-8)),0,0,'C',0);
 
-    $pdfReporte->Ln(5);
+    $pdfReporte->Ln(9);
     $pdfReporte->setX(4);
     $pdfReporte->SetFont('Arial','B',7);
-    $pdfReporte->Cell(55,3,'CLIENTE',0,0,'L',0);
+    $pdfReporte->Cell(55,3,'PERSONA ENCARGADA',0,0,'L',0);
 
     $pdfReporte->SetFont('Arial','',7);
     $pdfReporte->Ln(3);
@@ -132,13 +132,15 @@
     $pdfReporte->Cell(66,3,utf8_decode($arrayordenventa[0]['direccion']),0,0,'L',0);
 
     $pdfReporte->SetFont('Arial','B',7);
+    $pdfReporte->Ln(6);
+    $pdfReporte->setX(4);
+    $pdfReporte->Cell(22,3,utf8_decode("FECHA REGISTRO:"),0,0,'L',0);
+    $pdfReporte->SetFont('Arial','',8);
     $pdfReporte->Ln(3);
     $pdfReporte->setX(4);
-    $pdfReporte->Cell(22,3,utf8_decode("FECHA EMISIÓN:"),0,0,'L',0);
-    $pdfReporte->SetFont('Arial','',7);
     $pdfReporte->Cell(66,3,date("d/m/Y", strtotime($arrayordenventa[0]['fecha'])),0,0,'L',0);
 
-    $pdfReporte->SetFont('Arial','B',7);
+    /* $pdfReporte->SetFont('Arial','B',7);
     $pdfReporte->Ln(3);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(13,3,utf8_decode("MONEDA :"),0,0,'L',0);
@@ -150,27 +152,27 @@
     $pdfReporte->setX(4);
     $pdfReporte->Cell(8,3,utf8_decode("IGV :"),0,0,'L',0);
     $pdfReporte->SetFont('Arial','',7);
-    $pdfReporte->Cell(66,3,strtoupper("18.00 %"),0,0,'L',0);
+    $pdfReporte->Cell(66,3,strtoupper("18.00 %"),0,0,'L',0); */
 
     $pdfReporte->SetFont('Arial','',4);
-    $pdfReporte->Ln(3);
+    $pdfReporte->Ln(6);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(70,3,'--------------------------------------------------------------------------------------------------------------------------------------------',0,0,'L',0);
     $pdfReporte->Ln(3);
     $pdfReporte->SetFont('Arial','B',7);
     $pdfReporte->setX(4);
-    $pdfReporte->Cell(41,3,utf8_decode('[ CANT. ] DESCRIPCIÓN '),0,0,'L',0);
-    $pdfReporte->Cell(13,3,'P/U',0,0,'C',0);
-    $pdfReporte->Cell(13,3,'TOTAL',0,0,'C',0);
+    $pdfReporte->Cell(41,3,utf8_decode(' DESCRIPCIÓN DE PRODUCTO '),0,0,'L',0);
+/*     $pdfReporte->Cell(13,3,'P/U',0,0,'C',0);
+ */    $pdfReporte->Cell(39,3,'CANT.',0,0,'C',0);
 
     $pdfReporte->Ln(4);
     $pdfReporte->SetFont('Arial','',7);
     foreach ($arrayordenventa as $key) {
       $pdfReporte->setX(4);
-      $pdfReporte->Cell(41,3,strtolower(substr(utf8_decode("[" . $key['detalle_cantidad']*1 . "] " . $key['detalle_descripcion']),0,40)),0,'L');
+      $pdfReporte->Cell(43,3,strtolower(substr(utf8_decode('- '.$key['detalle_descripcion']),0,40)),0,'L');
       $pdfReporte->setX(43);
-      $pdfReporte->Cell(13,3, number_format(round($key['detalle_precio_unitario'] + $key['detalle_precio_unitario'] * 0.18,3), 3, ".", ""),0,'R',0);
-      $pdfReporte->Cell(13,3, number_format(round($key['detalle_total'],2), 2, ".", ""),0,'R',0);
+/*       $pdfReporte->Cell(13,3, number_format(round($key['detalle_precio_unitario'] + $key['detalle_precio_unitario'] * 0.18,3), 3, ".", ""),0,'R',0);
+ */      $pdfReporte->Cell(26,3, number_format(round($key['detalle_cantidad'],2), 2, ".", ""),0,'R',0);
       $pdfReporte->Ln(3);
     }
 
@@ -179,7 +181,7 @@
     $pdfReporte->Cell(70,3,'------------------------------------------------------------------------------------------------------------------------------------------',0,0,'L',0);
     $pdfReporte->Ln(4);
 
-    $pdfReporte->SetFont('Arial','B',7);
+/*     $pdfReporte->SetFont('Arial','B',7);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(41,3,utf8_decode("DESCUENTO"),0,0,'R',0);
     $pdfReporte->Cell(10,3,strtoupper($arrayordenventa[0]['signo_moneda']),0,0,'L',0);
@@ -202,14 +204,14 @@
     $pdfReporte->Cell(41,3,utf8_decode("TOTAL"),0,0,'R',0);
     $pdfReporte->Cell(10,3,strtoupper($arrayordenventa[0]['signo_moneda']),0,0,'L',0);
     $pdfReporte->Cell(15,3,strtoupper($arrayordenventa[0]['total']),0,0,'R',0);
-    $pdfReporte->Ln(4);
+    $pdfReporte->Ln(4); */
 
-    $pdfReporte->SetFont('Arial','',4);
+  /*   $pdfReporte->SetFont('Arial','',4);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(70,3,'-------------------------------------------------------------------------------------------------------------------------------------------',0,0,'L',0);
-    $pdfReporte->Ln(4);
+    $pdfReporte->Ln(4); */
 
-    $pdfReporte->SetFont('Arial','B',7);
+    /* $pdfReporte->SetFont('Arial','B',7);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(25,3,utf8_decode("MEDIO DE PAGO : "),0,0,'L',0);
     $pdfReporte->SetFont('Arial','',7);
@@ -223,8 +225,21 @@
     $pdfReporte->Ln(3);
     $pdfReporte->setX(4);
     $pdfReporte->MultiCell(65,3,utf8_decode(strtoupper(CifrasEnLetras::convertirEurosEnLetras($arrayordenventa[0]['total']))),0,'L',0);
-    $pdfReporte->Ln(5);
+    $pdfReporte->Ln(5); */
+    $pdfReporte->Ln(3);
+    $pdfReporte->setX(4);
+    $pdfReporte->SetFont('Arial','B',7);
+    $pdfReporte->Cell(55,3,'NOTAS',0,0,'L',0);
+    $pdfReporte->Ln(4);
+    $pdfReporte->SetFont('Arial','',7);
+    foreach ($arrayordenventa as $key) {
+      $pdfReporte->setX(4);
+      $pdfReporte->Cell(43,3,strtolower(substr(utf8_decode('- '.$key['detalle_notas']),0,40)),0,'L');
+      $pdfReporte->setX(43);
+      $pdfReporte->Ln(3);
+    }
 
+    $pdfReporte->Ln(3);
     $pdfReporte->SetFont('Arial','',6);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(70,3,utf8_decode("*** GRACIAS POR SU PREFERENCIA ***"),0,0,'C',0);

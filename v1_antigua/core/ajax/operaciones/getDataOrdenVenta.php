@@ -82,6 +82,7 @@ try {
                 "detalle_tipo_igv" => $key['detalle_tipo_igv'],
                 "detalle_igv" => $key['detalle_igv'],
                 "detalle_total" => $key['detalle_total'],
+                "detalle_notas" => $key['detalle_notas'],
             ];
         }, $Resultado["data"]);
 

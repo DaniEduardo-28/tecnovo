@@ -77,7 +77,7 @@
           "detalle_tipo_igv" => $key['detalle_tipo_igv'],
           "detalle_igv" => $key['detalle_igv'],
           "detalle_total" => $key['detalle_total'],
-          "notas" => $key['notas'],
+          "detalle_notas" => htmlspecialchars($key['detalle_notas'], ENT_QUOTES, 'UTF-8'),
         );
       }
 
