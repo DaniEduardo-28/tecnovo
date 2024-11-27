@@ -100,7 +100,7 @@ $(document).ready(function(){
       }
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
-    var notas = $(this).parents("tr").find("td").eq(3).find("input").val(); // Notas extraídas correctamente
+    var notas = $(this).parents("tr").find("td").eq(10).find("input").val(); // Notas extraídas correctamente
     var precio_unitario = 1;
     var descuento = 0;
       var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
@@ -865,7 +865,8 @@ function saveOperation(){
 
       var cantidad = $(this).find("td").eq(1).find("input").val();
     var descuento = $(this).find("td").eq(3).find("input").val();
-    var notas = $(this).find('input[name="notas"]').val();
+    var notas = $(this).find("td").eq(10).find("input").val(); // Asegúrate de que el índice 10 sea el de "Notas".
+    console.log("Notas capturadas:", notas); // Verificar el valor de notas
     var data = table_detalle.row($(this)).data();
 
     datos.push({
@@ -1017,9 +1018,13 @@ function saveOperationBorrador(){
 
     $('#example1 > tbody  > tr').each(function(){
 
+      for (let i = 0; i < 11; i++) {
+        console.log("Valor de columna " + i + ":", $(this).find("td").eq(i).text());
+    }
       var cantidad = $(this).find("td").eq(1).find("input").val();
     var descuento = $(this).find("td").eq(3).find("input").val();
-    var notas = $(this).find("td").eq(4).find("input").val(); // Captura el valor del campo 'notas'.
+    var notas = $(this).find("td").eq(10).find("input").val(); // Captura el valor del campo 'notas'.
+    console.log("Notas capturadas:", notas); // Verificar el valor de notas
     var data = table_detalle.row($(this)).data();
 
     datos.push({

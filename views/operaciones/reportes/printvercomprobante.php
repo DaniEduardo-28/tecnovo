@@ -239,11 +239,11 @@
       $pdfReporte->Ln(3);
     }
 
-    $pdfReporte->Ln(3);
+ /*    $pdfReporte->Ln(3);
     $pdfReporte->SetFont('Arial','',6);
     $pdfReporte->setX(4);
     $pdfReporte->Cell(70,3,utf8_decode("*** GRACIAS POR SU PREFERENCIA ***"),0,0,'C',0);
-    $pdfReporte->Ln(5);
+    $pdfReporte->Ln(5); */
 
     if ($estado==3) {
       $pdfReporte->Image("resources/global/images/anulado.png", 15, 30, -150 );

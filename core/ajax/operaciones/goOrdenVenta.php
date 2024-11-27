@@ -87,25 +87,6 @@ if (!is_object($detalle_venta) || !property_exists($detalle_venta, 'datos') || !
   throw new Exception("La estructura del detalle de la venta es inválida. Verifique los datos enviados.");
 }
 
-// Validar cada elemento dentro de `datos`
-foreach ($detalle_venta->datos as $key => $detalle) {
-  if (!is_object($detalle)) {
-      $detalle_venta->datos[$key] = (object) $detalle; // Convertir a objeto si es array
-  }
-
-  // Validar propiedades necesarias y asignar valores predeterminados si no existen
-  $detalle_venta->datos[$key]->name_tabla = isset($detalle->name_tabla) ? $detalle->name_tabla : "";
-  $detalle_venta->datos[$key]->cod_producto = isset($detalle->cod_producto) ? $detalle->cod_producto : null;
-  $detalle_venta->datos[$key]->descripcion = isset($detalle->descripcion) ? $detalle->descripcion : "";
-  $detalle_venta->datos[$key]->cantidad = isset($detalle->cantidad) ? $detalle->cantidad : 0;
-  $detalle_venta->datos[$key]->precio_unitario = isset($detalle->precio_unitario) ? $detalle->precio_unitario : 0;
-  $detalle_venta->datos[$key]->sub_total = isset($detalle->sub_total) ? $detalle->sub_total : 0;
-  $detalle_venta->datos[$key]->tipo_igv = isset($detalle->tipo_igv) ? $detalle->tipo_igv : 1; // Predeterminado 1
-  $detalle_venta->datos[$key]->igv = isset($detalle->igv) ? $detalle->igv : 0;
-  $detalle_venta->datos[$key]->total = isset($detalle->total) ? $detalle->total : 0;
-  $detalle_venta->datos[$key]->notas = isset($detalle->notas) ? $detalle->notas : ""; // Predeterminado: cadena vacía
-}
-
     require_once "core/models/ClassDocumentoIdentidad.php";
     $resultDoc1 = $OBJ_DOCUMENTO_IDENTIDAD->getDocumentoForId($codigo_documento_cliente);
     if ($resultDoc1['error']=="SI") {

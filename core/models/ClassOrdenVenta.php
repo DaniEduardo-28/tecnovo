@@ -695,7 +695,7 @@ class ClassOrdenVenta extends Conexion
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,1,?,?,?,?,?,?"; // Agregamos `?` para el campo `notas`.
+					$sql .= "?,?,?,?,?,1,?,?,?,?,?"; // Agregamos `?` para el campo `notas`.
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
@@ -1595,12 +1595,16 @@ class ClassOrdenVenta extends Conexion
 							"anticipo_documento_serie" => "",
 							"anticipo_documento_numero" => "",
 						);
+						error_log("Notas procesadas: " . print_r($key1->notas, true));
+
 
 					}
 				}
 
 				$data['items'] = $dataDetalle;
 				$data_json = json_encode($data);
+				error_log("JSON generado: " . $data_json);
+
 				/* $respuesta = eviarDocumento($ruta,$token,$data_json); */
 
 				/* $leer_respuesta = json_decode($respuesta, true); */
@@ -1711,7 +1715,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas // Verifica que el valor de 'notas' sea incluido correctamente aquí.
+						$key1->notas// Verifica que el valor de 'notas' sea incluido correctamente aquí.
 					]);
 
 					if ($stmt->rowCount() == 0) {
