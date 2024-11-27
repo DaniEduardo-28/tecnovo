@@ -708,7 +708,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas // Aquí se incluye el campo `notas`.
+						$detalle->notas ?? null // Aquí se incluye el campo `notas`.
 					]);
 					if ($stmt->rowCount() == 0) {
 						throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
@@ -1123,7 +1123,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas // Campo `notas`.
+						$detalle->notas ?? null // Campo `notas`.
 					]);
 					if ($stmt->rowCount() == 0) {
 						throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
@@ -1715,7 +1715,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas// Verifica que el valor de 'notas' sea incluido correctamente aquí.
+						$detalle->notas ?? null
 					]);
 
 					if ($stmt->rowCount() == 0) {
@@ -2309,7 +2309,7 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas // Aquí se incluye el campo `notas`.
+						$detalle->notas ?? null // Aquí se incluye el campo `notas`.
 					]);
 
 					if ($stmt->rowCount() == 0) {
