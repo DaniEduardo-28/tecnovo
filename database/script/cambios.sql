@@ -142,3 +142,7 @@ ALTER TABLE `tb_detalle_venta` CHANGE `tipo_igv` `tipo_igv` VARCHAR(2) CHARACTER
 ALTER TABLE `tb_detalle_venta` CHANGE `igv` `igv` DECIMAL(18,2) NULL DEFAULT '0.00';
 ALTER TABLE `tb_detalle_venta` CHANGE `total` `total` DECIMAL(18,2) NULL DEFAULT '0.00';
 
+--Agregando la columna notas
+
+ALTER TABLE `tb_detalle_venta` ADD `notas` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `total`;
+

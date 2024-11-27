@@ -47,11 +47,12 @@ var table_detalle = $('#example1').DataTable({
     { 'data': 'tipo_igv' },
     { 'data': 'igv' },
     { 'data': 'total' },
+    
     { 'data': 'eliminar_item' }
   ],
   columnDefs: [
     {
-      "targets": [0,1,4,7],
+      "targets": [0,1,4,5,6,7,8,9],
       "visible": false,
       "searchable": false
     }
@@ -99,13 +100,14 @@ $(document).ready(function(){
       }
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
-      var precio_unitario = data["precio_unitario"];
+      var precio_unitario = 1;
+      var descuento =0;
       var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
-      var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="0" class="form-control" min="0" style="width:90px;">';
+      var inputDescuento = '<input type="number" value="0" class="form-control" min="0" style="width:90px;" readonly>';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
       precio_unitario = (precio_unitario/1.18).toFixed(3);
-      var sub_total = (precio_unitario * cantidad).toFixed(2);
+      var sub_total = (1 * cantidad).toFixed(2);
       var igv = (sub_total * 0.18).toFixed(2);
       var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
 
@@ -115,7 +117,7 @@ $(document).ready(function(){
         "descripcion": descripcion,
         "cantidad": inputCantidad,
         "precio_unitario": precio_unitario,
-        "descuento": inputDescuento,
+        "descuento": 0,
         "subtotal": sub_total,
         "tipo_igv": 1,
         "igv": igv,
@@ -541,11 +543,11 @@ function calcularTotal(){
         var cantidad = $(this).find("td").eq(1).find("input").val();
         var precio_unitario = $(this).find("td").eq(2).html();
         var descuento = $(this).find("td").eq(3).find("input").val();
-        var gravada = ((cantidad*precio_unitario)-descuento).toFixed(2);
+        var gravada = ((cantidad*1)).toFixed(2);
         var igv = (gravada * 0.18).toFixed(2);
         var total = (parseFloat(gravada) + parseFloat(igv)).toFixed(2);
 
-        total_descuento = parseFloat(total_descuento) + parseFloat(descuento);
+        total_descuento = parseFloat(total_gravada) + parseFloat(gravada);
         total_gravada = parseFloat(total_gravada) + parseFloat(gravada);
         total_igv = parseFloat(total_igv) + parseFloat(igv);
         total_total = parseFloat(total_total) + parseFloat(total);

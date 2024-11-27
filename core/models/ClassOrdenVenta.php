@@ -657,7 +657,7 @@
 						$sql .= "(";
 						$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 						$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-						$sql .= "?,?,?,?,?,?,?,?,?,?";
+						$sql .= "?,?,?,?,?,1,?,?,?,?";
 						$sql .= ")";
 						$stmt = $conexion->prepare($sql);
 						$stmt->execute([$key1->name_tabla,
@@ -665,7 +665,7 @@
 						                $key1->descripcion,
 														$key1->cantidad,
 														$key1->precio_unitario,
-														$key1->descuento,
+														/* $key1->descuento, */
 														$key1->sub_total,
 													  $key1->tipo_igv,
 													  $key1->igv,
@@ -1584,11 +1584,11 @@
 					foreach ($key as $key1) {
 						$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
 																									`cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-																									`igv`, `total`) VALUES ";
+																									`igv`, `total`, `notas`) VALUES ";
 						$sql .= "(";
 						$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 						$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-						$sql .= "?,?,?,?,?,?,?,?,?,?";
+						$sql .= "?,?,?,?,?,1,?,?,?,?,?";
 						$sql .= ")";
 						$stmt = $conexion->prepare($sql);
 						$stmt->execute([$key1->name_tabla,
@@ -1596,11 +1596,12 @@
 						                $key1->descripcion,
 														$key1->cantidad,
 														$key1->precio_unitario,
-														$key1->descuento,
+														/* $key1->descuento, */
 														$key1->sub_total,
 													  $key1->tipo_igv,
 													  $key1->igv,
-													  $key1->total]);
+													  $key1->total,
+													$key1->notas]);
 						if ($stmt->rowCount()==0) {
 							throw new Exception("2. Error al registrar el detalle de la orden de venta en la base de datos.");
 						}
@@ -2141,11 +2142,11 @@
 					foreach ($key as $key1) {
 						$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
 																									`cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-																									`igv`, `total`) VALUES ";
+																									`igv`, `total`, `notas`) VALUES ";
 						$sql .= "(";
 						$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 						$sql .= "?,";
-						$sql .= "?,?,?,?,?,?,?,?,?,?";
+						$sql .= "?,?,?,?,?,0,?,?,?,?,?";
 						$sql .= ")";
 						$stmt = $conexion->prepare($sql);
 						$stmt->execute([$id_venta,
@@ -2154,11 +2155,12 @@
 						                $key1->descripcion,
 														$key1->cantidad,
 														$key1->precio_unitario,
-														$key1->descuento,
+														/* $key1->descuento, */
 														$key1->sub_total,
 													  $key1->tipo_igv,
 													  $key1->igv,
-													  $key1->total]);
+													  $key1->total,
+													  $key1->notas]);
 						if ($stmt->rowCount()==0) {
 							throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
 						}
