@@ -75,7 +75,7 @@ var table_detalle_modal = $('#example2').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,4,5],
+      "targets": [1,5],
       "visible": false,
       "searchable": false
     }
