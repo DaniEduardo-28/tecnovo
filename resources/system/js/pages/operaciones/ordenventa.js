@@ -1,4 +1,3 @@
-
 var table = $('#example').DataTable({
   language: languageSpanish,
   destroy : true,
@@ -52,7 +51,7 @@ var table_detalle = $('#example1').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,4,5,6,7,8,9],
+      "targets": [1,7],
       "visible": false,
       "searchable": false
     }
@@ -99,29 +98,17 @@ $(document).ready(function(){
         }
       }
       var descripcion = data["descripcion"];
-      var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val() || 1; // Valor predeterminado: 1
-      var precio_unitario = parseFloat(data["precio_unitario"]) || 0;
+      var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
+      var precio_unitario = data["precio_unitario"];
       var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
       var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="0" class="form-control" min="0" style="width:90px;">';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
-      precio_unitario = (precio_unitario/1).toFixed(3);
-
-      if (isNaN(precio_unitario) || precio_unitario == null || precio_unitario === '') {
-        console.error("El precio_unitario es inválido:", precio_unitario);
-        return; // Evita agregar datos inválidos a la tabla
-    }
-    
-    var sub_total = (precio_unitario / 1).toFixed(2);
-    
-      var sub_total = (cantidad * precio_unitario).toFixed(2);
-      var igv = (sub_total * 1).toFixed(2);
+      precio_unitario = (precio_unitario/1.18).toFixed(3);
+      var sub_total = (precio_unitario * cantidad).toFixed(2);
+      var igv = (sub_total * 0.18).toFixed(2);
       var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
 
-      // Si el cálculo falla, asignar un valor predeterminado
-if (isNaN(sub_total) || sub_total === undefined) {
-  sub_total = "0.00";
-}
       table_detalle.row.add({
         "name_tabla": name_tabla,
         "codigo": cod_producto,
@@ -144,68 +131,68 @@ if (isNaN(sub_total) || sub_total === undefined) {
     }
   });
 
-  
-    // Consolidar eventos de validación en el campo de número de documento del proveedor
-    $("#numero_documento_cliente").on("keypress blur", function (event) {
-      if (event.type === "keypress" && event.which == 13) {
-        validarYEnviar();
-      } else if (event.type === "blur") {
-        validarYEnviar();
+  // Consolidar eventos de validación en el campo de número de documento del proveedor
+  $("#numero_documento_cliente").on("keypress blur", function (event) {
+    if (event.type === "keypress" && event.which == 13) {
+      validarYEnviar();
+    } else if (event.type === "blur") {
+      validarYEnviar();
+    }
+  });
+
+  // Función de validación y consulta de datos del proveedor
+  function validarYEnviar() {
+    var number_document = $("#numero_documento_cliente").val();
+    var id_document = $("#codigo_documento_cliente").val();
+
+    // Validar que tenga 8 o 11 dígitos
+    if (number_document.length == 8 || number_document.length == 11) {
+      // Verificar si el tipo de documento es válido
+      if (id_document != 1 && id_document != 3) {
+        console.log("Tipo de documento inválido.");
+        return false;
       }
-    });
+      // Determinar el tipo de documento: DNI o RUC
+      var tipo = id_document == 1 ? 'dni' : 'ruc';
 
-    
-    // Función de validación y consulta de datos del proveedor
-    function validarYEnviar() {
-      var number_document = $("#numero_documento_cliente").val();
-      var id_document = $("#codigo_documento_cliente").val();
+      // Solicitud AJAX
+      $.ajax({
+        url: "ajax.php?accion=buscar-" + tipo,
+        method: "POST",
+        dataType: "json",
+        data: { dni: number_document, ruc: number_document },
+        success: function (response) {
+          if (response.success) {
+            let nombres = id_document == 1 ? response.data.nombres : response.data.nombre_o_razon_social;
+            let apellidos = id_document == 1 ? response.data.apellido_paterno + " " + response.data.apellido_materno : '';
+            let direccion = id_document == 3 ? response.data.direccion_completa : '';
 
-      // Validar que tenga 8 o 11 dígitos
-      if (number_document.length == 8 || number_document.length == 11) {
-        // Verificar si el tipo de documento es válido
-        if (id_document != 1 && id_document != 3) {
-          console.log("Tipo de documento inválido.");
-          return false;
-        }
-        // Determinar el tipo de documento: DNI o RUC
-        var tipo = id_document == 1 ? 'dni' : 'ruc';
-
-        // Solicitud AJAX
-        $.ajax({
-          url: "ajax.php?accion=buscar-" + tipo,
-          method: "POST",
-          dataType: "json",
-          data: { dni: number_document, ruc: number_document },
-          success: function (response) {
-            if (response.success) {
-              let nombres = id_document == 1 ? response.data.nombres : response.data.nombre_o_razon_social;
-              let apellidos = id_document == 1 ? response.data.apellido_paterno + " " + response.data.apellido_materno : '';
-              let direccion = id_document == 3 ? response.data.direccion_completa : '';
-
-              // Mostrar los datos en los campos correspondientes
-              $("#nombres").val(nombres);
-              $("#apellidos").val(apellidos);
-              $("#direccion").val(direccion);
-            } else {
-              console.log("Error en la API: " + response.error);
-              limpiarCampos();
-            }
-          },
-          error: function (xhr, status, error) {
-            console.log("Error en la solicitud AJAX: " + error);
+            // Mostrar los datos en los campos correspondientes
+            $("#nombres").val(nombres);
+            $("#apellidos").val(apellidos);
+            $("#direccion").val(direccion);
+          } else {
+            console.log("Error en la API: " + response.error);
             limpiarCampos();
           }
-        });
-      } else {
-        alert("El número de documento debe tener 8 o 11 dígitos.");
-      }
-    }
-        // Función para limpiar los campos de datos del proveedor
-        function limpiarCampos() {
-          $("#nombres").val("");
-          $("#apellidos").val("");
-          $("#direccion").val("");
+        },
+        error: function (xhr, status, error) {
+          console.log("Error en la solicitud AJAX: " + error);
+          limpiarCampos();
         }
+      });
+    } else {
+      alert("El número de documento debe tener 8 o 11 dígitos.");
+    }
+  }
+
+  // Función para limpiar los campos de datos del proveedor
+  function limpiarCampos() {
+    $("#nombres").val("");
+    $("#apellidos").val("");
+    $("#direccion").val("");
+  }
+
 
   $('#example1 tbody').on( 'click', '#botonEliminar', function () {
       table_detalle.row($(this).parents('tr')).remove().draw();
@@ -532,7 +519,7 @@ function calcularVuelto(){
 }
 
 function calcularTotal(){
-/* 
+
   $("#txtTotalDescuento").val("0");
   $("#txtGravada").val("0");
   $("#txtIgv").val("0");
@@ -551,39 +538,25 @@ function calcularTotal(){
 
       $('#example1 > tbody  > tr').each(function(){
 
-        var cantidad = parseFloat($(this).find("td").eq(1).find("input").val()) || 0;
-    var precio_unitario = parseFloat($(this).find("td").eq(2).html()) || 0;
-    var descuento = parseFloat($(this).find("td").eq(3).find("input").val()) || 0;
-        // Cálculo seguro del subtotal
-    var gravada = ((cantidad * precio_unitario) - descuento).toFixed(2);
-    var igv = (gravada * 0.18).toFixed(2); // Supongamos 18% de IGV
-    var total = (parseFloat(gravada) + parseFloat(igv)).toFixed(2);
-        if (isNaN(cantidad) || isNaN(precio_unitario) || isNaN(descuento)) {
-          console.log("Valores inválidos en fila. Verificar datos.");
-          return;
-      }
-      total_descuento += descuento;
-      total_gravada += parseFloat(gravada);
-      total_igv += parseFloat(igv);
-      total_total += parseFloat(total);
+        var cantidad = $(this).find("td").eq(1).find("input").val();
+        var precio_unitario = $(this).find("td").eq(2).html();
+        var descuento = $(this).find("td").eq(3).find("input").val();
+        var gravada = ((cantidad*precio_unitario)-descuento).toFixed(2);
+        var igv = (gravada * 0.18).toFixed(2);
+        var total = (parseFloat(gravada) + parseFloat(igv)).toFixed(2);
 
-        // Asignar valores calculados
-    table_detalle.cell(num - 1, 6).data(gravada).draw();
-    table_detalle.cell(num - 1, 8).data(igv).draw();
-    table_detalle.cell(num - 1, 9).data(total).draw();
+        total_descuento = parseFloat(total_descuento) + parseFloat(descuento);
+        total_gravada = parseFloat(total_gravada) + parseFloat(gravada);
+        total_igv = parseFloat(total_igv) + parseFloat(igv);
+        total_total = parseFloat(total_total) + parseFloat(total);
+
+        table_detalle.cell(num-1,6).data(gravada).draw();
+        table_detalle.cell(num-1,8).data(igv).draw();
+        table_detalle.cell(num-1,9).data(total).draw();
 
         num++;
 
       });
-
-      $('#example1 > tbody  > tr').each(function () {
-        var data = table_detalle.row($(this)).data();
-        if (!data['subtotal'] || isNaN(data['subtotal'])) {
-            console.log("Valor inválido de subtotal. Ajustando a 0.");
-            data['subtotal'] = "0.00"; // Valor predeterminado
-        }
-    });
-    
 
     }
 
@@ -600,7 +573,7 @@ function calcularTotal(){
     $("#txtGravada").val("0");
     $("#txtIgv").val("0");
     $("#txtTotal").val("0");
-  } */
+  }
 
 }
 
@@ -836,7 +809,7 @@ function saveOperation(){
     var fecha = $("#fecha").val();
     var codigo_moneda = $("#codigo_moneda").val();
     var codigo_forma_pago = $("#codigo_forma_pago").val();
-    var total_descuento = $("#txtTotalDescuento").val() || "0";
+    var total_descuento = $("#txtTotalDescuento").val();
     var total_gravada = $("#txtGravada").val();
     var total_igv = $("#txtIgv").val();
     var total_total = $("#txtTotal").val();
@@ -885,22 +858,22 @@ function saveOperation(){
 
     $('#example1 > tbody  > tr').each(function(){
 
-      var cantidad = $(this).find("td").eq(1).find("input").val() || 1; // Valor predeterminado
+      var cantidad = $(this).find("td").eq(1).find("input").val();
+      var descuento = $(this).find("td").eq(3).find("input").val();
       var data = table_detalle.row($(this)).data();
-  
-      datos.push({
-          "name_tabla": data['name_tabla'],
-          "cod_producto": data['codigo'],
-          "descripcion": data['descripcion'],
-          "cantidad": cantidad,
-          "precio_unitario": 0, // No utilizado, valor predeterminado
-          "descuento": 0,       // No utilizado, valor predeterminado
-          "sub_total": 0,       // No utilizado, valor predeterminado
-          "tipo_igv": 0,        // No utilizado, valor predeterminado
-          "igv": 0,             // No utilizado, valor predeterminado
-          "total": 0            // No utilizado, valor predeterminado
-      });
 
+      datos.push({
+        "name_tabla" : data['name_tabla'],
+        "cod_producto" : data['codigo'],
+        "descripcion" : data['descripcion'],
+        "cantidad" : cantidad,
+        "precio_unitario" : data['precio_unitario'],
+        "descuento" : descuento,
+        "sub_total" : data['subtotal'],
+        "tipo_igv" : data['tipo_igv'],
+        "igv" : data['igv'],
+        "total" : data['total']
+      });
 
     });
 
@@ -925,20 +898,19 @@ function saveOperation(){
       confirmButtonText: 'Si, Guardar ahora!'
     }).then(function(result) {
       if (result.value) {
-        console.log("Datos enviados al servidor:", JSON.stringify(objeto));
         $.ajax({
           type: "POST",
           url: "ajax.php?accion=goOrdenVenta",
           datatype: "json",
           data: form,
-          success: function(data) {
+          success: function(data){
             try {
-                var response = JSON.parse(data);
-                if (response['error'] == "SI") {
-                    runAlert("Advertencia", response['message'], "warning");
-                } else {
-                    runAlert("Bien hecho...!!!", response['message'], "success");
-                  $("#id_venta").val(response['id_venta']);
+              var response = JSON.parse(data);
+              if (response['error']=="SI") {
+                runAlert("Oh No...!!!",response['message'],"warning");
+              } else {
+                runAlert("Bien hecho...!!!",response['message'],"success");
+                $("#id_venta").val(response['id_venta']);
                 $("#serie").val(response['serie']);
                 $("#correlativo").val(response['correlativo']);
                 $("#accion").val("edit");
@@ -948,9 +920,9 @@ function saveOperation(){
                 $("#btnSave").addClass("d-none");
               }
             } catch (e) {
-                console.error("Error procesando la respuesta:", e);
+              runAlert("Oh No...!!!",data + e,"error");
             }
-        },
+          },
           error: function(data){
             runAlert("Oh No...!!!",data,"error");
           },

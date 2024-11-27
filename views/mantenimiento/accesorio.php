@@ -220,10 +220,10 @@
                                               class="form-control" autocomplete="off" required value="1" min="1">
                                             </div>
 
-                                            <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                                            <div class="form-group col-md-3 col-sm-6 col-xs-12 d-none">
                                               <label for="id_moneda" class="label-control">Moneda</label>
                                               <select name="id_moneda" id="id_moneda" class="form-control" required>
-                                                <option value="">Seleccione...</option>
+                                                <!-- <option value="">Seleccione...</option> -->
                                                 <?php
                                                   include("core/models/ClassMoneda.php");
                                                   $dataMoneda = $OBJ_MONEDA->show("1");

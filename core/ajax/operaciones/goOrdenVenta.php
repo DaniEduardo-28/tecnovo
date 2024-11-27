@@ -26,7 +26,6 @@
 
   $monto_recibido = isset($_POST["monto_recibido"]) ? $_POST["monto_recibido"] : 0;
   $vuelto = isset($_POST["vuelto"]) ? $_POST["vuelto"] : 0;
-  
 
   try {
 
@@ -151,7 +150,7 @@
 
   }
 
-  function eviarDocumento($ruta,$token,$data_json){
+/*   function eviarDocumento($ruta,$token,$data_json){
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $ruta);
     curl_setopt(
@@ -168,6 +167,6 @@
     $respuesta  = curl_exec($ch);
     curl_close($ch);
     return $respuesta;
-  }
+  } */
   
  ?>
