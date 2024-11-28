@@ -109,7 +109,7 @@ function get_data_callback(){
         }
 
         // genera el cuerpo de la tabla
-        var innerdivHtml = '<table class="table clients-contant-table mb-0">';
+        var innerdivHtml = '<table class="table clients-contant-table mb-0 ocultar-precio-venta">';
         innerdivHtml += '<thead>';
         innerdivHtml += '<tr>';
         innerdivHtml += '<th scope="col">Producto</th>';

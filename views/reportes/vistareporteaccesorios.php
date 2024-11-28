@@ -29,6 +29,15 @@
         background-color: #ddd;
       }
     </style>
+
+<style>
+  /* Oculta la columna de Precio Venta */
+  .ocultar-precio-venta th:nth-child(7), /* Encabezado de la columna */
+  .ocultar-precio-venta td:nth-child(7)  /* Celdas de la columna */ {
+    display: none;
+  }
+</style>
+
   </head>
 
   <body>
@@ -126,7 +135,7 @@
                                       <div class="row">
                                         <div class="col-md-4 col-sm-4">
                                           <div class="form-group">
-                                            <label for="cboCategoriaBuscar" class="label-control">Categoria de Producto, Servicios y Gastos</label>
+                                            <label for="cboCategoriaBuscar" class="label-control">Categoria de Producto</label>
                                             <select class="form-control" name="cboCategoriaBuscar" id="cboCategoriaBuscar">
                                               <option value="">Todos...</option>
                                               <?php

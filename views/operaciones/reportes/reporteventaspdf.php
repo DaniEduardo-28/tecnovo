@@ -66,7 +66,7 @@
   	$pdf->Cell(25,5,'FECHA',1,0,'C',0);
     $pdf->Cell(35,5,'TIPO DOCUM.',1,0,'C',0);
   	$pdf->Cell(35,5,'# DOCUM.',1,0,'C',0);
-  	$pdf->Cell(65,5,'CLIENTE',1,0,'C',0);
+  	$pdf->Cell(65,5,'ENCARGADO',1,0,'C',0);
 /*   	$pdf->Cell(15,5,'MON.',1,0,'C',0);
   	$pdf->Cell(19,5,'SUB TOTAL',1,0,'C',0);
   	$pdf->Cell(18,5,'IGV',1,0,'C',0);
@@ -83,10 +83,10 @@
       $estado = $key['estado'];
       switch ($estado) {
         case '1':
-          $estado = "Registrado";
+          $estado = "En proceso";
           break;
         case '2':
-          $estado = "Pagado";
+          $estado = "Registrado";
           break;
         case '3':
           $estado = "Anulado";

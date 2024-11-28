@@ -445,7 +445,7 @@
                                                 <th style="width:30px; text-align: center;">Estado</th>
                                                 <th>Doc. Salida</th>
                                                 <th>Doc. Identidad</th>
-                                                <th>Cliente</th>
+                                                <th>Encargado</th>
                                                 <th>Dirección</th>
                                                 <th>Fecha</th>
                                                 <th>Moneda</th>

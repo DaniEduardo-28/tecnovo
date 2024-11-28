@@ -1109,7 +1109,7 @@ class ClassOrdenVenta extends Conexion
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 					$sql .= "?,"; // ID de la orden de venta
-					$sql .= "?,?,?,?,?,1,?,?,?,?,?"; // Incluimos `notas`.
+					$sql .= " ?,?,?,?,?,1,?,?,?,?,?"; // Incluimos `notas`.
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([

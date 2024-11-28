@@ -50,18 +50,18 @@
   	$pdf->Cell(100,8,$empresa[0]['razon_social'],0,0,'L',0);
   	$pdf->Ln(10);
   	$pdf->SetFont('Arial','U',11);
-  	$pdf->Cell(280,1,'REPORTE DE ACCESORIOS',0,0,'C',0);
+  	$pdf->Cell(280,1,'REPORTE DE PRODUCTOS',0,0,'C',0);
 
   	$pdf->Ln(10);
     $pdf->SetX(5);
   	$pdf->SetFont('Arial','B',8);
   	$pdf->Cell(10,5,'#',1,0,'C',0);
     $pdf->Cell(45,5,utf8_decode('CATEGORÍA'),1,0,'C',0);
-  	$pdf->Cell(120,5,utf8_decode('ACCESORIO'),1,0,'C',0);
+  	$pdf->Cell(120,5,utf8_decode('PRODUCTO'),1,0,'C',0);
   	$pdf->Cell(25,5,'STOCK',1,0,'C',0);
   	$pdf->Cell(20,5,'S. MIN.',1,0,'C',0);
     $pdf->Cell(25,5,'P. COMPRA',1,0,'C',0);
-  	$pdf->Cell(25,5,'P. VENTA',1,0,'C',0);
+ /*  	$pdf->Cell(25,5,'P. VENTA',1,0,'C',0); */
     $pdf->Cell(17,5,'ESTADO',1,0,'C',0);
   	$pdf->Ln(5);
 
@@ -75,9 +75,9 @@
       $pdf->Cell(120,5,utf8_decode($key['name_accesorio']),1,0,'L',0);
       $pdf->Cell(25,5,$key['stock'] . " " . $key['name_unidad'],1,0,'C',0);
       $pdf->Cell(20,5,$key['stock_minimo'] . " " . $key['name_unidad'],1,0,'C',0);
-      $pdf->Cell(25,5,utf8_decode($key['signo_moneda']) . " " . $key['precio_compra'],1,0,'R',0);
-      $pdf->Cell(25,5,utf8_decode($key['signo_moneda']) . " " . $key['precio_venta'],1,0,'R',0);
-      $pdf->Cell(17,5,utf8_decode(strtoupper($key['estado'])),1,0,'C',0);
+      $pdf->Cell(25,5,utf8_decode($key['signo_moneda']) . " " . $key['precio_compra'],1,0,'C',0);
+/*       $pdf->Cell(25,5,utf8_decode($key['signo_moneda']) . " " . $key['precio_venta'],1,0,'R',0);
+ */      $pdf->Cell(17,5,utf8_decode(strtoupper($key['estado'])),1,0,'C',0);
   		$pdf->Ln(5);
   		$x++;
   	}

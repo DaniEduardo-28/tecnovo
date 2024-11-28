@@ -41,10 +41,10 @@
         $options = "";
         switch ($key['estado']) {
           case '1':
-            $estado = '<span class="badge badge-warning-inverse px-2 py-1 mt-1">Registrado</span>';
+            $estado = '<span class="badge badge-warning-inverse px-2 py-1 mt-1">En Proceso</span>';
             break;
           case '2':
-            $estado = '<span class="badge badge-success-inverse px-2 py-1 mt-1">Pagado</span>';
+            $estado = '<span class="badge badge-success-inverse px-2 py-1 mt-1">Registrado</span>';
             break;
           case '3':
             $estado = '<span class="badge badge-danger-inverse px-2 py-1 mt-1">Anulado</span>';
@@ -55,7 +55,7 @@
         }
 
         if (($key['estado']=="2" || $key['estado']=="3") && $key['flag_enviado']) {
-          $options.= '&nbsp;&nbsp;<a href="?view=printvercomprobante&id=' . $key['id_venta'] . '" target="_blank" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-printer"></i></a>';
+          $options.= '&nbsp;&nbsp;<a href="?view=printvercomprobante&id_venta=' . $key['id_venta'] . '" target="_blank" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-printer"></i></a>';
         }
 
         $retorno_array[] =array(
@@ -76,8 +76,8 @@
           "direccion" => $key['direccion'],
           "telefono" => $key['telefono'],
           "correo" => $key['correo'],
-          "fecha" => date('d/m/Y H:i', strtotime($key['fecha'])),
-          "fecha_vencimiento" => date('d/m/Y H:i', strtotime($key['fecha_vencimiento'])),
+          "fecha" => date('d/m/Y', strtotime($key['fecha'])),
+          "fecha_vencimiento" => date('d/m/Y', strtotime($key['fecha_vencimiento'])),
           "sub_total" => $key['sub_total'],
           "igv" => $key['igv'],
           "total" => $key['total'],
