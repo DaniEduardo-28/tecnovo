@@ -443,7 +443,7 @@
                                                 <th style="width:90px;">Acciones</th>
                                                 <th>Id Venta</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
-                                                <th>Doc. Venta</th>
+                                                <th>Doc. Salida</th>
                                                 <th>Doc. Identidad</th>
                                                 <th>Cliente</th>
                                                 <th>Dirección</th>
