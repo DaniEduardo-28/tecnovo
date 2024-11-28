@@ -55,7 +55,7 @@
         }
 
         if (($key['estado']=="2" || $key['estado']=="3") && $key['flag_enviado']) {
-          $options.= '&nbsp;&nbsp;<a href="?view=printvercomprobante&id_venta=' . $key['id_venta'] . '" target="_blank" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-printer"></i></a>';
+          $options.= '&nbsp;&nbsp;<a href="?view=printvercomprobante&id=' . $key['id_venta'] . '" target="_blank" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-printer"></i></a>';
         }
 
         $retorno_array[] =array(

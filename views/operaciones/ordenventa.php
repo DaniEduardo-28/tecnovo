@@ -392,7 +392,7 @@
                                         </div>
 
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoDocuClieBuscar">Documento de Cliente</label>
+                                          <label for="cboTipoDocuClieBuscar">Documento de Identidad</label>
                                           <select class="form-control" id="cboTipoDocuClieBuscar" name="cboTipoDocuClieBuscar">
                                             <option value="">Todos</option>
                                             <?php

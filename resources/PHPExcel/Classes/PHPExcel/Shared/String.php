@@ -523,8 +523,10 @@ class PHPExcel_Shared_String
         if (strlen($str) < 2) {
             return $str;
         }
-        $c0 = ord($str{0});
-        $c1 = ord($str{1});
+        $c0 = ord($str[0]);
+ // Nota: Esta sintaxis está obsoleta desde PHP 7.4
+
+        $c1 = ord($str[1]);
         if ($c0 == 0xfe && $c1 == 0xff) {
             $str = substr($str, 2);
         } elseif ($c0 == 0xff && $c1 == 0xfe) {
@@ -535,7 +537,7 @@ class PHPExcel_Shared_String
         $newstr = '';
         for ($i=0; $i<$len; $i+=2) {
             if ($bom_be) {
-                $val = ord($str{$i})   << 4;
+                $val = ord($str[$i])   << 4;
                 $val += ord($str{$i+1});
             } else {
                 $val = ord($str{$i+1}) << 4;
