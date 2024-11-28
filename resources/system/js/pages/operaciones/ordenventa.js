@@ -100,13 +100,11 @@ $(document).ready(function(){
       }
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
-    var notas = $(this).parents("tr").find("td").eq(10).find("input").val(); // Notas extraídas correctamente
     var precio_unitario = 1;
     var descuento = 0;
       var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
       var inputDescuento = '<input type="number" value="0" class="form-control" min="0" style="width:90px;" readonly>';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
-      var inputNotas = '<input class="form-control" name="notas" value="" type="text">';
 
       precio_unitario = (precio_unitario/1.18).toFixed(3);
       var sub_total = (1 * cantidad).toFixed(2);
@@ -124,7 +122,7 @@ $(document).ready(function(){
         "tipo_igv": 1,
         "igv": igv,
         "total": total,
-        "notas": inputNotas,
+        "notas": '<input class="form-control" value="" type="text">',
         "eliminar_item": botonEliminar
       }).draw();
 
@@ -865,7 +863,7 @@ function saveOperation(){
 
       var cantidad = $(this).find("td").eq(1).find("input").val();
     var descuento = $(this).find("td").eq(3).find("input").val();
-    var notas = $(this).find("td").eq(10).find("input").val(); // Asegúrate de que el índice 10 sea el de "Notas".
+    var notas = $(this).find("td").eq(2).find("input").val(); // Asegúrate de que el índice 10 sea el de "Notas".
     console.log("Notas capturadas:", notas); // Verificar el valor de notas
     var data = table_detalle.row($(this)).data();
 
@@ -898,7 +896,7 @@ function saveOperation(){
 
     Swal.fire({
       title: '¿Seguro de confirmar la operación?',
-      text: "Se guardará la operación y se realizará el pago correspondiente, si no es documento interno se enviará al OSE(Operador de servicios electrónicos).",
+      text: "Se guardará la operación en el sistema.",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#22c63b',
@@ -1023,7 +1021,7 @@ function saveOperationBorrador(){
     }
       var cantidad = $(this).find("td").eq(1).find("input").val();
     var descuento = $(this).find("td").eq(3).find("input").val();
-    var notas = $(this).find("td").eq(10).find("input").val(); // Captura el valor del campo 'notas'.
+    var notas = $(this).find("td").eq(2).find("input").val(); // Captura el valor del campo 'notas'.
     console.log("Notas capturadas:", notas); // Verificar el valor de notas
     var data = table_detalle.row($(this)).data();
 
@@ -1056,7 +1054,7 @@ function saveOperationBorrador(){
 
     Swal.fire({
       title: '¿Seguro de confirmar la operación?',
-      text: "Esta operación se guardará como un borrador, podrá generar el comprobante de pago más adelante.",
+      text: "Esta operación se guardará como un borrador.",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#22c63b',
@@ -1139,7 +1137,7 @@ function getDataEdit(id_venta){
             var cantidad = o[i].detalle_cantidad;
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
-            var notas = o[i].detalle_notas ? o[i].detalle_notas : ""; 
+            var notas = o[i].detalle_notas; 
             var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
@@ -1237,7 +1235,7 @@ function verRegistro(id_venta){
             var cantidad = o[i].detalle_cantidad;
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
-            var notas = o[i].detalle_notas ? o[i].detalle_notas : "";
+            var notas = o[i].detalle_notas;
             var inputCantidad = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var inputNotas = '<input class="form-control" value="' + notas + '" type="text" readonly>';

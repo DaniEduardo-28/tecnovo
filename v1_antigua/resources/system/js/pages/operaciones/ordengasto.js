@@ -991,7 +991,7 @@ function saveOperationBorrador(){
 
     Swal.fire({
       title: '¿Seguro de confirmar la operación?',
-      text: "Esta operación se guardará como un borrador, podrá generar el comprobante de pago más adelante.",
+      text: "Esta operación se guardará como un borrador.",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#22c63b',
