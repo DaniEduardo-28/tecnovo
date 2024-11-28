@@ -58,13 +58,14 @@
   	$pdf->Cell(280,1,'REPORTE DE SALIDA DE PRODUCTOS',0,0,'C',0);
 
   	$pdf->Ln(10);
-    $pdf->SetX(25);
+    $pdf->SetX(15);
   	$pdf->SetFont('Arial','B',8);
   	$pdf->Cell(15,5,'#',1,0,'C',0);
   	$pdf->Cell(40,5,'DOCUMENTO',1,0,'C',0);
     $pdf->Cell(30,5,'COMPROB.',1,0,'C',0);
   	$pdf->Cell(25,5,'FECHA',1,0,'C',0);
-  	$pdf->Cell(35,5,'DOCUM.',1,0,'C',0);
+    $pdf->Cell(35,5,'TIPO DOCUM.',1,0,'C',0);
+  	$pdf->Cell(35,5,'# DOCUM.',1,0,'C',0);
   	$pdf->Cell(65,5,'CLIENTE',1,0,'C',0);
 /*   	$pdf->Cell(15,5,'MON.',1,0,'C',0);
   	$pdf->Cell(19,5,'SUB TOTAL',1,0,'C',0);
@@ -78,7 +79,7 @@
   	$x=1;
 
   	foreach ($arrayordenventa as $key) {
-      $pdf->SetX(25);
+      $pdf->SetX(15);
       $estado = $key['estado'];
       switch ($estado) {
         case '1':
@@ -95,7 +96,8 @@
   		$pdf->Cell(40,5,$key['name_documento_venta'],1,0,'C',0);
   		$pdf->Cell(30,5,$key['serie'] .'-' . substr("0000000" . $key['correlativo'],-8),1,0,'C',0);
       $pdf->Cell(25,5,date("d/m/Y", strtotime($key['fecha'])),1,0,'C',0);
-  		$pdf->Cell(35,5,"[" . $key['codigo_documento_cliente'] . "] - " . $key['numero_documento_cliente'],1,0,'C',0);
+      $pdf->Cell(35,5,$key['name_documento_cliente'],1,0,'C',0);
+      $pdf->Cell(35,5,$key['numero_documento_cliente'],1,0,'C',0);
   		$pdf->Cell(65,5,utf8_decode($key['cliente']) ,1,0,'L',0);
 /*   		$pdf->Cell(15,5,$key['abreviatura_moneda'],1,0,'C',0);
   		$pdf->Cell(19,5,$key['signo_moneda'] . $key['sub_total'],1,0,'R',0);

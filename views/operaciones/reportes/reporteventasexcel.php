@@ -1,5 +1,7 @@
 <?php
-
+// Habilitar errores para depuración
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
   if (!isset($_SESSION['id_trabajador'])) {
     header('location: ?view=logout');
     exit();
@@ -43,8 +45,56 @@
     }
     $arrayordenventa = $Resultado["data"];
 
+    // Nombre del archivo Excel
+    $filename = 'reporte_salida_productos.xls';
+    // Crear una cadena para almacenar los datos del archivo Excel
+    $excel_data = '';
 
-  	$objPHPExcel = new PHPExcel();
+    // Encabezados
+    $excel_data .= "#\tDOCUMENTO\t#COMPROBANTE\tFECHA\tTIPO DOCUMENTO\t#DOCUMENTO\tCLIENTE\tESTADO\n";
+
+        // Datos
+        $x = 1;
+        foreach ($arrayordenventa as $key) {
+            $estado = $key['estado'];
+            switch ($estado) {
+              case '1':
+                $estado = "Registrado";
+                break;
+              case '2':
+                $estado = "Pagado";
+                break;
+              case '3':
+                $estado = "Anulado";
+                break;
+            }  
+          $excel_data .= $x . "\t" .
+                mb_convert_encoding($key['name_documento_venta'], 'UTF-8', 'auto') . "\t" .
+                mb_convert_encoding($key['serie'] .'-' . substr("0000000" . $key['correlativo'],-8), 'UTF-8', 'auto') . "\t" .
+                mb_convert_encoding($key['fecha'], 'UTF-8', 'auto') . "\t" .
+                mb_convert_encoding($key['name_documento_cliente'], 'UTF-8', 'auto') . "\t" .
+                mb_convert_encoding($key['numero_documento_cliente'], 'UTF-8', 'auto') . "\n";
+                mb_convert_encoding($key['cliente'], 'UTF-8', 'auto') . "\n";
+                mb_convert_encoding($estado, 'UTF-8', 'auto') . "\n";
+
+                $x++;
+        }
+
+        // Imprimir los datos del archivo Excel
+    echo $excel_data;
+
+  } catch (\Exception $e) {
+    $pdf = new PDF('L', 'mm', 'A4');
+    $pdf->AliasNbPages();
+    $pdf->AddPage();
+    $pdf->setY(10);
+    $pdf->setX(2);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(12, 3, (utf8_decode($e->getMessage())), 0, 0, 'L', 0);
+    $pdf->Output();
+}
+
+/*   	$objPHPExcel = new PHPExcel();
   	$objPHPExcel->getProperties()
           ->setCreator("TECNOVO PERU SAC")
           ->setLastModifiedBy("TECNOVO PERU SAC")
@@ -148,6 +198,6 @@
     $pdf->Cell(12,3,(utf8_decode($e->getMessage())),0,0,'L',0);
     $pdf->Output();
 
-  }
+  } */
 
 ?>
