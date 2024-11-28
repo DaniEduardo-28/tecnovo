@@ -4,52 +4,60 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-  if (!isset($_SESSION['id_trabajador'])) {
+if (!isset($_SESSION['id_trabajador'])) {
     header('location: ?view=logout');
     exit();
-  }
+}
+
 
 	include 'plantilla.php';
   require_once 'resources/PHPExcel/Classes/PHPExcel.php';
 
   try {
-
-    $id_doc_cliente = isset($_GET["id_doc_cliente"])	? $_GET["id_doc_cliente"]	: "";
-    $id_doc_venta = isset($_GET["id_doc_venta"])	? $_GET["id_doc_venta"]	: "";
-    $valor = isset($_GET["valor"])	? $_GET["valor"]	: "";
-    $estado = isset($_GET["estado"])	? $_GET["estado"]	: "all";
-    $fecha_inicio = isset($_GET["fecha_inicio"])	? $_GET["fecha_inicio"]	: date("Y-m-d");
-    $fecha_fin = isset($_GET["fecha_fin"])	? $_GET["fecha_fin"]	: date("Y-m-d");
+    $id_doc_cliente = isset($_GET["id_doc_cliente"]) ? $_GET["id_doc_cliente"] : "";
+    $id_doc_venta = isset($_GET["id_doc_venta"]) ? $_GET["id_doc_venta"] : "";
+    $valor = isset($_GET["valor"]) ? $_GET["valor"] : "";
+    $estado = isset($_GET["estado"]) ? $_GET["estado"] : "all";
+    $fecha_inicio = isset($_GET["fecha_inicio"]) ? $_GET["fecha_inicio"] : date("Y-m-d");
+    $fecha_fin = isset($_GET["fecha_fin"]) ? $_GET["fecha_fin"] : date("Y-m-d");
     $id_sucursal = isset($_SESSION['id_sucursal']) ? $_SESSION['id_sucursal'] : 0;
     $id_trabajador = isset($_SESSION['id_trabajador']) ? $_SESSION['id_trabajador'] : "0";
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ordenventa"));
+    // Validación de permisos
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("ordenventa"));
 
-    if ($access_options[0]['error']=="NO") {
-      if ($access_options[0]['flag_descargar']==false) {
+    if ($access_options[0]['error'] == "NO" && !$access_options[0]['flag_descargar']) {
         throw new Exception("No tienes permisos para descargar este reporte.");
-      }
-    }else {
-      throw new Exception("Error al verificar los permisos.");
     }
 
     require_once "core/models/ClassEmpresa.php";
     $ResultadoEmpresa = $OBJ_EMPRESA->getEmpresa();
-    if ($ResultadoEmpresa["error"]=="SI") {
-      throw new Exception($ResultadoEmpresa["message"]);
+    if ($ResultadoEmpresa["error"] == "SI") {
+        throw new Exception($ResultadoEmpresa["message"]);
     }
     $empresa = $ResultadoEmpresa["data"];
 
     require_once "core/models/ClassOrdenVenta.php";
-    $Resultado = $OBJ_ORDEN_VENTA->showReporte($id_sucursal,$id_trabajador,$id_doc_venta,$id_doc_cliente,$estado,$valor,$fecha_inicio,$fecha_fin);
-    if ($Resultado["error"]=="SI") {
-      throw new Exception($Resultado["message"]);
+    $Resultado = $OBJ_ORDEN_VENTA->showReporte($id_sucursal, $id_trabajador, $id_doc_venta, $id_doc_cliente, $estado, $valor, $fecha_inicio, $fecha_fin);
+    if ($Resultado["error"] == "SI") {
+        throw new Exception($Resultado["message"]);
     }
     $arrayordenventa = $Resultado["data"];
 
+    // Limpiar cualquier salida previa
+    if (ob_get_length()) {
+        ob_end_clean();
+    }
 
-  	$objPHPExcel = new PHPExcel();
-  	$objPHPExcel->getProperties()
+    // Configurar cabeceras de salida para Excel
+    header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    header("Content-Disposition: attachment;filename=\"" . $empresa[0]['razon_social'] . " " . date("d-m-Y", strtotime($fecha_inicio)) . " - " . date("d-m-Y", strtotime($fecha_fin)) . ".xlsx\"");
+    header("Cache-Control: max-age=0");
+    header("Expires: 0");
+    header("Pragma: public");
+
+    $objPHPExcel = new PHPExcel();
+    $objPHPExcel->getProperties()
           ->setCreator("TECNOVO PERU SAC")
           ->setLastModifiedBy("TECNOVO PERU SAC")
           ->setTitle("VENTAS " . date("d/m/Y", strtotime($fecha_inicio)) . " - " . date("d/m/Y", strtotime($fecha_fin)))
@@ -62,7 +70,7 @@ ini_set('display_errors', 1);
   	$objPHPExcel->getActiveSheet()->setTitle('Hoja 1');
 
   	//TAMAÑOS DE EMNCABEZADOS
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(false);
+/*   	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(false);
   	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
   	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(false);
   	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
@@ -85,21 +93,22 @@ ini_set('display_errors', 1);
   	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(false);
   	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
     $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20);
+  	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20); */
 
-  	// ENCABEZADO
-  	$objPHPExcel->getActiveSheet()->setCellValue('A1', '#');
-  	$objPHPExcel->getActiveSheet()->setCellValue('B1', 'DOCUMENTO');
-  	$objPHPExcel->getActiveSheet()->setCellValue('C1', 'COMPROBANTE');
-  	$objPHPExcel->getActiveSheet()->setCellValue('D1', 'FECHA');
-  	$objPHPExcel->getActiveSheet()->setCellValue('E1', 'DOCUMENTO');
-  	$objPHPExcel->getActiveSheet()->setCellValue('F1', 'CLIENTE');
-  	$objPHPExcel->getActiveSheet()->setCellValue('G1', 'MONEDA');
-  	$objPHPExcel->getActiveSheet()->setCellValue('H1', 'SUB TOTAL');
-  	$objPHPExcel->getActiveSheet()->setCellValue('I1', 'IGV');
-  	$objPHPExcel->getActiveSheet()->setCellValue('J1', 'DESCUENTO');
-  	$objPHPExcel->getActiveSheet()->setCellValue('K1', 'TOTAL');
-    $objPHPExcel->getActiveSheet()->setCellValue('L1', 'ESTADO');
+  	 // Encabezados
+     $objPHPExcel->getActiveSheet()
+     ->setCellValue('A1', '#')
+     ->setCellValue('B1', 'DOCUMENTO')
+     ->setCellValue('C1', 'COMPROBANTE')
+     ->setCellValue('D1', 'FECHA')
+     ->setCellValue('E1', 'DOCUMENTO CLIENTE')
+     ->setCellValue('F1', 'CLIENTE')
+     ->setCellValue('G1', 'MONEDA')
+     ->setCellValue('H1', 'SUB TOTAL')
+     ->setCellValue('I1', 'IGV')
+     ->setCellValue('J1', 'DESCUENTO')
+     ->setCellValue('K1', 'TOTAL')
+     ->setCellValue('L1', 'ESTADO');
 
   	//recorremos el array de datos
   	$x=2;
@@ -134,15 +143,12 @@ ini_set('display_errors', 1);
   		$x++;
   	}
 
-  	header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-  	header('Content-Disposition: attachment;filename="' . $empresa[0]['razon_social'] . ' ' . date("d/m/Y",strtotime($fecha_inicio)) . ' - ' . date("d/m/Y",strtotime($fecha_fin)) .  '.xlsx"');
-  	header('Cache-Control: max-age=0');
-
   	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
   	$objWriter->save('php://output');
 
   } catch (\Exception $e) {
 
+    echo "Error: " . $e->getMessage();
     $pdf = new PDF('L','mm','A4');
   	$pdf->AliasNbPages();
     $pdf->AddPage();
