@@ -156,7 +156,7 @@
                                                   if ($dataDocuVenta["error"]=="NO") {
                                                     foreach ($dataDocuVenta["data"] as $key) {
                                                       if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
-                                                        echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre_corto'] . '</option>';
+                                                        echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre'] . '</option>';
                                                       }
                                                     }
                                                   }
@@ -300,6 +300,7 @@
                                                       <th>Tipo IGV</th>
                                                       <th>IGV</th>
                                                       <th>Total</th>
+                                                      <th>Notas</th>
                                                       <th style="width:30px;">&nbsp;&nbsp;X&nbsp;&nbsp;</th>
                                                     </tr>
                                                   </thead>
@@ -360,7 +361,7 @@
 
                                           <div class="row">
                                             <div class="form-group col-md-12">
-                                              <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar y Pagar</button>
+                                              <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar</button>
                                               <button type="submit" name="btnSaveBorrador" id="btnSaveBorrador" name="button" class="btn btn-warning float-right"> <span class="fa fa-save"></span> Guardar Borrador</button>
                                               <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-arrow-left"></span> Volver</button>
                                             </div>
@@ -382,7 +383,7 @@
                                               if ($dataDocuVenta["error"]=="NO") {
                                                 foreach ($dataDocuVenta["data"] as $key) {
                                                   if ($key['cod_sunat']!="07" && $key['cod_sunat']!="08") {
-                                                    echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre_corto'] . '</option>';
+                                                    echo '<option value="' . $key['id_documento_venta'] . '">' . $key['nombre'] . '</option>';
                                                   }
                                                 }
                                               }

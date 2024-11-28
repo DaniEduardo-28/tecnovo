@@ -23,7 +23,7 @@ var table = $('#example').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [2,14],
+      "targets": [2,7,9,10,11,12,13,14],
       "visible": false,
       "searchable": false
     }
@@ -47,11 +47,12 @@ var table_detalle = $('#example1').DataTable({
     { 'data': 'tipo_igv' },
     { 'data': 'igv' },
     { 'data': 'total' },
+    { 'data': 'notas' },
     { 'data': 'eliminar_item' }
   ],
   columnDefs: [
     {
-      "targets": [1,7],
+      "targets": [0,1,4,5,6,7,8,9],
       "visible": false,
       "searchable": false
     }
@@ -99,13 +100,16 @@ $(document).ready(function(){
       }
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
-      var precio_unitario = data["precio_unitario"];
+    var notas = $(this).parents("tr").find("td").eq(10).find("input").val(); // Notas extraídas correctamente
+    var precio_unitario = 1;
+    var descuento = 0;
       var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
-      var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="0" class="form-control" min="0" style="width:90px;">';
+      var inputDescuento = '<input type="number" value="0" class="form-control" min="0" style="width:90px;" readonly>';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
+      var inputNotas = '<input class="form-control" name="notas" value="" type="text">';
 
       precio_unitario = (precio_unitario/1.18).toFixed(3);
-      var sub_total = (precio_unitario * cantidad).toFixed(2);
+      var sub_total = (1 * cantidad).toFixed(2);
       var igv = (sub_total * 0.18).toFixed(2);
       var total = (parseFloat(sub_total) + parseFloat(igv)).toFixed(2);
 
@@ -115,11 +119,12 @@ $(document).ready(function(){
         "descripcion": descripcion,
         "cantidad": inputCantidad,
         "precio_unitario": precio_unitario,
-        "descuento": inputDescuento,
+        "descuento": 0,
         "subtotal": sub_total,
         "tipo_igv": 1,
         "igv": igv,
         "total": total,
+        "notas": inputNotas,
         "eliminar_item": botonEliminar
       }).draw();
 
@@ -541,11 +546,11 @@ function calcularTotal(){
         var cantidad = $(this).find("td").eq(1).find("input").val();
         var precio_unitario = $(this).find("td").eq(2).html();
         var descuento = $(this).find("td").eq(3).find("input").val();
-        var gravada = ((cantidad*precio_unitario)-descuento).toFixed(2);
+        var gravada = ((cantidad*1)).toFixed(2);
         var igv = (gravada * 0.18).toFixed(2);
         var total = (parseFloat(gravada) + parseFloat(igv)).toFixed(2);
 
-        total_descuento = parseFloat(total_descuento) + parseFloat(descuento);
+        total_descuento = parseFloat(total_gravada) + parseFloat(gravada);
         total_gravada = parseFloat(total_gravada) + parseFloat(gravada);
         total_igv = parseFloat(total_igv) + parseFloat(igv);
         total_total = parseFloat(total_total) + parseFloat(total);
@@ -859,21 +864,24 @@ function saveOperation(){
     $('#example1 > tbody  > tr').each(function(){
 
       var cantidad = $(this).find("td").eq(1).find("input").val();
-      var descuento = $(this).find("td").eq(3).find("input").val();
-      var data = table_detalle.row($(this)).data();
+    var descuento = $(this).find("td").eq(3).find("input").val();
+    var notas = $(this).find("td").eq(10).find("input").val(); // Asegúrate de que el índice 10 sea el de "Notas".
+    console.log("Notas capturadas:", notas); // Verificar el valor de notas
+    var data = table_detalle.row($(this)).data();
 
-      datos.push({
-        "name_tabla" : data['name_tabla'],
-        "cod_producto" : data['codigo'],
-        "descripcion" : data['descripcion'],
-        "cantidad" : cantidad,
-        "precio_unitario" : data['precio_unitario'],
-        "descuento" : descuento,
-        "sub_total" : data['subtotal'],
-        "tipo_igv" : data['tipo_igv'],
-        "igv" : data['igv'],
-        "total" : data['total']
-      });
+    datos.push({
+      "name_tabla": data['name_tabla'],
+      "cod_producto": data['codigo'],
+      "descripcion": data['descripcion'],
+      "cantidad": cantidad,
+      "precio_unitario": data['precio_unitario'],
+      "descuento": descuento,
+      "sub_total": data['subtotal'],
+      "tipo_igv": data['tipo_igv'],
+      "igv": data['igv'],
+      "total": data['total'],
+      "notas": notas // Asegúrate de incluir 'notas' aquí.
+  });
 
     });
 
@@ -1010,22 +1018,28 @@ function saveOperationBorrador(){
 
     $('#example1 > tbody  > tr').each(function(){
 
+      for (let i = 0; i < 11; i++) {
+        console.log("Valor de columna " + i + ":", $(this).find("td").eq(i).text());
+    }
       var cantidad = $(this).find("td").eq(1).find("input").val();
-      var descuento = $(this).find("td").eq(3).find("input").val();
-      var data = table_detalle.row($(this)).data();
+    var descuento = $(this).find("td").eq(3).find("input").val();
+    var notas = $(this).find("td").eq(10).find("input").val(); // Captura el valor del campo 'notas'.
+    console.log("Notas capturadas:", notas); // Verificar el valor de notas
+    var data = table_detalle.row($(this)).data();
 
-      datos.push({
-        "name_tabla" : data['name_tabla'],
-        "cod_producto" : data['codigo'],
-        "descripcion" : data['descripcion'],
-        "cantidad" : cantidad,
-        "precio_unitario" : data['precio_unitario'],
-        "descuento" : descuento,
-        "sub_total" : data['subtotal'],
-        "tipo_igv" : data['tipo_igv'],
-        "igv" : data['igv'],
-        "total" : data['total']
-      });
+    datos.push({
+      "name_tabla": data['name_tabla'],
+      "cod_producto": data['codigo'],
+      "descripcion": data['descripcion'],
+      "cantidad": cantidad,
+      "precio_unitario": data['precio_unitario'],
+      "descuento": descuento,
+      "sub_total": data['subtotal'],
+      "tipo_igv": data['tipo_igv'],
+      "igv": data['igv'],
+      "total": data['total'],
+      "notas": notas // Asegúrate de incluir 'notas' aquí.
+  });
 
     });
 
@@ -1125,12 +1139,14 @@ function getDataEdit(id_venta){
             var cantidad = o[i].detalle_cantidad;
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
+            var notas = o[i].detalle_notas ? o[i].detalle_notas : ""; 
             var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
             var sub_total = o[i].detalle_sub_total;
             var igv = o[i].detalle_igv;
             var total = o[i].detalle_total;
+            var inputNotas = '<input class="form-control" value="' + notas + '" type="text" readonly>';
 
             table_detalle.row.add({
               "name_tabla": name_tabla,
@@ -1143,6 +1159,7 @@ function getDataEdit(id_venta){
               "tipo_igv": 1,
               "igv": igv,
               "total": total,
+              "notas": inputNotas,
               "eliminar_item": botonEliminar
             }).draw();
 
@@ -1220,8 +1237,10 @@ function verRegistro(id_venta){
             var cantidad = o[i].detalle_cantidad;
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
+            var notas = o[i].detalle_notas ? o[i].detalle_notas : "";
             var inputCantidad = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
+            var inputNotas = '<input class="form-control" value="' + notas + '" type="text" readonly>';
             var botonEliminar = '';
             var sub_total = o[i].detalle_sub_total;
             var igv = o[i].detalle_igv;
@@ -1238,6 +1257,7 @@ function verRegistro(id_venta){
               "tipo_igv": 1,
               "igv": igv,
               "total": total,
+              "notas": inputNotas,
               "eliminar_item": botonEliminar
             }).draw();
 

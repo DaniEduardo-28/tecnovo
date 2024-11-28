@@ -78,9 +78,14 @@
       throw new Exception("1. No se recibió los detalles de la orden de venta.");
     }
 
-    if (count($detalle_venta->datos)==0) {
+    if (!isset($detalle_venta->datos) || count($detalle_venta->datos) == 0) {
       throw new Exception("2. No se recibió los detalles de la orden de venta.");
-    }
+  }
+
+  // Validar que $detalle_venta sea un objeto con una propiedad `datos` que sea un array
+if (!is_object($detalle_venta) || !property_exists($detalle_venta, 'datos') || !is_array($detalle_venta->datos)) {
+  throw new Exception("La estructura del detalle de la venta es inválida. Verifique los datos enviados.");
+}
 
     require_once "core/models/ClassDocumentoIdentidad.php";
     $resultDoc1 = $OBJ_DOCUMENTO_IDENTIDAD->getDocumentoForId($codigo_documento_cliente);
@@ -119,6 +124,7 @@
     $VD;
     switch ($accion) {
       case 'add':
+
         $VD = $OBJ_ORDEN_VENTA->insert_1($id_venta,$codigo_documento_venta,$serie,$correlativo,$codigo_documento_cliente,$numero_documento_cliente,$nombres,$apellidos,$direccion,$telefono,$correo,$fecha,$codigo_moneda,$codigo_forma_pago,$total_descuento,$total_gravada,$total_igv,$total_total,$detalle_venta,$id_trabajador,$id_sucursal,$monto_recibido,$vuelto,$tipo_cambio);
         break;
       case 'edit':
