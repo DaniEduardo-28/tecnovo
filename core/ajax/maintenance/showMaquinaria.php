@@ -51,7 +51,7 @@ try {
                     "id_maquinaria" => $key['id_maquinaria'],
                     "descripcion" => $key['descripcion'],
                     "observaciones" => $key['observaciones'],
-                    "nombre_operador" => isset($key['nombre_operador']) && $key['nombre_operador'] != "" ? $key['nombre_operador'] : "Sin operador asignado",
+                    "nombre_operador" => isset($key['nombre_operador']) && $key['nombre_operador'] != "" ? $key['nombre_operador'] : "Ninguno",
                     "estado" => $estado,
                     "options" => "$options"
                 );

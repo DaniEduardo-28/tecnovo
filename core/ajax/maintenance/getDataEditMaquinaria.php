@@ -34,7 +34,7 @@ try {
                 "estado" => $key['estado'],
                 // Manejo de NULL para id_trabajador y nombre_operador
                 "id_trabajador" => isset($key['id_trabajador']) ? $key['id_trabajador'] : null,
-                "nombre_operador" => isset($key['nombre_operador']) ? $key['nombre_operador'] : "Sin operador asignado"
+                "nombre_operador" => isset($key['nombre_operador']) ? $key['nombre_operador'] : "Ninguno"
             );
         }
 
