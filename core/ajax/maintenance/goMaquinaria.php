@@ -4,7 +4,7 @@ $id_maquinaria = isset($_POST["id_maquinaria"]) ? $_POST["id_maquinaria"] : "";
 $estado = isset($_POST["estado"]) ? 1 : 0;
 $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
 $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
-$id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : ""; 
+$id_trabajador = isset($_POST["id_trabajador"]) && $_POST["id_trabajador"] != "" ? $_POST["id_trabajador"] : null; // Permitir NULL si no se selecciona operador
 $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
 try {
@@ -31,10 +31,6 @@ try {
         throw new Exception("Error al verificar los permisos.");
     }
 
-    // Validaciones de campos obligatorios
-    if (empty(trim($id_trabajador))) { // Cambiado de id_operador a id_trabajador
-        throw new Exception("Campo obligatorio: Operador."); // Cambiado mensaje
-    }
 
     if (empty(trim($descripcion))) {
         throw new Exception("Campo Obligatorio: Nombre de Maquinaria.");

@@ -7,7 +7,7 @@ try {
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"]) : 6;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"]) >= 0 ? intval($_POST["offset"]) : 0;
     $valor = isset($_POST["valor"]) ? $_POST["valor"] : "";
-    $id_trabajador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : ""; // Cambiado de id_operador a id_trabajador
+    $id_trabajador = isset($_POST["id_trabajador"]) && $_POST["id_trabajador"] != "" ? $_POST["id_trabajador"] : null; // Manejar como NULL si no se selecciona
 
     // Verificación de permisos
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinaria"));
@@ -51,7 +51,7 @@ try {
                     "id_maquinaria" => $key['id_maquinaria'],
                     "descripcion" => $key['descripcion'],
                     "observaciones" => $key['observaciones'],
-                    "nombre_operador" => $key['nombre_operador'],
+                    "nombre_operador" => isset($key['nombre_operador']) && $key['nombre_operador'] != "" ? $key['nombre_operador'] : "Sin operador asignado",
                     "estado" => $estado,
                     "options" => "$options"
                 );
