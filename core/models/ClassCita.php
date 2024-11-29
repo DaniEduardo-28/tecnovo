@@ -407,7 +407,7 @@ class ClassCita extends Conexion
 
 		return $VD;
 	}
-	public function showreporte($estado, $fecha_inicio, $fecha_fin, $val, $tipobusqueda, $chkfechas)
+	public function showreporte($estado, $fecha_inicio, $fecha_fin, $val, $tipobusqueda)
 	{
 
 		$conexionClass = new Conexion();
@@ -417,7 +417,7 @@ class ClassCita extends Conexion
 		try {
 
 			$fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
-			$fecha_inicio = date("Y-m-d", strtotime($fecha_inicio . "+ 0 days"));
+			$fecha_inicio = date("Y-m-d", strtotime($fecha_inicio));
 
 			$parametros = [];
 			$sql = "SELECT c.id_cita, c.fecha_cita, c.estado, dc.name_servicio, 
@@ -430,13 +430,12 @@ INNER JOIN tb_persona p ON p.id_persona = t.id_persona
 INNER JOIN tb_maquinaria m ON m.id_trabajador = t.id_trabajador
 WHERE 1+1 AND t.flag_medico=1";
 
-			if ($chkfechas == 'true') {
-				$sql .= " AND DATE(c.fecha_cita) BETWEEN ? AND ?";
-				$parametros[] = $fecha_inicio;
-				$parametros[] = $fecha_fin;
-			}
+			// Filtro por fechas (siempre activo)
+			$sql .= " AND DATE(c.fecha_cita) BETWEEN ? AND ?";
+			$parametros[] = $fecha_inicio;
+			$parametros[] = $fecha_fin;
 
-			if (!empty($val)) {
+			/* if (!empty($val)) {
 				if ($tipobusqueda == 1) {
 					$sql .= " AND dc.name_servicio = ?";
 					$parametros[] = $val;
@@ -444,7 +443,7 @@ WHERE 1+1 AND t.flag_medico=1";
 					$sql .= " AND nombre_trabajador = ?";
 					$parametros[] = $val;
 				}
-			}
+			} */
 			// Orden
 			$sql .= " ORDER BY c.fecha_cita DESC";
 			$stmt = $conexion->prepare($sql);
@@ -455,23 +454,22 @@ WHERE 1+1 AND t.flag_medico=1";
 				throw new Exception("No se encontraron datos.");
 			}
 
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
+			 // Respuesta
+			 $VD1['error'] = "NO";
+			 $VD1['message'] = "Success";
+			 $VD1['data'] = $result;
+			 $VD = $VD1;
 
 		} catch (PDOException $e) {
-
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
 			$VD = $VD1;
-
+	
 		} catch (Exception $exception) {
-
 			$VD1['error'] = "SI";
 			$VD1['message'] = $exception->getMessage();
 			$VD = $VD1;
-
+	
 		} finally {
 			$conexionClass->Close();
 		}

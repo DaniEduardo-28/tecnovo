@@ -57,28 +57,27 @@ var table = $('#example').DataTable({
   // Inicializar filtros al cargar la página
   function initializeFilters() {
     $.ajax({
-      type: "POST",
-      url: "ajax.php?accion=showCitaReporte",
-      data: {},
+        type: "POST",
+        url: "ajax.php?accion=showCitaReporte",
+        data: {}
     })
-      .done(function (data) {
+    .done(function (data) {
         try {
-          var data1 = JSON.parse(data);
-          if (data1["error"] === "NO") {
-            // Llenar los filtros con los datos
-            fillFilterOptions(data1["usuarios"], "#filterUser");
-            fillFilterOptions(data1["tablas"], "#filterTable");
-          } else {
-            console.error("Error al cargar filtros:", data1["message"]);
-          }
+            var data1 = JSON.parse(data);
+            if (data1["error"] === "NO") {
+                console.log("Datos de filtros no requeridos eliminados");
+                // Si no necesitas filtros, elimina esta sección
+            } else {
+                console.error("Error al cargar filtros:", data1["message"]);
+            }
         } catch (err) {
-          console.error("Error al procesar los filtros:", err, data);
+            console.error("Error al procesar los filtros:", err, data);
         }
-      })
-      .fail(function (jqXHR, textStatus, textError) {
+    })
+    .fail(function (jqXHR, textStatus, textError) {
         console.error("Error en la petición AJAX para filtros:", textError);
-      });
-  }
+    });
+}
   
   $('#btnReporteExcel').click(function () {
     try {
@@ -117,59 +116,47 @@ var table = $('#example').DataTable({
     table.clear().draw();
     $("#divPaginador").addClass("d-none");
   
-    // Obtener los valores de los filtros
+    // Obtener valores de fecha
     const fechaInicio = $("#txtFechaInicio").val();
     const fechaFin = $("#txtFechaFin").val();
-    const filterUser = $("#filterUser").val();
-    const filterTable = $("#filterTable").val();
   
     $.ajax({
-      data: {
-          limit: itemsPorPagina,
-          offset: desde,
-          fecha_inicio: fechaInicio,
-          fecha_fin: fechaFin,
-          filterUser: filterUser,
-          filterTable: filterTable,
-      },
-      type: "POST",
-          url: "ajax.php?accion=showCitaReporte",
-      })
-          .done(function (data) {
-              try {
-                  const data1 = JSON.parse(data);
-                  if (data1["error"] === "NO") {
-                      const registros = data1["data"];
-  
-            // Llenar filtros siempre con todos los datos únicos disponibles
-            fillFilterOptions(data1["usuarios"], "#filterUser");
-            fillFilterOptions(data1["tablas"], "#filterTable");
-  
-            registros.forEach(function (item) {
-              table.row.add({
-                num: item.num,
-                id_cita: item.id_cita,
-                fecha_cita: item.fecha_cita,
-                estado: item.estado,
-                name_servicio: item.name_servicio,
-                nombre_trabajador: item.nombre_trabajador,
-                name_maquinaria: item.name_maquinaria,
-            }).draw();
-        });
-        $("#divPaginador").removeClass("d-none");
-      } else {
-          console.log(data1["message"]);
-          $("#divPaginador").addClass("d-none");
-      }
-  } catch (err) {
-      console.error("Error al analizar el JSON:", err, data);
-  }
-  })
-  .fail(function (jqXHR, textStatus, textError) {
-  console.error("Error al realizar la petición:", textError);
-  });
-  }
-  
+        data: {
+            fecha_inicio: fechaInicio,
+            fecha_fin: fechaFin
+        },
+        type: "POST",
+        url: "ajax.php?accion=showCitaReporte"
+    })
+    .done(function (data) {
+        try {
+            const data1 = JSON.parse(data);
+            if (data1["error"] === "NO") {
+                const registros = data1["data"];
+                registros.forEach(function (item) {
+                    table.row.add({
+                        num: item.num,
+                        id_cita: item.id_cita,
+                        fecha_cita: item.fecha_cita,
+                        estado: item.estado,
+                        name_servicio: item.name_servicio,
+                        nombre_trabajador: item.nombre_trabajador,
+                        name_maquinaria: item.name_maquinaria
+                    }).draw();
+                });
+                $("#divPaginador").removeClass("d-none");
+            } else {
+                console.log(data1["message"]);
+                $("#divPaginador").addClass("d-none");
+            }
+        } catch (err) {
+            console.error("Error al analizar el JSON:", err, data);
+        }
+    })
+    .fail(function (jqXHR, textStatus, textError) {
+        console.error("Error al realizar la petición:", textError);
+    });
+}
   // Función para llenar los filtros
   function fillFilterOptions(data, selector) {
     var selectElement = $(selector);
