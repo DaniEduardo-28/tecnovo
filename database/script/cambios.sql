@@ -149,4 +149,8 @@ ALTER TABLE `tb_detalle_venta` ADD `notas` VARCHAR(200) CHARACTER SET utf8mb4 CO
 UPDATE `tb_opcion` SET `name_opcion` = 'Reporte de Citas', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 707;
 
 -- Hacer que id_trabajador acepte valores nulos
+
 ALTER TABLE tb_maquinaria MODIFY id_trabajador INT NULL;
+
+-- añadir el campo id_maquinaria a tb_detalle_venta
+ALTER TABLE `tb_detalle_venta` ADD `id_maquinaria` INT NULL AFTER `notas`;

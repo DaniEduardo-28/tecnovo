@@ -301,6 +301,7 @@
                                                       <th>IGV</th>
                                                       <th>Total</th>
                                                       <th>Notas</th>
+                                                      <th>Maquinaria</th>
                                                       <th style="width:30px;">&nbsp;&nbsp;X&nbsp;&nbsp;</th>
                                                     </tr>
                                                   </thead>

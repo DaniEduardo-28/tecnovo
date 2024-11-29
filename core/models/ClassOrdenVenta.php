@@ -691,11 +691,11 @@ class ClassOrdenVenta extends Conexion
 				foreach ($key as $key1) {
 					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
                                       `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-                                      `igv`, `total`, `notas`) VALUES ";
+                                      `igv`, `total`, `notas`, `id_maquinaria`) VALUES ";
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,1,?,?,?,?,?"; // Agregamos `?` para el campo `notas`.
+					$sql .= "?,?,?,?,?,1,?,?,?,?,?,?"; // Agregamos `?` para el campo `notas`.
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
@@ -708,7 +708,8 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas
+						$key1->notas,
+						$key1->id_maquinaria
 					]);
 					if ($stmt->rowCount() == 0) {
 						throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
@@ -1105,11 +1106,11 @@ class ClassOrdenVenta extends Conexion
 				foreach ($key as $key1) {
 					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
                                       `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-                                      `igv`, `total`, `notas`) VALUES ";
+                                      `igv`, `total`, `notas`, `id_maquinaria`) VALUES ";
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 					$sql .= "?,"; // ID de la orden de venta
-					$sql .= " ?,?,?,?,?,1,?,?,?,?,?"; // Incluimos `notas`.
+					$sql .= " ?,?,?,?,?,1,?,?,?,?,?,?"; // Incluimos `notas`.
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
@@ -1123,7 +1124,8 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas
+						$key1->notas,
+						$key1->id_maquinaria
 					]);
 					if ($stmt->rowCount() == 0) {
 						throw new Exception("2. Error al registrar la orden de venta en la base de datos.");
@@ -1191,7 +1193,8 @@ class ClassOrdenVenta extends Conexion
                DV.tipo_igv as detalle_tipo_igv,
                DV.igv as detalle_igv,
                DV.total as detalle_total,
-               DV.notas as detalle_notas
+               DV.notas as detalle_notas,
+			   DV.id_maquinaria as detalle_maquinaria
         FROM tb_venta V
         INNER JOIN tb_detalle_venta DV ON DV.id_venta = V.id_venta
         WHERE V.id_venta = ?";
@@ -1591,6 +1594,7 @@ class ClassOrdenVenta extends Conexion
 							"igv" => $key1->igv,
 							"total" => $key1->total,
 							"notas" => $key1->notas,
+							"id_maquinaria" => $key1->id_maquinaria,
 							"anticipo_regularizacion" => "",
 							"anticipo_documento_serie" => "",
 							"anticipo_documento_numero" => "",
@@ -1698,11 +1702,11 @@ class ClassOrdenVenta extends Conexion
 				foreach ($key as $key1) {
 					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
             `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-            `igv`, `total`, `notas`) VALUES ";
+            `igv`, `total`, `notas`, `id_maquinaria`) VALUES ";
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,1,?,?,?,?,?";
+					$sql .= "?,?,?,?,?,1,?,?,?,?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
@@ -1715,7 +1719,8 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas
+						$key1->notas,
+						$key1->id_maquinaria
 					]);
 
 					if ($stmt->rowCount() == 0) {
@@ -2156,6 +2161,7 @@ class ClassOrdenVenta extends Conexion
 							"igv" => $key1->igv,
 							"total" => $key1->total,
 							"notas" => $key1->notas,
+							"id_maquinaria" => $key1->id_maquinaria,
 							"anticipo_regularizacion" => "",
 							"anticipo_documento_serie" => "",
 							"anticipo_documento_numero" => "",
@@ -2293,11 +2299,11 @@ class ClassOrdenVenta extends Conexion
 				foreach ($key as $key1) {
 					$sql = "INSERT INTO tb_detalle_venta (`id_detalle`, `id_venta`, `name_tabla`, `cod_producto`, `descripcion`,
                                       `cantidad`, `precio_unitario`, `descuento`, `sub_total`, `tipo_igv`,
-                                      `igv`, `total`, `notas`) VALUES ";
+                                      `igv`, `total`, `notas`, `id_maquinaria`) VALUES ";
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(o.id_detalle) WHEN 0 THEN 1 ELSE (MAX(o.id_detalle) + 1) end FROM `tb_detalle_venta` o),";
 					$sql .= "(SELECT MAX(id_venta) FROM `tb_venta`),";
-					$sql .= "?,?,?,?,?,1,?,?,?,?,?"; // Agregamos `?` para el campo `notas`.
+					$sql .= "?,?,?,?,?,1,?,?,?,?,?,?"; // Agregamos `?` para el campo `notas`.
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
 					$stmt->execute([
@@ -2310,7 +2316,8 @@ class ClassOrdenVenta extends Conexion
 						$key1->tipo_igv,
 						$key1->igv,
 						$key1->total,
-						$key1->notas 
+						$key1->notas,
+						$key1->id_maquinaria
 					]);
 
 					if ($stmt->rowCount() == 0) {
