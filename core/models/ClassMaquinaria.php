@@ -338,6 +338,49 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
+    public function getMaquinariasActivas() {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD = "";
+    
+        try {
+            // Consulta para obtener las maquinarias activas
+            $sql = "SELECT id_maquinaria, descripcion 
+                    FROM tb_maquinaria 
+                    WHERE estado = 'activo'";
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (count($result) == 0) {
+                throw new Exception("No se encontraron maquinarias activas.");
+            }
+    
+            $VD1['error'] = "NO";
+            $VD1['message'] = "Success";
+            $VD1['data'] = $result;
+            $VD = $VD1;
+    
+        } catch(PDOException $e) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $e->getMessage();
+            $VD1['data'] = [];
+            $VD = $VD1;
+        } catch (Exception $exception) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $exception->getMessage();
+            $VD1['data'] = [];
+            $VD = $VD1;
+        } finally {
+            $conexionClass->Close();
+        }
+    
+        return $VD;
+    }
+    
+
+    
+
 }
 
 $OBJ_MAQUINARIA = new ClassMaquinaria();

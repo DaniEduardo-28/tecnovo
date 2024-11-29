@@ -86,6 +86,7 @@ var table_detalle_modal = $('#example2').DataTable({
 
 $(document).ready(function(){
 
+  cargarMaquinariasActivas();
   $('#example2 tbody').on( 'click', '#btnSeleccionar', function () {
     try {
 
@@ -124,7 +125,7 @@ $(document).ready(function(){
         "igv": igv,
         "total": total,
         "notas": '<input class="form-control" value="" type="text">',
-        "id_maquinaria": '<input class="form-control" value="" type="text">',
+        "id_maquinaria": '<select class="form-control select-maquinaria"></select>', // Select dinámico
         "eliminar_item": botonEliminar
       }).draw();
 
@@ -504,6 +505,36 @@ $(document).ready(function(){
 
 });
 
+function cargarMaquinariasActivas() {
+  $.ajax({
+      url: "getMaquinariasActivas.php",
+      type: "GET",
+      dataType: "json",
+      success: function (response) {
+        if (response.error === "NO") {
+          let options = '<option value="">Seleccione...</option>';
+          response.data.forEach(maquinaria => {
+            options += `<option value="${maquinaria.id_maquinaria}">${maquinaria.descripcion}</option>`;
+          });
+  
+          // Asignar opciones y seleccionar las correctas
+          $(".select-maquinaria").each(function () {
+            let selectedValue = $(this).data("selected");
+            $(this).html(options);
+            if (selectedValue) {
+              $(this).val(selectedValue);
+            }
+          });
+        } else {
+          console.error("Error al obtener maquinarias:", response.message);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("Error en AJAX:", error);
+      }
+    });
+  }
+
 function calcularVuelto(){
   try{
     var monto_recibido = parseFloat($("#txtMontoRecibido").val());
@@ -867,7 +898,7 @@ function saveOperation(){
     var descuento = $(this).find("td").eq(3).find("input").val();
     var notas = $(this).find("td").eq(2).find("input").val(); // Asegúrate de que el índice 10 sea el de "Notas".
     console.log("Notas capturadas:", notas); // Verificar el valor de notas
-    var id_maquinaria = $(this).find("td").eq(3).find("input").val(); 
+    var id_maquinaria = $(this).find("td").eq(3).find("select").val(); 
     var data = table_detalle.row($(this)).data();
 
     datos.push({
@@ -1027,7 +1058,7 @@ function saveOperationBorrador(){
     var descuento = $(this).find("td").eq(3).find("input").val();
     var notas = $(this).find("td").eq(2).find("input").val(); // Captura el valor del campo 'notas'.
     console.log("Notas capturadas:", notas); // Verificar el valor de notas
-    var id_maquinaria = $(this).find("td").eq(3).find("input").val(); 
+    var id_maquinaria = $(this).find("td").eq(3).find("select").val(); 
     var data = table_detalle.row($(this)).data();
 
     datos.push({
@@ -1144,7 +1175,7 @@ function getDataEdit(id_venta){
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
             var notas = o[i].detalle_notas; 
-            var id_maquinaria = o[i].detalle_maquinaria;
+            /* var id_maquinaria = o[i].detalle_maquinaria; */
             var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
@@ -1152,7 +1183,7 @@ function getDataEdit(id_venta){
             var igv = o[i].detalle_igv;
             var total = o[i].detalle_total;
             var inputNotas = '<input class="form-control" value="' + notas + '" type="text" readonly>';
-            var inputMaquinaria = '<input class="form-control" value="' + id_maquinaria + '" type="text" readonly>';
+            var inputMaquinaria = `<select class="form-control select-maquinaria" data-selected="${o[i].detalle_maquinaria}"></select>`;
 
             table_detalle.row.add({
               "name_tabla": name_tabla,
@@ -1181,6 +1212,7 @@ function getDataEdit(id_venta){
           $("#btnImprimir").addClass("d-none");
           $("#txtMontoRecibido").val(o[0].monto_recibido);
           $("#txtVuelto").val(o[0].vuelto);
+          cargarMaquinariasActivas();
 
         }else {
           runAlert("Message",data1["message"],"warning");
@@ -1245,11 +1277,11 @@ function verRegistro(id_venta){
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
             var notas = o[i].detalle_notas;
-            var id_maquinaria = o[i].detalle_maquinaria;
+            /* var id_maquinaria = o[i].detalle_maquinaria; */
             var inputCantidad = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var inputNotas = '<input class="form-control" value="' + notas + '" type="text" readonly>';
-            var inputMaquinaria = '<input class="form-control" value="' + id_maquinaria + '" type="text" readonly>';
+            var inputMaquinaria = `<select class="form-control select-maquinaria" data-selected="${o[i].detalle_maquinaria}"></select>`;
             var botonEliminar = '';
             var sub_total = o[i].detalle_sub_total;
             var igv = o[i].detalle_igv;
