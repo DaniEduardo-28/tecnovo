@@ -144,7 +144,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </div>
                               <div class="form-group col-md-12 col-sm-12">
                                 <label for="id_trabajador" class="label-control">Operador Seleccionado</label>
-                                <select name="id_trabajador" id="id_trabajador" class="form-control" required>
+                                <select name="id_trabajador" id="id_trabajador" class="form-control">
                                   <option value="">Seleccione...</option>
                                   <?php
                                   include("core/models/ClassMaquinaria.php");
@@ -154,11 +154,10 @@ if (!isset($_SESSION['id_trabajador'])) {
                                       echo '<option value="' . $key['id_trabajador'] . '">' . $key['nombre_operador'] . '</option>';
                                     }
                                   } else {
-                                    echo '<option value="">No hay operadores activos</option>';
+                                    echo '<option value="">Sin operadores disponibles</option>'; // Mostrar mensaje si no hay operadores
                                   }
                                   ?>
                                 </select>
-
                               </div>
                               <div class="form-group col-md-2 col-sm-6">
                                 <br>

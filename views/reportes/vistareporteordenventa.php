@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Reporte Facturación | <?=APP_TITLE;?> </title>
+    <title>Reporte Salida de Productos | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -74,7 +74,7 @@
                                       Reportes
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Facturación
+                                      Salida de Productos
                                     </li>
                                   </ol>
                                 </nav>
@@ -112,7 +112,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Reporte Facturación</h4>
+                                        <h4 class="card-title">Reporte Salida de Productos</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -123,7 +123,7 @@
 
                                       <div class="row">
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoDocVentaBuscar" class="label-control">Documento de Venta</label>
+                                          <label for="cboTipoDocVentaBuscar" class="label-control">Documento de Salida</label>
                                           <select name="cboTipoDocVentaBuscar" id="cboTipoDocVentaBuscar" class="form-control">
                                             <option value="">Todos</option>
                                             <?php
@@ -141,7 +141,7 @@
                                         </div>
 
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoDocuClieBuscar">Documento de Cliente</label>
+                                          <label for="cboTipoDocuClieBuscar">Documento de Identidad</label>
                                           <select class="form-control" id="cboTipoDocuClieBuscar" name="cboTipoDocuClieBuscar">
                                             <option value="">Todos</option>
                                             <?php
@@ -192,9 +192,9 @@
                                                 <th style="width:90px;">Acciones</th>
                                                 <th>Id Venta</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
-                                                <th>Doc. Venta</th>
+                                                <th>Doc. Salida</th>
                                                 <th>Doc. Identidad</th>
-                                                <th>Cliente</th>
+                                                <th>Encargado</th>
                                                 <th>Dirección</th>
                                                 <th>Fecha</th>
                                                 <th>Moneda</th>

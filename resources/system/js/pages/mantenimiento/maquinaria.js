@@ -169,7 +169,8 @@ function editData(id_maquinaria) {
                     $("#id_maquinaria").val(o.id_maquinaria);
                     $("#descripcion").val(o.descripcion);
                     $("#observaciones").val(o.observaciones);
-                    $("#id_trabajador").val(o.id_trabajador); // Cambia a id_trabajador
+                    // Manejar id_trabajador como opcional
+                    $("#id_trabajador").val(o.id_trabajador ? o.id_trabajador : ""); 
                     $("#estado").prop('checked', o.estado === "activo");
                     $("#accion").val("edit");
                     addClassDiv();

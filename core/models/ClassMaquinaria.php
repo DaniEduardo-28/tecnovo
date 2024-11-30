@@ -64,14 +64,13 @@ class ClassMaquinaria extends Conexion {
 
         try {
             $valor = "%$valor%";
-            $parametros = null;
-            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
-                    FROM tb_maquinaria m
-                    INNER JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
-                    INNER JOIN tb_persona p ON t.id_persona = p.id_persona
-                    WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?) AND t.flag_medico = 1";
-            $parametros[] = $valor;
-            $parametros[] = $valor;
+        $parametros = [$valor, $valor];
+        $sql = "SELECT m.*, 
+                       CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
+                FROM tb_maquinaria m
+                LEFT JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
+                LEFT JOIN tb_persona p ON t.id_persona = p.id_persona
+                WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?)";
 
             if ($estado != "all") {
                 $sql .= " AND m.estado = ?";
@@ -164,8 +163,8 @@ class ClassMaquinaria extends Conexion {
         try {
             $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
                     FROM tb_maquinaria m
-                    INNER JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
-                    INNER JOIN tb_persona p ON t.id_persona = p.id_persona
+                    LEFT JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
+                    LEFT JOIN tb_persona p ON t.id_persona = p.id_persona
                     WHERE m.id_maquinaria = ?";
             $stmt = $conexion->prepare($sql);
             $stmt->execute([$id_maquinaria]);
@@ -338,6 +337,49 @@ class ClassMaquinaria extends Conexion {
 
         return $VD;
     }
+
+    public function getMaquinariasActivas() {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD = "";
+    
+        try {
+            // Consulta para obtener las maquinarias activas
+            $sql = "SELECT id_maquinaria, descripcion 
+                    FROM tb_maquinaria 
+                    WHERE estado = 'activo'";
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            if (count($result) == 0) {
+                throw new Exception("No se encontraron maquinarias activas.");
+            }
+    
+            $VD1['error'] = "NO";
+            $VD1['message'] = "Success";
+            $VD1['data'] = $result;
+            $VD = $VD1;
+    
+        } catch(PDOException $e) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $e->getMessage();
+            $VD1['data'] = [];
+            $VD = $VD1;
+        } catch (Exception $exception) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $exception->getMessage();
+            $VD1['data'] = [];
+            $VD = $VD1;
+        } finally {
+            $conexionClass->Close();
+        }
+    
+        return $VD;
+    }
+    
+
+    
 
 }
 

@@ -167,6 +167,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/getDataEditMaquinaria.php");
         break;
+        case 'getMaquinariasActivas':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/maintenance/getMaquinariasActivas.php");
+          break;
       case 'showTrabajador':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showTrabajador.php");
@@ -519,6 +523,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/reportes/showOrdenVentaReporte.php");
         break;
+        case 'showCitaReporte':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/reportes/showCitaReporte.php");
+          break;
       case 'showProveedor':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showProveedor.php");

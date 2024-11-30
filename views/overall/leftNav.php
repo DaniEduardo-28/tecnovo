@@ -282,7 +282,8 @@
       $flag_vistareporteaccesorios = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteaccesorios"));
       $flag_vistareportemedicamentos = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportemedicamentos"));
       $flag_observacionesproveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("observacionesproveedor"));
-      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor) {
+      $flag_vistareportecita = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportecita"));
+      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor || $flag_vistareportecita) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -302,10 +303,13 @@
               <li id="submenureporteordencompra"><a href="?view=vistareporteordencompra">Compras</a></li>
             <?php endif; ?>
             <?php if ($flag_vistareporteordenventa): ?>
-              <li id="submenureporteordenventa"><a href="?view=vistareporteordenventa">Ventas</a></li>
+              <li id="submenureporteordenventa"><a href="?view=vistareporteordenventa">Salida de Productos</a></li>
             <?php endif; ?>
             <?php if ($flag_vistareporteaccesorios): ?>
               <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>
+            <?php endif; ?>
+            <?php if ($flag_vistareportecita): ?>
+              <li id="submenureportecita"><a href="?view=vistareportecita">Reporte de citas</a></li>
             <?php endif; ?>
           </ul>
         </li>

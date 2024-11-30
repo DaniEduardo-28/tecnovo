@@ -63,7 +63,7 @@ class PHPExcel_WorksheetIterator implements Iterator
     /**
      * Rewind iterator
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -73,36 +73,39 @@ class PHPExcel_WorksheetIterator implements Iterator
      *
      * @return PHPExcel_Worksheet
      */
-    public function current()
+    public function current(): PHPExcel_Worksheet
     {
         return $this->subject->getSheet($this->position);
     }
-
+    
     /**
      * Current key
      *
      * @return int
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
+    
 
     /**
      * Next value
      */
-    public function next()
+    public function next(): void
     {
         ++$this->position;
     }
+    
 
     /**
      * More PHPExcel_Worksheet instances available?
      *
      * @return boolean
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->position < $this->subject->getSheetCount();
     }
+    
 }

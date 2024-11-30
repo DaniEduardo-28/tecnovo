@@ -301,6 +301,7 @@
                                                       <th>IGV</th>
                                                       <th>Total</th>
                                                       <th>Notas</th>
+                                                      <th>Maquinaria</th>
                                                       <th style="width:30px;">&nbsp;&nbsp;X&nbsp;&nbsp;</th>
                                                     </tr>
                                                   </thead>
@@ -392,7 +393,7 @@
                                         </div>
 
                                         <div class="form-group col-md-3 col-sm-6">
-                                          <label for="cboTipoDocuClieBuscar">Documento de Cliente</label>
+                                          <label for="cboTipoDocuClieBuscar">Documento de Identidad</label>
                                           <select class="form-control" id="cboTipoDocuClieBuscar" name="cboTipoDocuClieBuscar">
                                             <option value="">Todos</option>
                                             <?php
@@ -443,9 +444,9 @@
                                                 <th style="width:90px;">Acciones</th>
                                                 <th>Id Venta</th>
                                                 <th style="width:30px; text-align: center;">Estado</th>
-                                                <th>Doc. Venta</th>
+                                                <th>Doc. Salida</th>
                                                 <th>Doc. Identidad</th>
-                                                <th>Cliente</th>
+                                                <th>Encargado</th>
                                                 <th>Dirección</th>
                                                 <th>Fecha</th>
                                                 <th>Moneda</th>

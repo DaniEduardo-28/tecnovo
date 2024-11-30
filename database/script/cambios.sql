@@ -146,3 +146,11 @@ ALTER TABLE `tb_detalle_venta` CHANGE `total` `total` DECIMAL(18,2) NULL DEFAULT
 
 ALTER TABLE `tb_detalle_venta` ADD `notas` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `total`;
 
+UPDATE `tb_opcion` SET `name_opcion` = 'Reporte de Citas', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 707;
+
+-- Hacer que id_trabajador acepte valores nulos
+
+ALTER TABLE tb_maquinaria MODIFY id_trabajador INT NULL;
+
+-- añadir el campo id_maquinaria a tb_detalle_venta
+ALTER TABLE `tb_detalle_venta` ADD `id_maquinaria` INT NULL AFTER `notas`;
