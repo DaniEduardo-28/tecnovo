@@ -48,7 +48,12 @@ var table_detalle = $('#example1').DataTable({
     { 'data': 'igv' },
     { 'data': 'total' },
     { 'data': 'notas' },
-    { 'data': 'id_maquinaria' },
+    { 
+      'data': null,
+      'render': function () {
+        return '<select class="form-control select-maquinaria"><option value="">Seleccione...</option></select>';
+      }
+    },
     { 'data': 'eliminar_item' }
   ],
   columnDefs: [
@@ -59,6 +64,9 @@ var table_detalle = $('#example1').DataTable({
     }
   ]
 });
+
+
+
 
 var table_detalle_modal = $('#example2').DataTable({
   language: languageSpanish,
@@ -86,19 +94,17 @@ var table_detalle_modal = $('#example2').DataTable({
 
 $(document).ready(function(){
 
-  cargarMaquinariasActivas();
-  $('#example2 tbody').on( 'click', '#btnSeleccionar', function () {
+  $('#example2 tbody').on('click', '#btnSeleccionar', function () {
     try {
-
-      var num = table_detalle.data().count() + 1;
-      var data = table_detalle_modal.row( $(this).parents('tr') ).data();
-      var cod_producto = data["cod_producto"];
-      var name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
-      if (num>1) {
-        if (verificarproductoontable(name_tabla,cod_producto)==true) {
-          generateAlert('warning', 'El Producto ya se encuentra agregado a la lista.');
-          return;
-        }
+      let num = table_detalle.data().count() + 1;
+      let data = table_detalle_modal.row($(this).parents('tr')).data();
+  
+      let cod_producto = data["cod_producto"];
+      let name_tabla = $('input:radio[name=opcion_busqueda]:checked').val();
+  
+      if (num > 1 && verificarproductoontable(name_tabla, cod_producto)) {
+        generateAlert('warning', 'El Producto ya se encuentra agregado a la lista.');
+        return;
       }
       var descripcion = data["descripcion"];
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
@@ -125,9 +131,11 @@ $(document).ready(function(){
         "igv": igv,
         "total": total,
         "notas": '<input class="form-control" value="" type="text">',
-        "id_maquinaria": '<select class="form-control select-maquinaria"></select>', // Select dinámico
+        "id_maquinaria": '<select class="form-control select-maquinaria"></select>',
         "eliminar_item": botonEliminar
       }).draw();
+
+      cargarMaquinariasActivas();
 
       generateAlert('success', '<h5 style="text-color:#ffffff">Agregado</h5><br><h6 style="text-color:#f2f9f1">' + cantidad + ' ' + descripcion + ' al precio de ' + precio_unitario + ' c/u.</h6>');
       calcularTotal();
@@ -507,33 +515,33 @@ $(document).ready(function(){
 
 function cargarMaquinariasActivas() {
   $.ajax({
-      url: "getMaquinariasActivas.php",
+      url: "ajax.php?accion=getMaquinariasActivas",
       type: "GET",
       dataType: "json",
       success: function (response) {
         if (response.error === "NO") {
+          // Generar las opciones para el select
           let options = '<option value="">Seleccione...</option>';
           response.data.forEach(maquinaria => {
             options += `<option value="${maquinaria.id_maquinaria}">${maquinaria.descripcion}</option>`;
           });
   
-          // Asignar opciones y seleccionar las correctas
-          $(".select-maquinaria").each(function () {
-            let selectedValue = $(this).data("selected");
-            $(this).html(options);
-            if (selectedValue) {
-              $(this).val(selectedValue);
-            }
-          });
-        } else {
-          console.error("Error al obtener maquinarias:", response.message);
-        }
-      },
-      error: function (xhr, status, error) {
-        console.error("Error en AJAX:", error);
+
+        // Agregar las opciones a cada select existente en la tabla
+        $('#example1 tbody tr').each(function () {
+          $(this).find("select.select-maquinaria").html(options);
+        });
+
+        console.log("Maquinarias cargadas correctamente en los select.");
+      } else {
+        console.error("Error al obtener maquinarias:", response.message);
       }
-    });
-  }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error en la solicitud AJAX:", error);
+    },
+  });
+}
 
 function calcularVuelto(){
   try{

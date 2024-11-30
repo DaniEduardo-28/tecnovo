@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+header('Content-Type: application/json'); // Asegúrate de que siempre devuelva JSON
 
 require_once "core/models/ClassMaquinaria.php";
 
@@ -6,7 +9,7 @@ try {
     // Verificar permisos si es necesario (opcional)
     // Si estás manejando permisos, descomenta este bloque:
     
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinarias"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinaria"));
     if ($access_options[0]['error'] == "NO") {
         if ($access_options[0]['flag_ver'] == false) {
             throw new Exception("No tienes permisos para ver las maquinarias.");

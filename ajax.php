@@ -167,9 +167,9 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/getDataEditMaquinaria.php");
         break;
-        case 'getMaquinarias':
+        case 'getMaquinariasActivas':
           require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/maintenance/getMaquinarias.php");
+          require("core/ajax/maintenance/getMaquinariasActivas.php");
           break;
       case 'showTrabajador':
         require("core/models/ClassAccesoOpcion.php");
