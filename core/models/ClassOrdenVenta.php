@@ -1588,7 +1588,7 @@ class ClassOrdenVenta extends Conexion
 							"cantidad" => $key1->cantidad,
 							"valor_unitario" => $key1->precio_unitario,
 							"precio_unitario" => round($key1->precio_unitario + $key1->precio_unitario * 0.18, 2),
-							"descuento" => $key1->descuento,
+							/* "descuento" => $key1->descuento, */
 							"subtotal" => $key1->sub_total,
 							"tipo_de_igv" => $key1->tipo_igv,
 							"igv" => $key1->igv,

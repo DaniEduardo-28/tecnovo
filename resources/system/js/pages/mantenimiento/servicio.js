@@ -55,6 +55,7 @@ innerdivHtml1 += '<tr>';
 innerdivHtml1 += '<th scope="col">Servicio</th>';
 innerdivHtml1 += '<th scope="col">Tipo</th>';
 innerdivHtml1 += '<th scope="col">Maquinaria</th>';
+innerdivHtml1 += '<th scope="col">Medida</th>';
 innerdivHtml1 += '<th scope="col">Precio</th>';
 innerdivHtml1 += '<th scope="col">Estado</th>';
 innerdivHtml1 += '<th scope="col">Editar &amp; Eliminar</th>';
@@ -70,13 +71,15 @@ function get_data_callback() {
   var valor = $("#txtBuscar").val();
   var id_tipo_servicio = $("#cboTipoBuscar").val();
   var id_maquinaria = $("#id_maquinaria").val() || ""; // Filtro maquinaria
+  var id_unidad_medida = $("#id_unidad_medida").val() || "";
   $.ajax({
     data: {
       limit: itemsPorPagina,
       offset: desde,
       valor: valor,
       id_tipo_servicio: id_tipo_servicio,
-      id_maquinaria: id_maquinaria
+      id_maquinaria: id_maquinaria,
+      id_unidad_medida: id_unidad_medida
     },
     beforeSend: function (xhr) {
       showHideLoader('block');
@@ -106,6 +109,7 @@ function get_data_callback() {
         innerdivHtml += '<th scope="col">Servicio</th>';
         innerdivHtml += '<th scope="col">Tipo</th>';
         innerdivHtml += '<th scope="col">Maquinaria</th>';
+        innerdivHtml += '<th scope="col">Medida</th>';
         innerdivHtml += '<th scope="col">Precio</th>';
         innerdivHtml += '<th scope="col">Estado</th>';
         innerdivHtml += '<th scope="col">Editar &amp; Eliminar</th>';
@@ -126,6 +130,7 @@ function get_data_callback() {
           innerdivHtml += '</td>';
           innerdivHtml += '<td>' + o[i].name_tipo + '</td>';
           innerdivHtml += '<td>' + o[i].maquinaria_descripcion + '</td>'; // Cambio aplicado
+          innerdivHtml += '<td>' + o[i].unidad + '</td>'; // Cambio aplicado
           innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio + '</td>';
           innerdivHtml += o[i].estado;
           innerdivHtml += '    <td>';
@@ -257,6 +262,7 @@ function getDataEdit(id_servicio){
           $("#id_servicio").val(o[0].id_servicio);
           $("#id_tipo_servicio").val(o[0].id_tipo_servicio);
           $("#id_maquinaria").val(o[0].id_maquinaria);
+          $("#id_unidad_medida").val(o[0].id_unidad_medida);
           $("#name_servicio").val(o[0].name_servicio);
           $("#descripcion_breve").val(o[0].descripcion_breve);
           $("#descripcion_larga").val(o[0].descripcion_larga);
@@ -273,6 +279,8 @@ function getDataEdit(id_servicio){
           var id_tipo_servicio = o[0].id_tipo_servicio;
           var maquinaria_descripcion = o[0].maquinaria_descripcion;
           var id_maquinaria = o[0].id_maquinaria;
+          var unidad = o[0].unidad;
+          var id_unidad_medida = o[0].id_unidad_medida;
           var flag_encontro = false;
           $("#id_tipo_servicio option").each(function(){
             if ($(this).val() == id_tipo_servicio ){
@@ -284,6 +292,9 @@ function getDataEdit(id_servicio){
           }
           if (!flag_encontro) {
             $('#id_maquinaria').append('<option value="' + id_maquinaria + '" selected>' + maquinaria_descripcion + '</option>');
+          }
+          if (!flag_encontro) {
+            $('#id_unidad_medida').append('<option value="' + id_unidad_medida + '" selected>' + unidad + '</option>');
           }
           addClassDiv();
         }else {

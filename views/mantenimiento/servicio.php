@@ -227,6 +227,22 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 </select>
                               </div>
 
+                              <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                                              <label for="id_unidad_medida" class="label-control">Unidad de Medida</label>
+                                              <select name="id_unidad_medida" id="id_unidad_medida" class="form-control" required>
+                                                <option value="">Seleccione...</option>
+                                                <?php
+                                                  include("core/models/ClassUnidadMedida.php");
+                                                  $dataUnidadMedida = $OBJ_UNIDAD_MEDIDA->show("1");
+                                                  if ($dataUnidadMedida["error"]=="NO") {
+                                                    foreach ($dataUnidadMedida["data"] as $key) {
+                                                      echo '<option value="' . $key['id_unidad_medida'] . '">' . $key['name_unidad'] . '</option>';
+                                                    }
+                                                  }
+                                                ?>
+                                              </select>
+                                            </div>
+
                               <div class="form-group col-md-3 col-sm-4">
                                 <label for="precio" class="label-control">Precio (Incluido IGV*)</label>
                                 <input id="precio" type="number" name="precio" class="form-control" autocomplete="off"

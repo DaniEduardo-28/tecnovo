@@ -28,6 +28,7 @@
           "id_servicio" => $key['id_servicio'],
           "id_tipo_servicio" => $key['id_tipo_servicio'],
           "id_maquinaria" => $key['id_maquinaria'],
+          "id_unidad_medida" => $key['id_unidad_medida'],
           "name_servicio" => $key['name_servicio'],
           "descripcion_breve" => $key['descripcion_breve'],
           "descripcion_larga" => $key['descripcion_larga'],

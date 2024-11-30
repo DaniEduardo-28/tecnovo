@@ -154,3 +154,6 @@ ALTER TABLE tb_maquinaria MODIFY id_trabajador INT NULL;
 
 -- añadir el campo id_maquinaria a tb_detalle_venta
 ALTER TABLE `tb_detalle_venta` ADD `id_maquinaria` INT NULL AFTER `notas`;
+
+ALTER TABLE `tb_servicio` ADD `id_unidad_medida` INT NULL AFTER `id_maquinaria`;
+
