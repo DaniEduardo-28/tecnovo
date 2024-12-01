@@ -57,6 +57,45 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
+    public function showActivos() {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        $VD = "";
+
+        try {
+
+            $parametros = null;
+            $sql = "SELECT m.*
+                    FROM tb_maquinaria m where m.estado = 1";
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->execute($parametros);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            if (count($result) == 0) {
+                throw new Exception("No se encontraron datos.");
+            }
+
+            $VD1['error'] = "NO";
+            $VD1['message'] = "Success";
+            $VD1['data'] = $result;
+            $VD = $VD1;
+
+        } catch(PDOException $e) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $e->getMessage();
+            $VD = $VD1;
+        } catch (Exception $exception) {
+            $VD1['error'] = "SI";
+            $VD1['message'] = $exception->getMessage();
+            $VD = $VD1;
+        } finally {
+            $conexionClass->Close();
+        }
+
+        return $VD;
+    }
+    
     public function show($estado, $id_trabajador, $valor, $offset, $limit) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();

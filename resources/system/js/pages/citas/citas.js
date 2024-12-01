@@ -61,7 +61,7 @@ $(document).ready(function(){
         };
 
         Swal.fire({
-          title: '¿Seguro de Cancelar la cita del día : ' + $("#fecha_inicio").val() + '?',
+          title: '¿Seguro de Cancelar la cronograma del día : ' + $("#fecha_inicio").val() + '?',
           text: "No podrás revertir esta operación.",
           type: 'warning',
           showCancelButton: true,
@@ -82,7 +82,7 @@ $(document).ready(function(){
                     runAlert("Oh No...!!!",response['message'],"warning");
                   }else {
                     crearCalendario();
-                    runAlert("Bien hecho...!!!","La cita fue cancelada correctamente.","success");
+                    runAlert("Bien hecho...!!!","La cronograma fue cancelada correctamente.","success");
                     $('#frmDatos')[0].reset();
                     $('#modal-calendario-show').modal('hide');
                   }
@@ -119,7 +119,7 @@ $(document).ready(function(){
         };
 
         Swal.fire({
-          title: '¿Seguro de Aceptar la cita para el día : ' + $("#fecha_inicio").val() + '?',
+          title: '¿Seguro de Aceptar la cronograma para el día : ' + $("#fecha_inicio").val() + '?',
           text: "No podrás revertir esta operación.",
           type: 'warning',
           showCancelButton: true,
@@ -140,7 +140,7 @@ $(document).ready(function(){
                     runAlert("Oh No...!!!",response['message'],"warning");
                   }else {
                     crearCalendario();
-                    runAlert("Bien hecho...!!!","La cita fue aceptada correctamente.","success");
+                    runAlert("Bien hecho...!!!","La cronograma fue aceptada correctamente.","success");
                     $('#frmDatos')[0].reset();
                     $('#modal-calendario-show').modal('hide');
                   }
@@ -177,7 +177,7 @@ $(document).ready(function(){
         };
 
         Swal.fire({
-          title: '¿Seguro de anular la cita del día : ' + $("#fecha_inicio").val() + '?',
+          title: '¿Seguro de anular la cronograma del día : ' + $("#fecha_inicio").val() + '?',
           text: "No podrás revertir esta operación.",
           type: 'warning',
           showCancelButton: true,
@@ -198,7 +198,7 @@ $(document).ready(function(){
                     runAlert("Oh No...!!!",response['message'],"warning");
                   }else {
                     crearCalendario();
-                    runAlert("Bien hecho...!!!","La cita fue anulada correctamente.","success");
+                    runAlert("Bien hecho...!!!","La cronograma fue anulada correctamente.","success");
                     $('#frmDatos')[0].reset();
                     $('#modal-calendario-show').modal('hide');
                   }
@@ -323,13 +323,12 @@ var id_documento = $('#cboDocumentoBuscar').val();
 var id_fundo = $('#cboFundoBuscar').val();
 var valor = $('#txtBuscar').val();
 var calendario = $('#calendario').fullCalendar({  // assign calendar
-  defaultView: 'month',
+  defaultView: 'agendaWeek',
   editable: true,
   selectable: true,
   allDaySlot: false,
-  locale: 'es', // Idioma
-  //titleFormat: '[Horario Carrera, Semestre y Sección]', //Título
-  weekends: false, // Oculta fin de semana
+  locale: 'es',
+  titleFormat: '[Cronograma de Trabajo]',
   displayEventTime: true,
   displayEventEnd: true,
   columnHeader: true,
@@ -433,7 +432,7 @@ fecha_hoy.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00 para compar
 if (fecha_compara.getTime() < fecha_hoy.getTime()) {
   new PNotify({
       title: 'Advertencia',
-      text: 'No puedes separar una cita con fecha pasada.',
+      text: 'No puedes separar una cronograma con fecha pasada.',
       type: 'warning',
       styling: 'bootstrap3',
       addclass: ''
@@ -494,10 +493,10 @@ calendarioEvent.on('eventDrop', function(event, delta, revertFunc, jsEvent, ui, 
   var fecha_compara = new Date(fecha_inicio + ' ' + hora_inicio);
 
   if (fecha_actual.getTime() > fecha_compara.getTime()) {
-    //runAlert('Advertencia','No puedes separar una cita con fecha pasada.','warning');
+    //runAlert('Advertencia','No puedes separar una cronograma con fecha pasada.','warning');
     new PNotify({
         title: 'Advertencia',
-        text: 'No puedes separar una cita con fecha pasada.',
+        text: 'No puedes separar una cronograma con fecha pasada.',
         type: 'warning',
         styling: 'bootstrap3',
         addclass: ''
@@ -517,7 +516,7 @@ calendarioEvent.on('eventDrop', function(event, delta, revertFunc, jsEvent, ui, 
     };
 
     Swal.fire({
-      title: '¿Seguro de Actualizar la fecha de la cita?',
+      title: '¿Seguro de Actualizar la fecha de la cronograma?',
       text: "",
       type: 'warning',
       showCancelButton: true,
@@ -616,10 +615,10 @@ calendarioEvent.on('eventResize', function(event, delta, revertFunc, jsEvent, ui
   var fecha_compara = new Date(fecha_inicio + ' ' + hora_inicio);
 
   if (fecha_actual.getTime() > fecha_compara.getTime()) {
-    //runAlert('Advertencia','No puedes separar una cita con fecha pasada.','warning');
+    //runAlert('Advertencia','No puedes separar una cronograma con fecha pasada.','warning');
     new PNotify({
         title: 'Advertencia',
-        text: 'No puedes separar una cita con fecha pasada.',
+        text: 'No puedes separar una cronograma con fecha pasada.',
         type: 'warning',
         styling: 'bootstrap3',
         addclass: ''
@@ -639,7 +638,7 @@ calendarioEvent.on('eventResize', function(event, delta, revertFunc, jsEvent, ui
     };
 
     Swal.fire({
-      title: '¿Seguro de Actualizar la fecha de la cita?',
+      title: '¿Seguro de Actualizar la fecha de la cronograma?',
       text: "",
       type: 'warning',
       showCancelButton: true,
@@ -820,3 +819,4 @@ Swal.fire({
 });
 
 }
+

@@ -2,7 +2,6 @@
 
   try {
 
-    // obtiene los valores para realizar la paginacion
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 6;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
