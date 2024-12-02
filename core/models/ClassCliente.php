@@ -4,7 +4,9 @@ class ClassCliente extends Conexion
 {
 
 	//constructor de la clase
-	public function __construct() {}
+	public function __construct()
+	{
+	}
 
 	public function getCount($estado, $id_documento, $valor)
 	{
@@ -491,6 +493,7 @@ class ClassCliente extends Conexion
 		}
 		return $VD;
 	}
+
 
 	public function addPromocion($id_cliente, $titulo, $descripcion, $fecha_inicio, $fecha_fin, $src_imagen)
 	{
