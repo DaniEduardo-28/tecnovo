@@ -230,7 +230,7 @@
 			return $VD;
 		}
 
-		public function insert($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv) {
+		public function insert($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$flag_consumo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
@@ -238,13 +238,13 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_accesorio (`id_accesorio`, `id_categoria`, `name_accesorio`, `descripcion`, `stock`, `stock_minimo`, `precio_compra`, `precio_venta`, `estado`, `src_imagen`, `id_sucursal`, `id_unidad_medida`, `id_moneda`, `flag_igv`, `signo_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_accesorio (`id_accesorio`, `id_categoria`, `name_accesorio`, `descripcion`, `stock`, `stock_minimo`, `precio_compra`, `precio_venta`, `estado`, `src_imagen`, `id_sucursal`, `id_unidad_medida`, `id_moneda`, `flag_igv`, `signo_moneda`, `flag_consumo`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(a.id_accesorio) WHEN 0 THEN 1 ELSE (MAX(a.id_accesorio) + 1) end FROM `tb_accesorio` a),";
-				$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,(SELECT signo FROM tb_moneda WHERE id_moneda = ?)";
+				$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,?,(SELECT signo FROM tb_moneda WHERE id_moneda = ?),?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,1.00,$estado,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda]);
+				$stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,1.00,$estado,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda,$flag_consumo]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al realizar el registro en la base de datos.");
 				}
@@ -264,7 +264,7 @@
 			return $VD;
 		}
 
-		public function update($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv) {
+		public function update($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$flag_consumo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
@@ -293,10 +293,11 @@
 				$sql .=" id_unidad_medida = ?, ";
 				$sql .=" id_moneda = ?, ";
 				$sql .=" flag_igv = ?, ";
+				$sql .=" flag_consumo = ?, ";
 				$sql .=" signo_moneda = (SELECT signo FROM tb_moneda WHERE id_moneda = ?) ";
 				$sql .=" WHERE id_accesorio = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,1.00,$estado,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$id_moneda,$id_accesorio])==false) {
+				if ($stmt->execute([$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,1.00,$estado,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$flag_consumo,$id_moneda,$id_accesorio])==false) {
 					throw new Exception("1. Error al actualizar los datos.");
 				}
 

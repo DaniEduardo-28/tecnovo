@@ -40,6 +40,7 @@
           "id_unidad_medida" => $key['id_unidad_medida'],
           "signo_moneda" => $key['signo_moneda'],
           "flag_igv" => $key['flag_igv'],
+          "flag_consumo" => $key['flag_consumo'],
           "src_imagen" => $key['src_imagen']
         );
       }

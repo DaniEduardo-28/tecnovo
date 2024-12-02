@@ -24,7 +24,7 @@
   define('HOST_DB','localhost');
   define('USER_DB','root');
   define('DB','syscos');
-  define('PASS_DB','Qz0966lb');
+  define('PASS_DB','');
   define('CHARSET','utf8');
 
   // conexion server

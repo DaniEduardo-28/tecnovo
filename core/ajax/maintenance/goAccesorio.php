@@ -16,6 +16,7 @@
   $id_unidad_medida = isset($_POST["id_unidad_medida"]) ? $_POST["id_unidad_medida"] : 0;
   $id_moneda = isset($_POST["id_moneda"]) ? $_POST["id_moneda"] : 0;
   $flag_igv = isset($_POST["flag_igv"]) ? 1 : 0;
+  $flag_consumo = isset($_POST["flag_consumo"]) ? 1 : 0;
 
   try {
 
@@ -100,10 +101,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ACCESORIO->insert($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv);
+        $VD = $OBJ_ACCESORIO->insert($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$flag_consumo);
         break;
       case 'edit':
-        $VD = $OBJ_ACCESORIO->update($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv);
+        $VD = $OBJ_ACCESORIO->update($id_accesorio,$id_categoria,$name_accesorio,$descripcion,$stock,$stock_minimo,$precio_compra,$precio_venta,$estado,$flag_imagen,$src_imagen,$id_sucursal,$id_unidad_medida,$id_moneda,$flag_igv,$flag_consumo);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

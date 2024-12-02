@@ -51,6 +51,7 @@
           "name_unidad" => $key['name_unidad'],
           "signo_moneda" => $key['signo_moneda'],
           "flag_igv" => $key['flag_igv'],
+          "flag_consumo" => $key['flag_consumo'],
           "precio_venta" => $key['precio_venta'],
           "src_imagen" => $key['src_imagen'],
           "estado" => $estado,

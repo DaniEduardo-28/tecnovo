@@ -143,6 +143,7 @@ function get_data_callback() {
           innerdivHtml += '<td>' + o[i].stock_minimo + ' ' + o[i].name_unidad + '</td>';
           innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio_compra + '</td>';
           innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio_venta + '</td>';
+          innerdivHtml += o[i].flag_consumo;
           innerdivHtml += o[i].estado;
           innerdivHtml += '<td>';
           innerdivHtml += o[i].flag_editar;
@@ -283,11 +284,13 @@ function getDataEdit(id_accesorio) {
           $("#id_moneda").val(o[0].id_moneda);
           var estado = o[0].estado;
           var flag_igv = o[0].flag_igv;
+          var flag_consumo = o[0].flag_consumo;
           $('#img_destino').attr('src', o[0].src_imagen);
           $("#accion").val("edit");
           $("#flag_imagen").val("0");
           estado == "activo" ? $("#estado").prop('checked', true) : $("#estado").prop('checked', false);
           flag_igv == "1" ? $("#flag_igv").prop('checked', true) : $("#flag_igv").prop('checked', false);
+          flag_consumo == "SI" ? $("#flag_consumo").prop('checked', true) : $("#flag_consumo").prop('checked', false);
           var name_categoria = o[0].name_categoria;
           var id_categoria = o[0].id_categoria;
           var flag_encontro = false;
