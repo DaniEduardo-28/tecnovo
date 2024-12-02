@@ -217,7 +217,7 @@
                                               autocomplete="off">
                                             </div>
 
-                                            <div class="form-group col-md-6 d-none">
+                                            <!-- <div class="form-group col-md-6 d-none">
                                               <label for="name_user" class="label-control">Usuario</label>
                                               <input id="name_user" type="text" name="name_user" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
@@ -227,7 +227,7 @@
                                               <label for="pass_user" class="label-control">Contraseña</label>
                                               <input id="pass_user" type="password" name="pass_user" class="form-control"
                                               autocomplete="off" required data-msg="Campo obligatorio...">
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-group col-md-4 col-sm-6">
                                               <label for="fecha_nacimiento" class="label-control" id="lblFechaNacimiento">Fecha Nacimiento</label>

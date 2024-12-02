@@ -292,7 +292,7 @@ class ClassCliente extends Conexion
 			$sql = "INSERT INTO tb_cliente (`id_cliente`, `id_persona`, `fecha_activacion`, `estado`, `src_imagen`) VALUES ";
 			$sql .= "(";
 			$sql .= "(SELECT CASE COUNT(c.id_cliente) WHEN 0 THEN 1 ELSE (MAX(c.id_cliente) + 1) end FROM `tb_cliente` c),";
-			$sql .= "?,?,?,now(),?,?";
+			$sql .= "?,now(),?,?";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_persona, $estado, $src_imagen]);
