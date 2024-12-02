@@ -3,11 +3,9 @@ header('Content-Type: application/json');
 
 
 try {
-    // Obtener parámetros para la paginación y filtrado
-    $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"]) : 6;
-    $offset = isset($_POST["offset"]) && intval($_POST["offset"]) >= 0 ? intval($_POST["offset"]) : 0;
+
     $valor = isset($_POST["valor"]) ? $_POST["valor"] : "";
-    $id_trabajador = isset($_POST["id_trabajador"]) && $_POST["id_trabajador"] != "" ? $_POST["id_trabajador"] : null; // Manejar como NULL si no se selecciona
+    $id_trabajador = isset($_POST["id_trabajador"]) && $_POST["id_trabajador"] != "" ? $_POST["id_trabajador"] : null;
 
     // Verificación de permisos
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinaria"));
@@ -26,12 +24,11 @@ try {
 
     if ($DataCantidad["error"] == "NO") {
         $cantidad = isset($DataCantidad["data"][0]["cantidad"]) ? $DataCantidad["data"][0]["cantidad"] : 0;
-        $Resultado = $OBJ_MAQUINARIA->show("all", $id_trabajador, $valor, $offset, $limit); // Cambiado argumento
+        $Resultado = $OBJ_MAQUINARIA->show("all", $id_trabajador, $valor);
 
         $retorno_array = [];
-        $count = $offset + 1; // Ajuste para paginación
+        $count = 1;
 
-        // Comprobación de que $Resultado["data"] tiene elementos
         if (isset($Resultado["data"]) && is_array($Resultado["data"])) {
             foreach ($Resultado["data"] as $key) {
                 $estado = ($key['estado'] == "activo") 

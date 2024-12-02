@@ -96,7 +96,7 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
     
-    public function show($estado, $id_trabajador, $valor, $offset, $limit) {
+    public function show($estado, $id_trabajador, $valor) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
         $VD = "";
@@ -119,8 +119,6 @@ class ClassMaquinaria extends Conexion {
                 $sql .= " AND m.id_trabajador = ?";
                 $parametros[] = $id_trabajador;
             }
-
-            $sql .= " LIMIT $offset, $limit ";
 
             $stmt = $conexion->prepare($sql);
             $stmt->execute($parametros);

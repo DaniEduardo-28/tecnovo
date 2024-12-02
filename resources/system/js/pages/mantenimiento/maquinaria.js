@@ -83,7 +83,7 @@ function showData() {
             table.clear().draw();
             try {
                 var response = typeof data === "string" ? JSON.parse(data) : data;
-
+                console.log(response);
                 if (response.error === "NO") {
                     if (response.data && response.data.length > 0) {
                         response.data.forEach(function(row) {
