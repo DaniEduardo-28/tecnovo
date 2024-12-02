@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$stmt = $conexion->prepare("SELECT * FROM `tb_parametros_generales` WHERE id_parametro >= ? AND id_parametro <= ?");
@@ -48,7 +48,7 @@
 		public function updateCabezera($flag_imagen_1,$flag_imagen_2,$flag_imagen_3,$src_imagen_1,$src_imagen_2,$src_imagen_3,$titulo_1,$titulo_2,$titulo_3,$descripcion_1,$descripcion_2,$descripcion_3,$boton_1,$boton_2,$boton_3,$enlace_1,$enlace_2,$enlace_3) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -197,7 +197,7 @@
 		public function updateRedesSociales($link_1,$link_2,$link_3,$link_4) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -252,7 +252,7 @@
 		public function updateDatosContacto($horario_top_nav,$correo,$telefono,$direccion,$number_clientes,$number_proyectos,$number_premios,$number_horas,$horario_1,$horario_2,$horario_3,$horario_4,$horario_5,$horario_6,$horario_7,$descripcion_footer,$mapa) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -412,7 +412,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$stmt = $conexion->prepare("SELECT
@@ -454,7 +454,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$stmt = $conexion->prepare("SELECT * FROM vw_productos_agotados");

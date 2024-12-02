@@ -6074,4 +6074,9 @@ ADD
 ADD
   CONSTRAINT `tb_venta_ibfk_2` FOREIGN KEY (`id_trabajador`) REFERENCES `tb_trabajador` (`id_trabajador`);
 
+ALTER TABLE `tb_servicio` ADD `id_unidad_medida` INT NULL AFTER `id_maquinaria`;
+
+ALTER TABLE `tb_persona`
+ADD COLUMN `apodo` varchar(100) NULL;
+
 COMMIT;

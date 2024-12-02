@@ -49,7 +49,7 @@ $(document).ready(function () {
 
 function showData() {
   paginador = $(".pagination");
-  var items = 6,
+  var items = 8,
     numeros = 6;
   init_paginator(paginador, items, numeros);
   set_callback(get_data_callback);
@@ -133,7 +133,6 @@ function get_data_callback() {
             creaPaginador(data1["cantidad"]);
           }
 
-          // genera el cuerpo de la tabla
           var innerdivHtml = "";
           var o = data1["data"];
 
@@ -166,7 +165,7 @@ function get_data_callback() {
             innerdivHtml += '<div class="img-icon"><i class="fa fa-map"></i></div>';
             innerdivHtml += "</li>";
             innerdivHtml += '<li class="nav-item">';
-            innerdivHtml += "<p>" + o[i].direccion + "</p>";
+            innerdivHtml += "<p>" + (o[i].direccion.length > 20 ? o[i].direccion.substring(0, 20) + "..." : o[i].direccion) + "</p>";
             innerdivHtml += "</li>";
             innerdivHtml += "</ul>";
             innerdivHtml += '<ul class="nav">';
@@ -182,7 +181,7 @@ function get_data_callback() {
             innerdivHtml += '<div class="img-icon"><i class="fa fa-envelope-o"></i></div>';
             innerdivHtml += "</li>";
             innerdivHtml += '<li class="nav-item">';
-            innerdivHtml += "<p>" + o[i].correo + "</p>";
+            innerdivHtml += "<p>" + (o[i].correo.length > 18 ? o[i].correo.substring(0, 18) + "..." : o[i].correo) + "</p>";
             innerdivHtml += "</li>";
             innerdivHtml += "</ul>";
             innerdivHtml += "</div>";
@@ -334,6 +333,7 @@ function getDataEdit(id_cliente) {
           $("#pass_user_old").val(o[0].pass_user);
           $("#pass_user").val(o[0].pass_user);
           $("#name_user").val(o[0].name_user);
+          $("#apodo").val(o[0].apodo);
           var sexo = o[0].sexo;
           var estado = o[0].estado;
           sexo == "masculino" ? $("#rdbM").prop("checked", true) : $("#rdbF").prop("checked", true);

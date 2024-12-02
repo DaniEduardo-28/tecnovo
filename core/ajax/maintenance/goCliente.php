@@ -4,6 +4,7 @@
   $id_cliente = isset($_POST["id_cliente"]) ? $_POST["id_cliente"] : "";
   $id_documento = isset($_POST["id_documento"]) ? $_POST["id_documento"] : "";
   $num_documento = isset($_POST["num_documento"]) ? $_POST["num_documento"] : "";
+  $apodo = isset($_POST["apodo"]) ? $_POST["apodo"] : "";
   $nombres = isset($_POST["nombres"]) ? $_POST["nombres"] : "";
   $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : "";
   $direccion = isset($_POST["direccion"]) ? $_POST["direccion"] : "";
@@ -16,9 +17,6 @@
   $src_imagen = "resources/global/images/sin_imagen.png";
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
   $fecha_nacimiento = formattodate($fecha_nacimiento,"Y-m-d","Y-m-d");
-  $name_user = isset($_POST["name_user"]) ? $_POST["name_user"] : "";
-  $pass_user = isset($_POST["pass_user"]) ? $_POST["pass_user"] : "";
-  $pass_user_old = isset($_POST["pass_user_old"]) ? $_POST["pass_user_old"] : "";
   $sexo = ($sexo=="M") ? "masculino" : "femenino";
 
   try {
@@ -52,9 +50,9 @@
       throw new Exception("Campo obligatorio : Nombres ó Razón Social.");
     }
 
-    if (empty(trim($apellidos))) {
-      throw new Exception("Campo obligatorio : Apellidos ó Nombre Comercial.");
-    }
+    // if (empty(trim($apellidos))) {
+    //   throw new Exception("Campo obligatorio : Apellidos ó Nombre Comercial.");
+    // }
 
     if (empty(trim($num_documento))) {
       throw new Exception("Campo obligatorio : Número de documento.");
@@ -100,16 +98,6 @@
       }
     }
 
-    if (empty(trim($name_user))) {
-      throw new Exception("Campo obligatorio : Nombre de Usuario.");
-    }
-
-    if (empty(trim($pass_user))) {
-      throw new Exception("Campo obligatorio : Contraseña.");
-    }
-
-    $pass_user = $pass_user != $pass_user_old ? encript($pass_user) : $pass_user;
-
     if ($flag_imagen=="1") {
 
       if (isset($_FILES["src_imagen"])){
@@ -150,10 +138,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_CLIENTE->insert($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user);
+        $VD = $OBJ_CLIENTE->insert($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$apodo);
         break;
       case 'edit':
-        $VD = $OBJ_CLIENTE->update($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$name_user,$pass_user);
+        $VD = $OBJ_CLIENTE->update($id_persona,$id_cliente,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$fecha_nacimiento,$sexo,$estado,$flag_imagen,$src_imagen,$apodo);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

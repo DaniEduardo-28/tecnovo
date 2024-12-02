@@ -29,7 +29,7 @@
       $count = 1;
       foreach ($Resultado["data"] as $key) {
         $estado = ($key['estado']=="1") ? '<span class="badge badge-success-inverse px-2 py-1 mt-1">Activo</span>' : '<span class="badge badge-danger-inverse px-2 py-1 mt-1">Inactivo</span>' ;
-        $options="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ";
+        $options="&nbsp;&nbsp;&nbsp;";
         if ($access_options[0]['flag_editar']) {
           $options.='<a href="javascript:getDataEdit(' . $key['id_proveedor'] . ')" class="btn btn-icon btn-outline-warning btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-pencil"></i></a>';
         }
@@ -45,8 +45,8 @@
           "id_documento" => $key['id_documento'],
           "name_documento" => $key['name_documento'],
           "num_documento" => $key['num_documento'],
-          "nombres" => $key['nombres'],
-          "apellidos" => strtoupper($key['apellidos']) . ",<br>",
+          "nombres" => strtoupper($key['nombres']),
+          "apellidos" => strtoupper($key['apellidos']),
           "direccion" => strtoupper(substr($key['direccion'],0,30)),
           "direccion_completa" => strtoupper($key['direccion']),
           "telefono" => $key['telefono'],

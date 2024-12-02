@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -69,7 +69,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -111,7 +111,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -152,7 +152,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -193,7 +193,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -232,7 +232,7 @@
 		public function insert($id_mascota,$id_documento,$num_documento,$nombres,$apellidos,$id_tipo_mascota,$nombre_mascota,$raza,$color,$peso,$sexo,$fecha_nacimiento,$observaciones,$estado,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -344,7 +344,7 @@
 		public function insert_mi_mascota($id_mascota,$id_cliente,$id_tipo_mascota,$nombre_mascota,$raza,$color,$peso,$sexo,$fecha_nacimiento,$observaciones,$estado,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -400,7 +400,7 @@
 		public function update($id_mascota,$id_documento,$num_documento,$nombres,$apellidos,$id_tipo_mascota,$nombre_mascota,$raza,$color,$peso,$sexo,$fecha_nacimiento,$observaciones,$estado,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -512,7 +512,7 @@
 		public function update_mi_mascota($id_mascota,$id_cliente,$id_tipo_mascota,$nombre_mascota,$raza,$color,$peso,$sexo,$fecha_nacimiento,$observaciones,$estado,$flag_imagen,$src_imagen) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -571,7 +571,7 @@
 		public function delete($id_mascota) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 

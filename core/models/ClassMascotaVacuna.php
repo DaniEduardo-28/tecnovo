@@ -6,7 +6,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -50,7 +50,7 @@
 		public function registrarVacuna($id_mascota_vacuna,$observaciones) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -79,7 +79,7 @@
 		public function goRegistrarVacuna($id_mascota,$id_vacuna,$observaciones) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();

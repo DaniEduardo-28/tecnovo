@@ -247,13 +247,19 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 </select>
                               </div>
 
-                              <div class="form-group col-md-6">
+                              <div class="form-group col-md-4">
+                                <label for="apodo" class="label-control">Apodo o Nick</label>
+                                <input id="apodo" type="text" name="apodo" class="form-control"
+                                  autocomplete="off">
+                              </div>
+
+                              <div class="form-group col-md-4">
                                 <label for="name_user" class="label-control">Usuario</label>
                                 <input id="name_user" type="text" name="name_user" class="form-control"
                                   autocomplete="off" required data-msg="Campo obligatorio...">
                               </div>
 
-                              <div class="form-group col-md-6">
+                              <div class="form-group col-md-4">
                                 <label for="pass_user" class="label-control">Contraseña</label>
                                 <input id="pass_user" type="password" name="pass_user" class="form-control"
                                   autocomplete="off" required data-msg="Campo obligatorio...">

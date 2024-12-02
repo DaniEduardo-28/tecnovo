@@ -11,7 +11,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -57,7 +57,7 @@
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 
@@ -97,7 +97,7 @@
 		public function insert($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
@@ -123,7 +123,7 @@
 		public function update($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 			try {
 				$conexion->beginTransaction();
 				$stmt = $conexion->prepare("UPDATE tb_documento_venta SET estado = ?, flag_doc_interno = ?, nombre = ?, nombre_corto = ?, cod_sunat = ?, serie = ?, correlativo = ? WHERE id_documento_venta = ? AND id_sucursal = ?");
@@ -147,7 +147,7 @@
 		public function delete($id_documento_venta) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
-			$VD;
+			$VD = "";
 
 			try {
 

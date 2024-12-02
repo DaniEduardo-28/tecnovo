@@ -40,6 +40,7 @@
           "id_grupo" => $key['id_grupo'],
           "id_especialidad" => $key['id_especialidad'],
           "name_user" => $key['name_user'],
+          "apodo" => $key['apodo'],
           "pass_user" => $key['pass_user'],
           "estado" => $key['estado'],
           "flag_medico" => $key['flag_medico'],
