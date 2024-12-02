@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Atención de Citas | <?=APP_TITLE;?> </title>
+    <title>Atención de Cronograma | <?=APP_TITLE;?> </title>
     <link rel="stylesheet" href="resources/fullcalendar/fullcalendar.css">
 
   </head>
@@ -55,7 +55,7 @@
                                   <a href="?view=home"><i class="ti ti-home"></i></a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                  Citas
+                                  Cronograma
                                 </li>
                                 <li class="breadcrumb-item active text-primary" aria-current="page">
                                   Atender</li>

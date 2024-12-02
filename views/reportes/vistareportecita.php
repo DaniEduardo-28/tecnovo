@@ -117,7 +117,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <div class="card card-statistics">
                   <div class="card-header">
                     <div class="card-heading">
-                      <h4 class="card-title">Reporte de Citas</h4>
+                      <h4 class="card-title">Reporte de Cronograma</h4>
                     </div>
                   </div>
                   <div class="card-body">

@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
 <head>
   <?php include("views/overall/header.php"); ?>
-  <title>Gestionar Citas | <?= APP_TITLE; ?> </title>
+  <title>Gestionar Cronograma | <?= APP_TITLE; ?> </title>
   <link rel="stylesheet" href="resources/fullcalendar/fullcalendar.css">
 
 </head>
@@ -55,7 +55,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <a href="?view=home"><i class="ti ti-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                          Citas
+                          Cronograma
                         </li>
                         <li class="breadcrumb-item active text-primary" aria-current="page">
                           Gestionar</li>

@@ -54,7 +54,7 @@
                                       <a href="?view=home"><i class="ti ti-home"></i></a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                      Citas
+                                      Cronograma
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
                                       Historial 

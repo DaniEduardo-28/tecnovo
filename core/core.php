@@ -12,7 +12,7 @@
 
   define('APP_TITLE','SysCos | Sistema para gestión de cosechas ');
   define('APP_COPY','Copyright © ' . date('Y',time()) . ' <a href="https://www.oxerva.com.pe" target="_blank">Oxerva SRL</a>');
-  define('APP_VERSION','1.0.0.1');
+  define('APP_VERSION','1.0.0.2');
   define('AUTOR','-');
   define('DESCRIPTION_SYSTEM','Esto es una breve descripción del sistema....');
   define('AUTOR_URL','https://www.oxerva.com.pe');

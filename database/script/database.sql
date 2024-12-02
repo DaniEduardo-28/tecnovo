@@ -2550,11 +2550,11 @@ VALUES
   (413, NULL, 'inactivo', NULL, 0, NULL),
   (414, NULL, 'inactivo', NULL, 0, NULL),
   (415, NULL, 'inactivo', NULL, 0, NULL),
-  (500, 'Citas', 'activo', NULL, 0, NULL),
-  (501, 'Gestionar Citas', 'activo', NULL, 0, NULL),
+  (500, 'Cronograma', 'activo', NULL, 0, NULL),
+  (501, 'Gestionar Cronograma', 'activo', NULL, 0, NULL),
   (
     502,
-    'Atención de Citas',
+    'Atención de Cronograma',
     'activo',
     NULL,
     0,
@@ -2666,7 +2666,7 @@ VALUES
     0,
     NULL
   ),
-  (707, 'Reporte de Citas', 'activo', NULL, 0, NULL),
+  (707, 'Reporte de Cronograma', 'activo', NULL, 0, NULL),
   (708, NULL, 'inactivo', NULL, 0, NULL),
   (709, NULL, 'inactivo', NULL, 0, NULL),
   (710, NULL, 'inactivo', NULL, 0, NULL),

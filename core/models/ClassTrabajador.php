@@ -463,7 +463,7 @@ class ClassTrabajador extends Conexion
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			if (count($result) > 0) {
-				throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Citas.");
+				throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Cronograma.");
 			}
 
 			$stmt = $conexion->prepare("DELETE FROM tb_trabajador WHERE id_trabajador = ?");
