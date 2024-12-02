@@ -237,11 +237,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                   </select>
                 </div>
 
-                <!-- <div class="form-group col-sm-12">
+                <div class="form-group col-sm-12">
                    <label for="id_trabajador">Operador</label>
                    <select class="form-control" id="id_trabajador" name="id_trabajador">
                       <?php
-                      $dataMedico = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
+                      include("core/models/ClassTrabajadorServicio.php");
+                      $dataMedico = $OBJ_TRABAJADOR_SERVICIO->show($_SESSION['id_trabajador']);
                       if ($dataMedico["error"] == "NO") {
                         foreach ($dataMedico["data"] as $key) {
                       ?>
@@ -251,9 +252,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                       }
                           ?>
                    </select>
-                  </div> -->
+                  </div>
 
-                <div class="form-group col-sm-12">
+                <!-- <div class="form-group col-sm-12">
                   <label for="id_trabajador">Operador</label>
                   <select class="form-control" id="id_trabajador" name="id_trabajador">
                     <option value="all">Seleccione...</option>
@@ -268,17 +269,17 @@ if (!isset($_SESSION['id_trabajador'])) {
                     }
                     ?>
                   </select>
-                </div>
+                </div> -->
 
-                <!-- <div class="form-group col-sm-12">
+                <div class="form-group col-sm-12">
                     <label for="cboServicioForm">Servicio:</label>
                     <select name="cboServicioForm" id="cboServicioForm"
                       class="form-control" required="true">
 
                     </select>
-                  </div> -->
+                  </div>
 
-                <div class="form-group col-sm-12">
+                <!-- <div class="form-group col-sm-12">
                   <label for="cboServicioForm">Servicio:</label>
                   <select name="cboServicioForm" id="cboServicioForm" class="form-control" required="true">
                     <option value="all">Seleccione...</option>
@@ -294,7 +295,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                     }
                     ?>
                   </select>
-                </div>
+                </div> -->
 
 
                 <div class="form-group col-sm-12">
