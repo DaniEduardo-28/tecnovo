@@ -64,7 +64,7 @@ function printCodeOption($controller)
       case 'medicamento':
         $VD = 204;
         break;
-      case 'medicoservicio':
+      case 'operadorservicio':
         $VD = 205;
         break;
       case 'vacuna':

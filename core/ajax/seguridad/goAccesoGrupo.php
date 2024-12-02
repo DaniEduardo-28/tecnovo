@@ -1,6 +1,6 @@
 <?php
 
-  sleep(1);
+
 
   $id_grupo = isset($_POST["id_grupo"]) ? $_POST["id_grupo"] : "";
   $datos = isset($_POST["datos"]) ? $_POST["datos"] : null;

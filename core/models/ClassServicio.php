@@ -360,7 +360,7 @@ class ClassServicio extends Conexion
 								FROM `tb_servicio` s
 							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
 							  INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria
-							  INNER JOIN tb_unidad_medida u ON u.id_unidad_medida = s.unidad_medida";
+							  INNER JOIN tb_unidad_medida u ON u.id_unidad_medida = s.id_unidad_medida";
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);

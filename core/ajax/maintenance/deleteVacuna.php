@@ -1,6 +1,6 @@
 <?php
 
-  sleep(1);
+
 
   $id_vacuna = isset($_POST["id_vacuna"]) ? $_POST["id_vacuna"] : "";
 

@@ -1,6 +1,6 @@
 <?php
 
-  sleep(1);
+
 
   $id_tipo_mascota = isset($_POST["id_tipo_mascota"]) ? $_POST["id_tipo_mascota"] : "";
 

@@ -103,7 +103,7 @@
       $flag_accesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesorio"));
       $flag_medicamento = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("medicamento"));
       $flag_accesofundo = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesofundo"));
-      $flag_medicoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("medicoservicio"));
+      $flag_medicoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("operadorservicio"));
       $flag_vacuna = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vacuna"));
       $flag_trabajador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("trabajador"));
       $flag_mascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("mascota"));
@@ -151,7 +151,7 @@
               <li id="menuaccesofundo"> <a href="?view=accesosfundo">Acceso a Fundos</a> </li>
             <?php endif; ?>
             <?php if ($flag_medicoservicio): ?>
-              <li id="menumedicoservicio"> <a href="?view=medicoservicio">Operadores - Servicios</a></li>
+              <li id="menumedicoservicio"> <a href="?view=operadorservicio">Operadores - Servicios</a></li>
             <?php endif; ?>
           </ul>
         </li>

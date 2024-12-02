@@ -51,10 +51,10 @@
 
         /* When the checkbox is checked, add a blue background */
       .container-label input:checked ~ .checkmark {
-        background-color: #7630E4;
+        background-color: #13b01b;
       }
 
-        /* Create the checkmark/indicator (hidden when not checked) */
+        /* Create the checkmark/indicator (hidden when not checked) #13b01b */
       .checkmark:after {
         content: "";
         position: absolute;
@@ -154,7 +154,7 @@
                                       <label for="cboTrabajador" class="label-control">Operador</label>
                                       <select class="form-control" name="cboTrabajador" id="cboTrabajador">
                                         <?php
-                                            $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("medicoservicio"));
+                                            $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("operadorservicio"));
                                             if ($access_options[0]['error']=="NO") {
                                               if ($access_options[0]['flag_editar']) {
                                                 require("core/models/ClassTrabajador.php");
@@ -267,7 +267,7 @@
 
     <!-- JavaScript files-->
     <?php include("views/overall/js.php"); ?>
-    <script src="resources/system/js/pages/mantenimiento/medicoservicio.js?v=<?=APP_VERSION;?>"></script>
+    <script src="resources/system/js/pages/mantenimiento/operadorservicio.js?v=<?=APP_VERSION;?>"></script>
     <script>
       $("#menumantenimiento").addClass('active');
       $("#menumedicoservicio").addClass('active');

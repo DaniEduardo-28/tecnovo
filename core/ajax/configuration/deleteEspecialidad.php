@@ -1,6 +1,6 @@
 <?php
 
-  sleep(1);
+
 
   $id_especialidad = isset($_POST["id_especialidad"]) ? $_POST["id_especialidad"] : "";
 

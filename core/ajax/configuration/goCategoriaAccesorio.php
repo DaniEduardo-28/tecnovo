@@ -1,6 +1,6 @@
 <?php
 
-  sleep(1);
+
 
   $id_categoria = isset($_POST["id_categoria"]) ? $_POST["id_categoria"] : "";
   $estado = isset($_POST["estado"]) ? 1 : 0;
