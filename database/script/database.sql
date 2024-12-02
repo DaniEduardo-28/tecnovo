@@ -1,62 +1,22 @@
--- phpMyAdmin SQL Dump
--- version 4.8.5
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Oct 16, 2019 at 07:30 PM
--- Server version: 5.7.24
--- PHP Version: 7.2.11
-SET
-  SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
-SET
-  AUTOCOMMIT = 0;
-
-START TRANSACTION;
-
-SET
-  time_zone = "+00:00";
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */
-;
-
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */
-;
-
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */
-;
-
-/*!40101 SET NAMES utf8mb4 */
-;
-
---
--- Database: `mican`
---
--- --------------------------------------------------------
---
--- Table structure for table `tb_accesorio`
---
 CREATE TABLE `tb_accesorio` (
-  `id_accesorio` bigint(20) UNSIGNED NOT NULL,
-  `id_sucursal` int(11) NOT NULL DEFAULT '1',
-  `id_categoria` bigint(20) UNSIGNED NOT NULL,
-  `id_unidad_medida` int(11) NOT NULL DEFAULT '1',
-  `name_accesorio` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `descripcion` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `stock` int(11) NOT NULL DEFAULT '0',
-  `stock_minimo` int(11) NOT NULL DEFAULT '0',
+  `id_accesorio` bigint UNSIGNED NOT NULL,
+  `id_sucursal` int NOT NULL DEFAULT '1',
+  `id_categoria` bigint UNSIGNED NOT NULL,
+  `id_unidad_medida` int NOT NULL DEFAULT '1',
+  `name_accesorio` varchar(100) NOT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `stock` int NOT NULL DEFAULT '0',
+  `stock_minimo` int NOT NULL DEFAULT '0',
   `precio_compra` double(8, 2) NOT NULL DEFAULT '0.00',
-  `id_moneda` int(11) NOT NULL DEFAULT '1',
-  `signo_moneda` varchar(10) COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'S/',
+  `id_moneda` int NOT NULL DEFAULT '1',
+  `signo_moneda` varchar(10) NOT NULL DEFAULT 'S/',
   `precio_venta` double(8, 2) NOT NULL DEFAULT '0.00',
-  `flag_igv` char(1) COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT '1',
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo',
-  `src_imagen` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `flag_igv` char(1) NOT NULL DEFAULT '1',
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  `src_imagen` varchar(150) DEFAULT NULL
+);
 
---
--- Dumping data for table `tb_accesorio`
---
+
 INSERT INTO
   `tb_accesorio` (
     `id_accesorio`,
@@ -79,148 +39,76 @@ VALUES
   (
     1,
     1,
+    2,
     1,
-    1,
-    'Brekkies Pienso para Perros con Buey y Verduras - 15000 gr',
-    '100% Completo y Equilibrado Huesos y dientes fuertes: Con vitaminas y minerales Pelo brillante y piel sana: Con ácidos grasos esenciales Agilidad: Niv',
-    49,
+    'Balde de Aceites',
+    'Aceite para mantenimiento de maquinaria.',
+    7,
     10,
     40.00,
     1,
     'S/',
-    50.00,
+    1.00,
     '1',
     'activo',
-    'resources/global/images/accesorios/img-1571244572.png'
+    'resources/global/images/accesorios/img-1732221122.png'
   ),
   (
     2,
     1,
     1,
     1,
-    'KIEM Saco de pienso para Perros Mantenimiento 20 kg, Comida para Perros',
-    'Pienso para perro compuesto por carnes cereales y productos vegetales pienso para el mantenimiento de tu perro muy barato y de calidad saco de pienso.',
-    99,
+    'Filtro de HST',
+    'Filtro de repuesto',
+    36,
     15,
     30.00,
-    2,
-    '$',
-    50.00,
+    1,
+    'S/',
+    1.00,
     '1',
     'activo',
-    'resources/global/images/accesorios/img-1571244647.png'
+    'resources/global/images/accesorios/img-1732221173.png'
   ),
   (
     3,
     1,
-    2,
     1,
-    'Artero Protein Vital, Acondicionador - 100 ml',
-    'Efecto regenerador inmediato del pelo del perro Aporta suavidad y brillo únicos a tu perro Evita que el pelo se rompa debido a las largas sesiones de',
+    1,
+    'Manguera de Bomba',
+    'Repuesto para maquinaria',
+    9,
     10,
-    10,
-    45.00,
-    2,
-    '$',
-    55.00,
-    '1',
-    'activo',
-    'resources/global/images/accesorios/img-1571245068.png'
-  ),
-  (
-    4,
-    1,
-    2,
-    1,
-    'Pro Pooch Gotas oculares para Perros (250 ML)',
-    'SOLUCION SEGURA NO TÓXICA PARA OJOS - Puede aplicarse 3-4 veces al día o según lo indique su veterinario de confianza. ✔ GMP: fabricado en una instal	',
-    40,
-    5,
-    55.00,
-    3,
-    '€',
-    40.00,
-    '1',
-    'activo',
-    'resources/global/images/accesorios/img-1571245194.png'
-  ),
-  (
-    5,
-    1,
-    3,
-    1,
-    '10 delicioso Hueso para roer 17 cm - 1000g',
-    '10 sabrosos huesos para morder 17 cm - 1000g Huesos kauk para perros Producto natural hecho de cuero vacuno puro paraperros de tamaño grande y mediano	',
-    50,
-    12,
     45.00,
     1,
     'S/',
-    65.00,
+    1.00,
     '1',
     'activo',
-    'resources/global/images/accesorios/img-1571245228.png'
+    'resources/global/images/accesorios/img-1732221218.png'
   ),
   (
-    6,
-    1,
-    3,
-    1,
-    'Hopey \'s kausnack para perros Conejos Orejas con pelo',
-    'Hopey \'s kausnack natural para perros, conejos, orejas con pelo secado Unique elfutt ermittel para perros, Contenido: 100 g Libre de humo, especias y	',
-    10,
-    10,
-    78.00,
-    1,
-    'S/',
-    89.00,
-    '1',
-    'activo',
-    'resources/global/images/accesorios/img-1571245266.png'
-  ),
-  (
-    7,
-    1,
     4,
     1,
-    'Halti Training Lead (6\' 6\")',
-    'ONTROL Y GUÍA: diseñado para entrenamiento general de obediencia o para caminar, el líder de entrenamiento HALTI es un conductor multifuncional de dob	',
-    30,
-    5,
-    34.00,
+    1,
+    1,
+    'Cañerías de Respuesto',
+    'Cañería para reemplazar',
+    0,
+    4,
+    75.00,
     1,
     'S/',
-    44.00,
+    1.00,
     '1',
     'activo',
-    'resources/global/images/accesorios/img-1571245997.png'
-  ),
-  (
-    8,
-    1,
-    4,
-    1,
-    'Company of Animals HALTI Jefe de Entrenamiento, Negro, L',
-    'CONTROL Y GU?A: dise?ado para entrenamiento general de obediencia o para caminar, el l?der de entrenamiento HALTI es un conductor multifuncional de do	',
-    100,
-    10,
-    5.00,
-    2,
-    '$',
-    10.00,
-    '1',
-    'activo',
-    'resources/global/images/accesorios/img-1571246033.png'
+    'resources/global/images/accesorios/img-1732221330.png'
   );
 
--- --------------------------------------------------------
---
--- Table structure for table `tb_acceso_opcion`
---
 CREATE TABLE `tb_acceso_opcion` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `id_grupo` bigint(20) UNSIGNED NOT NULL,
-  `id_opcion` int(11) NOT NULL,
+  `id` bigint UNSIGNED NOT NULL,
+  `id_grupo` bigint UNSIGNED NOT NULL,
+  `id_opcion` int NOT NULL,
   `flag_agregar` tinyint(1) NOT NULL DEFAULT '0',
   `flag_buscar` tinyint(1) NOT NULL DEFAULT '0',
   `flag_editar` tinyint(1) NOT NULL DEFAULT '0',
@@ -228,11 +116,9 @@ CREATE TABLE `tb_acceso_opcion` (
   `flag_anular` tinyint(1) NOT NULL DEFAULT '0',
   `flag_ver` tinyint(1) NOT NULL DEFAULT '0',
   `flag_descargar` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+);
 
---
--- Dumping data for table `tb_acceso_opcion`
---
+
 INSERT INTO
   `tb_acceso_opcion` (
     `id`,
@@ -262,7 +148,7 @@ VALUES
   (93, 1, 112, 1, 1, 1, 1, 1, 1, 1),
   (94, 1, 113, 1, 1, 1, 1, 1, 1, 1),
   (95, 1, 114, 1, 1, 1, 1, 1, 1, 1),
-  (96, 1, 115, 0, 0, 0, 0, 0, 0, 0),
+  (96, 1, 115, 1, 1, 1, 1, 1, 1, 1),
   (97, 1, 200, 0, 0, 0, 0, 0, 0, 0),
   (98, 1, 201, 1, 1, 1, 1, 1, 1, 1),
   (99, 1, 202, 1, 1, 1, 1, 1, 1, 1),
@@ -272,10 +158,10 @@ VALUES
   (103, 1, 206, 1, 1, 1, 1, 1, 1, 1),
   (104, 1, 207, 1, 1, 1, 1, 1, 1, 1),
   (105, 1, 208, 1, 1, 1, 1, 1, 1, 1),
-  (106, 1, 209, 0, 0, 0, 0, 0, 0, 0),
-  (107, 1, 210, 0, 0, 0, 0, 0, 0, 0),
-  (108, 1, 211, 0, 0, 0, 0, 0, 0, 0),
-  (109, 1, 212, 0, 0, 0, 0, 0, 0, 0),
+  (106, 1, 209, 1, 1, 1, 1, 1, 1, 1),
+  (107, 1, 210, 1, 1, 1, 1, 1, 1, 1),
+  (108, 1, 211, 1, 1, 1, 1, 1, 1, 1),
+  (109, 1, 212, 1, 1, 1, 1, 1, 1, 1),
   (110, 1, 213, 0, 0, 0, 0, 0, 0, 0),
   (111, 1, 214, 0, 0, 0, 0, 0, 0, 0),
   (112, 1, 215, 0, 0, 0, 0, 0, 0, 0),
@@ -350,7 +236,7 @@ VALUES
   (181, 1, 704, 1, 1, 1, 1, 1, 1, 1),
   (182, 1, 705, 1, 1, 1, 1, 1, 1, 1),
   (183, 1, 706, 1, 1, 1, 1, 1, 1, 1),
-  (184, 1, 707, 0, 0, 0, 0, 0, 0, 0),
+  (184, 1, 707, 1, 1, 1, 1, 1, 1, 1),
   (185, 1, 708, 0, 0, 0, 0, 0, 0, 0),
   (186, 1, 709, 0, 0, 0, 0, 0, 0, 0),
   (187, 1, 710, 0, 0, 0, 0, 0, 0, 0),
@@ -586,52 +472,50 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_categoria_accesorio`
+-- Estructura de tabla para la tabla `tb_categoria_accesorio`
 --
 CREATE TABLE `tb_categoria_accesorio` (
-  `id_categoria` bigint(20) UNSIGNED NOT NULL,
-  `name_categoria` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_categoria` bigint UNSIGNED NOT NULL,
+  `name_categoria` varchar(50) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_categoria_accesorio`
+-- Volcado de datos para la tabla `tb_categoria_accesorio`
 --
 INSERT INTO
   `tb_categoria_accesorio` (`id_categoria`, `name_categoria`, `estado`)
 VALUES
-  (1, 'Comida', 'activo'),
-  (2, 'Higiene', 'activo'),
-  (3, 'Juguetes', 'activo'),
-  (4, 'Collares y Correas', 'activo');
+  (1, 'REPUESTO', 'activo'),
+  (2, 'LIMPIEZA', 'activo');
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_cita`
+-- Estructura de tabla para la tabla `tb_cita`
 --
 CREATE TABLE `tb_cita` (
-  `id_cita` bigint(20) UNSIGNED NOT NULL,
-  `id_sucursal` int(11) NOT NULL DEFAULT '1',
-  `id_trabajador` bigint(20) UNSIGNED NOT NULL,
-  `id_servicio` bigint(20) UNSIGNED NOT NULL,
-  `id_mascota` bigint(20) UNSIGNED NOT NULL,
+  `id_cita` bigint UNSIGNED NOT NULL,
+  `id_sucursal` int NOT NULL DEFAULT '1',
+  `id_trabajador` bigint UNSIGNED NOT NULL,
+  `id_servicio` bigint UNSIGNED NOT NULL,
+  `id_mascota` bigint UNSIGNED NOT NULL,
   `fecha_registro` datetime NOT NULL,
   `fecha_cita` datetime NOT NULL,
   `fecha_termino` datetime DEFAULT NULL,
-  `sintoma` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `observaciones` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `mensaje_cita` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `sintoma` varchar(1000) DEFAULT NULL,
+  `observaciones` varchar(1000) DEFAULT NULL,
+  `mensaje_cita` varchar(1000) DEFAULT NULL,
   `estado` enum(
     'registrada',
     'aceptada',
     'cancelada',
     'anulada',
     'atendida'
-  ) COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'registrada'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  ) NOT NULL DEFAULT 'registrada'
+);
 
 --
--- Dumping data for table `tb_cita`
+-- Volcado de datos para la tabla `tb_cita`
 --
 INSERT INTO
   `tb_cita` (
@@ -690,26 +574,152 @@ VALUES
     NULL,
     NULL,
     'registrada'
+  ),
+  (
+    4,
+    1,
+    2,
+    1,
+    0,
+    '2024-11-21 16:27:18',
+    '2024-11-22 15:15:00',
+    '2024-11-22 15:30:00',
+    '',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    5,
+    1,
+    3,
+    1,
+    0,
+    '2024-11-25 12:20:09',
+    '2024-11-26 09:30:00',
+    '2024-11-26 11:15:00',
+    'err',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    6,
+    1,
+    3,
+    5,
+    0,
+    '2024-11-25 12:33:25',
+    '2024-11-26 19:00:00',
+    '2024-11-28 19:00:00',
+    '',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    7,
+    1,
+    3,
+    1,
+    0,
+    '2024-11-25 12:55:24',
+    '2024-11-25 00:00:00',
+    '2024-11-26 00:00:00',
+    'teteo',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    8,
+    1,
+    2,
+    1,
+    0,
+    '2024-11-25 13:26:12',
+    '2024-11-25 00:00:00',
+    '2024-11-26 00:00:00',
+    '34',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    9,
+    1,
+    2,
+    6,
+    0,
+    '2024-11-25 13:37:31',
+    '2024-11-25 19:00:00',
+    '2024-11-26 19:00:00',
+    '',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    10,
+    1,
+    1,
+    3,
+    0,
+    '2024-11-25 13:43:45',
+    '2024-11-27 19:00:00',
+    '2024-11-28 19:00:00',
+    '',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    11,
+    1,
+    2,
+    3,
+    0,
+    '2024-11-25 16:41:57',
+    '2024-11-25 19:00:00',
+    '2024-11-26 19:00:00',
+    'prueba',
+    NULL,
+    NULL,
+    'registrada'
+  ),
+  (
+    12,
+    1,
+    2,
+    5,
+    0,
+    '2024-11-28 10:27:52',
+    '2024-11-28 19:00:00',
+    '2024-11-29 19:00:00',
+    'testeo ',
+    NULL,
+    NULL,
+    'registrada'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_cliente`
+-- Estructura de tabla para la tabla `tb_cliente`
 --
 CREATE TABLE `tb_cliente` (
-  `id_cliente` bigint(20) UNSIGNED NOT NULL,
-  `id_persona` bigint(20) UNSIGNED NOT NULL,
-  `name_user` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `pass_user` varchar(500) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `cod_recuperacion` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `id_cliente` bigint UNSIGNED NOT NULL,
+  `id_persona` bigint UNSIGNED NOT NULL,
+  `name_user` varchar(100) NOT NULL,
+  `pass_user` varchar(500) NOT NULL,
+  `cod_recuperacion` varchar(500) DEFAULT NULL,
   `fecha_activacion` date DEFAULT NULL,
   `fecha_recuperacion` date DEFAULT NULL,
-  `src_imagen` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `src_imagen` varchar(500) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_cliente`
+-- Volcado de datos para la tabla `tb_cliente`
 --
 INSERT INTO
   `tb_cliente` (
@@ -734,77 +744,339 @@ VALUES
     NULL,
     'resources/global/images/persons/img-1571243739.png',
     'activo'
+  ),
+  (
+    2,
+    7,
+    '70570123@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    3,
+    8,
+    '77229533@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    4,
+    9,
+    '70570128@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    5,
+    10,
+    '70570127@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    6,
+    11,
+    '70570182@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    7,
+    12,
+    '70570131@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    8,
+    13,
+    '20608147307@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    9,
+    14,
+    '70570162@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    10,
+    15,
+    '70570124@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    11,
+    16,
+    '70570223@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    12,
+    17,
+    '70570126@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    13,
+    18,
+    '70570172@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    14,
+    19,
+    '70570193@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    15,
+    20,
+    '70570132@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    16,
+    21,
+    '70570179@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    17,
+    22,
+    '70570271@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    18,
+    23,
+    '70372212@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    19,
+    24,
+    '70570192@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-27',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    20,
+    25,
+    '70570251@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-28',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    21,
+    26,
+    '70470132@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-28',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    22,
+    27,
+    '70472318@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-29',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
+  ),
+  (
+    23,
+    28,
+    '70367121@gmail.com',
+    '1234',
+    NULL,
+    '2024-11-29',
+    NULL,
+    'resources/global/images/default-profile.png',
+    'activo'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_compra`
+-- Estructura de tabla para la tabla `tb_cliente_fundo`
+--
+CREATE TABLE `tb_cliente_fundo` (
+  `id` bigint NOT NULL,
+  `id_cliente` bigint UNSIGNED DEFAULT NULL,
+  `id_fundo` int DEFAULT NULL,
+  `cantidad_hc` float DEFAULT NULL
+);
+
+--
+-- Volcado de datos para la tabla `tb_cliente_fundo`
+--
+INSERT INTO
+  `tb_cliente_fundo` (`id`, `id_cliente`, `id_fundo`, `cantidad_hc`)
+VALUES
+  (1, 1, 2, 5),
+  (2, 1, 3, 2);
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `tb_compra`
 --
 CREATE TABLE `tb_compra` (
-  `id_compra` int(11) NOT NULL,
-  `id_sucursal` int(11) NOT NULL,
-  `id_trabajador` bigint(20) UNSIGNED NOT NULL,
-  `id_documento_compra` int(11) NOT NULL,
-  `name_documento_compra` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `codigo_documento_compra` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `serie` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correlativo` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_documento_proveedor` bigint(20) UNSIGNED NOT NULL,
-  `name_documento_proveedor` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `codigo_documento_proveedor` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `numero_documento_proveedor` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_forma_pago` int(11) NOT NULL,
-  `codigo_forma_pago` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name_forma_pago` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `proveedor` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `direccion` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefono` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `correo` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_compra` int NOT NULL,
+  `id_sucursal` int NOT NULL,
+  `id_trabajador` bigint UNSIGNED NOT NULL,
+  `id_documento_compra` int NOT NULL,
+  `name_documento_compra` varchar(100) NOT NULL,
+  `codigo_documento_compra` varchar(4) NOT NULL,
+  `serie` varchar(4) NOT NULL,
+  `correlativo` varchar(12) NOT NULL,
+  `id_documento_proveedor` bigint UNSIGNED NOT NULL,
+  `name_documento_proveedor` varchar(100) NOT NULL,
+  `codigo_documento_proveedor` varchar(4) NOT NULL,
+  `numero_documento_proveedor` varchar(30) NOT NULL,
+  `id_forma_pago` int NOT NULL,
+  `codigo_forma_pago` varchar(4) NOT NULL,
+  `name_forma_pago` varchar(100) NOT NULL,
+  `proveedor` varchar(500) NOT NULL,
+  `direccion` varchar(500) DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(150) DEFAULT NULL,
   `fecha` datetime NOT NULL,
   `fecha_vencimiento` datetime DEFAULT NULL,
   `descuento_total` decimal(18, 2) DEFAULT '0.00',
   `sub_total` decimal(18, 2) NOT NULL,
   `igv` decimal(18, 2) NOT NULL,
   `total` decimal(18, 2) NOT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `pdf` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `xml` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cdr` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mensaje_sunat` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ruta` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `token` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flag_doc_interno` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `estado` char(1) NOT NULL DEFAULT '1',
+  `pdf` varchar(500) DEFAULT NULL,
+  `xml` varchar(500) DEFAULT NULL,
+  `cdr` varchar(500) DEFAULT NULL,
+  `mensaje_sunat` varchar(1000) DEFAULT NULL,
+  `ruta` varchar(500) DEFAULT NULL,
+  `token` varchar(500) DEFAULT NULL,
+  `flag_doc_interno` char(1) NOT NULL DEFAULT '1',
   `monto_recibido` decimal(18, 2) DEFAULT NULL,
   `vuelto` decimal(18, 2) DEFAULT NULL,
-  `id_moneda` int(11) NOT NULL,
-  `codigo_moneda` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `signo_moneda` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `abreviatura_moneda` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `signo_moneda_cambio` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S/ ',
+  `id_moneda` int NOT NULL,
+  `codigo_moneda` varchar(4) NOT NULL,
+  `signo_moneda` varchar(10) DEFAULT NULL,
+  `abreviatura_moneda` varchar(10) DEFAULT NULL,
+  `signo_moneda_cambio` varchar(10) NOT NULL DEFAULT 'S/ ',
   `monto_tipo_cambio` decimal(18, 2) DEFAULT NULL,
-  `observaciones` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flag_enviado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `observaciones` varchar(1000) DEFAULT NULL,
+  `flag_enviado` char(1) DEFAULT '1'
+);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_detalle_cita`
+-- Estructura de tabla para la tabla `tb_detalle_cita`
 --
 CREATE TABLE `tb_detalle_cita` (
-  `id_detalle` bigint(20) NOT NULL,
-  `id_cita` bigint(20) UNSIGNED NOT NULL,
-  `name_servicio` varchar(200) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `motivo` text COLLATE utf8mb4_spanish_ci,
-  `sintomas` text COLLATE utf8mb4_spanish_ci,
-  `tratamiento` text COLLATE utf8mb4_spanish_ci,
-  `vacunas_aplicadas` text COLLATE utf8mb4_spanish_ci,
-  `observaciones` text COLLATE utf8mb4_spanish_ci,
-  `peso` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `id_detalle` bigint NOT NULL,
+  `id_cita` bigint UNSIGNED NOT NULL,
+  `name_servicio` varchar(200) DEFAULT NULL,
+  `motivo` text ,
+  `sintomas` text ,
+  `tratamiento` text ,
+  `vacunas_aplicadas` text ,
+  `observaciones` text ,
+  `peso` varchar(100) DEFAULT NULL,
   `fecha_detalle_cita` datetime DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+);
 
 --
--- Dumping data for table `tb_detalle_cita`
+-- Volcado de datos para la tabla `tb_detalle_cita`
 --
 INSERT INTO
   `tb_detalle_cita` (
@@ -855,25 +1127,133 @@ VALUES
     NULL,
     NULL,
     NULL
+  ),
+  (
+    4,
+    4,
+    'Protección de Hectáreas',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    5,
+    5,
+    'Protección de Hectáreas',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    6,
+    6,
+    'Reparación Rutinaria',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    7,
+    7,
+    'Protección de Hectáreas',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    8,
+    8,
+    'Protección de Hectáreas',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    9,
+    9,
+    'Cosechas de arroz',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    10,
+    10,
+    'Distribución de agua',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    11,
+    11,
+    'Distribución de agua',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+  ),
+  (
+    12,
+    12,
+    'Reparación Rutinaria',
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_detalle_compra`
+-- Estructura de tabla para la tabla `tb_detalle_compra`
 --
 CREATE TABLE `tb_detalle_compra` (
-  `id_detalle` bigint(20) NOT NULL,
-  `id_orden_compra` int(18) NOT NULL,
-  `name_tabla` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cod_producto` int(18) NOT NULL,
-  `cantidad_solicitada` int(11) DEFAULT NULL,
-  `cantidad_ingresada` int(11) DEFAULT NULL,
+  `id_detalle` bigint NOT NULL,
+  `id_orden_compra` int NOT NULL,
+  `name_tabla` varchar(100) NOT NULL,
+  `cod_producto` int NOT NULL,
+  `cantidad_solicitada` int DEFAULT NULL,
+  `cantidad_ingresada` int DEFAULT NULL,
   `precio_unitario` decimal(18, 2) DEFAULT NULL,
-  `notas` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `notas` varchar(200) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_detalle_compra`
+-- Volcado de datos para la tabla `tb_detalle_compra`
 --
 INSERT INTO
   `tb_detalle_compra` (
@@ -887,48 +1267,84 @@ INSERT INTO
     `notas`
   )
 VALUES
-  (18, 1, 'accesorio', 1, 50, 0, '40.00', ''),
-  (19, 1, 'accesorio', 2, 20, 0, '100.50', ''),
-  (20, 1, 'accesorio', 3, 20, 0, '150.75', ''),
-  (21, 1, 'medicamento', 1, 15, 0, '100.00', ''),
-  (22, 1, 'medicamento', 2, 15, 0, '50.00', ''),
-  (23, 2, 'accesorio', 1, 10, 0, '40.00', ''),
-  (24, 2, 'accesorio', 2, 10, 0, '100.50', '');
+  (18, 1, 'accesorio', 1, 50, 0, 40.00, ''),
+  (19, 1, 'accesorio', 2, 20, 0, 100.50, ''),
+  (20, 1, 'accesorio', 3, 20, 0, 150.75, ''),
+  (21, 1, 'medicamento', 1, 15, 0, 100.00, ''),
+  (22, 1, 'medicamento', 2, 15, 0, 50.00, ''),
+  (23, 2, 'accesorio', 1, 10, 0, 40.00, ''),
+  (24, 2, 'accesorio', 2, 10, 0, 100.50, ''),
+  (25, 3, 'accesorio', 3, 3, 0, 150.75, ''),
+  (27, 4, 'accesorio', 3, 3, 3, 13.43, ''),
+  (
+    28,
+    5,
+    'accesorio',
+    2,
+    1,
+    1,
+    105.00,
+    'Para uso único'
+  ),
+  (29, 6, 'accesorio', 1, 1, 1, 40.00, 'olos'),
+  (30, 6, 'accesorio', 3, 1, 1, 45.00, 'serp'),
+  (31, 6, 'accesorio', 4, 1, 1, 75.00, 'awda');
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_detalle_ingreso`
+-- Estructura de tabla para la tabla `tb_detalle_ingreso`
 --
 CREATE TABLE `tb_detalle_ingreso` (
-  `id_detalle` bigint(20) NOT NULL,
-  `id_ingreso` bigint(20) NOT NULL,
-  `name_tabla` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cod_producto` int(11) DEFAULT NULL,
-  `cantidad` int(11) DEFAULT NULL,
-  `observaciones` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_detalle` bigint NOT NULL,
+  `id_ingreso` bigint NOT NULL,
+  `name_tabla` varchar(200) DEFAULT NULL,
+  `cod_producto` int DEFAULT NULL,
+  `cantidad` int DEFAULT NULL,
+  `observaciones` varchar(500) DEFAULT NULL
+);
+
+--
+-- Volcado de datos para la tabla `tb_detalle_ingreso`
+--
+INSERT INTO
+  `tb_detalle_ingreso` (
+    `id_detalle`,
+    `id_ingreso`,
+    `name_tabla`,
+    `cod_producto`,
+    `cantidad`,
+    `observaciones`
+  )
+VALUES
+  (1, 1, 'accesorio', 3, 3, 'Recibido'),
+  (2, 2, 'accesorio', 2, 1, 'Ok'),
+  (3, 3, 'accesorio', 1, 1, 'pp'),
+  (4, 3, 'accesorio', 3, 1, 'gt'),
+  (5, 3, 'accesorio', 4, 1, 'afp');
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_detalle_venta`
+-- Estructura de tabla para la tabla `tb_detalle_venta`
 --
 CREATE TABLE `tb_detalle_venta` (
-  `id_detalle` bigint(20) UNSIGNED NOT NULL,
-  `id_venta` int(11) NOT NULL,
-  `name_tabla` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cod_producto` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_detalle` bigint UNSIGNED NOT NULL,
+  `id_venta` int NOT NULL,
+  `name_tabla` varchar(100) DEFAULT NULL,
+  `cod_producto` varchar(20) NOT NULL,
+  `descripcion` varchar(500) NOT NULL,
   `cantidad` decimal(18, 2) NOT NULL,
-  `precio_unitario` decimal(18, 3) NOT NULL,
+  `precio_unitario` decimal(18, 2) DEFAULT NULL,
   `descuento` decimal(18, 2) DEFAULT '0.00',
-  `sub_total` decimal(18, 2) NOT NULL,
-  `tipo_igv` varchar(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `igv` decimal(18, 2) NOT NULL,
-  `total` decimal(18, 2) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `sub_total` decimal(18, 2) DEFAULT '0.00',
+  `tipo_igv` varchar(2) DEFAULT NULL,
+  `igv` decimal(18, 2) DEFAULT '0.00',
+  `total` decimal(18, 2) DEFAULT '0.00',
+  `notas` varchar(200) DEFAULT NULL,
+  `id_maquinaria` int DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_detalle_venta`
+-- Volcado de datos para la tabla `tb_detalle_venta`
 --
 INSERT INTO
   `tb_detalle_venta` (
@@ -943,138 +1359,252 @@ INSERT INTO
     `sub_total`,
     `tipo_igv`,
     `igv`,
-    `total`
+    `total`,
+    `notas`,
+    `id_maquinaria`
   )
 VALUES
   (
     1,
     1,
-    'servicio',
-    '2',
-    'Consultas',
-    '1.00',
-    '16.949',
-    '0.00',
-    '16.95',
+    'producto',
     '1',
-    '3.05',
-    '20.00'
+    'Balde de Aceites',
+    4.00,
+    0.85,
+    1.00,
+    4.00,
+    '1',
+    0.72,
+    4.72,
+    'Para la maquinaria 2',
+    0
   ),
   (
     2,
     1,
-    'servicio',
+    'producto',
     '3',
-    'Cirugía',
-    '1.00',
-    '709.746',
-    '0.00',
-    '709.75',
+    'Manguera de Bomba',
+    3.00,
+    0.85,
+    1.00,
+    3.00,
     '1',
-    '127.75',
-    '837.50'
+    0.54,
+    3.54,
+    'Para el mantenimiento',
+    0
   ),
   (
     3,
-    1,
-    'servicio',
-    '4',
-    'Hospitalización',
-    '1.00',
-    '158.898',
-    '0.00',
-    '158.90',
+    2,
+    'producto',
     '1',
-    '28.60',
-    '187.50'
+    'Balde de Aceites',
+    3.00,
+    0.85,
+    1.00,
+    3.00,
+    '1',
+    0.54,
+    3.54,
+    'Uso diario',
+    0
   ),
   (
     4,
-    1,
-    'accesorio',
+    2,
+    'producto',
+    '3',
+    'Manguera de Bomba',
+    3.00,
+    0.85,
+    1.00,
+    3.00,
     '1',
-    'Brekkies Pienso para Perros con Buey y Verduras - 15000 gr',
-    '1.00',
-    '42.373',
-    '0.00',
-    '42.37',
-    '1',
-    '7.63',
-    '50.00'
+    0.54,
+    3.54,
+    'Uso diario',
+    0
   ),
   (
     5,
-    1,
-    'accesorio',
-    '2',
-    'KIEM Saco de pienso para Perros Mantenimiento 20 kg, Comida para Perros',
-    '1.00',
-    '141.949',
-    '0.00',
-    '141.95',
+    3,
+    'producto',
+    '3',
+    'Manguera de Bomba',
+    1.00,
+    0.85,
+    1.00,
+    1.00,
     '1',
-    '25.55',
-    '167.50'
+    0.18,
+    1.18,
+    'Restablecer ',
+    0
   ),
   (
     6,
-    1,
-    'medicamento',
-    '3',
-    'BIOSPORINE 3®',
-    '1.00',
-    '212.924',
-    '0.00',
-    '212.92',
+    3,
+    'producto',
     '1',
-    '38.33',
-    '251.25'
+    'Balde de Aceites',
+    1.00,
+    0.85,
+    1.00,
+    1.00,
+    '1',
+    0.18,
+    1.18,
+    'Mínimas unidades',
+    0
   ),
   (
     7,
-    1,
-    'medicamento',
-    '2',
-    'AMOXYCOL® WS',
-    '1.00',
-    '50.847',
-    '0.00',
-    '50.85',
+    4,
+    'producto',
     '1',
-    '9.15',
-    '60.00'
+    'Balde de Aceites',
+    1.00,
+    0.85,
+    1.00,
+    1.00,
+    '1',
+    0.18,
+    1.18,
+    'En desgaste',
+    0
   ),
   (
     8,
-    1,
-    'medicamento',
+    4,
+    'producto',
+    '2',
+    'Filtro de HST',
+    4.00,
+    0.85,
+    1.00,
+    4.00,
     '1',
-    'AGROMYCIN® 11',
-    '1.00',
-    '93.220',
-    '0.00',
-    '93.22',
+    0.72,
+    4.72,
+    'Reponer',
+    0
+  ),
+  (
+    9,
+    4,
+    'producto',
+    '3',
+    'Manguera de Bomba',
+    5.00,
+    0.85,
+    1.00,
+    5.00,
     '1',
-    '16.78',
-    '110.00'
+    0.90,
+    5.90,
+    'Reponer',
+    0
+  ),
+  (
+    10,
+    4,
+    'producto',
+    '4',
+    'Cañerías de Respuesto',
+    2.00,
+    0.85,
+    1.00,
+    2.00,
+    '1',
+    0.36,
+    2.36,
+    '',
+    0
+  ),
+  (
+    11,
+    5,
+    'producto',
+    '2',
+    'Filtro de HST',
+    1.00,
+    0.85,
+    1.00,
+    1.00,
+    '1',
+    0.18,
+    1.18,
+    'notas',
+    2
+  ),
+  (
+    12,
+    6,
+    'producto',
+    '1',
+    'Balde de Aceites',
+    1.00,
+    0.85,
+    1.00,
+    1.00,
+    '1',
+    0.18,
+    1.18,
+    'asefe',
+    1
+  ),
+  (
+    13,
+    6,
+    'producto',
+    '3',
+    'Manguera de Bomba',
+    3.00,
+    0.85,
+    1.00,
+    3.00,
+    '1',
+    0.54,
+    3.54,
+    '',
+    2
+  ),
+  (
+    14,
+    7,
+    'producto',
+    '2',
+    'Filtro de HST',
+    1.00,
+    0.85,
+    1.00,
+    1.00,
+    '1',
+    0.18,
+    1.18,
+    '',
+    4
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_documento_identidad`
+-- Estructura de tabla para la tabla `tb_documento_identidad`
 --
 CREATE TABLE `tb_documento_identidad` (
-  `id_documento` bigint(20) UNSIGNED NOT NULL,
-  `name_documento` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `codigo_sunat` varchar(10) COLLATE utf8mb4_spanish_ci NOT NULL,
+  `id_documento` bigint UNSIGNED NOT NULL,
+  `name_documento` varchar(100) NOT NULL,
+  `codigo_sunat` varchar(10) NOT NULL,
   `flag_numerico` tinyint(1) NOT NULL DEFAULT '0',
   `flag_exacto` tinyint(1) NOT NULL DEFAULT '0',
-  `size` int(11) NOT NULL DEFAULT '8',
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `size` int NOT NULL DEFAULT '8',
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_documento_identidad`
+-- Volcado de datos para la tabla `tb_documento_identidad`
 --
 INSERT INTO
   `tb_documento_identidad` (
@@ -1102,22 +1632,22 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_documento_venta`
+-- Estructura de tabla para la tabla `tb_documento_venta`
 --
 CREATE TABLE `tb_documento_venta` (
-  `id_documento_venta` int(11) NOT NULL,
-  `id_sucursal` int(11) NOT NULL,
-  `cod_sunat` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nombre` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nombre_corto` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `serie` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `correlativo` bigint(20) DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flag_doc_interno` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_documento_venta` int NOT NULL,
+  `id_sucursal` int NOT NULL,
+  `cod_sunat` varchar(10) NOT NULL,
+  `nombre` varchar(150) NOT NULL,
+  `nombre_corto` varchar(50) NOT NULL,
+  `serie` varchar(6) DEFAULT NULL,
+  `correlativo` bigint DEFAULT NULL,
+  `estado` char(1) DEFAULT NULL,
+  `flag_doc_interno` char(1) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_documento_venta`
+-- Volcado de datos para la tabla `tb_documento_venta`
 --
 INSERT INTO
   `tb_documento_venta` (
@@ -1133,65 +1663,43 @@ INSERT INTO
   )
 VALUES
   (
-    1,
-    1,
-    '2',
-    'BOLETA ELECTRÓNICA',
-    'BOLETA',
-    'BPP1',
-    2,
-    '1',
-    '0'
-  ),
-  (
-    2,
-    1,
-    '1',
-    'FACTURA ELECTRÓNICA',
-    'FACTURA',
-    'FPP1',
-    1,
-    '1',
-    '0'
-  ),
-  (
     3,
     1,
     '-',
-    'TIKET INTERNO',
+    'TICKET DE SALIDA',
     'TIKET INTERNO',
     'TIK1',
-    1,
+    51,
     '1',
     '1'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_empresa`
+-- Estructura de tabla para la tabla `tb_empresa`
 --
 CREATE TABLE `tb_empresa` (
-  `id_empresa` bigint(20) UNSIGNED NOT NULL,
-  `id_documento` bigint(20) UNSIGNED NOT NULL,
-  `num_documento` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `razon_social` varchar(150) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `nombre_comercial` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `direccion` varchar(300) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `fono01` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `correo01` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `web` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `id_documento_representante` bigint(20) UNSIGNED NOT NULL,
-  `num_documento_representante` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `nombres_representante` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `apellidos_representante` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `fono02` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `correo02` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo',
-  `src_logo` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_empresa` bigint UNSIGNED NOT NULL,
+  `id_documento` bigint UNSIGNED NOT NULL,
+  `num_documento` varchar(30) NOT NULL,
+  `razon_social` varchar(150) NOT NULL,
+  `nombre_comercial` varchar(150) DEFAULT NULL,
+  `direccion` varchar(300) DEFAULT NULL,
+  `fono01` varchar(30) DEFAULT NULL,
+  `correo01` varchar(100) DEFAULT NULL,
+  `web` varchar(150) DEFAULT NULL,
+  `id_documento_representante` bigint UNSIGNED NOT NULL,
+  `num_documento_representante` varchar(30) NOT NULL,
+  `nombres_representante` varchar(50) NOT NULL,
+  `apellidos_representante` varchar(50) NOT NULL,
+  `fono02` varchar(30) DEFAULT NULL,
+  `correo02` varchar(100) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  `src_logo` varchar(150) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_empresa`
+-- Volcado de datos para la tabla `tb_empresa`
 --
 INSERT INTO
   `tb_empresa` (
@@ -1218,61 +1726,54 @@ VALUES
     1,
     3,
     '10707623433',
-    'Veterinaria Mican',
-    'Clínica Veterinaría Mican',
+    'SYSCOS',
+    'SYSCOS',
     'Jr. Pedro Remy N 239, San Martín de Porres - Lima - Lima',
     '916028408',
     'informes@veterinariamican.com',
-    'https://mican.com/',
+    'https://syscos.com/',
     1,
     '70762343',
     'Jolu',
     'Quispe',
     '916028408',
-    'jolu@mican.com',
+    'jolu@syscos.com',
     'activo',
     'resources/global/images/business_logo/img-1571242080.jpg'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_especialidad`
+-- Estructura de tabla para la tabla `tb_especialidad`
 --
 CREATE TABLE `tb_especialidad` (
-  `id_especialidad` bigint(20) UNSIGNED NOT NULL,
-  `name_especialidad` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_especialidad` bigint UNSIGNED NOT NULL,
+  `name_especialidad` varchar(100) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_especialidad`
+-- Volcado de datos para la tabla `tb_especialidad`
 --
 INSERT INTO
   `tb_especialidad` (`id_especialidad`, `name_especialidad`, `estado`)
 VALUES
   (1, 'Usuario', 'activo'),
-  (2, 'Anestesiología Veterinaria', 'activo'),
-  (3, 'Cardiología veterinaria', 'activo'),
-  (4, 'Cirugía', 'activo'),
-  (5, 'Dermatología', 'activo'),
-  (6, 'Fisioterapia', 'activo'),
-  (7, 'Oftalmología veterinaria', 'activo'),
-  (8, 'Oncología Veterinaria', 'activo'),
-  (9, 'Ortopedia', 'activo');
+  (2, 'Administrador', 'activo');
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_forma_pago`
+-- Estructura de tabla para la tabla `tb_forma_pago`
 --
 CREATE TABLE `tb_forma_pago` (
-  `id_forma_pago` int(11) NOT NULL,
-  `name_forma_pago` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cod_sunat` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_forma_pago` int NOT NULL,
+  `name_forma_pago` varchar(200) NOT NULL,
+  `cod_sunat` varchar(10) DEFAULT NULL,
+  `estado` char(1) DEFAULT '1'
+);
 
 --
--- Dumping data for table `tb_forma_pago`
+-- Volcado de datos para la tabla `tb_forma_pago`
 --
 INSERT INTO
   `tb_forma_pago` (
@@ -1289,22 +1790,110 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_galeria`
+-- Estructura de tabla para la tabla `tb_fundo`
 --
-CREATE TABLE `tb_galeria` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name_tabla` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
-  `src` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `titulo` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `descripcion` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `referencia_1` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `referencia_2` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+CREATE TABLE `tb_fundo` (
+  `id_fundo` int NOT NULL,
+  `id_empresa` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(300) NOT NULL,
+  `cod_ubigeo` varchar(10) DEFAULT NULL,
+  `direccion` varchar(1000) DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `mapa` varchar(1000) DEFAULT NULL,
+  `estado` char(1) DEFAULT '1',
+  `token` varchar(1000) DEFAULT NULL,
+  `ruta` varchar(1000) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_galeria`
+-- Volcado de datos para la tabla `tb_fundo`
+--
+INSERT INTO
+  `tb_fundo` (
+    `id_fundo`,
+    `id_empresa`,
+    `nombre`,
+    `cod_ubigeo`,
+    `direccion`,
+    `telefono`,
+    `mapa`,
+    `estado`,
+    `token`,
+    `ruta`
+  )
+VALUES
+  (1, 1, 'MALVINAS', '', '', '', '', '1', '', ''),
+  (
+    2,
+    1,
+    'SOL NACIENTE',
+    '',
+    '',
+    '',
+    '',
+    '1',
+    '',
+    ''
+  ),
+  (
+    3,
+    1,
+    '16 DE NOVIEMBRE',
+    '',
+    '',
+    '',
+    '',
+    '1',
+    '',
+    ''
+  ),
+  (
+    4,
+    1,
+    'FLOR DEL VALLE',
+    '',
+    '',
+    '',
+    '',
+    '1',
+    '',
+    ''
+  ),
+  (5, 1, 'LIBERTAD', '', '', '', '', '1', '', ''),
+  (6, 1, 'SAN JUAN', '', '', '', '', '1', '', ''),
+  (7, 1, 'MARONAL', '', '', '', '', '1', '', ''),
+  (8, 1, 'CURIMANA', '', '', '', '', '1', '', ''),
+  (
+    9,
+    1,
+    'OTROS (sin nombrar)',
+    '',
+    '',
+    '',
+    '',
+    '1',
+    '',
+    ''
+  );
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `tb_galeria`
+--
+CREATE TABLE `tb_galeria` (
+  `id` bigint UNSIGNED NOT NULL,
+  `name_tabla` varchar(1) NOT NULL DEFAULT '0',
+  `src` varchar(200) DEFAULT NULL,
+  `titulo` varchar(200) DEFAULT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `referencia_1` varchar(200) DEFAULT NULL,
+  `referencia_2` varchar(200) DEFAULT NULL,
+  `url` varchar(200) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
+
+--
+-- Volcado de datos para la tabla `tb_galeria`
 --
 INSERT INTO
   `tb_galeria` (
@@ -1377,16 +1966,16 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_grupo_usuario`
+-- Estructura de tabla para la tabla `tb_grupo_usuario`
 --
 CREATE TABLE `tb_grupo_usuario` (
-  `id_grupo` bigint(20) UNSIGNED NOT NULL,
-  `name_grupo` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_grupo` bigint UNSIGNED NOT NULL,
+  `name_grupo` varchar(50) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_grupo_usuario`
+-- Volcado de datos para la tabla `tb_grupo_usuario`
 --
 INSERT INTO
   `tb_grupo_usuario` (`id_grupo`, `name_grupo`, `estado`)
@@ -1397,41 +1986,132 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_ingreso`
+-- Estructura de tabla para la tabla `tb_ingreso`
 --
 CREATE TABLE `tb_ingreso` (
-  `id_ingreso` bigint(20) NOT NULL,
-  `id_orden_compra` int(11) NOT NULL,
-  `id_sucursal` int(11) NOT NULL,
-  `id_trabajador` int(11) NOT NULL,
-  `id_tipo_docu` int(11) DEFAULT NULL,
-  `num_documento` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_ingreso` bigint NOT NULL,
+  `id_orden_compra` int NOT NULL,
+  `id_sucursal` int NOT NULL,
+  `id_trabajador` int NOT NULL,
+  `id_tipo_docu` int DEFAULT NULL,
+  `num_documento` varchar(50) DEFAULT NULL,
   `fecha` datetime DEFAULT NULL,
-  `observaciones` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `observaciones` varchar(500) DEFAULT NULL,
+  `estado` char(1) DEFAULT NULL
+);
+
+--
+-- Volcado de datos para la tabla `tb_ingreso`
+--
+INSERT INTO
+  `tb_ingreso` (
+    `id_ingreso`,
+    `id_orden_compra`,
+    `id_sucursal`,
+    `id_trabajador`,
+    `id_tipo_docu`,
+    `num_documento`,
+    `fecha`,
+    `observaciones`,
+    `estado`
+  )
+VALUES
+  (
+    1,
+    4,
+    1,
+    1,
+    2,
+    '029383823',
+    '2024-11-22 13:00:38',
+    'JAJKSJA',
+    '1'
+  ),
+  (
+    2,
+    5,
+    1,
+    1,
+    1,
+    '7289393',
+    '2024-11-26 09:33:40',
+    '',
+    '1'
+  ),
+  (
+    3,
+    6,
+    1,
+    1,
+    1,
+    '999',
+    '2024-11-26 16:23:21',
+    '',
+    '1'
+  );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_mascota`
+-- Estructura de tabla para la tabla `tb_maquinaria`
 --
-CREATE TABLE `tb_mascota` (
-  `id_mascota` bigint(20) UNSIGNED NOT NULL,
-  `id_cliente` bigint(20) UNSIGNED NOT NULL,
-  `id_tipo_mascota` bigint(20) UNSIGNED NOT NULL,
-  `nombre` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `raza` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `color` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `peso` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `sexo` enum('hembra', 'macho') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'hembra',
-  `fecha_nacimiento` date DEFAULT NULL,
-  `observaciones` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo',
-  `src_imagen` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+CREATE TABLE `tb_maquinaria` (
+  `id_maquinaria` bigint UNSIGNED NOT NULL,
+  `id_trabajador` int DEFAULT NULL,
+  `descripcion` varchar(200) NOT NULL,
+  `observaciones` varchar(200) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_mascota`
+-- Volcado de datos para la tabla `tb_maquinaria`
+--
+INSERT INTO
+  `tb_maquinaria` (
+    `id_maquinaria`,
+    `id_trabajador`,
+    `descripcion`,
+    `observaciones`,
+    `estado`
+  )
+VALUES
+  (1, 2, 'MAQUINA 2', 'En buen estado', 'activo'),
+  (2, 3, 'MAQUINA 4', 'Mantenimiento', 'activo'),
+  (
+    3,
+    NULL,
+    'MAQUINA 1',
+    'En buen funcionamiento',
+    'activo'
+  ),
+  (
+    4,
+    1,
+    'MAQUINA 3',
+    'En perfecto Estado',
+    'activo'
+  );
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `tb_mascota`
+--
+CREATE TABLE `tb_mascota` (
+  `id_mascota` bigint UNSIGNED NOT NULL,
+  `id_cliente` bigint UNSIGNED NOT NULL,
+  `id_tipo_mascota` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `raza` varchar(50) DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
+  `peso` varchar(50) DEFAULT NULL,
+  `sexo` enum('hembra', 'macho') NOT NULL DEFAULT 'hembra',
+  `fecha_nacimiento` date DEFAULT NULL,
+  `observaciones` varchar(1000) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  `src_imagen` varchar(150) DEFAULT NULL
+);
+
+--
+-- Volcado de datos para la tabla `tb_mascota`
 --
 INSERT INTO
   `tb_mascota` (
@@ -1466,23 +2146,23 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_mascota_vacuna`
+-- Estructura de tabla para la tabla `tb_mascota_vacuna`
 --
 CREATE TABLE `tb_mascota_vacuna` (
-  `id_mascota_vacuna` bigint(20) UNSIGNED NOT NULL,
-  `id_mascota` bigint(20) UNSIGNED NOT NULL,
-  `id_vacuna` bigint(20) UNSIGNED NOT NULL,
+  `id_mascota_vacuna` bigint UNSIGNED NOT NULL,
+  `id_mascota` bigint UNSIGNED NOT NULL,
+  `id_vacuna` bigint UNSIGNED NOT NULL,
   `fecha_minima` date DEFAULT NULL,
   `fecha_maxima` date DEFAULT NULL,
   `fecha_aplicacion` datetime DEFAULT NULL,
   `flag_vacuna` tinyint(1) NOT NULL DEFAULT '0',
-  `observaciones` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `name_sucursal` varchar(300) COLLATE utf8mb4_spanish_ci DEFAULT '',
-  `name_user` varchar(300) COLLATE utf8mb4_spanish_ci DEFAULT ''
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `observaciones` varchar(1000) DEFAULT NULL,
+  `name_sucursal` varchar(300) DEFAULT '',
+  `name_user` varchar(300) DEFAULT ''
+);
 
 --
--- Dumping data for table `tb_mascota_vacuna`
+-- Volcado de datos para la tabla `tb_mascota_vacuna`
 --
 INSERT INTO
   `tb_mascota_vacuna` (
@@ -1549,28 +2229,28 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_medicamento`
+-- Estructura de tabla para la tabla `tb_medicamento`
 --
 CREATE TABLE `tb_medicamento` (
-  `id_medicamento` bigint(20) UNSIGNED NOT NULL,
-  `id_sucursal` int(11) NOT NULL DEFAULT '1',
-  `id_tipo_medicamento` bigint(20) UNSIGNED NOT NULL,
-  `id_unidad_medida` int(11) NOT NULL DEFAULT '1',
-  `name_medicamento` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `descripcion` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `stock` int(11) NOT NULL DEFAULT '0',
-  `stock_minimo` int(11) NOT NULL DEFAULT '0',
+  `id_medicamento` bigint UNSIGNED NOT NULL,
+  `id_sucursal` int NOT NULL DEFAULT '1',
+  `id_tipo_medicamento` bigint UNSIGNED NOT NULL,
+  `id_unidad_medida` int NOT NULL DEFAULT '1',
+  `name_medicamento` varchar(100) NOT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `stock` int NOT NULL DEFAULT '0',
+  `stock_minimo` int NOT NULL DEFAULT '0',
   `precio_compra` double(8, 2) NOT NULL DEFAULT '0.00',
-  `id_moneda` int(11) NOT NULL DEFAULT '1',
-  `signo_moneda` varchar(10) COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'S/',
+  `id_moneda` int NOT NULL DEFAULT '1',
+  `signo_moneda` varchar(10) NOT NULL DEFAULT 'S/',
   `precio_venta` double(8, 2) NOT NULL DEFAULT '0.00',
-  `flag_igv` char(1) COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT '1',
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo',
-  `src_imagen` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `flag_igv` char(1) NOT NULL DEFAULT '1',
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  `src_imagen` varchar(150) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_medicamento`
+-- Volcado de datos para la tabla `tb_medicamento`
 --
 INSERT INTO
   `tb_medicamento` (
@@ -1645,16 +2325,16 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_metodo_envio`
+-- Estructura de tabla para la tabla `tb_metodo_envio`
 --
 CREATE TABLE `tb_metodo_envio` (
-  `id_metodo_envio` int(11) NOT NULL,
-  `name_metodo` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_metodo_envio` int NOT NULL,
+  `name_metodo` varchar(200) DEFAULT NULL,
+  `estado` char(1) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_metodo_envio`
+-- Volcado de datos para la tabla `tb_metodo_envio`
 --
 INSERT INTO
   `tb_metodo_envio` (`id_metodo_envio`, `name_metodo`, `estado`)
@@ -1663,21 +2343,21 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_moneda`
+-- Estructura de tabla para la tabla `tb_moneda`
 --
 CREATE TABLE `tb_moneda` (
-  `id_moneda` int(11) NOT NULL,
-  `name_moneda` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cod_sunat` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `signo` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `abreviatura` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_moneda` int NOT NULL,
+  `name_moneda` varchar(200) DEFAULT NULL,
+  `cod_sunat` varchar(10) DEFAULT NULL,
+  `signo` varchar(10) DEFAULT NULL,
+  `abreviatura` varchar(10) DEFAULT NULL,
   `tipo_cambio` decimal(18, 3) DEFAULT '1.000',
-  `flag_principal` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '0',
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `flag_principal` char(1) DEFAULT '0',
+  `estado` char(1) DEFAULT '1'
+);
 
 --
--- Dumping data for table `tb_moneda`
+-- Volcado de datos para la tabla `tb_moneda`
 --
 INSERT INTO
   `tb_moneda` (
@@ -1691,26 +2371,20 @@ INSERT INTO
     `estado`
   )
 VALUES
-  (1, 'SOLES', '1', 'S/', 'PEN', '1.000', '1', '1'),
-  (2, 'DÓLARES', '2', '$', 'USD', '3.350', '0', '1'),
-  (3, 'EUROS', '3', '€', 'EUR', '3.750', '0', '1');
+  (1, 'SOLES', '1', 'S/', 'PEN', 1.000, '1', '1'),
+  (2, 'DÓLARES', '2', '$', 'USD', 3.500, '0', '1'),
+  (3, 'EUROS', '3', '€', 'EUR', 3.750, '0', '1');
 
--- --------------------------------------------------------
---
--- Table structure for table `tb_opcion`
---
+
 CREATE TABLE `tb_opcion` (
-  `id_opcion` int(11) NOT NULL,
-  `name_opcion` varchar(50) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo',
-  `url` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `order` int(11) NOT NULL DEFAULT '0',
-  `icono` varchar(100) COLLATE utf8mb4_spanish_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_opcion` int NOT NULL,
+  `name_opcion` varchar(50) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo',
+  `url` varchar(100) DEFAULT NULL,
+  `order` int NOT NULL DEFAULT '0',
+  `icono` varchar(100) DEFAULT NULL
+);
 
---
--- Dumping data for table `tb_opcion`
---
 INSERT INTO
   `tb_opcion` (
     `id_opcion`,
@@ -1792,7 +2466,7 @@ VALUES
     14,
     NULL
   ),
-  (115, NULL, '', NULL, 0, NULL),
+  (115, 'Tipo de Cosecha', 'activo', NULL, 0, NULL),
   (200, 'Mantenimiento', 'activo', NULL, 0, NULL),
   (201, 'Clientes', 'activo', NULL, 0, NULL),
   (202, 'Servicios', 'activo', NULL, 0, NULL),
@@ -1809,13 +2483,13 @@ VALUES
   (206, 'Vacunas', 'activo', NULL, 0, NULL),
   (207, 'Operaciones', 'activo', NULL, 0, NULL),
   (208, 'Proveedores', 'activo', NULL, 0, NULL),
-  (209, NULL, '', NULL, 0, NULL),
-  (210, NULL, '', NULL, 0, NULL),
-  (211, NULL, '', NULL, 0, NULL),
-  (212, NULL, '', NULL, 0, NULL),
-  (213, NULL, '', NULL, 0, NULL),
-  (214, NULL, '', NULL, 0, NULL),
-  (215, NULL, '', NULL, 0, NULL),
+  (209, 'Fundos', 'activo', NULL, 0, NULL),
+  (210, 'Operador', 'activo', NULL, 0, NULL),
+  (211, 'Maquinaria', 'activo', NULL, 0, NULL),
+  (212, 'Acceso a Fundos', 'activo', NULL, 0, NULL),
+  (213, NULL, 'inactivo', NULL, 0, NULL),
+  (214, NULL, 'inactivo', NULL, 0, NULL),
+  (215, NULL, 'inactivo', NULL, 0, NULL),
   (300, 'Seguridad', 'activo', NULL, 0, NULL),
   (
     301,
@@ -1842,17 +2516,17 @@ VALUES
     NULL
   ),
   (304, 'Trabajadores', 'activo', NULL, 0, NULL),
-  (305, NULL, '', NULL, 0, NULL),
-  (306, NULL, '', NULL, 0, NULL),
-  (307, NULL, '', NULL, 0, NULL),
-  (308, NULL, '', NULL, 0, NULL),
-  (309, NULL, '', NULL, 0, NULL),
-  (310, NULL, '', NULL, 0, NULL),
-  (311, NULL, '', NULL, 0, NULL),
-  (312, NULL, '', NULL, 0, NULL),
-  (313, NULL, '', NULL, 0, NULL),
-  (314, NULL, '', NULL, 0, NULL),
-  (315, NULL, '', NULL, 0, NULL),
+  (305, NULL, 'inactivo', NULL, 0, NULL),
+  (306, NULL, 'inactivo', NULL, 0, NULL),
+  (307, NULL, 'inactivo', NULL, 0, NULL),
+  (308, NULL, 'inactivo', NULL, 0, NULL),
+  (309, NULL, 'inactivo', NULL, 0, NULL),
+  (310, NULL, 'inactivo', NULL, 0, NULL),
+  (311, NULL, 'inactivo', NULL, 0, NULL),
+  (312, NULL, 'inactivo', NULL, 0, NULL),
+  (313, NULL, 'inactivo', NULL, 0, NULL),
+  (314, NULL, 'inactivo', NULL, 0, NULL),
+  (315, NULL, 'inactivo', NULL, 0, NULL),
   (400, 'Página Web', 'activo', NULL, 0, NULL),
   (401, 'Cabezera', 'activo', NULL, 0, NULL),
   (402, 'Redes Sociales', 'activo', NULL, 0, NULL),
@@ -1867,15 +2541,15 @@ VALUES
     0,
     NULL
   ),
-  (407, NULL, '', NULL, 0, NULL),
-  (408, NULL, '', NULL, 0, NULL),
-  (409, NULL, '', NULL, 0, NULL),
-  (410, NULL, '', NULL, 0, NULL),
-  (411, NULL, '', NULL, 0, NULL),
-  (412, NULL, '', NULL, 0, NULL),
-  (413, NULL, '', NULL, 0, NULL),
-  (414, NULL, '', NULL, 0, NULL),
-  (415, NULL, '', NULL, 0, NULL),
+  (407, NULL, 'inactivo', NULL, 0, NULL),
+  (408, NULL, 'inactivo', NULL, 0, NULL),
+  (409, NULL, 'inactivo', NULL, 0, NULL),
+  (410, NULL, 'inactivo', NULL, 0, NULL),
+  (411, NULL, 'inactivo', NULL, 0, NULL),
+  (412, NULL, 'inactivo', NULL, 0, NULL),
+  (413, NULL, 'inactivo', NULL, 0, NULL),
+  (414, NULL, 'inactivo', NULL, 0, NULL),
+  (415, NULL, 'inactivo', NULL, 0, NULL),
   (500, 'Citas', 'activo', NULL, 0, NULL),
   (501, 'Gestionar Citas', 'activo', NULL, 0, NULL),
   (
@@ -1886,26 +2560,19 @@ VALUES
     0,
     NULL
   ),
-  (
-    503,
-    'Historial ',
-    'activo',
-    NULL,
-    0,
-    NULL
-  ),
-  (504, NULL, '', NULL, 0, NULL),
-  (505, NULL, '', NULL, 0, NULL),
-  (506, NULL, '', NULL, 0, NULL),
-  (507, NULL, '', NULL, 0, NULL),
-  (508, NULL, '', NULL, 0, NULL),
-  (509, NULL, '', NULL, 0, NULL),
-  (510, NULL, '', NULL, 0, NULL),
-  (511, NULL, '', NULL, 0, NULL),
-  (512, NULL, '', NULL, 0, NULL),
-  (513, NULL, '', NULL, 0, NULL),
-  (514, NULL, '', NULL, 0, NULL),
-  (515, NULL, '', NULL, 0, NULL),
+  (503, 'Historial ', 'activo', NULL, 0, NULL),
+  (504, NULL, 'inactivo', NULL, 0, NULL),
+  (505, NULL, 'inactivo', NULL, 0, NULL),
+  (506, NULL, 'inactivo', NULL, 0, NULL),
+  (507, NULL, 'inactivo', NULL, 0, NULL),
+  (508, NULL, 'inactivo', NULL, 0, NULL),
+  (509, NULL, 'inactivo', NULL, 0, NULL),
+  (510, NULL, 'inactivo', NULL, 0, NULL),
+  (511, NULL, 'inactivo', NULL, 0, NULL),
+  (512, NULL, 'inactivo', NULL, 0, NULL),
+  (513, NULL, 'inactivo', NULL, 0, NULL),
+  (514, NULL, 'inactivo', NULL, 0, NULL),
+  (515, NULL, 'inactivo', NULL, 0, NULL),
   (600, 'Operaciones', 'activo', NULL, 0, NULL),
   (
     601,
@@ -1999,7 +2666,7 @@ VALUES
     0,
     NULL
   ),
-  (707, NULL, 'inactivo', NULL, 0, NULL),
+  (707, 'Reporte de Citas', 'activo', NULL, 0, NULL),
   (708, NULL, 'inactivo', NULL, 0, NULL),
   (709, NULL, 'inactivo', NULL, 0, NULL),
   (710, NULL, 'inactivo', NULL, 0, NULL),
@@ -2011,24 +2678,68 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_orden_compra`
+-- Estructura de tabla para la tabla `tb_operador`
 --
-CREATE TABLE `tb_orden_compra` (
-  `id_orden_compra` int(18) NOT NULL,
-  `id_metodo_envio` int(11) NOT NULL,
-  `id_proveedor` int(11) NOT NULL,
-  `id_trabajador` int(11) NOT NULL,
-  `id_sucursal` int(11) NOT NULL,
-  `fecha_orden` datetime NOT NULL,
-  `fecha_entrega` datetime DEFAULT NULL,
-  `descripcion` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `observaciones` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_moneda` int(11) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+CREATE TABLE `tb_operador` (
+  `id_operador` bigint UNSIGNED NOT NULL,
+  `id_persona` bigint UNSIGNED NOT NULL,
+  `name_user` varchar(255) DEFAULT NULL,
+  `pass_user` varchar(255) DEFAULT NULL,
+  `cod_recuperacion` varchar(500) DEFAULT NULL,
+  `fecha_activacion` date DEFAULT NULL,
+  `fecha_recuperacion` date DEFAULT NULL,
+  `src_imagen` varchar(500) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_orden_compra`
+-- Volcado de datos para la tabla `tb_operador`
+--
+INSERT INTO
+  `tb_operador` (
+    `id_operador`,
+    `id_persona`,
+    `name_user`,
+    `pass_user`,
+    `cod_recuperacion`,
+    `fecha_activacion`,
+    `fecha_recuperacion`,
+    `src_imagen`,
+    `estado`
+  )
+VALUES
+  (
+    1,
+    6,
+    '',
+    '',
+    NULL,
+    '2024-11-20',
+    NULL,
+    'resources/global/images/sin_imagen.png',
+    'activo'
+  );
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `tb_orden_compra`
+--
+CREATE TABLE `tb_orden_compra` (
+  `id_orden_compra` int NOT NULL,
+  `id_metodo_envio` int NOT NULL,
+  `id_proveedor` int NOT NULL,
+  `id_trabajador` int NOT NULL,
+  `id_sucursal` int NOT NULL,
+  `fecha_orden` datetime NOT NULL,
+  `fecha_entrega` datetime DEFAULT NULL,
+  `descripcion` varchar(500) DEFAULT NULL,
+  `observaciones` varchar(500) DEFAULT NULL,
+  `estado` char(1) NOT NULL,
+  `id_moneda` int NOT NULL
+);
+
+--
+-- Volcado de datos para la tabla `tb_orden_compra`
 --
 INSERT INTO
   `tb_orden_compra` (
@@ -2070,23 +2781,75 @@ VALUES
     '',
     '3',
     1
+  ),
+  (
+    3,
+    1,
+    1,
+    1,
+    1,
+    '2024-11-21 09:36:06',
+    '2024-11-21 00:00:00',
+    NULL,
+    'JAJKSJA',
+    '3',
+    1
+  ),
+  (
+    4,
+    1,
+    1,
+    1,
+    1,
+    '2024-11-22 12:47:26',
+    '2024-11-22 00:00:00',
+    NULL,
+    'JAJKSJA',
+    '2',
+    2
+  ),
+  (
+    5,
+    1,
+    1,
+    1,
+    1,
+    '2024-11-26 09:32:43',
+    '2024-11-26 00:00:00',
+    NULL,
+    '',
+    '2',
+    1
+  ),
+  (
+    6,
+    1,
+    1,
+    1,
+    1,
+    '2024-11-26 16:21:30',
+    '2024-11-26 00:00:00',
+    NULL,
+    '',
+    '2',
+    1
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_parametros_generales`
+-- Estructura de tabla para la tabla `tb_parametros_generales`
 --
 CREATE TABLE `tb_parametros_generales` (
-  `id_parametro` int(11) NOT NULL,
-  `name_parametro` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `valor_int` int(11) NOT NULL DEFAULT '0',
-  `valor_string` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `id_parametro` int NOT NULL,
+  `name_parametro` varchar(150) DEFAULT NULL,
+  `valor_int` int NOT NULL DEFAULT '0',
+  `valor_string` varchar(1000) DEFAULT NULL,
   `valor_decimal` decimal(8, 2) NOT NULL DEFAULT '0.00',
   `valor_bit` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+);
 
 --
--- Dumping data for table `tb_parametros_generales`
+-- Volcado de datos para la tabla `tb_parametros_generales`
 --
 INSERT INTO
   `tb_parametros_generales` (
@@ -2103,7 +2866,7 @@ VALUES
     'Imagen Banner 1',
     0,
     'resources/global/images/paginaweb/fondo1.jpg',
-    '0.00',
+    0.00,
     1
   ),
   (
@@ -2111,7 +2874,7 @@ VALUES
     'Imagen Banner 2',
     0,
     'resources/global/images/paginaweb/fondo2.jpg',
-    '0.00',
+    0.00,
     1
   ),
   (
@@ -2119,7 +2882,7 @@ VALUES
     'Imagen Banner 3',
     0,
     'resources/global/images/paginaweb/fondo3.jpg',
-    '0.00',
+    0.00,
     1
   ),
   (
@@ -2127,7 +2890,7 @@ VALUES
     'Titulo Banner 1',
     0,
     'Bienvenidos a Pet Space',
-    '0.00',
+    0.00,
     1
   ),
   (
@@ -2135,7 +2898,7 @@ VALUES
     'Titulo Banner 2',
     0,
     'Brinda una mejor atención a tus clientes',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2143,7 +2906,7 @@ VALUES
     'Titulo Banner 3',
     0,
     'Profesionales altamente calificados',
-    '0.00',
+    0.00,
     1
   ),
   (
@@ -2151,7 +2914,7 @@ VALUES
     'Descripcion Banner 1',
     0,
     'Una Plataforma en la cuál podrás administrar tu veterinaria desde cualquier lugar.',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2159,7 +2922,7 @@ VALUES
     'Descripcion Banner 2',
     0,
     'Así podrás mantenerte en contacto con tus clientes, ofreciendo un valor agregado a tu negocio.',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2167,7 +2930,7 @@ VALUES
     'Descripcion Banner 3',
     0,
     'Nuestro equipo de profesionales con más de 10 años de experiencia, te brindarán un apoyo constante en todo momento.',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2175,7 +2938,7 @@ VALUES
     'Texto Boton 1',
     0,
     'Mas información',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2183,7 +2946,7 @@ VALUES
     'Texto Boton 2',
     0,
     'Mas isnformación',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2191,7 +2954,7 @@ VALUES
     'Texto Boton 3',
     0,
     'Mas información',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2199,7 +2962,7 @@ VALUES
     'Enlace banner 1',
     0,
     '?view=conocenos',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2207,7 +2970,7 @@ VALUES
     'Enlace banner 2',
     0,
     '?view=conocenos',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2215,7 +2978,7 @@ VALUES
     'Enlace banner 3',
     0,
     '?view=conocenos',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2223,7 +2986,7 @@ VALUES
     'Horario Top Nav',
     0,
     'Lunes - Sábado 8:00 - 17:00',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2231,16 +2994,16 @@ VALUES
     'Correo Soporte Técnico',
     0,
     'informes@veterinariamican.com',
-    '0.00',
+    0.00,
     0
   ),
-  (18, 'Telefono', 0, '(+51) 930744960', '0.00', 0),
+  (18, 'Telefono', 0, '(+51) 930744960', 0.00, 0),
   (
     19,
     'Link Facebook',
     0,
     'https://www.facebook.com',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2248,7 +3011,7 @@ VALUES
     'Link Instagram',
     0,
     'https://www.instagram.com',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2256,7 +3019,7 @@ VALUES
     'Link Youtube',
     0,
     'https://www.youtube.com',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2264,7 +3027,7 @@ VALUES
     'Link Twitter',
     0,
     'https://www.twitter.com',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2272,7 +3035,7 @@ VALUES
     'Logo Página',
     0,
     'resources/assets-web/img/logo.png',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2280,61 +3043,40 @@ VALUES
     'Direccion Footer',
     0,
     'Jr. Pedro Remy 177 - SMP - Lima',
-    '0.00',
+    0.00,
     0
   ),
-  (25, 'Clientes Felices', 1011, NULL, '0.00', 0),
-  (26, 'Proyectos Completados', 12, NULL, '0.00', 0),
-  (27, 'Premios Ganados', 15, NULL, '0.00', 0),
-  (28, 'Horas Trabajadas', 3050, NULL, '0.00', 0),
-  (
-    29,
-    'Horario Lunes',
-    0,
-    '8:00 - 18:00',
-    '0.00',
-    0
-  ),
-  (
-    30,
-    'Horario Martes',
-    0,
-    '8:00 - 18:00',
-    '0.00',
-    0
-  ),
+  (25, 'Clientes Felices', 1034, NULL, 0.00, 0),
+  (26, 'Proyectos Completados', 12, NULL, 0.00, 0),
+  (27, 'Premios Ganados', 15, NULL, 0.00, 0),
+  (28, 'Horas Trabajadas', 3050, NULL, 0.00, 0),
+  (29, 'Horario Lunes', 0, '8:00 - 18:00', 0.00, 0),
+  (30, 'Horario Martes', 0, '8:00 - 18:00', 0.00, 0),
   (
     31,
     'Horario Miercoles',
     0,
     '8:00 - 18:00',
-    '0.00',
+    0.00,
     0
   ),
-  (
-    32,
-    'Horario Jueves',
-    0,
-    '8:00 - 18:00',
-    '0.00',
-    0
-  ),
+  (32, 'Horario Jueves', 0, '8:00 - 18:00', 0.00, 0),
   (
     33,
     'Horario Viernes',
     0,
     '8:00 - 18:00',
-    '0.00',
+    0.00,
     0
   ),
-  (34, 'Horario Sabado', 0, 'Cerrado', '0.00', 0),
-  (35, 'Horario Domingo', 0, 'Cerrado', '0.00', 0),
+  (34, 'Horario Sabado', 0, 'Cerrado', 0.00, 0),
+  (35, 'Horario Domingo', 0, 'Cerrado', 0.00, 0),
   (
     36,
     'Descripcion Footer',
     0,
     'Descripcion Footer',
-    '0.00',
+    0.00,
     0
   ),
   (
@@ -2342,30 +3084,30 @@ VALUES
     'Mapa Contacto',
     0,
     '<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.3688387144507!2d-77.03578688561743!3d-12.086882845937915!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c9da03b255e1%3A0xfba2569a5919029a!2sTecnovo+Per%C3%BA!5e0!3m2!1ses-419!2sus!4v1566490062500!5m2!1ses-419!2sus\" width=\"100%\" height=\"500\" frameborder=\"0\" style=\"border:0\" allowfullscreen></iframe>',
-    '0.00',
+    0.00,
     0
   ),
-  (38, 'IGV', 0, NULL, '18.00', 0);
+  (38, 'IGV', 0, NULL, 18.00, 0);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_persona`
+-- Estructura de tabla para la tabla `tb_persona`
 --
 CREATE TABLE `tb_persona` (
-  `id_persona` bigint(20) UNSIGNED NOT NULL,
-  `id_documento` bigint(20) UNSIGNED NOT NULL,
-  `num_documento` varchar(30) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `nombres` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `apellidos` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `direccion` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `telefono` varchar(30) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `correo` varchar(150) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `id_persona` bigint UNSIGNED NOT NULL,
+  `id_documento` bigint UNSIGNED NOT NULL,
+  `num_documento` varchar(30) NOT NULL,
+  `nombres` varchar(100) NOT NULL,
+  `apellidos` varchar(100) NOT NULL,
+  `direccion` varchar(150) DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(150) DEFAULT NULL,
   `fecha_nacimiento` date DEFAULT NULL,
-  `sexo` enum('masculino', 'femenino') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'masculino'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `sexo` enum('masculino', 'femenino') NOT NULL DEFAULT 'masculino'
+);
 
 --
--- Dumping data for table `tb_persona`
+-- Volcado de datos para la tabla `tb_persona`
 --
 INSERT INTO
   `tb_persona` (
@@ -2409,8 +3151,8 @@ VALUES
     3,
     3,
     '20202020202',
-    'Pedigree SAC',
-    'Pedigree SAC',
+    'Empresa Ferretera',
+    'Ferretera',
     'Jr. Pedro Remy N 317 - Urbanización Ingenería',
     '012083489',
     '',
@@ -2433,44 +3175,320 @@ VALUES
     5,
     1,
     '76589746',
-    'Irving',
+    'Irving Adolfo',
     'Tovar',
     'Jr. Pedro Remy N 317 - Urbanización Ingenería',
     '987654321',
     'irvingtovar@gmail.com',
     '1989-10-16',
     'masculino'
+  ),
+  (
+    6,
+    1,
+    '41286369',
+    'ELDER',
+    'HURTADO GARCIA',
+    '',
+    '',
+    '',
+    '1995-01-26',
+    'masculino'
+  ),
+  (
+    7,
+    1,
+    '70570123',
+    'HILLARY URSULA',
+    'BACA ALIAGA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    8,
+    1,
+    '77229533',
+    'HUMBERTO',
+    'VALDERA VIDAURRE',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    9,
+    1,
+    '70570128',
+    'INGRID',
+    'BRICEÑO CASTRO',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    10,
+    1,
+    '70570127',
+    'FABRIZIO JOSE',
+    'GUTIERREZ PACHECO',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    11,
+    1,
+    '70570182',
+    'WERNER',
+    'LAIME MAYTA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    12,
+    1,
+    '70570131',
+    'EDUARDO DANIEL',
+    'PERALES CUYA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    13,
+    3,
+    '20608147307',
+    'TECNOVO PERU SOLUCIONES S.A.C. ',
+    '',
+    'CAL. GERMAN SCHEREIBER NRO. 276 INT. 240 URB. SANTA ANA, LIMA - LIMA - SAN ISIDRO',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    14,
+    1,
+    '70570162',
+    'HUGO AMERICO',
+    'TULA CONDORI',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    15,
+    1,
+    '70570124',
+    'JESUS EDUARDO',
+    'VALLEJOS VILLAVERDE',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    16,
+    1,
+    '70570223',
+    'ANDRES ALFREDO',
+    'RAMIREZ YOPLAC',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    17,
+    1,
+    '70570126',
+    'BRENDA',
+    'HUARANCCA VASQUEZ',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    18,
+    1,
+    '70570172',
+    'JULIA',
+    'LARICO APAZA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    19,
+    1,
+    '70570193',
+    'DIEGO ANDRE',
+    'AMPUERO VIVANCO',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    20,
+    1,
+    '70570132',
+    'ALEXANDRA',
+    'HUERTAS PERCCA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    21,
+    1,
+    '70570179',
+    'ROLANDO',
+    'TITO APAZA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    22,
+    1,
+    '70570271',
+    'KISSY EDITH',
+    'FIESTAS PALACIOS',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    23,
+    1,
+    '70372212',
+    'LUCERO',
+    'NUÑEZ FIGUEROA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    24,
+    1,
+    '70570192',
+    'CARMEN VALERYA',
+    'PERALES MENDIOLA',
+    '',
+    '',
+    '',
+    '2024-11-27',
+    'masculino'
+  ),
+  (
+    25,
+    1,
+    '70570251',
+    'GONZALO JOSE PEREZ RAMIREZ',
+    '',
+    '',
+    '',
+    '',
+    '2024-11-28',
+    'masculino'
+  ),
+  (
+    26,
+    1,
+    '70470132',
+    'GIOVANNA DAMIANA',
+    'VALLE CALDERON',
+    '',
+    '',
+    '',
+    '2024-11-28',
+    'masculino'
+  ),
+  (
+    27,
+    1,
+    '70472318',
+    'GREYSI YAMILIT',
+    'VILCA GELDRES',
+    '',
+    '',
+    '',
+    '2024-11-29',
+    'masculino'
+  ),
+  (
+    28,
+    1,
+    '70367121',
+    'SOL ARIATNA',
+    'FLORES ARISTA',
+    '',
+    '',
+    '',
+    '2024-11-29',
+    'masculino'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_promocion`
+-- Estructura de tabla para la tabla `tb_promocion`
 --
 CREATE TABLE `tb_promocion` (
-  `id_promocion` int(11) NOT NULL,
-  `id_cliente` bigint(20) UNSIGNED NOT NULL,
-  `titulo` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `descripcion` text COLLATE utf8mb4_unicode_ci,
+  `id_promocion` int NOT NULL,
+  `id_cliente` bigint UNSIGNED NOT NULL,
+  `titulo` varchar(500) NOT NULL,
+  `descripcion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `precio` decimal(18, 2) DEFAULT '0.00',
   `fecha_inicio` date DEFAULT NULL,
   `fecha_fin` date DEFAULT NULL,
-  `src_imagen` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `src_imagen` varchar(500) DEFAULT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1'
+);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_proveedor`
+-- Estructura de tabla para la tabla `tb_proveedor`
 --
 CREATE TABLE `tb_proveedor` (
-  `id_proveedor` int(11) NOT NULL,
-  `id_persona` bigint(20) UNSIGNED NOT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `src_imagen` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_proveedor` int NOT NULL,
+  `id_persona` bigint UNSIGNED NOT NULL,
+  `estado` char(1) NOT NULL DEFAULT '1',
+  `src_imagen` varchar(300) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_proveedor`
+-- Volcado de datos para la tabla `tb_proveedor`
 --
 INSERT INTO
   `tb_proveedor` (
@@ -2484,46 +3502,46 @@ VALUES
     1,
     3,
     '1',
-    'resources/global/images/persons/img-1571244091.png'
+    'resources/global/images/persons/img-1732631523.png'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_proveedor_observaciones`
+-- Estructura de tabla para la tabla `tb_proveedor_observaciones`
 --
 CREATE TABLE `tb_proveedor_observaciones` (
-  `id_detalle` bigint(20) NOT NULL,
-  `id_proveedor` int(11) NOT NULL,
-  `observacion` text COLLATE utf8mb4_unicode_ci,
+  `id_detalle` bigint NOT NULL,
+  `id_proveedor` int NOT NULL,
+  `observacion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `fecha` datetime DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `estado` char(1) DEFAULT '1'
+);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_servicio`
+-- Estructura de tabla para la tabla `tb_servicio`
 --
 CREATE TABLE `tb_servicio` (
-  `id_servicio` bigint(20) UNSIGNED NOT NULL,
-  `id_tipo_servicio` bigint(20) UNSIGNED NOT NULL,
-  `name_servicio` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `descripcion_breve` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `descripcion_larga` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `id_moneda` int(11) NOT NULL DEFAULT '1',
-  `signo_moneda` varchar(10) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `id_servicio` bigint UNSIGNED NOT NULL,
+  `id_tipo_servicio` bigint UNSIGNED NOT NULL,
+  `id_maquinaria` bigint UNSIGNED NOT NULL,
+  `name_servicio` varchar(100) NOT NULL,
+  `descripcion_breve` varchar(1000) DEFAULT NULL,
+  `descripcion_larga` varchar(1000) DEFAULT NULL,
+  `id_moneda` int NOT NULL DEFAULT '1',
+  `signo_moneda` varchar(10) DEFAULT NULL,
   `precio` decimal(8, 2) NOT NULL DEFAULT '0.00',
-  `flag_igv` char(1) COLLATE utf8mb4_spanish_ci DEFAULT '1',
-  `src_imagen` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `flag_igv` char(1) DEFAULT '1',
+  `src_imagen` varchar(1000) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
---
--- Dumping data for table `tb_servicio`
---
+
 INSERT INTO
   `tb_servicio` (
     `id_servicio`,
     `id_tipo_servicio`,
+    `id_maquinaria`,
     `name_servicio`,
     `descripcion_breve`,
     `descripcion_larga`,
@@ -2538,114 +3556,93 @@ VALUES
   (
     1,
     1,
-    'Medicina preventiva',
-    'Contamos con excelentes programas de medicina preventiva como es la aplicación de vacunas para perros, gatos y mucho más...',
-    'También contamos con el chequeo geriátrico el cual recomendamos para perros de talla miniatura a partir de los 9 años de edad, los perros de talla media a partir de los 7 años y los de talla gigante como el gran danés o san bernardo a partir de los 6 años.',
+    3,
+    'Protección de Hectáreas',
+    '',
+    'Mantenimiento de las hectáreas',
     1,
     'S/',
-    '45.00',
+    45.00,
     '1',
-    'resources/global/images/servicios/img-1571244152.png',
-    'activo'
-  ),
-  (
-    2,
-    2,
-    'Consultas',
-    'La Clínica Veterinaria del Bosque cuenta con médicos veterinarios expertos en diferentes disciplinas y con la metodología necesaria para llegar a los ',
-    'Seguimos a detalle el expediente clínico orientado a problemas, en el que al conjuntar los datos generales, la historia clínica y el examen clínico.',
-    1,
-    'S/',
-    '20.00',
-    '1',
-    'resources/global/images/servicios/img-1571244190.png',
+    'resources/global/images/servicios/img-1732210383.png',
     'activo'
   ),
   (
     3,
-    3,
-    'Cirugía',
-    'En la Clínica Veterinaria del Bosque contamos con quirófano equipado con anestesia inhalada y monitores trans quirúrgicos.',
-    'Frecuencia respiratoria, cantidad de oxigeno y bióxido de carbono circulante en el organismo de nuestra mascota, entre otras  mientras son intervenidas quirúrgicamente, nuestro quirófano cuenta también con la instrumentación suficiente para la práctica de cirugía en tejidos blandos.',
+    2,
+    1,
+    'Distribución de agua',
+    '',
+    'Reparación de las cañerias de una maquinaria',
     2,
     '$',
-    '250.00',
+    250.00,
     '1',
-    'resources/global/images/servicios/img-1571244228.png',
-    'activo'
-  ),
-  (
-    4,
-    3,
-    'Hospitalización',
-    'Contamos con las instalaciones y el personal capacitado para brindar el internamiento de pacientes con fines tanto terapéuticos como diagnostico.',
-    'Cuenta con la flexibilidad para ofrecer  hospitalización diurna en donde los pacientes son internados durante el día para la supervisión y administración de fármacos o tratamientos mientras los propietarios trabajan.',
-    3,
-    '€',
-    '50.00',
-    '1',
-    'resources/global/images/servicios/img-1571244267.png',
+    'resources/global/images/servicios/img-1732210483.png',
     'activo'
   ),
   (
     5,
-    4,
-    'Medicina interna',
-    'Contamos con los métodos diagnósticos y tratamiento de las enfermedades de los órganos internos de manera no quirúrgica con este fin hemos incorporado',
-    'Imagenología, electrocardiografía, entre otros y también colaboran un excelente equipo de expertos en disciplinas como oftalmología (Dr. Fred Pineda),',
+    3,
+    1,
+    'Reparación Rutinaria',
+    '',
+    'Mantenimiento de Maquinaria',
     1,
     'S/',
-    '200.00',
+    200.00,
     '1',
-    'resources/global/images/servicios/img-1571244302.png',
+    'resources/global/images/servicios/img-1732210466.png',
     'activo'
   ),
   (
     6,
-    5,
-    'Imagenología',
-    'La Clínica Veterinaria del Bosque cuenta con métodos diagnósticos de alta calidad como son radiología de alta frecuencia que es un equipo de rayos X.',
-    'Se cuenta también con ecosonografía y endoscopía de fibra óptica, estas técnicas complementarias ayudan a tener métodos diagnósticos confiables para enfocar la terapia de manera eficiente.',
+    4,
     2,
-    '$',
-    '65.00',
+    'Cosechas de arroz',
+    '',
+    'Servicio de cosecha de arroz',
+    1,
+    'S/',
+    34.00,
     '1',
-    'resources/global/images/servicios/img-1571244338.png',
+    'resources/global/images/sin_imagen.png',
     'activo'
   ),
   (
     7,
-    6,
-    'Laboratorio de análisis clínico',
-    'Laboratorios integrados que le permite correr pruebas como química sanguínea en húmeda y seca, lo que facilita la obtención de datos a cualquier hora.',
-    'Y en cuestión de minutos, hemograma (biometría hemética), coproparasitología, prueba que ayuda a la detección de parásitos o huevos de los mismos en heces fecales, serología, estas últimas.',
+    3,
+    2,
+    'Mantenimiento de regaderas',
+    '',
+    'Mantenimiento rutinario',
     2,
     '$',
-    '23.00',
+    40.00,
     '1',
-    'resources/global/images/servicios/img-1571244377.png',
+    'resources/global/images/sin_imagen.png',
     'activo'
   );
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_sucursal`
+-- Estructura de tabla para la tabla `tb_sucursal`
 --
 CREATE TABLE `tb_sucursal` (
-  `id_sucursal` int(11) NOT NULL,
-  `id_empresa` bigint(20) UNSIGNED NOT NULL,
-  `nombre` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cod_ubigeo` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `direccion` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefono` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mapa` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1',
-  `token` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ruta` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_sucursal` int NOT NULL,
+  `id_empresa` bigint UNSIGNED NOT NULL,
+  `nombre` varchar(300) NOT NULL,
+  `cod_ubigeo` varchar(10) DEFAULT NULL,
+  `direccion` varchar(1000) DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `mapa` varchar(1000) DEFAULT NULL,
+  `estado` char(1) DEFAULT '1',
+  `token` varchar(1000) DEFAULT NULL,
+  `ruta` varchar(1000) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_sucursal`
+-- Volcado de datos para la tabla `tb_sucursal`
 --
 INSERT INTO
   `tb_sucursal` (
@@ -2676,18 +3673,18 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_tipo_cambio`
+-- Estructura de tabla para la tabla `tb_tipo_cambio`
 --
 CREATE TABLE `tb_tipo_cambio` (
-  `id` int(11) NOT NULL,
-  `id_moneda` int(11) NOT NULL,
-  `name_user` varchar(300) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int NOT NULL,
+  `id_moneda` int NOT NULL,
+  `name_user` varchar(300) DEFAULT NULL,
   `fecha` datetime DEFAULT CURRENT_TIMESTAMP,
   `tipo_cambio` decimal(18, 3) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+);
 
 --
--- Dumping data for table `tb_tipo_cambio`
+-- Volcado de datos para la tabla `tb_tipo_cambio`
 --
 INSERT INTO
   `tb_tipo_cambio` (
@@ -2698,21 +3695,41 @@ INSERT INTO
     `tipo_cambio`
   )
 VALUES
-  (1, 2, 'zhaul', '2019-10-16 11:33:38', '3.350'),
-  (2, 3, 'zhaul', '2019-10-16 11:33:44', '3.750');
+  (1, 2, 'zhaul', '2019-10-16 11:33:38', 3.350),
+  (2, 3, 'zhaul', '2019-10-16 11:33:44', 3.750),
+  (3, 2, 'zhaul', '2024-11-22 12:53:17', 3.500);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_tipo_mascota`
+-- Estructura de tabla para la tabla `tb_tipo_cosecha`
 --
-CREATE TABLE `tb_tipo_mascota` (
-  `id_tipo_mascota` bigint(20) UNSIGNED NOT NULL,
-  `name_tipo` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+CREATE TABLE `tb_tipo_cosecha` (
+  `id_tipo_cosecha` bigint UNSIGNED NOT NULL,
+  `descripcion` varchar(200) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_tipo_mascota`
+-- Volcado de datos para la tabla `tb_tipo_cosecha`
+--
+INSERT INTO
+  `tb_tipo_cosecha` (`id_tipo_cosecha`, `descripcion`, `estado`)
+VALUES
+  (1, 'GRANDES', 'activo'),
+  (2, 'ANGOSTOS', 'activo');
+
+-- --------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `tb_tipo_mascota`
+--
+CREATE TABLE `tb_tipo_mascota` (
+  `id_tipo_mascota` bigint UNSIGNED NOT NULL,
+  `name_tipo` varchar(50) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
+
+--
+-- Volcado de datos para la tabla `tb_tipo_mascota`
 --
 INSERT INTO
   `tb_tipo_mascota` (`id_tipo_mascota`, `name_tipo`, `estado`)
@@ -2723,16 +3740,16 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_tipo_medicamento`
+-- Estructura de tabla para la tabla `tb_tipo_medicamento`
 --
 CREATE TABLE `tb_tipo_medicamento` (
-  `id_tipo_medicamento` bigint(20) UNSIGNED NOT NULL,
-  `name_tipo` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_tipo_medicamento` bigint UNSIGNED NOT NULL,
+  `name_tipo` varchar(50) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_tipo_medicamento`
+-- Volcado de datos para la tabla `tb_tipo_medicamento`
 --
 INSERT INTO
   `tb_tipo_medicamento` (`id_tipo_medicamento`, `name_tipo`, `estado`)
@@ -2746,56 +3763,50 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_tipo_servicio`
+-- Estructura de tabla para la tabla `tb_tipo_servicio`
 --
 CREATE TABLE `tb_tipo_servicio` (
-  `id_tipo_servicio` bigint(20) UNSIGNED NOT NULL,
-  `name_tipo` varchar(50) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_tipo_servicio` bigint UNSIGNED NOT NULL,
+  `name_tipo` varchar(50) NOT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_tipo_servicio`
+-- Volcado de datos para la tabla `tb_tipo_servicio`
 --
 INSERT INTO
   `tb_tipo_servicio` (`id_tipo_servicio`, `name_tipo`, `estado`)
 VALUES
-  (1, 'Medicina preventiva', 'activo'),
-  (2, 'Consulta', 'activo'),
-  (3, 'Cirugía', 'activo'),
-  (4, 'Medicina interna', 'activo'),
-  (5, 'Imagenología', 'activo'),
-  (6, 'Laboratorio de análisis clínico', 'activo'),
-  (7, 'Etología', 'activo'),
-  (8, 'Reproducción', 'activo'),
-  (9, 'Estética', 'activo'),
-  (10, 'Servicios a domicilio', 'activo');
+  (1, 'MANTENIMIENTO HTC', 'activo'),
+  (2, 'REPARACIÓN DE CAÑERIAS', 'activo'),
+  (3, 'MANTENIMIENTO DE MAQUINARIA', 'activo'),
+  (4, 'COSECHAS', 'activo');
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_trabajador`
+-- Estructura de tabla para la tabla `tb_trabajador`
 --
 CREATE TABLE `tb_trabajador` (
-  `id_trabajador` bigint(20) UNSIGNED NOT NULL,
-  `id_persona` bigint(20) UNSIGNED NOT NULL,
-  `id_grupo` bigint(20) UNSIGNED NOT NULL,
-  `id_especialidad` bigint(20) UNSIGNED NOT NULL,
-  `name_user` varchar(100) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `pass_user` varchar(500) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `cod_recuperacion` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
+  `id_trabajador` bigint UNSIGNED NOT NULL,
+  `id_persona` bigint UNSIGNED NOT NULL,
+  `id_grupo` bigint UNSIGNED NOT NULL,
+  `id_especialidad` bigint UNSIGNED NOT NULL,
+  `name_user` varchar(100) NOT NULL,
+  `pass_user` varchar(500) NOT NULL,
+  `cod_recuperacion` varchar(500) DEFAULT NULL,
   `fecha_activacion` date DEFAULT NULL,
   `fecha_recuperacion` date DEFAULT NULL,
-  `src_imagen` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo',
+  `src_imagen` varchar(500) DEFAULT NULL,
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo',
   `flag_medico` tinyint(1) NOT NULL DEFAULT '0',
-  `link_facebook` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `link_instagram` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `link_twitter` varchar(500) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `descripcion` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `link_facebook` varchar(500) DEFAULT NULL,
+  `link_instagram` varchar(500) DEFAULT NULL,
+  `link_twitter` varchar(500) DEFAULT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_trabajador`
+-- Volcado de datos para la tabla `tb_trabajador`
 --
 INSERT INTO
   `tb_trabajador` (
@@ -2829,7 +3840,7 @@ VALUES
     NULL,
     'resources/global/images/persons/zhaul-1571241993.png',
     'activo',
-    0,
+    1,
     '#',
     '#',
     '#',
@@ -2839,7 +3850,7 @@ VALUES
     2,
     4,
     2,
-    4,
+    1,
     'davidmoreno@gmail.com',
     '1dd4ecb6f7f0091bc464fee9b9202d59',
     NULL,
@@ -2857,7 +3868,7 @@ VALUES
     3,
     5,
     2,
-    3,
+    1,
     'irvingtovar@gmail.com',
     '1dd4ecb6f7f0091bc464fee9b9202d59',
     NULL,
@@ -2874,40 +3885,44 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_trabajador_servicio`
+-- Estructura de tabla para la tabla `tb_trabajador_servicio`
 --
 CREATE TABLE `tb_trabajador_servicio` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `id_servicio` bigint(20) UNSIGNED NOT NULL,
-  `id_trabajador` bigint(20) UNSIGNED NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id` bigint UNSIGNED NOT NULL,
+  `id_servicio` bigint UNSIGNED NOT NULL,
+  `id_trabajador` bigint UNSIGNED NOT NULL
+);
 
 --
--- Dumping data for table `tb_trabajador_servicio`
+-- Volcado de datos para la tabla `tb_trabajador_servicio`
 --
 INSERT INTO
   `tb_trabajador_servicio` (`id`, `id_servicio`, `id_trabajador`)
 VALUES
-  (1, 1, 2),
-  (2, 2, 2),
-  (3, 3, 2),
-  (4, 4, 2),
-  (5, 5, 3),
-  (6, 6, 3),
-  (7, 7, 3);
+  (18, 1, 3),
+  (19, 3, 3),
+  (20, 1, 1),
+  (21, 3, 1),
+  (22, 5, 1),
+  (23, 6, 1),
+  (24, 1, 2),
+  (25, 3, 2),
+  (26, 5, 2),
+  (27, 6, 2),
+  (28, 7, 2);
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_trabajador_sucursal`
+-- Estructura de tabla para la tabla `tb_trabajador_sucursal`
 --
 CREATE TABLE `tb_trabajador_sucursal` (
-  `id` bigint(20) NOT NULL,
-  `id_trabajador` bigint(20) UNSIGNED DEFAULT NULL,
-  `id_sucursal` int(11) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id` bigint NOT NULL,
+  `id_trabajador` bigint UNSIGNED DEFAULT NULL,
+  `id_sucursal` int DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_trabajador_sucursal`
+-- Volcado de datos para la tabla `tb_trabajador_sucursal`
 --
 INSERT INTO
   `tb_trabajador_sucursal` (`id`, `id_trabajador`, `id_sucursal`)
@@ -2918,17 +3933,17 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_unidad_medida`
+-- Estructura de tabla para la tabla `tb_unidad_medida`
 --
 CREATE TABLE `tb_unidad_medida` (
-  `id_unidad_medida` int(11) NOT NULL,
-  `name_unidad` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cod_sunat` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `id_unidad_medida` int NOT NULL,
+  `name_unidad` varchar(200) DEFAULT NULL,
+  `cod_sunat` varchar(10) DEFAULT NULL,
+  `estado` char(1) DEFAULT NULL
+);
 
 --
--- Dumping data for table `tb_unidad_medida`
+-- Volcado de datos para la tabla `tb_unidad_medida`
 --
 INSERT INTO
   `tb_unidad_medida` (
@@ -2940,25 +3955,26 @@ INSERT INTO
 VALUES
   (1, 'UNIDADES', 'NIU', '1'),
   (2, 'KILOGRAMOS', 'KGM', '1'),
-  (3, 'CAJAS', 'BX', '1');
+  (3, 'CAJAS', 'BX', '1'),
+  (4, 'HORAS', 'H', '1');
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_vacuna`
+-- Estructura de tabla para la tabla `tb_vacuna`
 --
 CREATE TABLE `tb_vacuna` (
-  `id_vacuna` bigint(20) UNSIGNED NOT NULL,
-  `id_tipo_mascota` bigint(20) UNSIGNED NOT NULL,
-  `name_vacuna` varchar(150) COLLATE utf8mb4_spanish_ci NOT NULL,
-  `descripcion` varchar(1000) COLLATE utf8mb4_spanish_ci DEFAULT NULL,
-  `edad_minima` int(11) NOT NULL DEFAULT '1',
-  `edad_maxima` int(11) DEFAULT NULL,
-  `tipo` char(1) COLLATE utf8mb4_spanish_ci DEFAULT '0',
-  `estado` enum('activo', 'inactivo') COLLATE utf8mb4_spanish_ci NOT NULL DEFAULT 'activo'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_spanish_ci;
+  `id_vacuna` bigint UNSIGNED NOT NULL,
+  `id_tipo_mascota` bigint UNSIGNED NOT NULL,
+  `name_vacuna` varchar(150) NOT NULL,
+  `descripcion` varchar(1000) DEFAULT NULL,
+  `edad_minima` int NOT NULL DEFAULT '1',
+  `edad_maxima` int DEFAULT NULL,
+  `tipo` char(1) DEFAULT '0',
+  `estado` enum('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+);
 
 --
--- Dumping data for table `tb_vacuna`
+-- Volcado de datos para la tabla `tb_vacuna`
 --
 INSERT INTO
   `tb_vacuna` (
@@ -3075,56 +4091,56 @@ VALUES
 
 -- --------------------------------------------------------
 --
--- Table structure for table `tb_venta`
+-- Estructura de tabla para la tabla `tb_venta`
 --
 CREATE TABLE `tb_venta` (
-  `id_venta` int(11) NOT NULL,
-  `id_sucursal` int(11) NOT NULL,
-  `id_trabajador` bigint(20) UNSIGNED NOT NULL,
-  `id_documento_venta` int(11) NOT NULL,
-  `name_documento_venta` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `codigo_documento_venta` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `serie` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `correlativo` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_documento_cliente` bigint(20) UNSIGNED NOT NULL,
-  `name_documento_cliente` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `codigo_documento_cliente` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `numero_documento_cliente` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_forma_pago` int(11) NOT NULL,
-  `codigo_forma_pago` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name_forma_pago` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cliente` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `direccion` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `telefono` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `correo` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_venta` int NOT NULL,
+  `id_sucursal` int NOT NULL,
+  `id_trabajador` bigint UNSIGNED NOT NULL,
+  `id_documento_venta` int NOT NULL,
+  `name_documento_venta` varchar(100) NOT NULL,
+  `codigo_documento_venta` varchar(4) NOT NULL,
+  `serie` varchar(4) NOT NULL,
+  `correlativo` varchar(12) NOT NULL,
+  `id_documento_cliente` bigint UNSIGNED NOT NULL,
+  `name_documento_cliente` varchar(100) NOT NULL,
+  `codigo_documento_cliente` varchar(4) NOT NULL,
+  `numero_documento_cliente` varchar(30) NOT NULL,
+  `id_forma_pago` int NOT NULL,
+  `codigo_forma_pago` varchar(4) NOT NULL,
+  `name_forma_pago` varchar(100) NOT NULL,
+  `cliente` varchar(500) NOT NULL,
+  `direccion` varchar(500) DEFAULT NULL,
+  `telefono` varchar(30) DEFAULT NULL,
+  `correo` varchar(150) DEFAULT NULL,
   `fecha` datetime NOT NULL,
   `fecha_vencimiento` datetime DEFAULT NULL,
   `descuento_total` decimal(18, 2) DEFAULT '0.00',
   `sub_total` decimal(18, 2) NOT NULL,
   `igv` decimal(18, 2) NOT NULL,
   `total` decimal(18, 2) NOT NULL,
-  `estado` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
-  `pdf` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `xml` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cdr` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `mensaje_sunat` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `ruta` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `token` varchar(500) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flag_doc_interno` char(1) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `estado` char(1) NOT NULL DEFAULT '1',
+  `pdf` varchar(500) DEFAULT NULL,
+  `xml` varchar(500) DEFAULT NULL,
+  `cdr` varchar(500) DEFAULT NULL,
+  `mensaje_sunat` varchar(1000) DEFAULT NULL,
+  `ruta` varchar(500) DEFAULT NULL,
+  `token` varchar(500) DEFAULT NULL,
+  `flag_doc_interno` char(1) NOT NULL DEFAULT '1',
   `monto_recibido` decimal(18, 2) DEFAULT NULL,
   `vuelto` decimal(18, 2) DEFAULT NULL,
-  `id_moneda` int(11) NOT NULL,
-  `codigo_moneda` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `signo_moneda` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `abreviatura_moneda` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `signo_moneda_cambio` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'S/ ',
+  `id_moneda` int NOT NULL,
+  `codigo_moneda` varchar(4) NOT NULL,
+  `signo_moneda` varchar(10) DEFAULT NULL,
+  `abreviatura_moneda` varchar(10) DEFAULT NULL,
+  `signo_moneda_cambio` varchar(10) NOT NULL DEFAULT 'S/ ',
   `monto_tipo_cambio` decimal(18, 2) DEFAULT NULL,
-  `observaciones` varchar(1000) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flag_enviado` char(1) COLLATE utf8mb4_unicode_ci DEFAULT '1'
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+  `observaciones` varchar(1000) DEFAULT NULL,
+  `flag_enviado` char(1) DEFAULT '1'
+);
 
 --
--- Dumping data for table `tb_venta`
+-- Volcado de datos para la tabla `tb_venta`
 --
 INSERT INTO
   `tb_venta` (
@@ -3177,182 +4193,525 @@ VALUES
     1,
     1,
     1,
-    1,
-    'BOLETA',
-    '2',
-    'BPP1',
-    '1',
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '45',
     1,
     'DNI',
     '1',
-    '12345678',
+    '70570131',
     1,
     '01',
     'EFECTIVO',
-    'Luisa Magnolia Valdera Zurita',
-    'Jr. Pedro Remy N 317 - Urbanización Ingenería',
-    '987654321',
-    'zhaul_aries15@hotmail.com',
-    '2019-10-16 00:00:00',
+    'EDUARDO DANIEL PERALES CUYA',
+    '',
+    '',
+    '',
+    '2024-11-28 00:00:00',
     NULL,
-    '0.00',
-    '1426.91',
-    '256.84',
-    '1683.75',
-    '2',
-    'https://www.pse.pe/cpe/b8bd5e9b-1ba7-4618-9a82-70c0ca8df487-e28e10e8-a836-469c-8540-ed8f0c8bf2b1.pdf',
-    'https://www.pse.pe/cpe/b8bd5e9b-1ba7-4618-9a82-70c0ca8df487-e28e10e8-a836-469c-8540-ed8f0c8bf2b1.xml',
-    'https://www.pse.pe/cpe/b8bd5e9b-1ba7-4618-9a82-70c0ca8df487-e28e10e8-a836-469c-8540-ed8f0c8bf2b1.cdr',
-    NULL,
+    7.00,
+    7.00,
+    1.26,
+    8.26,
+    '3',
+    'NOK',
+    'NOK',
+    'NOK',
+    '',
     'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
     'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
-    '0',
-    '1683.75',
-    '0.00',
+    '1',
+    8.26,
+    0.00,
     1,
     '1',
     'S/',
     'PEN',
     'S/ ',
-    '1.00',
+    1.00,
+    NULL,
+    '1'
+  ),
+  (
+    2,
+    1,
+    1,
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '46',
+    3,
+    'RUC',
+    '6',
+    '20608147307',
+    1,
+    '01',
+    'EFECTIVO',
+    'TECNOVO PERU SOLUCIONES S.A.C.  ',
+    'CAL. GERMAN SCHEREIBER NRO. 276 INT. 240 URB. SANTA ANA, LIMA - LIMA - SAN ISIDRO',
+    '',
+    '',
+    '2024-11-28 00:00:00',
+    NULL,
+    6.00,
+    6.00,
+    1.08,
+    7.08,
+    '2',
+    'NOK',
+    'NOK',
+    'NOK',
+    '',
+    'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
+    'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
+    '1',
+    7.08,
+    0.00,
+    1,
+    '1',
+    'S/',
+    'PEN',
+    'S/ ',
+    1.00,
+    NULL,
+    '1'
+  ),
+  (
+    3,
+    1,
+    1,
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '47',
+    1,
+    'DNI',
+    '1',
+    '70570251',
+    1,
+    '01',
+    'EFECTIVO',
+    'GONZALO JOSE PEREZ RAMIREZ ',
+    '',
+    '',
+    '',
+    '2024-11-28 00:00:00',
+    NULL,
+    2.00,
+    2.00,
+    0.36,
+    2.36,
+    '1',
+    'NOK',
+    'NOK',
+    'NOK',
+    NULL,
+    'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
+    'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
+    '1',
+    2.36,
+    0.00,
+    1,
+    '1',
+    'S/',
+    'PEN',
+    'S/ ',
+    1.00,
+    NULL,
+    '0'
+  ),
+  (
+    4,
+    1,
+    1,
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '47',
+    1,
+    'DNI',
+    '1',
+    '70470132',
+    1,
+    '01',
+    'EFECTIVO',
+    'GIOVANNA DAMIANA VALLE CALDERON',
+    '',
+    '',
+    '',
+    '2024-11-28 00:00:00',
+    NULL,
+    12.00,
+    12.00,
+    2.16,
+    14.16,
+    '2',
+    'NOK',
+    'NOK',
+    'NOK',
+    '',
+    'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
+    'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
+    '1',
+    14.16,
+    0.00,
+    1,
+    '1',
+    'S/',
+    'PEN',
+    'S/ ',
+    1.00,
+    NULL,
+    '1'
+  ),
+  (
+    5,
+    1,
+    1,
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '48',
+    1,
+    'DNI',
+    '1',
+    '70472318',
+    1,
+    '01',
+    'EFECTIVO',
+    'GREYSI YAMILIT VILCA GELDRES',
+    '',
+    '',
+    '',
+    '2024-11-29 00:00:00',
+    NULL,
+    1.00,
+    1.00,
+    0.18,
+    1.18,
+    '2',
+    'NOK',
+    'NOK',
+    'NOK',
+    '',
+    'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
+    'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
+    '1',
+    1.18,
+    0.00,
+    1,
+    '1',
+    'S/',
+    'PEN',
+    'S/ ',
+    1.00,
+    NULL,
+    '1'
+  ),
+  (
+    6,
+    1,
+    1,
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '49',
+    1,
+    'DNI',
+    '1',
+    '70367121',
+    1,
+    '01',
+    'EFECTIVO',
+    'SOL ARIATNA FLORES ARISTA',
+    '',
+    '',
+    '',
+    '2024-11-29 00:00:00',
+    NULL,
+    4.00,
+    4.00,
+    0.72,
+    4.72,
+    '2',
+    'NOK',
+    'NOK',
+    'NOK',
+    '',
+    'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
+    'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
+    '1',
+    4.72,
+    0.00,
+    1,
+    '1',
+    'S/',
+    'PEN',
+    'S/ ',
+    1.00,
+    NULL,
+    '1'
+  ),
+  (
+    7,
+    1,
+    1,
+    3,
+    'TICKET DE SALIDA',
+    '-',
+    'TIK1',
+    '50',
+    1,
+    'DNI',
+    '1',
+    '70570131',
+    1,
+    '01',
+    'EFECTIVO',
+    'EDUARDO DANIEL PERALES CUYA',
+    '',
+    '',
+    '',
+    '2024-11-29 00:00:00',
+    NULL,
+    1.00,
+    1.00,
+    0.18,
+    1.18,
+    '2',
+    'NOK',
+    'NOK',
+    'NOK',
+    '',
+    'https://www.pse.pe/api/v1/74142b6b76614a74a26d9b8e347d4ff8f3962e1276a9403fae3652c010416ba4',
+    'eyJhbGciOiJIUzI1NiJ9.IjE2NDBjYTc5ODM1MzRkZTdhOWJjNGM3YzAxNmQ5NzRjYzY2MDJiY2RiMjE0NGNjYWEzMGFmODE3MjA1NWJkOGYi.IcO44mj7fdDqzDMhCymLuw0l0PrKfnhAcUwERs_Smjc',
+    '1',
+    1.18,
+    0.00,
+    1,
+    '1',
+    'S/',
+    'PEN',
+    'S/ ',
+    1.00,
     NULL,
     '1'
   );
 
 -- --------------------------------------------------------
 --
--- Stand-in structure for view `vw_mascotas`
--- (See below for the actual view)
+-- Estructura Stand-in para la vista `vw_clientes`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vw_clientes` (
+  `apellidos_cliente` varchar(100),
+  `correo_cliente` varchar(150),
+  `direccion_cliente` varchar(150),
+  `estado` enum('activo', 'inactivo'),
+  `fecha_nacimiento_cliente` date,
+  `id_cliente` bigint unsigned,
+  `id_documento` bigint unsigned,
+  `id_persona` bigint unsigned,
+  `name_documento` varchar(100),
+  `nombres_cliente` varchar(100),
+  `num_documento` varchar(30),
+  `sexo_cliente` enum('masculino', 'femenino'),
+  `src_imagen` varchar(500),
+  `telefono_cliente` varchar(30)
+);
+
+-- --------------------------------------------------------
+--
+-- Estructura Stand-in para la vista `vw_mascotas`
+-- (Véase abajo para la vista actual)
 --
 CREATE TABLE `vw_mascotas` (
-  `id_mascota` bigint(20) unsigned,
-  `id_cliente` bigint(20) unsigned,
-  `id_tipo_mascota` bigint(20) unsigned,
-  `nombre` varchar(100),
-  `raza` varchar(50),
-  `color` varchar(50),
-  `peso` varchar(50),
-  `sexo` enum('hembra', 'macho'),
-  `fecha_nacimiento` date,
-  `observaciones` varchar(1000),
-  `estado` enum('activo', 'inactivo'),
-  `src_imagen` varchar(150),
-  `name_tipo` varchar(50),
-  `name_documento` varchar(100),
-  `id_documento` bigint(20) unsigned,
-  `num_documento` varchar(30),
-  `nombres` varchar(100),
   `apellidos` varchar(100),
+  `color` varchar(50),
+  `correo` varchar(150),
   `direccion` varchar(150),
-  `telefono` varchar(30),
-  `correo` varchar(150)
+  `estado` enum('activo', 'inactivo'),
+  `fecha_nacimiento` date,
+  `id_cliente` bigint unsigned,
+  `id_documento` bigint unsigned,
+  `id_mascota` bigint unsigned,
+  `id_tipo_mascota` bigint unsigned,
+  `name_documento` varchar(100),
+  `name_tipo` varchar(50),
+  `nombre` varchar(100),
+  `nombres` varchar(100),
+  `num_documento` varchar(30),
+  `observaciones` varchar(1000),
+  `peso` varchar(50),
+  `raza` varchar(50),
+  `sexo` enum('hembra', 'macho'),
+  `src_imagen` varchar(150),
+  `telefono` varchar(30)
 );
 
 -- --------------------------------------------------------
 --
--- Stand-in structure for view `vw_orden_compra`
--- (See below for the actual view)
+-- Estructura Stand-in para la vista `vw_operadores`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vw_operadores` (
+  `correo_operador` varchar(150),
+  `direccion_operador` varchar(150),
+  `estado_operador` enum('activo', 'inactivo'),
+  `fecha_nacimiento_operador` date,
+  `id_documento_operador` bigint unsigned,
+  `id_operador` bigint unsigned,
+  `id_persona_operador` bigint unsigned,
+  `nombre_operador` varchar(201),
+  `num_documento_operador` varchar(30),
+  `sexo_operador` enum('masculino', 'femenino'),
+  `src_imagen_operador` varchar(500),
+  `telefono_operador` varchar(30)
+);
+
+-- --------------------------------------------------------
+--
+-- Estructura Stand-in para la vista `vw_orden_compra`
+-- (Véase abajo para la vista actual)
 --
 CREATE TABLE `vw_orden_compra` (
-  `id_orden_compra` int(18),
-  `id_proveedor` int(11),
-  `nombre_proveedor` varchar(201),
-  `src_imagen_proveedor` varchar(300),
-  `id_metodo_envio` int(11),
-  `fecha_orden` datetime,
-  `fecha_entrega` datetime,
-  `observaciones` varchar(500),
-  `id_moneda` int(11),
-  `id_sucursal` int(11),
-  `estado_int` char(1),
+  `cantidad_ingresada` int,
+  `cantidad_solicitada` int,
+  `cod_producto` int,
   `estado` varchar(14),
-  `cod_producto` int(18),
-  `name_tabla` varchar(100),
+  `estado_int` char(1),
+  `fecha_entrega` datetime,
+  `fecha_orden` datetime,
+  `id_metodo_envio` int,
+  `id_moneda` int,
+  `id_orden_compra` int,
+  `id_proveedor` int,
+  `id_sucursal` int,
   `name_producto` varchar(100),
-  `stock` int(11),
-  `precio_unitario` decimal(18, 2),
-  `cantidad_solicitada` int(11),
+  `name_tabla` varchar(100),
+  `nombre_proveedor` varchar(201),
   `notas` varchar(237),
-  `total` decimal(28, 2),
+  `observaciones` varchar(500),
+  `precio_unitario` decimal(18, 2),
   `src_imagen_producto` varchar(150),
-  `cantidad_ingresada` int(11)
+  `src_imagen_proveedor` varchar(300),
+  `stock` int,
+  `total` decimal(28, 2)
 );
 
 -- --------------------------------------------------------
 --
--- Stand-in structure for view `vw_productos_agotados`
--- (See below for the actual view)
+-- Estructura Stand-in para la vista `vw_productos_agotados`
+-- (Véase abajo para la vista actual)
 --
 CREATE TABLE `vw_productos_agotados` (
   `descripcion_producto` varchar(100),
-  `stock` int(11),
-  `stock_minimo` int(11),
+  `name_unidad` varchar(10),
   `nombre_sucursal` varchar(300),
-  `name_unidad` varchar(10)
+  `stock` int,
+  `stock_minimo` int
 );
 
 -- --------------------------------------------------------
 --
--- Stand-in structure for view `vw_proveedor`
--- (See below for the actual view)
+-- Estructura Stand-in para la vista `vw_proveedor`
+-- (Véase abajo para la vista actual)
 --
 CREATE TABLE `vw_proveedor` (
-  `id_proveedor` int(11),
-  `id_persona_proveedor` bigint(20) unsigned,
-  `estado_proveedor` char(1),
-  `id_documento_proveedor` bigint(20) unsigned,
-  `num_documento_proveedor` varchar(30),
-  `nombre_proveedor` varchar(201),
-  `direccion_proveedor` varchar(150),
-  `telefono_proveedor` varchar(30),
   `correo_proveedor` varchar(150),
+  `direccion_proveedor` varchar(150),
+  `estado_proveedor` char(1),
   `fecha_nacimiento_proveedor` date,
+  `id_documento_proveedor` bigint unsigned,
+  `id_persona_proveedor` bigint unsigned,
+  `id_proveedor` int,
+  `nombre_proveedor` varchar(201),
+  `num_documento_proveedor` varchar(30),
   `sexo_proveedor` enum('masculino', 'femenino'),
-  `src_imagen_proveedor` varchar(300)
+  `src_imagen_proveedor` varchar(300),
+  `telefono_proveedor` varchar(30)
 );
 
 -- --------------------------------------------------------
 --
--- Stand-in structure for view `vw_trabajadores`
--- (See below for the actual view)
+-- Estructura Stand-in para la vista `vw_trabajadores`
+-- (Véase abajo para la vista actual)
 --
 CREATE TABLE `vw_trabajadores` (
-  `id_trabajador` bigint(20) unsigned,
-  `id_persona` bigint(20) unsigned,
-  `id_grupo` bigint(20) unsigned,
-  `id_especialidad` bigint(20) unsigned,
-  `name_user` varchar(100),
-  `pass_user` varchar(500),
+  `apellidos_trabajador` varchar(100),
   `cod_recuperacion` varchar(500),
-  `fecha_activacion` date,
-  `fecha_recuperacion` date,
-  `src_imagen` varchar(500),
+  `correo_trabajador` varchar(150),
+  `descripcion` varchar(1000),
+  `direccion_trabajador` varchar(150),
   `estado` enum('activo', 'inactivo'),
+  `fecha_activacion` date,
+  `fecha_nacimiento_trabajador` date,
+  `fecha_recuperacion` date,
   `flag_medico` tinyint(1),
+  `id_documento` bigint unsigned,
+  `id_especialidad` bigint unsigned,
+  `id_grupo` bigint unsigned,
+  `id_persona` bigint unsigned,
+  `id_trabajador` bigint unsigned,
   `link_facebook` varchar(500),
   `link_instagram` varchar(500),
   `link_twitter` varchar(500),
-  `descripcion` varchar(1000),
-  `id_documento` bigint(20) unsigned,
-  `num_documento` varchar(30),
+  `name_documento_trabajador` varchar(100),
+  `name_user` varchar(100),
   `nombres_trabajador` varchar(100),
-  `apellidos_trabajador` varchar(100),
-  `direccion_trabajador` varchar(150),
-  `telefono_trabajador` varchar(30),
-  `correo_trabajador` varchar(150),
-  `fecha_nacimiento_trabajador` date,
+  `num_documento` varchar(30),
+  `pass_user` varchar(500),
   `sexo_trabajador` enum('masculino', 'femenino'),
-  `name_documento_trabajador` varchar(100)
+  `src_imagen` varchar(500),
+  `telefono_trabajador` varchar(30)
 );
 
 -- --------------------------------------------------------
 --
--- Structure for view `vw_mascotas`
+-- Estructura para la vista `vw_clientes`
+--
+DROP TABLE IF EXISTS `vw_clientes`;
+
+CREATE  VIEW `vw_clientes` AS
+SELECT
+  `t`.`id_cliente` AS `id_cliente`,
+  `t`.`id_persona` AS `id_persona`,
+  `t`.`src_imagen` AS `src_imagen`,
+  `t`.`estado` AS `estado`,
+  `p`.`id_documento` AS `id_documento`,
+  `p`.`num_documento` AS `num_documento`,
+  `p`.`nombres` AS `nombres_cliente`,
+  `p`.`apellidos` AS `apellidos_cliente`,
+  `p`.`direccion` AS `direccion_cliente`,
+  `p`.`telefono` AS `telefono_cliente`,
+  `p`.`correo` AS `correo_cliente`,
+  `p`.`fecha_nacimiento` AS `fecha_nacimiento_cliente`,
+  `p`.`sexo` AS `sexo_cliente`,
+  `d`.`name_documento` AS `name_documento`
+FROM
+  (
+    (
+      `tb_cliente` `t`
+      join `tb_persona` `p` on((`p`.`id_persona` = `t`.`id_persona`))
+    )
+    join `tb_documento_identidad` `d` on((`d`.`id_documento` = `p`.`id_documento`))
+  );
+
+-- --------------------------------------------------------
+--
+-- Estructura para la vista `vw_mascotas`
 --
 DROP TABLE IF EXISTS `vw_mascotas`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = `root` @`localhost` SQL SECURITY DEFINER VIEW `vw_mascotas` AS
-select
+CREATE  VIEW `vw_mascotas` AS
+SELECT
   `m`.`id_mascota` AS `id_mascota`,
   `m`.`id_cliente` AS `id_cliente`,
   `m`.`id_tipo_mascota` AS `id_tipo_mascota`,
@@ -3374,7 +4733,7 @@ select
   `p`.`direccion` AS `direccion`,
   `p`.`telefono` AS `telefono`,
   `p`.`correo` AS `correo`
-from
+FROM
   (
     (
       (
@@ -3391,12 +4750,38 @@ from
 
 -- --------------------------------------------------------
 --
--- Structure for view `vw_orden_compra`
+-- Estructura para la vista `vw_operadores`
+--
+DROP TABLE IF EXISTS `vw_operadores`;
+
+CREATE  VIEW `vw_operadores` AS
+SELECT
+  `o`.`id_operador` AS `id_operador`,
+  `o`.`id_persona` AS `id_persona_operador`,
+  `o`.`estado` AS `estado_operador`,
+  `p`.`id_documento` AS `id_documento_operador`,
+  `p`.`num_documento` AS `num_documento_operador`,
+  concat(`p`.`nombres`, ' ', `p`.`apellidos`) AS `nombre_operador`,
+  `p`.`direccion` AS `direccion_operador`,
+  `p`.`telefono` AS `telefono_operador`,
+  `p`.`correo` AS `correo_operador`,
+  `p`.`fecha_nacimiento` AS `fecha_nacimiento_operador`,
+  `p`.`sexo` AS `sexo_operador`,
+  `o`.`src_imagen` AS `src_imagen_operador`
+FROM
+  (
+    `tb_operador` `o`
+    join `tb_persona` `p` on((`o`.`id_persona` = `p`.`id_persona`))
+  );
+
+-- --------------------------------------------------------
+--
+-- Estructura para la vista `vw_orden_compra`
 --
 DROP TABLE IF EXISTS `vw_orden_compra`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = `root` @`localhost` SQL SECURITY DEFINER VIEW `vw_orden_compra` AS
-select
+CREATE  VIEW `vw_orden_compra` AS
+SELECT
   `o`.`id_orden_compra` AS `id_orden_compra`,
   `o`.`id_proveedor` AS `id_proveedor`,
   `pr`.`nombre_proveedor` AS `nombre_proveedor`,
@@ -3408,7 +4793,7 @@ select
   `o`.`id_moneda` AS `id_moneda`,
   `o`.`id_sucursal` AS `id_sucursal`,
   `o`.`estado` AS `estado_int`,
-(
+  (
     case
       when (`o`.`estado` = '0') then 'EN proceso ...'
       when (`o`.`estado` = '1') then 'EN espera ...'
@@ -3422,7 +4807,7 @@ select
   `pro`.`stock` AS `stock`,
   `dc`.`precio_unitario` AS `precio_unitario`,
   `dc`.`cantidad_solicitada` AS `cantidad_solicitada`,
-(
+  (
     case
       when (`dc`.`cantidad_ingresada` > 0) then concat(
         'Ingresaron ',
@@ -3444,12 +4829,12 @@ select
       else `dc`.`notas`
     end
   ) AS `notas`,
-(
+  (
     `dc`.`precio_unitario` * `dc`.`cantidad_solicitada`
   ) AS `total`,
   `pro`.`src_imagen` AS `src_imagen_producto`,
   `dc`.`cantidad_ingresada` AS `cantidad_ingresada`
-from
+FROM
   (
     (
       (
@@ -3538,18 +4923,18 @@ from
 
 -- --------------------------------------------------------
 --
--- Structure for view `vw_productos_agotados`
+-- Estructura para la vista `vw_productos_agotados`
 --
 DROP TABLE IF EXISTS `vw_productos_agotados`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = `root` @`localhost` SQL SECURITY DEFINER VIEW `vw_productos_agotados` AS
-select
+CREATE  VIEW `vw_productos_agotados` AS
+SELECT
   `m`.`name_medicamento` AS `descripcion_producto`,
   `m`.`stock` AS `stock`,
   `m`.`stock_minimo` AS `stock_minimo`,
   `s`.`nombre` AS `nombre_sucursal`,
   `u`.`cod_sunat` AS `name_unidad`
-from
+FROM
   (
     (
       `tb_medicamento` `m`
@@ -3559,7 +4944,7 @@ from
       (`u`.`id_unidad_medida` = `m`.`id_unidad_medida`)
     )
   )
-where
+WHERE
   (`m`.`stock_minimo` >= `m`.`stock`)
 union
 select
@@ -3583,12 +4968,12 @@ where
 
 -- --------------------------------------------------------
 --
--- Structure for view `vw_proveedor`
+-- Estructura para la vista `vw_proveedor`
 --
 DROP TABLE IF EXISTS `vw_proveedor`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = `root` @`localhost` SQL SECURITY DEFINER VIEW `vw_proveedor` AS
-select
+CREATE  VIEW `vw_proveedor` AS
+SELECT
   `pr`.`id_proveedor` AS `id_proveedor`,
   `pr`.`id_persona` AS `id_persona_proveedor`,
   `pr`.`estado` AS `estado_proveedor`,
@@ -3601,7 +4986,7 @@ select
   `p`.`fecha_nacimiento` AS `fecha_nacimiento_proveedor`,
   `p`.`sexo` AS `sexo_proveedor`,
   `pr`.`src_imagen` AS `src_imagen_proveedor`
-from
+FROM
   (
     `tb_persona` `p`
     join `tb_proveedor` `pr` on((`pr`.`id_persona` = `p`.`id_persona`))
@@ -3609,12 +4994,12 @@ from
 
 -- --------------------------------------------------------
 --
--- Structure for view `vw_trabajadores`
+-- Estructura para la vista `vw_trabajadores`
 --
 DROP TABLE IF EXISTS `vw_trabajadores`;
 
-CREATE ALGORITHM = UNDEFINED DEFINER = `root` @`localhost` SQL SECURITY DEFINER VIEW `vw_trabajadores` AS
-select
+CREATE  VIEW `vw_trabajadores` AS
+SELECT
   `t`.`id_trabajador` AS `id_trabajador`,
   `t`.`id_persona` AS `id_persona`,
   `t`.`id_grupo` AS `id_grupo`,
@@ -3641,7 +5026,7 @@ select
   `p`.`fecha_nacimiento` AS `fecha_nacimiento_trabajador`,
   `p`.`sexo` AS `sexo_trabajador`,
   `d`.`name_documento` AS `name_documento_trabajador`
-from
+FROM
   (
     (
       `tb_trabajador` `t`
@@ -3651,10 +5036,10 @@ from
   );
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 --
--- Indexes for table `tb_accesorio`
+-- Indices de la tabla `tb_accesorio`
 --
 ALTER TABLE
   `tb_accesorio`
@@ -3670,7 +5055,7 @@ ADD
   KEY `id_moneda` (`id_moneda`);
 
 --
--- Indexes for table `tb_acceso_opcion`
+-- Indices de la tabla `tb_acceso_opcion`
 --
 ALTER TABLE
   `tb_acceso_opcion`
@@ -3682,7 +5067,7 @@ ADD
   KEY `tb_acceso_opcion_id_opcion_foreign` (`id_opcion`);
 
 --
--- Indexes for table `tb_categoria_accesorio`
+-- Indices de la tabla `tb_categoria_accesorio`
 --
 ALTER TABLE
   `tb_categoria_accesorio`
@@ -3690,7 +5075,7 @@ ADD
   PRIMARY KEY (`id_categoria`);
 
 --
--- Indexes for table `tb_cita`
+-- Indices de la tabla `tb_cita`
 --
 ALTER TABLE
   `tb_cita`
@@ -3701,12 +5086,10 @@ ADD
 ADD
   KEY `tb_cita_id_servicio_foreign` (`id_servicio`),
 ADD
-  KEY `tb_cita_id_mascota_foreign` (`id_mascota`),
-ADD
   KEY `id_sucursal` (`id_sucursal`);
 
 --
--- Indexes for table `tb_cliente`
+-- Indices de la tabla `tb_cliente`
 --
 ALTER TABLE
   `tb_cliente`
@@ -3718,7 +5101,15 @@ ADD
   KEY `tb_cliente_id_persona_foreign` (`id_persona`);
 
 --
--- Indexes for table `tb_compra`
+-- Indices de la tabla `tb_cliente_fundo`
+--
+ALTER TABLE
+  `tb_cliente_fundo`
+ADD
+  PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `tb_compra`
 --
 ALTER TABLE
   `tb_compra`
@@ -3740,7 +5131,7 @@ ADD
   KEY `id_moneda` (`id_moneda`);
 
 --
--- Indexes for table `tb_detalle_cita`
+-- Indices de la tabla `tb_detalle_cita`
 --
 ALTER TABLE
   `tb_detalle_cita`
@@ -3750,7 +5141,7 @@ ADD
   KEY `id_cita` (`id_cita`);
 
 --
--- Indexes for table `tb_detalle_compra`
+-- Indices de la tabla `tb_detalle_compra`
 --
 ALTER TABLE
   `tb_detalle_compra`
@@ -3758,7 +5149,7 @@ ADD
   PRIMARY KEY (`id_detalle`);
 
 --
--- Indexes for table `tb_detalle_ingreso`
+-- Indices de la tabla `tb_detalle_ingreso`
 --
 ALTER TABLE
   `tb_detalle_ingreso`
@@ -3766,7 +5157,7 @@ ADD
   PRIMARY KEY (`id_detalle`);
 
 --
--- Indexes for table `tb_detalle_venta`
+-- Indices de la tabla `tb_detalle_venta`
 --
 ALTER TABLE
   `tb_detalle_venta`
@@ -3776,7 +5167,7 @@ ADD
   KEY `id_venta` (`id_venta`);
 
 --
--- Indexes for table `tb_documento_identidad`
+-- Indices de la tabla `tb_documento_identidad`
 --
 ALTER TABLE
   `tb_documento_identidad`
@@ -3784,7 +5175,7 @@ ADD
   PRIMARY KEY (`id_documento`);
 
 --
--- Indexes for table `tb_documento_venta`
+-- Indices de la tabla `tb_documento_venta`
 --
 ALTER TABLE
   `tb_documento_venta`
@@ -3794,7 +5185,7 @@ ADD
   KEY `id_sucursal` (`id_sucursal`);
 
 --
--- Indexes for table `tb_empresa`
+-- Indices de la tabla `tb_empresa`
 --
 ALTER TABLE
   `tb_empresa`
@@ -3806,7 +5197,7 @@ ADD
   KEY `tb_empresa_id_documento_representante_foreign` (`id_documento_representante`);
 
 --
--- Indexes for table `tb_especialidad`
+-- Indices de la tabla `tb_especialidad`
 --
 ALTER TABLE
   `tb_especialidad`
@@ -3814,7 +5205,7 @@ ADD
   PRIMARY KEY (`id_especialidad`);
 
 --
--- Indexes for table `tb_forma_pago`
+-- Indices de la tabla `tb_forma_pago`
 --
 ALTER TABLE
   `tb_forma_pago`
@@ -3822,7 +5213,7 @@ ADD
   PRIMARY KEY (`id_forma_pago`);
 
 --
--- Indexes for table `tb_galeria`
+-- Indices de la tabla `tb_galeria`
 --
 ALTER TABLE
   `tb_galeria`
@@ -3830,7 +5221,7 @@ ADD
   PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tb_grupo_usuario`
+-- Indices de la tabla `tb_grupo_usuario`
 --
 ALTER TABLE
   `tb_grupo_usuario`
@@ -3838,7 +5229,7 @@ ADD
   PRIMARY KEY (`id_grupo`);
 
 --
--- Indexes for table `tb_ingreso`
+-- Indices de la tabla `tb_ingreso`
 --
 ALTER TABLE
   `tb_ingreso`
@@ -3846,7 +5237,15 @@ ADD
   PRIMARY KEY (`id_ingreso`);
 
 --
--- Indexes for table `tb_mascota`
+-- Indices de la tabla `tb_maquinaria`
+--
+ALTER TABLE
+  `tb_maquinaria`
+ADD
+  PRIMARY KEY (`id_maquinaria`);
+
+--
+-- Indices de la tabla `tb_mascota`
 --
 ALTER TABLE
   `tb_mascota`
@@ -3858,7 +5257,7 @@ ADD
   KEY `tb_mascota_id_tipo_mascota_foreign` (`id_tipo_mascota`);
 
 --
--- Indexes for table `tb_mascota_vacuna`
+-- Indices de la tabla `tb_mascota_vacuna`
 --
 ALTER TABLE
   `tb_mascota_vacuna`
@@ -3870,7 +5269,7 @@ ADD
   KEY `tb_mascota_vacuna_id_vacuna_foreign` (`id_vacuna`);
 
 --
--- Indexes for table `tb_medicamento`
+-- Indices de la tabla `tb_medicamento`
 --
 ALTER TABLE
   `tb_medicamento`
@@ -3886,7 +5285,7 @@ ADD
   KEY `id_moneda` (`id_moneda`);
 
 --
--- Indexes for table `tb_metodo_envio`
+-- Indices de la tabla `tb_metodo_envio`
 --
 ALTER TABLE
   `tb_metodo_envio`
@@ -3894,7 +5293,7 @@ ADD
   PRIMARY KEY (`id_metodo_envio`);
 
 --
--- Indexes for table `tb_moneda`
+-- Indices de la tabla `tb_moneda`
 --
 ALTER TABLE
   `tb_moneda`
@@ -3902,7 +5301,7 @@ ADD
   PRIMARY KEY (`id_moneda`);
 
 --
--- Indexes for table `tb_opcion`
+-- Indices de la tabla `tb_opcion`
 --
 ALTER TABLE
   `tb_opcion`
@@ -3910,7 +5309,7 @@ ADD
   PRIMARY KEY (`id_opcion`);
 
 --
--- Indexes for table `tb_orden_compra`
+-- Indices de la tabla `tb_orden_compra`
 --
 ALTER TABLE
   `tb_orden_compra`
@@ -3918,7 +5317,7 @@ ADD
   PRIMARY KEY (`id_orden_compra`);
 
 --
--- Indexes for table `tb_parametros_generales`
+-- Indices de la tabla `tb_parametros_generales`
 --
 ALTER TABLE
   `tb_parametros_generales`
@@ -3926,7 +5325,7 @@ ADD
   PRIMARY KEY (`id_parametro`);
 
 --
--- Indexes for table `tb_persona`
+-- Indices de la tabla `tb_persona`
 --
 ALTER TABLE
   `tb_persona`
@@ -3936,7 +5335,7 @@ ADD
   KEY `tb_persona_id_documento_num_documento_index` (`id_documento`, `num_documento`);
 
 --
--- Indexes for table `tb_promocion`
+-- Indices de la tabla `tb_promocion`
 --
 ALTER TABLE
   `tb_promocion`
@@ -3946,7 +5345,7 @@ ADD
   KEY `id_cliente` (`id_cliente`);
 
 --
--- Indexes for table `tb_proveedor`
+-- Indices de la tabla `tb_proveedor`
 --
 ALTER TABLE
   `tb_proveedor`
@@ -3956,7 +5355,7 @@ ADD
   KEY `id_persona` (`id_persona`);
 
 --
--- Indexes for table `tb_proveedor_observaciones`
+-- Indices de la tabla `tb_proveedor_observaciones`
 --
 ALTER TABLE
   `tb_proveedor_observaciones`
@@ -3966,7 +5365,7 @@ ADD
   KEY `id_proveedor` (`id_proveedor`);
 
 --
--- Indexes for table `tb_servicio`
+-- Indices de la tabla `tb_servicio`
 --
 ALTER TABLE
   `tb_servicio`
@@ -3975,10 +5374,12 @@ ADD
 ADD
   KEY `fk_tbtiposervicio_servicio` (`id_tipo_servicio`),
 ADD
-  KEY `id_moneda` (`id_moneda`);
+  KEY `id_moneda` (`id_moneda`),
+ADD
+  KEY `fk_id_maquinaria` (`id_maquinaria`);
 
 --
--- Indexes for table `tb_sucursal`
+-- Indices de la tabla `tb_sucursal`
 --
 ALTER TABLE
   `tb_sucursal`
@@ -3988,7 +5389,7 @@ ADD
   KEY `id_empresa` (`id_empresa`);
 
 --
--- Indexes for table `tb_tipo_cambio`
+-- Indices de la tabla `tb_tipo_cambio`
 --
 ALTER TABLE
   `tb_tipo_cambio`
@@ -3998,7 +5399,7 @@ ADD
   KEY `id_moneda` (`id_moneda`);
 
 --
--- Indexes for table `tb_tipo_mascota`
+-- Indices de la tabla `tb_tipo_mascota`
 --
 ALTER TABLE
   `tb_tipo_mascota`
@@ -4006,7 +5407,7 @@ ADD
   PRIMARY KEY (`id_tipo_mascota`);
 
 --
--- Indexes for table `tb_tipo_medicamento`
+-- Indices de la tabla `tb_tipo_medicamento`
 --
 ALTER TABLE
   `tb_tipo_medicamento`
@@ -4014,7 +5415,7 @@ ADD
   PRIMARY KEY (`id_tipo_medicamento`);
 
 --
--- Indexes for table `tb_tipo_servicio`
+-- Indices de la tabla `tb_tipo_servicio`
 --
 ALTER TABLE
   `tb_tipo_servicio`
@@ -4022,7 +5423,7 @@ ADD
   PRIMARY KEY (`id_tipo_servicio`);
 
 --
--- Indexes for table `tb_trabajador`
+-- Indices de la tabla `tb_trabajador`
 --
 ALTER TABLE
   `tb_trabajador`
@@ -4038,7 +5439,7 @@ ADD
   KEY `fktb_trabajador_tbespecialidad` (`id_especialidad`);
 
 --
--- Indexes for table `tb_trabajador_servicio`
+-- Indices de la tabla `tb_trabajador_servicio`
 --
 ALTER TABLE
   `tb_trabajador_servicio`
@@ -4050,7 +5451,7 @@ ADD
   KEY `tb_trabajador_servicio_id_trabajador_foreign` (`id_trabajador`);
 
 --
--- Indexes for table `tb_trabajador_sucursal`
+-- Indices de la tabla `tb_trabajador_sucursal`
 --
 ALTER TABLE
   `tb_trabajador_sucursal`
@@ -4062,7 +5463,7 @@ ADD
   KEY `id_sucursal` (`id_sucursal`);
 
 --
--- Indexes for table `tb_unidad_medida`
+-- Indices de la tabla `tb_unidad_medida`
 --
 ALTER TABLE
   `tb_unidad_medida`
@@ -4070,7 +5471,7 @@ ADD
   PRIMARY KEY (`id_unidad_medida`);
 
 --
--- Indexes for table `tb_vacuna`
+-- Indices de la tabla `tb_vacuna`
 --
 ALTER TABLE
   `tb_vacuna`
@@ -4080,7 +5481,7 @@ ADD
   KEY `tb_vacuna_id_tipo_mascota_foreign` (`id_tipo_mascota`);
 
 --
--- Indexes for table `tb_venta`
+-- Indices de la tabla `tb_venta`
 --
 ALTER TABLE
   `tb_venta`
@@ -4102,334 +5503,348 @@ ADD
   KEY `id_moneda` (`id_moneda`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 --
--- AUTO_INCREMENT for table `tb_accesorio`
+-- AUTO_INCREMENT de la tabla `tb_accesorio`
 --
 ALTER TABLE
   `tb_accesorio`
 MODIFY
-  `id_accesorio` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_accesorio` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 9;
 
 --
--- AUTO_INCREMENT for table `tb_acceso_opcion`
+-- AUTO_INCREMENT de la tabla `tb_acceso_opcion`
 --
 ALTER TABLE
   `tb_acceso_opcion`
 MODIFY
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 432;
 
 --
--- AUTO_INCREMENT for table `tb_categoria_accesorio`
+-- AUTO_INCREMENT de la tabla `tb_categoria_accesorio`
 --
 ALTER TABLE
   `tb_categoria_accesorio`
 MODIFY
-  `id_categoria` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_categoria` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `tb_cita`
+-- AUTO_INCREMENT de la tabla `tb_cita`
 --
 ALTER TABLE
   `tb_cita`
 MODIFY
-  `id_cita` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 4;
+  `id_cita` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 13;
 
 --
--- AUTO_INCREMENT for table `tb_cliente`
+-- AUTO_INCREMENT de la tabla `tb_cliente`
 --
 ALTER TABLE
   `tb_cliente`
 MODIFY
-  `id_cliente` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 2;
+  `id_cliente` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 24;
 
 --
--- AUTO_INCREMENT for table `tb_compra`
+-- AUTO_INCREMENT de la tabla `tb_cliente_fundo`
+--
+ALTER TABLE
+  `tb_cliente_fundo`
+MODIFY
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 3;
+
+--
+-- AUTO_INCREMENT de la tabla `tb_compra`
 --
 ALTER TABLE
   `tb_compra`
 MODIFY
-  `id_compra` int(11) NOT NULL AUTO_INCREMENT;
+  `id_compra` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tb_detalle_cita`
+-- AUTO_INCREMENT de la tabla `tb_detalle_cita`
 --
 ALTER TABLE
   `tb_detalle_cita`
 MODIFY
-  `id_detalle` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 4;
+  `id_detalle` bigint NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 13;
 
 --
--- AUTO_INCREMENT for table `tb_detalle_compra`
+-- AUTO_INCREMENT de la tabla `tb_detalle_compra`
 --
 ALTER TABLE
   `tb_detalle_compra`
 MODIFY
-  `id_detalle` bigint(20) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 25;
+  `id_detalle` bigint NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 32;
 
 --
--- AUTO_INCREMENT for table `tb_detalle_ingreso`
+-- AUTO_INCREMENT de la tabla `tb_detalle_ingreso`
 --
 ALTER TABLE
   `tb_detalle_ingreso`
 MODIFY
-  `id_detalle` bigint(20) NOT NULL AUTO_INCREMENT;
+  `id_detalle` bigint NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 6;
 
 --
--- AUTO_INCREMENT for table `tb_documento_identidad`
+-- AUTO_INCREMENT de la tabla `tb_documento_identidad`
 --
 ALTER TABLE
   `tb_documento_identidad`
 MODIFY
-  `id_documento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_documento` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 6;
 
 --
--- AUTO_INCREMENT for table `tb_documento_venta`
+-- AUTO_INCREMENT de la tabla `tb_documento_venta`
 --
 ALTER TABLE
   `tb_documento_venta`
 MODIFY
-  `id_documento_venta` int(11) NOT NULL AUTO_INCREMENT,
+  `id_documento_venta` int NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_empresa`
+-- AUTO_INCREMENT de la tabla `tb_empresa`
 --
 ALTER TABLE
   `tb_empresa`
 MODIFY
-  `id_empresa` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_empresa` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 2;
 
 --
--- AUTO_INCREMENT for table `tb_especialidad`
+-- AUTO_INCREMENT de la tabla `tb_especialidad`
 --
 ALTER TABLE
   `tb_especialidad`
 MODIFY
-  `id_especialidad` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_especialidad` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 10;
 
 --
--- AUTO_INCREMENT for table `tb_forma_pago`
+-- AUTO_INCREMENT de la tabla `tb_forma_pago`
 --
 ALTER TABLE
   `tb_forma_pago`
 MODIFY
-  `id_forma_pago` int(11) NOT NULL AUTO_INCREMENT,
+  `id_forma_pago` int NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `tb_galeria`
+-- AUTO_INCREMENT de la tabla `tb_galeria`
 --
 ALTER TABLE
   `tb_galeria`
 MODIFY
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 6;
 
 --
--- AUTO_INCREMENT for table `tb_grupo_usuario`
+-- AUTO_INCREMENT de la tabla `tb_grupo_usuario`
 --
 ALTER TABLE
   `tb_grupo_usuario`
 MODIFY
-  `id_grupo` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_grupo` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_mascota`
+-- AUTO_INCREMENT de la tabla `tb_maquinaria`
+--
+ALTER TABLE
+  `tb_maquinaria`
+MODIFY
+  `id_maquinaria` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 5;
+
+--
+-- AUTO_INCREMENT de la tabla `tb_mascota`
 --
 ALTER TABLE
   `tb_mascota`
 MODIFY
-  `id_mascota` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_mascota` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 2;
 
 --
--- AUTO_INCREMENT for table `tb_mascota_vacuna`
+-- AUTO_INCREMENT de la tabla `tb_mascota_vacuna`
 --
 ALTER TABLE
   `tb_mascota_vacuna`
 MODIFY
-  `id_mascota_vacuna` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_mascota_vacuna` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `tb_medicamento`
+-- AUTO_INCREMENT de la tabla `tb_medicamento`
 --
 ALTER TABLE
   `tb_medicamento`
 MODIFY
-  `id_medicamento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_medicamento` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_moneda`
+-- AUTO_INCREMENT de la tabla `tb_moneda`
 --
 ALTER TABLE
   `tb_moneda`
 MODIFY
-  `id_moneda` int(11) NOT NULL AUTO_INCREMENT,
+  `id_moneda` int NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_persona`
+-- AUTO_INCREMENT de la tabla `tb_persona`
 --
 ALTER TABLE
   `tb_persona`
 MODIFY
-  `id_persona` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 6;
+  `id_persona` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 29;
 
 --
--- AUTO_INCREMENT for table `tb_promocion`
+-- AUTO_INCREMENT de la tabla `tb_promocion`
 --
 ALTER TABLE
   `tb_promocion`
 MODIFY
-  `id_promocion` int(11) NOT NULL AUTO_INCREMENT;
+  `id_promocion` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tb_proveedor`
+-- AUTO_INCREMENT de la tabla `tb_proveedor`
 --
 ALTER TABLE
   `tb_proveedor`
 MODIFY
-  `id_proveedor` int(11) NOT NULL AUTO_INCREMENT,
+  `id_proveedor` int NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 2;
 
 --
--- AUTO_INCREMENT for table `tb_proveedor_observaciones`
+-- AUTO_INCREMENT de la tabla `tb_proveedor_observaciones`
 --
 ALTER TABLE
   `tb_proveedor_observaciones`
 MODIFY
-  `id_detalle` bigint(20) NOT NULL AUTO_INCREMENT;
+  `id_detalle` bigint NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tb_servicio`
+-- AUTO_INCREMENT de la tabla `tb_servicio`
 --
 ALTER TABLE
   `tb_servicio`
 MODIFY
-  `id_servicio` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_servicio` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 8;
 
 --
--- AUTO_INCREMENT for table `tb_sucursal`
+-- AUTO_INCREMENT de la tabla `tb_sucursal`
 --
 ALTER TABLE
   `tb_sucursal`
 MODIFY
-  `id_sucursal` int(11) NOT NULL AUTO_INCREMENT,
+  `id_sucursal` int NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 2;
 
 --
--- AUTO_INCREMENT for table `tb_tipo_cambio`
+-- AUTO_INCREMENT de la tabla `tb_tipo_cambio`
 --
 ALTER TABLE
   `tb_tipo_cambio`
 MODIFY
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 3;
+  `id` int NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_tipo_mascota`
+-- AUTO_INCREMENT de la tabla `tb_tipo_mascota`
 --
 ALTER TABLE
   `tb_tipo_mascota`
 MODIFY
-  `id_tipo_mascota` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_tipo_mascota` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_tipo_medicamento`
+-- AUTO_INCREMENT de la tabla `tb_tipo_medicamento`
 --
 ALTER TABLE
   `tb_tipo_medicamento`
 MODIFY
-  `id_tipo_medicamento` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_tipo_medicamento` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 7;
 
 --
--- AUTO_INCREMENT for table `tb_tipo_servicio`
+-- AUTO_INCREMENT de la tabla `tb_tipo_servicio`
 --
 ALTER TABLE
   `tb_tipo_servicio`
 MODIFY
-  `id_tipo_servicio` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_tipo_servicio` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 11;
 
 --
--- AUTO_INCREMENT for table `tb_trabajador`
+-- AUTO_INCREMENT de la tabla `tb_trabajador`
 --
 ALTER TABLE
   `tb_trabajador`
 MODIFY
-  `id_trabajador` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_trabajador` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_trabajador_servicio`
+-- AUTO_INCREMENT de la tabla `tb_trabajador_servicio`
 --
 ALTER TABLE
   `tb_trabajador_servicio`
 MODIFY
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 8;
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 29;
 
 --
--- AUTO_INCREMENT for table `tb_trabajador_sucursal`
+-- AUTO_INCREMENT de la tabla `tb_trabajador_sucursal`
 --
 ALTER TABLE
   `tb_trabajador_sucursal`
 MODIFY
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `id` bigint NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 4;
 
 --
--- AUTO_INCREMENT for table `tb_unidad_medida`
+-- AUTO_INCREMENT de la tabla `tb_unidad_medida`
 --
 ALTER TABLE
   `tb_unidad_medida`
 MODIFY
-  `id_unidad_medida` int(11) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 4;
+  `id_unidad_medida` int NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 5;
 
 --
--- AUTO_INCREMENT for table `tb_vacuna`
+-- AUTO_INCREMENT de la tabla `tb_vacuna`
 --
 ALTER TABLE
   `tb_vacuna`
 MODIFY
-  `id_vacuna` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id_vacuna` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 11;
 
 --
--- AUTO_INCREMENT for table `tb_venta`
+-- AUTO_INCREMENT de la tabla `tb_venta`
 --
 ALTER TABLE
   `tb_venta`
 MODIFY
-  `id_venta` int(11) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 2;
+  `id_venta` int NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 22;
 
---
--- Constraints for dumped tables
---
---
--- Constraints for table `tb_accesorio`
---
+
 ALTER TABLE
   `tb_accesorio`
 ADD
@@ -4442,7 +5857,7 @@ ADD
   CONSTRAINT `tb_accesorio_id_categoria_foreign` FOREIGN KEY (`id_categoria`) REFERENCES `tb_categoria_accesorio` (`id_categoria`);
 
 --
--- Constraints for table `tb_acceso_opcion`
+-- Filtros para la tabla `tb_acceso_opcion`
 --
 ALTER TABLE
   `tb_acceso_opcion`
@@ -4452,21 +5867,19 @@ ADD
   CONSTRAINT `tb_acceso_opcion_id_opcion_foreign` FOREIGN KEY (`id_opcion`) REFERENCES `tb_opcion` (`id_opcion`);
 
 --
--- Constraints for table `tb_cita`
+-- Filtros para la tabla `tb_cita`
 --
 ALTER TABLE
   `tb_cita`
 ADD
   CONSTRAINT `tb_cita_ibfk_1` FOREIGN KEY (`id_sucursal`) REFERENCES `tb_sucursal` (`id_sucursal`),
 ADD
-  CONSTRAINT `tb_cita_id_mascota_foreign` FOREIGN KEY (`id_mascota`) REFERENCES `tb_mascota` (`id_mascota`),
-ADD
   CONSTRAINT `tb_cita_id_servicio_foreign` FOREIGN KEY (`id_servicio`) REFERENCES `tb_servicio` (`id_servicio`),
 ADD
   CONSTRAINT `tb_cita_id_trabajador_foreign` FOREIGN KEY (`id_trabajador`) REFERENCES `tb_trabajador` (`id_trabajador`);
 
 --
--- Constraints for table `tb_cliente`
+-- Filtros para la tabla `tb_cliente`
 --
 ALTER TABLE
   `tb_cliente`
@@ -4474,7 +5887,7 @@ ADD
   CONSTRAINT `tb_cliente_id_persona_foreign` FOREIGN KEY (`id_persona`) REFERENCES `tb_persona` (`id_persona`);
 
 --
--- Constraints for table `tb_compra`
+-- Filtros para la tabla `tb_compra`
 --
 ALTER TABLE
   `tb_compra`
@@ -4484,7 +5897,7 @@ ADD
   CONSTRAINT `tb_compra_ibfk_2` FOREIGN KEY (`id_trabajador`) REFERENCES `tb_trabajador` (`id_trabajador`);
 
 --
--- Constraints for table `tb_detalle_cita`
+-- Filtros para la tabla `tb_detalle_cita`
 --
 ALTER TABLE
   `tb_detalle_cita`
@@ -4492,7 +5905,7 @@ ADD
   CONSTRAINT `tb_detalle_cita_ibfk_1` FOREIGN KEY (`id_cita`) REFERENCES `tb_cita` (`id_cita`);
 
 --
--- Constraints for table `tb_detalle_venta`
+-- Filtros para la tabla `tb_detalle_venta`
 --
 ALTER TABLE
   `tb_detalle_venta`
@@ -4500,7 +5913,7 @@ ADD
   CONSTRAINT `tb_detalle_venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `tb_venta` (`id_venta`);
 
 --
--- Constraints for table `tb_documento_venta`
+-- Filtros para la tabla `tb_documento_venta`
 --
 ALTER TABLE
   `tb_documento_venta`
@@ -4508,7 +5921,7 @@ ADD
   CONSTRAINT `tb_documento_venta_ibfk_1` FOREIGN KEY (`id_sucursal`) REFERENCES `tb_sucursal` (`id_sucursal`);
 
 --
--- Constraints for table `tb_empresa`
+-- Filtros para la tabla `tb_empresa`
 --
 ALTER TABLE
   `tb_empresa`
@@ -4518,7 +5931,7 @@ ADD
   CONSTRAINT `tb_empresa_id_documento_representante_foreign` FOREIGN KEY (`id_documento_representante`) REFERENCES `tb_documento_identidad` (`id_documento`);
 
 --
--- Constraints for table `tb_mascota`
+-- Filtros para la tabla `tb_mascota`
 --
 ALTER TABLE
   `tb_mascota`
@@ -4528,7 +5941,7 @@ ADD
   CONSTRAINT `tb_mascota_id_tipo_mascota_foreign` FOREIGN KEY (`id_tipo_mascota`) REFERENCES `tb_tipo_mascota` (`id_tipo_mascota`);
 
 --
--- Constraints for table `tb_mascota_vacuna`
+-- Filtros para la tabla `tb_mascota_vacuna`
 --
 ALTER TABLE
   `tb_mascota_vacuna`
@@ -4538,7 +5951,7 @@ ADD
   CONSTRAINT `tb_mascota_vacuna_id_vacuna_foreign` FOREIGN KEY (`id_vacuna`) REFERENCES `tb_vacuna` (`id_vacuna`);
 
 --
--- Constraints for table `tb_medicamento`
+-- Filtros para la tabla `tb_medicamento`
 --
 ALTER TABLE
   `tb_medicamento`
@@ -4552,7 +5965,7 @@ ADD
   CONSTRAINT `tb_medicamento_id_tipo_medicamento_foreign` FOREIGN KEY (`id_tipo_medicamento`) REFERENCES `tb_tipo_medicamento` (`id_tipo_medicamento`);
 
 --
--- Constraints for table `tb_persona`
+-- Filtros para la tabla `tb_persona`
 --
 ALTER TABLE
   `tb_persona`
@@ -4560,7 +5973,7 @@ ADD
   CONSTRAINT `fk_tbpersona_documento_ident` FOREIGN KEY (`id_documento`) REFERENCES `tb_documento_identidad` (`id_documento`);
 
 --
--- Constraints for table `tb_promocion`
+-- Filtros para la tabla `tb_promocion`
 --
 ALTER TABLE
   `tb_promocion`
@@ -4568,7 +5981,7 @@ ADD
   CONSTRAINT `tb_promocion_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `tb_cliente` (`id_cliente`);
 
 --
--- Constraints for table `tb_proveedor`
+-- Filtros para la tabla `tb_proveedor`
 --
 ALTER TABLE
   `tb_proveedor`
@@ -4576,7 +5989,7 @@ ADD
   CONSTRAINT `tb_proveedor_ibfk_1` FOREIGN KEY (`id_persona`) REFERENCES `tb_persona` (`id_persona`);
 
 --
--- Constraints for table `tb_proveedor_observaciones`
+-- Filtros para la tabla `tb_proveedor_observaciones`
 --
 ALTER TABLE
   `tb_proveedor_observaciones`
@@ -4584,17 +5997,19 @@ ADD
   CONSTRAINT `tb_proveedor_observaciones_ibfk_1` FOREIGN KEY (`id_proveedor`) REFERENCES `tb_proveedor` (`id_proveedor`);
 
 --
--- Constraints for table `tb_servicio`
+-- Filtros para la tabla `tb_servicio`
 --
 ALTER TABLE
   `tb_servicio`
+ADD
+  CONSTRAINT `fk_id_maquinaria` FOREIGN KEY (`id_maquinaria`) REFERENCES `tb_maquinaria` (`id_maquinaria`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD
   CONSTRAINT `fk_tbtiposervicio_servicio` FOREIGN KEY (`id_tipo_servicio`) REFERENCES `tb_tipo_servicio` (`id_tipo_servicio`),
 ADD
   CONSTRAINT `tb_servicio_ibfk_1` FOREIGN KEY (`id_moneda`) REFERENCES `tb_moneda` (`id_moneda`);
 
 --
--- Constraints for table `tb_sucursal`
+-- Filtros para la tabla `tb_sucursal`
 --
 ALTER TABLE
   `tb_sucursal`
@@ -4602,7 +6017,7 @@ ADD
   CONSTRAINT `tb_sucursal_ibfk_1` FOREIGN KEY (`id_empresa`) REFERENCES `tb_empresa` (`id_empresa`);
 
 --
--- Constraints for table `tb_tipo_cambio`
+-- Filtros para la tabla `tb_tipo_cambio`
 --
 ALTER TABLE
   `tb_tipo_cambio`
@@ -4610,7 +6025,7 @@ ADD
   CONSTRAINT `tb_tipo_cambio_ibfk_1` FOREIGN KEY (`id_moneda`) REFERENCES `tb_moneda` (`id_moneda`);
 
 --
--- Constraints for table `tb_trabajador`
+-- Filtros para la tabla `tb_trabajador`
 --
 ALTER TABLE
   `tb_trabajador`
@@ -4622,7 +6037,7 @@ ADD
   CONSTRAINT `fktb_trabajador_tbgrupousuario` FOREIGN KEY (`id_grupo`) REFERENCES `tb_grupo_usuario` (`id_grupo`);
 
 --
--- Constraints for table `tb_trabajador_servicio`
+-- Filtros para la tabla `tb_trabajador_servicio`
 --
 ALTER TABLE
   `tb_trabajador_servicio`
@@ -4632,7 +6047,7 @@ ADD
   CONSTRAINT `tb_trabajador_servicio_id_trabajador_foreign` FOREIGN KEY (`id_trabajador`) REFERENCES `tb_trabajador` (`id_trabajador`);
 
 --
--- Constraints for table `tb_trabajador_sucursal`
+-- Filtros para la tabla `tb_trabajador_sucursal`
 --
 ALTER TABLE
   `tb_trabajador_sucursal`
@@ -4642,7 +6057,7 @@ ADD
   CONSTRAINT `tb_trabajador_sucursal_ibfk_2` FOREIGN KEY (`id_trabajador`) REFERENCES `tb_trabajador` (`id_trabajador`);
 
 --
--- Constraints for table `tb_vacuna`
+-- Filtros para la tabla `tb_vacuna`
 --
 ALTER TABLE
   `tb_vacuna`
@@ -4650,7 +6065,7 @@ ADD
   CONSTRAINT `tb_vacuna_id_tipo_mascota_foreign` FOREIGN KEY (`id_tipo_mascota`) REFERENCES `tb_tipo_mascota` (`id_tipo_mascota`);
 
 --
--- Constraints for table `tb_venta`
+-- Filtros para la tabla `tb_venta`
 --
 ALTER TABLE
   `tb_venta`
@@ -4660,12 +6075,3 @@ ADD
   CONSTRAINT `tb_venta_ibfk_2` FOREIGN KEY (`id_trabajador`) REFERENCES `tb_trabajador` (`id_trabajador`);
 
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */
-;
-
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */
-;
-
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */
-;
