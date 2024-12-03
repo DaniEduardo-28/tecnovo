@@ -363,8 +363,8 @@
                                           <div class="row">
                                             <div class="form-group col-md-12">
                                               <button type="submit" name="btnSave" id="btnSave" name="button" class="btn btn-success float-right"> <span class="fa fa-save"></span> Guardar</button>
-                                              <button type="submit" name="btnSaveBorrador" id="btnSaveBorrador" name="button" class="btn btn-warning float-right"> <span class="fa fa-save"></span> Guardar Borrador</button>
-                                              <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-arrow-left"></span> Volver</button>
+<!--                                               <button type="submit" name="btnSaveBorrador" id="btnSaveBorrador" name="button" class="btn btn-warning float-right"> <span class="fa fa-save"></span> Guardar Borrador</button>
+ -->                                              <button type="reset" name="btnCancel" id="btnCancel" name="button" class="btn btn-danger float-right"> <span class="fa fa-arrow-left"></span> Volver</button>
                                             </div>
                                           </div>
 

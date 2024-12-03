@@ -260,7 +260,7 @@ class ClassOrdenVenta extends Conexion
 					$parametros[] = $valor;
 					break;
 				case 'producto':
-					$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? ";
+					$sql .= "SELECT count(*) as cantidad FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? AND flag_consumo = 'SI'";
 					$parametros[] = $id_sucursal;
 					$parametros[] = $valor;
 					break;
@@ -332,7 +332,7 @@ class ClassOrdenVenta extends Conexion
 				case 'producto':
 					$sql .= "SELECT name_accesorio as descripcion,id_accesorio as cod_producto,
 										id_moneda,precio_venta as precio_unitario
-										FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? ";
+										FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? AND flag_consumo ='SI'";
 					$parametros[] = $id_sucursal;
 					$parametros[] = $valor;
 					break;
@@ -1549,7 +1549,7 @@ class ClassOrdenVenta extends Conexion
 
 						switch ($name_tabla) {
 							case 'producto':
-								$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_accesorio = ?");
+								$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_accesorio = ? AND flag_consumo = 'SI'");
 								$stmt->execute([$codigo_producto]);
 								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 								if (count($result) == 0) {
@@ -2116,7 +2116,7 @@ class ClassOrdenVenta extends Conexion
 
 						switch ($name_tabla) {
 							case 'producto':
-								$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_accesorio = ?");
+								$stmt = $conexion->prepare("SELECT * FROM `tb_accesorio` WHERE id_accesorio = ? AND flag_consumo = 'SI'");
 								$stmt->execute([$codigo_producto]);
 								$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 								if (count($result) == 0) {

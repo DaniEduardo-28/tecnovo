@@ -10,3 +10,6 @@ UPDATE `tb_opcion` SET `name_opcion` = 'Reporte de Clientes', `estado` = 'activo
 ALTER TABLE `tb_documento_venta` ADD `flag_ingreso` CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `flag_doc_interno`, 
 ADD `flag_salida` CHAR(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `flag_ingreso`;
 
+-- Añadir comprobante de boleta o factura en el registro de ingresos
+ALTER TABLE `tb_detalle_ingreso` ADD `src_evidencia` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_spanish_ci NULL DEFAULT NULL AFTER `observaciones`;
+
