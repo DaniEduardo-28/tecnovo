@@ -650,3 +650,22 @@ function deleteRegistro(id_ingreso){
     runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
   }
 }
+
+// Escucha el cambio en el checkbox
+document.getElementById("flag_pagado").addEventListener("change", function () {
+  const grupoPago = document.getElementById("grupoPago"); // Selecciona el grupo de campos a ocultar/mostrar
+  if (this.checked) {
+      grupoPago.style.display = "block"; // Muestra los campos
+  } else {
+      grupoPago.style.display = "none"; // Oculta los campos
+  }
+});
+
+// Asegúrate de que el grupo esté oculto inicialmente si no está marcado
+document.addEventListener("DOMContentLoaded", function () {
+  const flagPagado = document.getElementById("flag_pagado");
+  const grupoPago = document.getElementById("grupoPago");
+  if (!flagPagado.checked) {
+      grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
+  }
+});
