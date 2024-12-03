@@ -9,6 +9,8 @@
   $cod_sunat = isset($_POST["cod_sunat"]) ? $_POST["cod_sunat"] : "";
   $serie = isset($_POST["serie"]) ? $_POST["serie"] : "";
   $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : "";
+  $flag_ingreso= isset($_POST["flag_ingreso"]) ? '1' : '0';
+  $flag_salida = isset($_POST["flag_salida"]) ? '1' : '0';
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
   try {
@@ -54,10 +56,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_DOCUMENTO_VENTA->insert($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo);
+        $VD = $OBJ_DOCUMENTO_VENTA->insert($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo,$flag_ingreso,$flag_salida);
         break;
       case 'edit':
-        $VD = $OBJ_DOCUMENTO_VENTA->update($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo);
+        $VD = $OBJ_DOCUMENTO_VENTA->update($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo,$flag_ingreso,$flag_salida);
         break;
       default:
         $VD = "Tipo de Operación no encontrada.";

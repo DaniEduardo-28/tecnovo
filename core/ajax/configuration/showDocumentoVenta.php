@@ -28,6 +28,8 @@
       foreach ($Resultado["data"] as $key) {
         $estado = ($key['estado']=="1") ? '<label class="badge badge-success">Activo</label>' : '<label class="badge badge-danger">Inactivo</label>' ;
         $flag_doc_interno = ($key['flag_doc_interno']=="1") ? 'SI' : 'NO' ;
+        $flag_ingreso = ($key['flag_ingreso']=="1") ? 'SI' : 'NO' ;
+        $flag_salida = ($key['flag_salida']=="1") ? 'SI' : 'NO' ;
         $retorno_array[] =array(
           "num" => "$count",
           "id_documento_venta" => $key['id_documento_venta'],
@@ -39,6 +41,8 @@
           "correlativo" => $key['correlativo'],
           "estado" => $estado,
           "flag_doc_interno" => $flag_doc_interno,
+          "flag_ingreso" => $flag_ingreso,
+          "flag_salida" => $flag_salida,
           "options" => "$options"
         );
         $count++;

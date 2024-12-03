@@ -13,11 +13,13 @@ var table = $('#example').DataTable({
     { 'data': 'correlativo' },
     { 'data': 'estado' },
     { 'data': 'flag_doc_interno' },
+    { 'data': 'flag_ingreso' },
+    { 'data': 'flag_salida' },
     { 'data': 'options' }
   ],
   columnDefs: [
     {
-      "targets": [1,2],
+      "targets": [1,2,9],
       "visible": false,
       "searchable": false
     }
@@ -72,6 +74,16 @@ $(document).ready(function(){
         $("#flag_doc_interno").prop('checked', true);
       } else {
         $("#flag_doc_interno").prop('checked', false);
+      }
+      if ('SI'==data["flag_ingreso"]) {
+        $("#flag_ingreso").prop('checked', true);
+      } else {
+        $("#flag_ingreso").prop('checked', false);
+      }
+      if ('SI'==data["flag_salida"]) {
+        $("#flag_salida").prop('checked', true);
+      } else {
+        $("#flag_salida").prop('checked', false);
       }
       addClassDiv();
     } catch (e) {
@@ -173,6 +185,8 @@ function showData(){
               "correlativo": o[i].correlativo,
               "estado": o[i].estado,
               "flag_doc_interno": o[i].flag_doc_interno,
+              "flag_ingreso": o[i].flag_ingreso,
+              "flag_salida": o[i].flag_salida,
               "options": o[i].options
             }).draw();
           }

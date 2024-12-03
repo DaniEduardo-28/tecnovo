@@ -94,15 +94,15 @@
 			return $VD;
 		}
 
-		public function insert($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo) {
+		public function insert($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo,$flag_ingreso,$flag_salida) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
 			try {
 
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("INSERT INTO tb_documento_venta (id_documento_venta, id_sucursal, estado, flag_doc_interno, nombre, nombre_corto, cod_sunat, serie, correlativo) VALUES ((SELECT CASE COUNT(c.id_documento_venta) WHEN 0 THEN 1 ELSE (MAX(c.id_documento_venta) + 1) end FROM `tb_documento_venta` c),?,?,?,?,?,?,?,?)");
-				$stmt->execute([$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo]);
+				$stmt = $conexion->prepare("INSERT INTO tb_documento_venta (id_documento_venta, id_sucursal, estado, flag_doc_interno, nombre, nombre_corto, cod_sunat, serie, correlativo, flag_ingreso, flag_salida) VALUES ((SELECT CASE COUNT(c.id_documento_venta) WHEN 0 THEN 1 ELSE (MAX(c.id_documento_venta) + 1) end FROM `tb_documento_venta` c),?,?,?,?,?,?,?,?,?,?)");
+				$stmt->execute([$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo,$flag_ingreso,$flag_salida]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al registrar la nueva sucursal.");
 				}
@@ -120,14 +120,14 @@
 			return $VD;
 		}
 
-		public function update($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo) {
+		public function update($id_documento_venta,$id_sucursal,$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo,$flag_ingreso,$flag_salida) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
 			try {
 				$conexion->beginTransaction();
-				$stmt = $conexion->prepare("UPDATE tb_documento_venta SET estado = ?, flag_doc_interno = ?, nombre = ?, nombre_corto = ?, cod_sunat = ?, serie = ?, correlativo = ? WHERE id_documento_venta = ? AND id_sucursal = ?");
-				if ($stmt->execute([$estado,$flag_doc_interno,$nombre,$nombre_corto,$cod_sunat,$serie,$correlativo,$id_documento_venta,$id_sucursal])==false) {
+				$stmt = $conexion->prepare("UPDATE tb_documento_venta SET estado = ?, flag_doc_interno = ?, nombre = ?, nombre_corto = ?, cod_sunat = ?, serie = ?, correlativo = ?, flag_ingreso = ?, flag_salida = ? WHERE id_documento_venta = ? AND id_sucursal = ?");
+				if ($stmt->execute([$estado, $flag_doc_interno, $nombre, $nombre_corto, $cod_sunat, $serie, $correlativo, $flag_ingreso, $flag_salida, $id_documento_venta, $id_sucursal])==false) {
 					throw new Exception("Error al actualizar los datos.");
 				}
 				$VD = "OK";
