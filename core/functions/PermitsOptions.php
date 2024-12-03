@@ -160,9 +160,12 @@ function printCodeOption($controller)
       case 'observacionesproveedor':
         $VD = 706;
         break;
-        case 'vistareportecita':
-          $VD = 707;
-          break;
+      case 'vistareportecita':
+        $VD = 707;
+        break;
+      case 'vistareportecliente':
+        $VD = 708;
+        break;
 
       default:
         $VD = 0;

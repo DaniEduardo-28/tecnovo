@@ -598,6 +598,83 @@ class ClassCliente extends Conexion
 		}
 		return $VD;
 	}
+
+	public function showreporte($estado, $val, $tipobusqueda)
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+
+			$parametros = [];
+			$sql = "SELECT 
+			c.id_cliente,
+      CONCAT(d.name_documento, ': ', p.num_documento) AS numero_documento, 
+      CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente, 
+      p.direccion, 
+      p.telefono, 
+      GROUP_CONCAT(CONCAT(f.nombre, ' => ', cf.cantidad_hc) SEPARATOR ' | ') AS cant_fundos,
+	  c.estado
+    FROM 
+      tb_cliente c
+      LEFT JOIN tb_cliente_fundo cf ON cf.id_cliente = c.id_cliente
+      LEFT JOIN tb_fundo f ON f.id_fundo = cf.id_fundo
+      INNER JOIN tb_persona p ON c.id_persona = p.id_persona
+      INNER JOIN tb_documento_identidad d ON p.id_documento = d.id_documento
+    WHERE 
+      1=1";
+
+
+/* 			if (!empty($val)) {
+				if ($tipobusqueda == 1) {
+					$sql .= " AND pm.id_personalmilitar = ?";
+					$parametros[] = $val;
+				} elseif ($tipobusqueda == 2) {
+					$sql .= " AND b.id_bungalow = ?";
+					$parametros[] = $val;
+				} elseif ($tipobusqueda == 3) {
+					$sql .= " AND d.id_departamento = ?";
+					$parametros[] = $val;
+				}
+			} */
+			$sql .= "
+				GROUP BY 
+					c.id_cliente,
+					d.name_documento, 
+					p.num_documento, 
+					p.nombres,
+					p.apellidos, 
+					p.direccion,
+					p.telefono,
+					c.estado";
+
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
+
+		return $VD;
+	}
 }
 
 $OBJ_CLIENTE = new ClassCliente();
