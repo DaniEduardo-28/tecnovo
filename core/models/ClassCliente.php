@@ -614,8 +614,11 @@ class ClassCliente extends Conexion
       CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente, 
       p.direccion, 
       p.telefono, 
-      GROUP_CONCAT(CONCAT(f.nombre, ' => ', cf.cantidad_hc) SEPARATOR ' | ') AS cant_fundos,
-	  c.estado
+      GROUP_CONCAT(CONCAT('- ',f.nombre, ' = ', cf.cantidad_hc, ' hc') SEPARATOR ' <br> ') AS cant_fundos,
+	  CASE 
+    WHEN c.estado IS NULL OR c.estado = '' THEN 'inactivo'
+    ELSE c.estado
+END AS estado
     FROM 
       tb_cliente c
       LEFT JOIN tb_cliente_fundo cf ON cf.id_cliente = c.id_cliente
