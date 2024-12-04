@@ -116,12 +116,14 @@ try {
     }
   }
 
-  if (empty(trim($name_user))) {
-    throw new Exception("Campo obligatorio : Nombre de Usuario.");
-  }
-
-  if (empty(trim($pass_user))) {
-    throw new Exception("Campo obligatorio : Contraseña.");
+  if ($flag_medico == false) {
+    if (empty(trim($name_user))) {
+      throw new Exception("Campo obligatorio : Nombre de Usuario.");
+    }
+  
+    if (empty(trim($pass_user))) {
+      throw new Exception("Campo obligatorio : Contraseña.");
+    }
   }
 
   $pass_user = $pass_user != $pass_user_old ? encript($pass_user) : $pass_user;

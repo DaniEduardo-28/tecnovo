@@ -6083,4 +6083,28 @@ ALTER TABLE `tb_cliente`
 CHANGE `name_user` `name_user` varchar(100) NULL,
 CHANGE `pass_user` `pass_user` varchar(500) NULL;
 
+ALTER TABLE `tb_accesorio` ADD `flag_consumo` ENUM('SI','NO') NULL DEFAULT 'SI';
+
+UPDATE `tb_opcion` SET `name_opcion` = 'Reporte de Clientes', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 708;
+
+ALTER TABLE `tb_documento_venta` ADD `flag_ingreso` CHAR(1) NULL DEFAULT NULL AFTER `flag_doc_interno`, 
+ADD `flag_salida` CHAR(1) NULL DEFAULT NULL AFTER `flag_ingreso`;
+
+ALTER TABLE `tb_ingreso` ADD `src_evidencia` VARCHAR(500) NULL AFTER `estado`;
+
+ALTER TABLE `tb_ingreso` ADD `total` DECIMAL(18,2) NULL AFTER `src_evidencia`;
+
+CREATE TABLE `tb_pago` (
+  `id_pago` INT NOT NULL AUTO_INCREMENT,
+  `id_ingreso` INT NOT NULL,
+  `id_forma_pago` INT NOT NULL,
+  `monto_pagado` DECIMAL(18,2) DEFAULT NULL,
+  `monto_pendiente` DECIMAL(18,2) DEFAULT NULL,
+  PRIMARY KEY (`id_pago`)
+);
+
+ALTER TABLE `tb_trabajador`
+CHANGE `name_user` `name_user` varchar(100) NULL,
+CHANGE `pass_user` `pass_user` varchar(500) NULL;
+
 COMMIT;
