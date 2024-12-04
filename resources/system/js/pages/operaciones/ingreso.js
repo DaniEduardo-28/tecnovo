@@ -4,7 +4,7 @@ var tableForm = $('#table_form').DataTable({
   ordering: false,
   lengthChange: false,
   paging: false,
-  destroy : true,
+  destroy: true,
   info: false,
   columns: [
     { 'data': 'num' },
@@ -18,7 +18,7 @@ var tableForm = $('#table_form').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,7],
+      "targets": [1, 7],
       "visible": false,
       "searchable": false
     }
@@ -31,7 +31,7 @@ var tableOrden = $('#tabla_orden').DataTable({
   ordering: false,
   lengthChange: false,
   paging: false,
-  destroy : true,
+  destroy: true,
   info: false,
   columns: [
     { 'data': 'num' },
@@ -48,7 +48,7 @@ var tableOrden = $('#tabla_orden').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,3],
+      "targets": [1, 3],
       "visible": false,
       "searchable": false
     }
@@ -61,7 +61,7 @@ var tableListado = $('#tabla_listado').DataTable({
   ordering: false,
   lengthChange: false,
   paging: false,
-  destroy : true,
+  destroy: true,
   info: false,
   columns: [
     { 'data': 'num' },
@@ -76,19 +76,19 @@ var tableListado = $('#tabla_listado').DataTable({
   ],
   columnDefs: [
     {
-      "targets": [1,4],
+      "targets": [1, 4],
       "visible": false,
       "searchable": false
     }
   ]
 });
 
-$(document).ready(function(){
+$(document).ready(function () {
 
   $("#contenedor_formulario").addClass("d-none");
   $("#contenedor_orden").addClass("d-none");
 
-  $("#btnAdd").click(function(){
+  $("#btnAdd").click(function () {
     $("#contenedor_orden").removeClass("d-none");
     $("#contenedor_listado").addClass("d-none");
     $("#panelOptions").addClass("d-none");
@@ -96,12 +96,12 @@ $(document).ready(function(){
     showDataOrden();
   });
 
-  $("#btnCancelForm").click(function(){
+  $("#btnCancelForm").click(function () {
     cancelarForm();
     $("#btnSaveForm").removeClass("d-none");
   });
 
-  $("#btnCancelFormVer").click(function(){
+  $("#btnCancelFormVer").click(function () {
 
     $("#btnSaveForm").removeClass("d-none");
     $("#btnCancelForm").removeClass("d-none");
@@ -112,26 +112,26 @@ $(document).ready(function(){
 
   });
 
-  $("#btnVolverOrden").click(function(){
+  $("#btnVolverOrden").click(function () {
     $("#contenedor_orden").addClass("d-none");
     $("#contenedor_listado").removeClass("d-none");
     $("#panelOptions").removeClass("d-none");
     showData();
   });
 
-  $('#btnBuscarOrden').click(function(){
+  $('#btnBuscarOrden').click(function () {
     showDataOrden();
   });
 
-  $("#txtBuscarOrden").keypress(function(e) {
-    if (e.which == 13 ) {
+  $("#txtBuscarOrden").keypress(function (e) {
+    if (e.which == 13) {
       showDataOrden();
     }
   });
 
   showData();
 
-  $("#btnSaveForm").click(function(e){
+  $("#btnSaveForm").click(function (e) {
 
     try {
 
@@ -139,51 +139,61 @@ $(document).ready(function(){
       var id_tipo_docu = $("#id_tipo_docu_form").val();
       var num_documento = $("#txtNumDocumento").val();
       var observaciones = $("#txtObservacionesForm").val();
+      var src_evidencia = $("#src_evidencia")[0].files[0]; // Obtener el archivo seleccionado
+
 
       var countRows = tableForm.data().count();
 
-      if (id_orden_compra=="0" || id_orden_compra == "" || id_orden_compra == 0) {
-        runAlert("Faltan Datos","Error al seleccionar el id orden de compra.","warning")
+      if (id_orden_compra == "0" || id_orden_compra == "" || id_orden_compra == 0) {
+        runAlert("Faltan Datos", "Error al seleccionar el id orden de compra.", "warning")
         return;
       }
 
-      if (id_tipo_docu=="0" || id_tipo_docu == "" || id_tipo_docu == 0) {
-        runAlert("Faltan Datos","Tiene que seleccionar el tipo de documento.","warning")
+      if (id_tipo_docu == "0" || id_tipo_docu == "" || id_tipo_docu == 0) {
+        runAlert("Faltan Datos", "Tiene que seleccionar el tipo de documento.", "warning")
         return;
       }
 
-      if (num_documento=="0" || num_documento == "" || num_documento == 0) {
-        runAlert("Faltan Datos","Tiene que ingresar el número documento de ingreso","warning")
+      if (num_documento == "0" || num_documento == "" || num_documento == 0) {
+        runAlert("Faltan Datos", "Tiene que ingresar el número documento de ingreso", "warning")
         return;
       }
 
-      if (countRows==0) {
-        runAlert("Faltan Datos","Tiene que seleccionar por lo menos un producto.","warning")
+      if (countRows == 0) {
+        runAlert("Faltan Datos", "Tiene que seleccionar por lo menos un producto.", "warning")
         return;
       }
 
       var datos = [];
       var objeto = {};
 
-      $('#table_form > tbody  > tr').each(function(){
+      $('#table_form > tbody  > tr').each(function () {
 
         var cantidad = $(this).find("td").eq(4).find("input").val();
         var observaciones_detalle = $(this).find("td").eq(5).find("input").val();
         var data = tableForm.row($(this)).data();
         datos.push({
-          "cod_producto" : data['cod_producto'],
-          "name_tabla" : data['name_tabla'],
-          "cantidad" : cantidad,
-          "observaciones" : observaciones_detalle
+          "cod_producto": data['cod_producto'],
+          "name_tabla": data['name_tabla'],
+          "cantidad": cantidad,
+          "observaciones": observaciones_detalle
         });
 
       });
 
       objeto.datos = datos;
 
-      var form = 'id_orden_compra=' + id_orden_compra + '&id_ingreso=' + id_ingreso + '&num_documento=' + num_documento +
-              '&observaciones=' + observaciones + '&id_tipo_docu=' + id_tipo_docu +
-              "&array_detalle=" + JSON.stringify(objeto);
+      var formData = new FormData();
+      formData.append("id_orden_compra", id_orden_compra);
+      formData.append("id_tipo_docu", id_tipo_docu);
+      formData.append("num_documento", num_documento);
+      formData.append("observaciones", observaciones);
+      formData.append("array_detalle", JSON.stringify(objeto));
+
+      // Añadir el archivo solo si se seleccionó
+      if (src_evidencia) {
+        formData.append("src_evidencia", src_evidencia);
+      }
 
       Swal.fire({
         title: '¿Seguro de registrar el ingreso de productos?',
@@ -193,29 +203,31 @@ $(document).ready(function(){
         confirmButtonColor: '#22c63b',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Si, Realizar ahora!'
-      }).then(function(result) {
+      }).then(function (result) {
         if (result.value) {
           $.ajax({
             type: "POST",
             url: "ajax.php?accion=goIngreso",
             datatype: "json",
-            data: form,
-            success: function(data){
-      			  try {
+            processData: false, // Impedir que jQuery procese los datos
+            contentType: false, // Impedir que jQuery configure el tipo de contenido
+            data: formData,
+            success: function (data) {
+              try {
                 var response = JSON.parse(data);
-                if (response['error']=="SI") {
-                  runAlert("Oh No...!!!",response['message'],"warning");
+                if (response['error'] == "SI") {
+                  runAlert("Oh No...!!!", response['message'], "warning");
                 } else {
                   cancelarForm();
-                  runAlert("Bien hecho...!!!",response['message'],"success");
+                  runAlert("Bien hecho...!!!", response['message'], "success");
                   showDataOrden();
                 }
               } catch (e) {
-                runAlert("Oh No...!!!",data + e,"error");
+                runAlert("Oh No...!!!", data + e, "error");
               }
             },
-            error: function(data){
-              runAlert("Oh No...!!!",data,"error");
+            error: function (data) {
+              runAlert("Oh No...!!!", data, "error");
             },
             beforeSend: function (xhr) {
               showHideLoader('block');
@@ -228,24 +240,24 @@ $(document).ready(function(){
       });
 
     } catch (e) {
-      runAlert("Oh No...!!!","Error en Try Catch : " + e,"error");
+      runAlert("Oh No...!!!", "Error en Try Catch : " + e, "error");
     }
 
   });
 
-  $('#btnBuscarListado').click(function(){
+  $('#btnBuscarListado').click(function () {
     showData();
   });
 
-  $("#txtBuscarListado").keypress(function(e) {
-    if (e.which == 13 ) {
+  $("#txtBuscarListado").keypress(function (e) {
+    if (e.which == 13) {
       showData();
     }
   });
 
 });
 
-function cancelarForm(){
+function cancelarForm() {
   $("#contenedor_formulario").addClass("d-none");
   $("#contenedor_orden").removeClass("d-none");
   $("#txtObservacionesForm").val("");
@@ -257,19 +269,19 @@ function cancelarForm(){
   var rows = tableForm.rows().remove().draw();
 }
 
-function showDataOrden(){
+function showDataOrden() {
 
   $("#tbody_orden").html("");
   $("#paginador_orden").addClass("d-none");
   paginador = $("#paginador_orden");
   var items = 10, numeros = 6;
-  init_paginator(paginador,items,numeros);
+  init_paginator(paginador, items, numeros);
   set_callback(get_data_callback);
   cargaPagina(0);
 
 }
 
-function get_data_callback(){
+function get_data_callback() {
 
   tableOrden.clear().draw();
   var fecha_inicio = $("#txtFechaInicioBuscarOrden").val();
@@ -278,31 +290,31 @@ function get_data_callback(){
   var valor = $("#txtBuscarOrden").val();
 
   $.ajax({
-		data:{
+    data: {
       limit: itemsPorPagina,
-  		offset: desde,
+      offset: desde,
       valor: valor,
       tipo_busqueda: tipo_busqueda,
       fecha_fin: fecha_fin,
       fecha_inicio: fecha_inicio
-		},
+    },
     beforeSend: function (xhr) {
       showHideLoader('block');
     },
     complete: function (jqXHR, textStatus) {
       showHideLoader('none');
-      if (totalPaginas==1 && pagina==0) {
+      if (totalPaginas == 1 && pagina == 0) {
         paginador.find(".next_link").hide();
       }
     },
-		type:"POST",
-		url:'ajax.php?accion=showOrdenCompraIngreso'
-	}).done(function(data,textStatus,jqXHR){
+    type: "POST",
+    url: 'ajax.php?accion=showOrdenCompraIngreso'
+  }).done(function (data, textStatus, jqXHR) {
     try {
       var data1 = JSON.parse(data);
-      if (data1["error"]=="NO") {
+      if (data1["error"] == "NO") {
 
-        if(pagina==0){
+        if (pagina == 0) {
           creaPaginador(data1["cantidad"]);
         }
 
@@ -328,24 +340,24 @@ function get_data_callback(){
 
         $("#paginador_orden").removeClass("d-none");
 
-      }else {
+      } else {
 
         console.log(data1["message"]);
         $("#paginador_orden").addClass("d-none");
 
       }
     }
-    catch(err) {
-      runAlert("Message",err+data,"warning");
+    catch (err) {
+      runAlert("Message", err + data, "warning");
       $("#paginador_orden").addClass("d-none");
     }
 
-	}).fail(function(jqXHR,textStatus,textError){
-    runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
-	});
+  }).fail(function (jqXHR, textStatus, textError) {
+    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+  });
 }
 
-function seleccionarOrden(id_orden_compra){
+function seleccionarOrden(id_orden_compra) {
 
   try {
 
@@ -353,14 +365,14 @@ function seleccionarOrden(id_orden_compra){
 
     $.ajax({
       type: "POST",
-      data:{
-    		id_orden_compra: id_orden_compra
-  		},
+      data: {
+        id_orden_compra: id_orden_compra
+      },
       url: "ajax.php?accion=getDataEditOrdenCompraIngreso",
-      success : function(data) {
+      success: function (data) {
         try {
           var data1 = JSON.parse(data);
-          if (data1["error"]=="NO") {
+          if (data1["error"] == "NO") {
             var o = data1["data"];
             $("#id_orden_compra").val(o[0].id_orden_compra);
             $("#name_proveedor").html(o[0].name_proveedor);
@@ -380,13 +392,13 @@ function seleccionarOrden(id_orden_compra){
               name_producto += '</div>';
 
               tableForm.row.add({
-                "num": i+1,
+                "num": i + 1,
                 "name_tabla": o[i].name_tabla,
                 "cod_producto": o[i].cod_producto,
                 "name_producto": name_producto,
                 "cantidad_solicitada": o[i].cantidad_solicitada,
                 "cantidad_ingresada": o[i].cantidad_ingresada,
-                "cantidad": '<input class="form-control" value="0" type="number" min="0" max="' + ( o[i].cantidad_solicitada - o[i].cantidad_ingresada ) + '">',
+                "cantidad": '<input class="form-control" value="0" type="number" min="0" max="' + (o[i].cantidad_solicitada - o[i].cantidad_ingresada) + '">',
                 "observaciones": '<input class="form-control" type="text">',
               }).draw();
 
@@ -396,11 +408,11 @@ function seleccionarOrden(id_orden_compra){
             $("#contenedor_orden").addClass("d-none");
             $("#btnSaveForm").removeClass("d-none");
 
-          }else {
-            runAlert("Message",data1["message"],"warning");
+          } else {
+            runAlert("Message", data1["message"], "warning");
           }
         } catch (e) {
-          runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+          runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
           showHideLoader('none');
         }
       },
@@ -408,7 +420,7 @@ function seleccionarOrden(id_orden_compra){
         showHideLoader('block');
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+        runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
       },
       complete: function (jqXHR, textStatus) {
         showHideLoader('none');
@@ -416,24 +428,24 @@ function seleccionarOrden(id_orden_compra){
     });
 
   } catch (e) {
-    runAlert("Oh No...!!!","Error Try Catch " + e,"warning");
+    runAlert("Oh No...!!!", "Error Try Catch " + e, "warning");
   }
 
 }
 
-function showData(){
+function showData() {
 
   tableListado.clear().draw();
   $("#paginador_listado").addClass("d-none");
   paginador = $("#paginador_listado");
   var items = 10, numeros = 6;
-  init_paginator(paginador,items,numeros);
+  init_paginator(paginador, items, numeros);
   set_callback(get_data_callback2);
   cargaPagina(0);
 
 }
 
-function get_data_callback2(){
+function get_data_callback2() {
 
   tableListado.clear().draw();
   var fecha_inicio = $("#txtFechaInicioBuscarListado").val();
@@ -442,32 +454,32 @@ function get_data_callback2(){
   var valor = $("#txtBuscarListado").val();
 
   $.ajax({
-		data:{
-  		limit: itemsPorPagina,
-  		offset: desde,
+    data: {
+      limit: itemsPorPagina,
+      offset: desde,
       valor: valor,
       tipo_busqueda: tipo_busqueda,
       fecha_fin: fecha_fin,
       fecha_inicio: fecha_inicio
-		},
+    },
     beforeSend: function (xhr) {
       showHideLoader('block');
     },
     complete: function (jqXHR, textStatus) {
       showHideLoader('none');
-      if (totalPaginas==1 && pagina==0) {
+      if (totalPaginas == 1 && pagina == 0) {
         paginador.find(".next_link").hide();
       }
     },
-		type:"POST",
-		url:'ajax.php?accion=showIngreso'
-	}).done(function(data,textStatus,jqXHR){
+    type: "POST",
+    url: 'ajax.php?accion=showIngreso'
+  }).done(function (data, textStatus, jqXHR) {
     try {
 
       var data1 = JSON.parse(data);
-      if (data1["error"]=="NO") {
+      if (data1["error"] == "NO") {
 
-        if(pagina==0){
+        if (pagina == 0) {
           creaPaginador(data1["cantidad"]);
         }
 
@@ -494,17 +506,17 @@ function get_data_callback2(){
         console.log(data1["message"]);
       }
     }
-    catch(err) {
-      runAlert("Message",err+data,"warning");
+    catch (err) {
+      runAlert("Message", err + data, "warning");
     }
 
-	}).fail(function(jqXHR,textStatus,textError){
-    runAlert("Oh No...!!!","Error al realizar la petición " + textError,"warning");
-	});
+  }).fail(function (jqXHR, textStatus, textError) {
+    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+  });
 
 }
 
-function verRegistro(id_ingreso){
+function verRegistro(id_ingreso) {
 
   try {
 
@@ -518,15 +530,15 @@ function verRegistro(id_ingreso){
 
     $.ajax({
       type: "POST",
-      data:{
-    		id_ingreso: id_ingreso
-  		},
+      data: {
+        id_ingreso: id_ingreso
+      },
       url: "ajax.php?accion=getDataVerIngreso",
-      success : function(data) {
+      success: function (data) {
 
         try {
           var data1 = JSON.parse(data);
-          if (data1["error"]=="NO") {
+          if (data1["error"] == "NO") {
 
             var o = data1["data"];
 
@@ -552,7 +564,7 @@ function verRegistro(id_ingreso){
               name_producto += '</div>';
 
               tableForm.row.add({
-                "num": i+1,
+                "num": i + 1,
                 "cod_producto": o[i].cod_producto,
                 "name_tabla": o[i].name_tabla,
                 "name_producto": name_producto,
@@ -572,11 +584,11 @@ function verRegistro(id_ingreso){
             $("#btnCancelFormVer").removeClass("d-none");
             $("#title_form").html("Datos del Ingreso");
 
-          }else {
-            runAlert("Message",data1["message"],"warning");
+          } else {
+            runAlert("Message", data1["message"], "warning");
           }
         } catch (e) {
-          runAlert("Oh No...!!!","Error en TryCatch: " + e + data,"error");
+          runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
           showHideLoader('none');
         }
       },
@@ -584,7 +596,7 @@ function verRegistro(id_ingreso){
         showHideLoader('block');
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        runAlert("Oh No...!!!","Error de petición: " + jqXHR,"warning");
+        runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
       },
       complete: function (jqXHR, textStatus) {
         showHideLoader('none');
@@ -592,17 +604,17 @@ function verRegistro(id_ingreso){
     });
 
   } catch (e) {
-    runAlert("Oh No...!!!","Error Try Catch " + e,"warning");
+    runAlert("Oh No...!!!", "Error Try Catch " + e, "warning");
   }
 
 }
 
-function deleteRegistro(id_ingreso){
+function deleteRegistro(id_ingreso) {
 
   try {
 
     var parametros = {
-      "id_ingreso" : id_ingreso
+      "id_ingreso": id_ingreso
     };
 
     Swal.fire({
@@ -613,28 +625,28 @@ function deleteRegistro(id_ingreso){
       confirmButtonColor: '#22c63b',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, Anular ahora!'
-    }).then(function(result) {
+    }).then(function (result) {
       if (result.value) {
         $.ajax({
           type: "POST",
           url: "ajax.php?accion=deleteIngreso",
           datatype: "json",
           data: parametros,
-          success: function(data){
+          success: function (data) {
             try {
               var response = JSON.parse(data);
-              if (response['error']=="SI") {
-                runAlert("Oh No...!!!",response['message'],"warning");
-              }else {
+              if (response['error'] == "SI") {
+                runAlert("Oh No...!!!", response['message'], "warning");
+              } else {
                 showData();
-                runAlert("Bien hecho...!!!",response['message'],"success");
+                runAlert("Bien hecho...!!!", response['message'], "success");
               }
             } catch (e) {
-              runAlert("Oh No...!!!",e+data,"error");
+              runAlert("Oh No...!!!", e + data, "error");
             }
           },
-          error: function(data){
-            runAlert("Oh No...!!!",data,"error");
+          error: function (data) {
+            runAlert("Oh No...!!!", data, "error");
           },
           beforeSend: function (xhr) {
             showHideLoader('block');
@@ -647,7 +659,7 @@ function deleteRegistro(id_ingreso){
     });
 
   } catch (e) {
-    runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
+    runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
   }
 }
 
@@ -655,9 +667,9 @@ function deleteRegistro(id_ingreso){
 document.getElementById("flag_pagado").addEventListener("change", function () {
   const grupoPago = document.getElementById("grupoPago"); // Selecciona el grupo de campos a ocultar/mostrar
   if (this.checked) {
-      grupoPago.style.display = "block"; // Muestra los campos
+    grupoPago.style.display = "block"; // Muestra los campos
   } else {
-      grupoPago.style.display = "none"; // Oculta los campos
+    grupoPago.style.display = "none"; // Oculta los campos
   }
 });
 
@@ -666,6 +678,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const flagPagado = document.getElementById("flag_pagado");
   const grupoPago = document.getElementById("grupoPago");
   if (!flagPagado.checked) {
-      grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
+    grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
   }
 });

@@ -243,7 +243,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <label for="">Boleta / Factura</label>
                               <br>
                               <div class="form-group">
-                                <input type="file" name="src_imagen" id="src_imagen" accept="image/jpeg/pdf"
+                                <input type="file" name="src_evidencia" id="src_evidencia" accept="application/pdf,image/jpeg,image/png"
                                   class="is-valid" aria-invalid="false">
                               </div>
                             </div>
@@ -255,8 +255,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                             <div class="form-group col-md-2 col-sm-3">
                               <div class="form-check">
-                                <input id="flag_pagado" name="flag_pagado" type="checkbox" class="form-check-input"
-                                  checked="">
+                                <input id="flag_pagado" name="flag_pagado" type="checkbox" class="form-check-input">
                                 <label for="flag_pagado" class="form-check-label">¿Añadir un pago?</label>
                               </div>
                             </div>
@@ -449,7 +448,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th>Fecha Ingreso</th>
                                 <th># Productos</th>
                                 <th>Estado</th>
-                                <th>Evidencia</th>
                                 <th>Acciones</th>
                               </tr>
                             </thead>

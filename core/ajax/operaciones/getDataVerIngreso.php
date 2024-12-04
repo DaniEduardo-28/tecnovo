@@ -40,7 +40,8 @@
           "name_tabla" => $key['name_tabla'],
           "name_producto" => $key['name_producto'],
           "cantidad" => $key['cantidad'],
-          "src_imagen_producto" => $key['src_imagen_producto']
+          "src_imagen_producto" => $key['src_imagen_producto'],
+          "src_evidencia" => $key['src_evidencia']
         );
       }
 

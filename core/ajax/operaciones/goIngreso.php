@@ -49,6 +49,34 @@
       throw new Exception("2. No se recibió los detalles de la orden.");
     }
 
+        // Manejo del archivo src_evidencia
+        if (isset($_FILES['src_evidencia']) && $_FILES['src_evidencia']['error'] === UPLOAD_ERR_OK) {
+          $fileTmpPath = $_FILES['src_evidencia']['tmp_name'];
+          $fileName = $_FILES['src_evidencia']['name'];
+          $fileSize = $_FILES['src_evidencia']['size'];
+          $fileType = $_FILES['src_evidencia']['type'];
+          $uploadFileDir = 'resources/global/images/';
+          $dest_path = $uploadFileDir . $fileName;
+    
+          // Validar tipo de archivo (solo imágenes y PDFs permitidos)
+          $allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+          if (!in_array($fileType, $allowedTypes)) {
+            throw new Exception("El tipo de archivo no es válido. Solo se permiten JPEG, PNG y PDF.");
+          }
+    
+          // Validar tamaño máximo del archivo (ejemplo: 5 MB)
+          if ($fileSize > 5 * 1024 * 1024) {
+            throw new Exception("El archivo excede el tamaño máximo permitido de 5 MB.");
+          }
+    
+          // Mover archivo al destino
+          if (move_uploaded_file($fileTmpPath, $dest_path)) {
+            $src_evidencia = $dest_path;
+          } else {
+            throw new Exception("Error al guardar el archivo de evidencia.");
+          }
+        }
+
     require_once "core/models/ClassIngreso.php";
     $VD = $OBJ_INGRESO->insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$detalle_compra);
 
