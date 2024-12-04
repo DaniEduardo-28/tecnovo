@@ -681,3 +681,74 @@ document.addEventListener("DOMContentLoaded", function () {
     grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
   }
 });
+
+function showPagos(id_ingreso) {
+  $.ajax({
+      type: "POST",
+      url: "ajax.php?action=getPagos",
+      data: { id_ingreso: id_ingreso },
+      success: function (response) {
+          let data = JSON.parse(response);
+
+          if (data.error === "NO") {
+              // Si no hay pagos registrados, muestra la tabla vacía
+              if (data.data.length === 0) {
+                  // Renderizar la tabla vacía
+                  $("#tablaPagos tbody").html(`
+                      <tr>
+                          <td colspan="5" class="text-center">No hay pagos registrados aún.</td>
+                      </tr>
+                  `);
+              } else {
+                  // Renderizar pagos existentes
+                  let html = "";
+                  data.data.forEach((pago) => {
+                      html += `
+                          <tr>
+                              <td>${pago.id_pago}</td>
+                              <td>${pago.fecha_pago}</td>
+                              <td>${pago.name_forma_pago}</td>
+                              <td>${pago.monto_pagado}</td>
+                              <td>${pago.monto_pendiente}</td>
+                          </tr>
+                      `;
+                  });
+                  $("#tablaPagos tbody").html(html);
+              }
+              $("#modalPagos").modal("show");
+          } else {
+              alert(data.message);
+          }
+      },
+      error: function () {
+          alert("Error al conectar con el servidor.");
+      }
+  });
+}
+
+$("#btnNuevoPago").click(function () {
+  const idIngreso = $(this).data("id");
+
+  const nuevoPago = {
+      fecha_pago: $("#fechaPago").val(),
+      id_forma_pago: $("#formaPago").val(),
+      monto_pagado: $("#montoPago").val(),
+  };
+
+  $.ajax({
+      url: "ajax.php?accion=addPago",
+      type: "POST",
+      data: { ...nuevoPago, id_ingreso: idIngreso },
+      success: function (response) {
+          const data = JSON.parse(response);
+          if (data.error === "NO") {
+              alert("Pago registrado correctamente.");
+              $("#modalPagos").modal("hide");
+          } else {
+              alert("Error al registrar el pago: " + data.message);
+          }
+      },
+  });
+});
+
+

@@ -34,9 +34,10 @@ if (!isset($_SESSION['id_trabajador'])) {
   </style>
   <style>
     #grupoPago .form-group {
-        margin-bottom: 15px; /* Ajusta el espacio entre los elementos */
+      margin-bottom: 15px;
+      /* Ajusta el espacio entre los elementos */
     }
-</style>
+  </style>
 
 </head>
 
@@ -243,8 +244,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <label for="">Boleta / Factura</label>
                               <br>
                               <div class="form-group">
-                                <input type="file" name="src_evidencia" id="src_evidencia" accept="application/pdf,image/jpeg,image/png"
-                                  class="is-valid" aria-invalid="false">
+                                <input type="file" name="src_evidencia" id="src_evidencia"
+                                  accept="application/pdf,image/jpeg,image/png" class="is-valid" aria-invalid="false">
                               </div>
                             </div>
 
@@ -466,6 +467,38 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                       </div>
                       <!-- END CONTENT LISTADO -->
+
+                      <div class="modal fade" id="modalPagos" tabindex="-1" role="dialog"
+                        aria-labelledby="modalPagosLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalPagosLabel">Pagos del ingreso</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <table class="table table-bordered" id="tablaPagos">
+                                <thead>
+                                  <tr>
+                                    <th>#</th>
+                                    <th>Fecha</th>
+                                    <th>Forma de Pago</th>
+                                    <th>Monto Pagado</th>
+                                    <th>Monto Pendiente</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <!-- Los datos se rellenan dinámicamente -->
+                                </tbody>
+                              </table>
+                              <button class="btn btn-primary" onclick="nuevoPago()">Añadir Pago</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
 
                     </div>
 

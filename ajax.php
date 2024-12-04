@@ -647,6 +647,14 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteIngreso.php");
         break;
+        case 'getPagos':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/getPagos.php");
+          break;
+          case 'addPago':
+            require("core/models/ClassAccesoOpcion.php");
+            require("core/ajax/operaciones/addPago.php");
+            break;
       case 'buscar-dni':
         require("core/ajax/utils/buscarDNI.php");
         break;
