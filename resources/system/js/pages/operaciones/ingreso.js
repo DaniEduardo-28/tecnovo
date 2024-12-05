@@ -131,6 +131,23 @@ $(document).ready(function () {
     }
   });
 
+  // Botón para mostrar el formulario de nuevo pago
+  $("#btnNuevoPago").click(function () {
+    $("#nuevoPagoContainer").show(); // Mostrar el contenedor del nuevo registro
+});
+
+// Botón para cancelar o eliminar el nuevo registro
+$("#nuevoPagoContainer .btn-danger").click(function () {
+    $("#nuevoPagoContainer").hide(); // Ocultar el contenedor del nuevo registro
+    limpiarCamposNuevoPago(); // Limpia los campos del formulario si es necesario
+});
+
+// Función para limpiar los campos del formulario del nuevo pago
+function limpiarCamposNuevoPago() {
+    $("#nuevoPagoContainer input[type='text'], #nuevoPagoContainer input[type='number'], #nuevoPagoContainer input[type='date']").val("");
+    $("#nuevoPagoContainer select").prop('selectedIndex', 0); // Reinicia los selects al primer valor
+}
+
   showData();
 
   $("#btnSaveForm").click(function (e) {
@@ -701,6 +718,7 @@ function showPagos(id_ingreso) {
   // Por ahora, solo mostramos el modal sin realizar ninguna acción adicional
   $("#modalPagos").modal("show");
 }
+
 
 $("#btnNuevoPago").click(function () {
   const idIngreso = $(this).data("id");
