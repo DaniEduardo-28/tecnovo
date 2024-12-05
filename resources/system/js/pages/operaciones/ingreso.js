@@ -716,59 +716,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function showPagos(id_ingreso) {
-  $.ajax({
-      type: "POST",
-      url: "ajax.php?action=getPagos", // Este archivo debe encargarse de buscar pagos por ingreso
-      data: { id_ingreso: id_ingreso },
-      success: function (response) {
-        console.log(response); // Muestra la respuesta en la consola del navegador
-          let data = JSON.parse(response);
-
-          if (data.error === "NO") {
-            console.log("Datos recibidos: ", data.data);
-              // Limpia la tabla
-              $("#tablaPagos tbody").empty();
-
-              if (data.data.length === 0) {
-                  // Renderiza un mensaje si no hay pagos registrados
-                  $("#tablaPagos tbody").html(`
-                      <tr>
-                          <td colspan="5" class="text-center">No hay pagos registrados aún.</td>
-                      </tr>
-                  `);
-              } else {
-                  // Renderiza los pagos en la tabla
-                  console.log("Error recibido: ", data.message);
-                  let html = "";
-                  data.data.forEach((pago) => {
-                      html += `
-                          <tr>
-                              <td>${pago.id_pago}</td>
-                              <td>${pago.fecha_pago}</td>
-                              <td>${pago.name_forma_pago}</td>
-                              <td>${pago.monto_pagado}</td>
-                              <td>
-                                  <button class="btn btn-danger btn-sm" onclick="deletePago(${pago.id_pago})">Eliminar</button>
-                              </td>
-                          </tr>
-                      `;
-                  });
-                  $("#tablaPagos tbody").html(html);
-              }
-
-              // Muestra el modal
-              $("#modalPagos").modal("show");
-          } else {
-              alert(data.message);
-          }
-      },
-      error: function () {
-        console.log("AJAX Error: ", status, error);
-          alert("Error al conectar con el servidor.");
-      },
-  });
+  
+  $("#modalPagos").modal("show");
 }
-
 
 
 $("#btnNuevoPago").click(function () {
