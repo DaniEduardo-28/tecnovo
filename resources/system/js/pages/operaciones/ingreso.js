@@ -159,6 +159,7 @@ function limpiarCamposNuevoPago() {
       var num_documento = $("#txtNumDocumento").val();
       var observaciones = $("#txtObservacionesForm").val();
       var src_evidencia = $("#src_evidencia")[0].files[0]; // Obtener el archivo seleccionado
+      var total_ing = $("#txtTotal_ingForm").val();
 
 
       var countRows = tableForm.data().count();
@@ -715,7 +716,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function showPagos(id_ingreso) {
-  // Por ahora, solo mostramos el modal sin realizar ninguna acción adicional
+  
   $("#modalPagos").modal("show");
 }
 

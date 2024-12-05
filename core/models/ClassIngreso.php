@@ -302,7 +302,7 @@
 											 			WHEN i.estado = '1' THEN 'Registrado' END AS estado,
 											 DI.cod_producto,O.name_producto,DI.cantidad,
 											 DI.observaciones as observaciones_detalle,
-											 O.src_imagen_producto,i.src_evidencia,i.total,O.name_tabla,
+											 O.src_imagen_producto,i.src_evidencia,i.total_ing,O.name_tabla,
 											 i.num_documento
 								FROM tb_ingreso i
 								INNER JOIN tb_detalle_ingreso DI ON DI.id_ingreso = i.id_ingreso
@@ -342,7 +342,7 @@
 			return $VD;
 		}
 
-		public function insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$total,$detalle_compra) {
+		public function insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$total_ing,$detalle_compra) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -372,13 +372,13 @@
 					}
 				}
 
-				$sql = "INSERT INTO tb_ingreso (`id_ingreso`, `id_orden_compra`, `id_sucursal`, `id_trabajador`, `id_tipo_docu`, `num_documento`, `fecha`, `observaciones`, `estado`, `src_evidencia`) VALUES ";
+				$sql = "INSERT INTO tb_ingreso (`id_ingreso`, `id_orden_compra`, `id_sucursal`, `id_trabajador`, `id_tipo_docu`, `num_documento`, `fecha`, `observaciones`, `estado`, `src_evidencia`, `total_ing`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(i.id_ingreso) WHEN 0 THEN 1 ELSE (MAX(i.id_ingreso) + 1) end FROM `tb_ingreso` i),";
 				$sql .= "?,?,?,?,?,NOW(),?,'1',?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_orden_compra,$id_sucursal,$id_trabajador,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$total]);
+				$stmt->execute([$id_orden_compra,$id_sucursal,$id_trabajador,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$total_ing]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Error al registrar el ingreso en la base de datos.");
 				}

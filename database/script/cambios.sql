@@ -6,3 +6,5 @@ ALTER TABLE `tb_pago` CHANGE `monto_pagado` `monto_pagado` DECIMAL(18,2) NULL;
 ALTER TABLE `tb_pago` CHANGE `monto_pagado` `monto_pagado` DECIMAL(18,2) NULL;
 
 ALTER TABLE `tb_pago` CHANGE `id_pago` `id_pago` INT NOT NULL AUTO_INCREMENT, add PRIMARY KEY (`id_pago`);
+
+ALTER TABLE `tb_ingreso` CHANGE `total` `total_ing` DECIMAL(18,2) NULL DEFAULT NULL;

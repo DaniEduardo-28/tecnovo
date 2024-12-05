@@ -7,9 +7,10 @@
   $num_documento = isset($_POST["num_documento"]) ? $_POST["num_documento"] : "";
   $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
   $src_evidencia = "resources/global/images/sin_imagen.png";
+  $total_ing = isset($_POST["total_ing"]) ? $_POST["total_ing"] : 0.00;
   $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
   $detalle_compra = json_decode($array_detalle);
-  $total = isset($_POST["total"]) ? $_POST["total"] : 0;
+
 
   try {
 
@@ -79,7 +80,7 @@
         }
 
     require_once "core/models/ClassIngreso.php";
-    $VD = $OBJ_INGRESO->insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$total,$detalle_compra);
+    $VD = $OBJ_INGRESO->insert($id_sucursal,$id_trabajador,$id_orden_compra,$id_tipo_docu,$num_documento,$observaciones,$src_evidencia,$total_ing,$detalle_compra);
 
     if ($VD!="OK") {
       throw new Exception($VD);

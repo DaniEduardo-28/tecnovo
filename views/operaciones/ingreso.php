@@ -38,7 +38,7 @@ if (!isset($_SESSION['id_trabajador'])) {
     }
 
     .modal-lg-custom {
-      max-width: 90%;
+      max-width: 70%;
       /* Ajusta el ancho a tu necesidad */
     }
 
@@ -264,8 +264,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                             </div>
 
                             <div class="form-group col-md-3 col-sm-4">
-                              <label for="txtTotalForm" class="label-control">Total</label>
-                              <input type="number" name="txtTotalForm" id="txtTotalForm" class="form-control">
+                              <label for="txtTotal_ingForm" class="label-control">Total</label>
+                              <input type="number" name="txtTotal_ingForm" id="txtTotal_ingForm" class="form-control" min="0" step="1.00">
                             </div>
 
                             <div class="form-group col-md-2 col-sm-3">
@@ -502,7 +502,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                                       <th>Fecha de Pago</th>
                                       <th>Método de Pago</th>
                                       <th>Monto</th>
-                                      <th>¿Pago recibido?</th>
                                       <th>Acción</th>
                                     </tr>
                                   </thead>
@@ -549,7 +548,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     <label>Fecha de Pago</label>
                                     <input type="date" class="form-control">
                                   </div>
-                                  <div class="col-md-2">
+                                  <div class="col-md-3">
                                     <label>Método de Pago</label>
                                     <select class="form-control">
                                     <?php
@@ -565,16 +564,9 @@ if (!isset($_SESSION['id_trabajador'])) {
   
                                   <div class="col-md-2">
                                     <label>Monto</label>
-                                    <input type="number" class="form-control" min="0" step="0.01">
+                                    <input type="number" class="form-control" min="0" step="1.00">
                                   </div>
-                                  <div class="col-md-1">
-                                    <label>¿Pagado?</label>
-                                    <select class="form-control">
-                                      <option value="SI">Sí</option>
-                                      <option value="NO">No</option>
-                                    </select>
-                                  </div>
-                                  <div class="col-md-2">
+                                  <div class="col-md-3">
                                     <label>Archivo</label>
                                     <input type="file" class="form-control">
                                   </div>
@@ -585,9 +577,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 </div>
                               </div>
                             </div>
-                            <!-- <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            </div> -->
                           </div>
                         </div>
                       </div>
