@@ -96,6 +96,8 @@ $(document).ready(function () {
     showDataOrden();
   });
 
+  setDefaultDates();
+
   $("#btnCancelForm").click(function () {
     cancelarForm();
     $("#btnSaveForm").removeClass("d-none");
@@ -256,6 +258,19 @@ $(document).ready(function () {
   });
 
 });
+
+// Función para configurar las fechas predeterminadas
+function setDefaultDates() {
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setDate(today.getDate() - 30);
+
+  $("#txtFechaInicioBuscarOrden").val(lastMonth.toISOString().split("T")[0]);
+  $("#txtFechaFinBuscarOrden").val(today.toISOString().split("T")[0]);
+
+  $("#txtFechaInicioBuscarListado").val(lastMonth.toISOString().split("T")[0]);
+  $("#txtFechaFinBuscarListado").val(today.toISOString().split("T")[0]);
+}
 
 function cancelarForm() {
   $("#contenedor_formulario").addClass("d-none");
@@ -683,47 +698,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function showPagos(id_ingreso) {
-  $.ajax({
-      type: "POST",
-      url: "ajax.php?action=getPagos",
-      data: { id_ingreso: id_ingreso },
-      success: function (response) {
-          let data = JSON.parse(response);
-
-          if (data.error === "NO") {
-              // Si no hay pagos registrados, muestra la tabla vacía
-              if (data.data.length === 0) {
-                  // Renderizar la tabla vacía
-                  $("#tablaPagos tbody").html(`
-                      <tr>
-                          <td colspan="5" class="text-center">No hay pagos registrados aún.</td>
-                      </tr>
-                  `);
-              } else {
-                  // Renderizar pagos existentes
-                  let html = "";
-                  data.data.forEach((pago) => {
-                      html += `
-                          <tr>
-                              <td>${pago.id_pago}</td>
-                              <td>${pago.fecha_pago}</td>
-                              <td>${pago.name_forma_pago}</td>
-                              <td>${pago.monto_pagado}</td>
-                              <td>${pago.monto_pendiente}</td>
-                          </tr>
-                      `;
-                  });
-                  $("#tablaPagos tbody").html(html);
-              }
-              $("#modalPagos").modal("show");
-          } else {
-              alert(data.message);
-          }
-      },
-      error: function () {
-          alert("Error al conectar con el servidor.");
-      }
-  });
+  // Por ahora, solo mostramos el modal sin realizar ninguna acción adicional
+  $("#modalPagos").modal("show");
 }
 
 $("#btnNuevoPago").click(function () {

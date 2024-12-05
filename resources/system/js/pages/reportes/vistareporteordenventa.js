@@ -33,6 +33,7 @@ var table = $('#example').DataTable({
 
 $(document).ready(function(){
 
+
   $("#txtFechaInicio").change(function() {
     showLista();
   });
@@ -42,6 +43,7 @@ $(document).ready(function(){
   });
 
   showLista();
+  setDefaultDates();
 
   $('#cboTipoDocVentaBuscar').change(function(){
     showLista();
@@ -94,6 +96,16 @@ $(document).ready(function(){
   });
 
 });
+
+// Función para configurar las fechas predeterminadas
+function setDefaultDates() {
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setDate(today.getDate() - 30);
+
+  $("#txtFechaInicio").val(lastMonth.toISOString().split("T")[0]);
+  $("#txtFechaFin").val(today.toISOString().split("T")[0]);
+}
 
 function showLista(){
 

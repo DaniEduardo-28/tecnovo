@@ -473,27 +473,16 @@ if (!isset($_SESSION['id_trabajador'])) {
                         <div class="modal-dialog modal-lg" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="modalPagosLabel">Pagos del ingreso</h5>
+                              <h5 class="modal-title" id="modalPagosLabel">Pagos del Ingreso</h5>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                                 <span aria-hidden="true">&times;</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              <table class="table table-bordered" id="tablaPagos">
-                                <thead>
-                                  <tr>
-                                    <th>#</th>
-                                    <th>Fecha</th>
-                                    <th>Forma de Pago</th>
-                                    <th>Monto Pagado</th>
-                                    <th>Monto Pendiente</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <!-- Los datos se rellenan dinámicamente -->
-                                </tbody>
-                              </table>
-                              <button class="btn btn-primary" onclick="nuevoPago()">Añadir Pago</button>
+                              <p>Aquí se mostrarán los pagos pendientes o realizados en el futuro.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                             </div>
                           </div>
                         </div>
