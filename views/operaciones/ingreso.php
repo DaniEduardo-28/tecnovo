@@ -482,8 +482,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                       </div>
                       <!-- END CONTENT LISTADO -->
 
-                      <div class="modal fade" id="modalPagos" tabindex="-1" role="dialog"
-                        aria-labelledby="modalPagosLabel" aria-hidden="true">
+                      <div class="modal fade" id="modalPagos" tabindex="-1" role="dialog" aria-labelledby="modalPagosLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg-custom" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -494,7 +493,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                             </div>
                             <div class="modal-body">
                               <!-- Tablas de pagos -->
-                              <div class="table-responsive">
                                 <table class="table table-bordered" id="tablaPagos">
                                   <thead>
                                     <tr>
@@ -506,13 +504,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <!-- aquí se agregarán dinámicamente las filas -->
-                                    <tr>
-                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
-                                    </tr>
+ 
                                   </tbody>
                                 </table>
-                              </div>
 
                               <!-- Resumen de pagos -->
                               <div class="row mt-3">

@@ -548,6 +548,7 @@
 			$VD = "";
 	
 			try {
+				
 				if ($id_ingreso <= 0) {
 					throw new Exception("ID de ingreso inválido.");
 				}
@@ -634,6 +635,31 @@
 
         return $VD;
     }
+
+	public function getPagosByIngreso($id_ingreso) {
+		$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+		try {
+			$conexion->beginTransaction();
+			$sql = "SELECT p.id_pago, p.fecha_pago, f.name_forma_pago, p.monto_pagado 
+					  FROM tb_pago p 
+					  INNER JOIN tb_forma_pago f ON p.id_forma_pago = f.id_forma_pago 
+					  WHERE p.id_ingreso = ?";
+			var_dump($sql);
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_ingreso]);
+	
+			$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			var_dump($data);
+	
+			return ["error" => "NO", "data" => $data];
+		} catch (Exception $e) {
+			var_dump($e->getMessage());
+			return ["error" => "SI", "message" => $e->getMessage()];
+		}
+	}
+	
 }
 
 	$OBJ_INGRESO = new ClassIngreso();
