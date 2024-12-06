@@ -521,13 +521,14 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <form id="frmPago" name="frmPago" enctype="multipart/form-data">
                                   <input type="hidden" name="id_ingreso_pago" id="id_ingreso_pago" value="0">
                                   <div class="row">
-                                    <div class="col-md-1">
+                                    <div class="col-md-1 d-none">
                                       <label>#</label>
                                       <input type="text" class="form-control" readonly value="AUTO">
                                     </div>
                                     <div class="col-md-2">
                                       <label>Fecha de Pago</label>
-                                      <input type="date" id="fecha_pago" name="fecha_pago" class="form-control">
+                                      <input type="date" id="fecha_pago" name="fecha_pago" class="form-control"
+                                      value="<?=date("Y-m-d",strtotime(date("Y-m-d"))); ?>">
                                     </div>
                                     <div class="col-md-3">
                                       <label>Método de Pago</label>
@@ -548,7 +549,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                       <input type="number" id="monto_pagado" name="monto_pagado" class="form-control"
                                         min="0" step="1.00">
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                       <label>Archivo</label>
                                       <input type="file" class="form-control">
                                     </div>
