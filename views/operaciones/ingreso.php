@@ -265,7 +265,8 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                             <div class="form-group col-md-3 col-sm-4">
                               <label for="txtTotal_ingForm" class="label-control">Total</label>
-                              <input type="number" name="txtTotal_ingForm" id="txtTotal_ingForm" class="form-control" min="0" step="1.00">
+                              <input type="number" name="txtTotal_ingForm" id="txtTotal_ingForm" class="form-control"
+                                min="0" step="1.00">
                             </div>
 
                             <div class="form-group col-md-2 col-sm-3">
@@ -488,6 +489,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="modal-content">
                             <div class="modal-header">
                               <h5 class="modal-title" id="modalPagosLabel">Pagos del Ingreso</h5>
+                              <div class="col text-right">
+                                <button id="btnNuevoPago" class="btn btn-success">+ Nuevo</button>
+                              </div>
                               <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                                 <span aria-hidden="true">&times;</span>
                               </button>
@@ -506,7 +510,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <!-- aquí se agregarán dinámicamente las filas -->
                                     <tr>
                                       <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
                                     </tr>
@@ -514,68 +517,58 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 </table>
                               </div>
 
-                              <!-- Resumen de pagos -->
-                              <div class="row mt-3">
-                                <div class="col-md-4">
-                                  <label>Total Pagado:</label>
-                                  <input type="text" class="form-control" id="totalPagado" readonly value="0.00">
-                                </div>
-                                <div class="col-md-4">
-                                  <label>Total a Pagar:</label>
-                                  <input type="text" class="form-control" id="totalPagar" readonly value="0.00">
-                                </div>
-                                <div class="col-md-4">
-                                  <label>Pendiente de Pago:</label>
-                                  <input type="text" class="form-control" id="pendientePago" readonly value="0.00">
-                                </div>
-                              </div>
-
-                              <!-- Botón para añadir nuevo pago -->
-                              <div class="row mt-4">
-                                <div class="col text-right">
-                                <button id="btnNuevoPago" class="btn btn-success">+ Nuevo</button>
-                                </div>
-                              </div>
-
-                              <!-- contenedor para agregar una nueva fila -->
                               <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
-                                <div class="row">
-                                  <div class="col-md-1">
-                                    <label>#</label>
-                                    <input type="text" class="form-control" readonly value="AUTO">
+                                <form id="frmPago" name="frmPago" enctype="multipart/form-data">
+                                  <input type="hidden" name="id_ingreso_pago" id="id_ingreso_pago" value="0">
+                                  <div class="row">
+                                    <div class="col-md-1">
+                                      <label>#</label>
+                                      <input type="text" class="form-control" readonly value="AUTO">
+                                    </div>
+                                    <div class="col-md-2">
+                                      <label>Fecha de Pago</label>
+                                      <input type="date" id="fecha_pago" name="fecha_pago" class="form-control">
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label>Método de Pago</label>
+                                      <select id="id_forma_pago" name="id_forma_pago" class="form-control">
+                                        <?php
+                                        $dataPago = $OBJ_METODO_PAGO->show(1);
+                                        if ($dataPago["error"] == "NO") {
+                                          foreach ($dataPago["data"] as $key) {
+                                            echo '<option value="' . $key['id_forma_pago'] . '">' . $key['name_forma_pago'] . '</option>';
+                                          }
+                                        }
+                                        ?>
+                                      </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                      <label>Monto</label>
+                                      <input type="number" id="monto_pagado" name="monto_pagado" class="form-control"
+                                        min="0" step="1.00">
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label>Archivo</label>
+                                      <input type="file" class="form-control">
+                                    </div>
+                                    <div class="col-md-1 text-center mt-4">
+                                      <button type="submit" class="btn btn-success btn-sm btnGuardarPago"><i
+                                          class="fa fa-check"></i></button>
+                                      <button type="reset" class="btn btn-danger btn-sm btnCancelarPago"><i
+                                          class="fa fa-trash"></i></button>
+                                    </div>
                                   </div>
-                                  <div class="col-md-2">
-                                    <label>Fecha de Pago</label>
-                                    <input type="date" class="form-control">
-                                  </div>
-                                  <div class="col-md-3">
-                                    <label>Método de Pago</label>
-                                    <select class="form-control">
-                                    <?php
-                                    $dataPago = $OBJ_METODO_PAGO->show(1);
-                                    if ($dataPago["error"] == "NO") {
-                                      foreach ($dataPago["data"] as $key) {
-                                        echo '<option value="' . $key['id_forma_pago'] . '">' . $key['name_forma_pago'] . '</option>';
-                                      }
-                                    }
-                                    ?>
-                                    </select>
-                                  </div>
-  
-                                  <div class="col-md-2">
-                                    <label>Monto</label>
-                                    <input type="number" class="form-control" min="0" step="1.00">
-                                  </div>
-                                  <div class="col-md-3">
-                                    <label>Archivo</label>
-                                    <input type="file" class="form-control">
-                                  </div>
-                                  <div class="col-md-1 text-center mt-4">
-                                    <button class="btn btn-success btn-sm"><i class="fa fa-check"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                                  </div>
+                                </form>
+                              </div>
+                              <div class="row mt-3 text-right">
+                                <div class="col-md-12">
+                                  <label id="lblTotalPagar"><strong>Total a Pagar:</strong> S/ 0.00</label><br>
+                                  <label id="lblTotalPagado"><strong>Total Pagado:</strong> S/ 0.00</label><br>
+                                  <label id="lblPendientePago"><strong>Pendiente de Pago:</strong> S/ 0.00</label>
                                 </div>
                               </div>
+
                             </div>
                           </div>
                         </div>

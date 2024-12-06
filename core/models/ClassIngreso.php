@@ -585,55 +585,42 @@
 			return $VD;
 		}
 
-	// Método para registrar un pago
-    public function addPago($id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado) {
-        $conexionClass = new Conexion();
-        $conexion = $conexionClass->Open();
-        $VD = "";
+		
+		public function addPagos($id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado) {
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+			
+			try {
 
-        try {
-            $conexion->beginTransaction();
+				$conexion->beginTransaction();
+		
+				$sql = "INSERT INTO tb_pago (id_ingreso, id_forma_pago, fecha_pago, monto_pagado) VALUES (?, ?, ?, ?)";
+				$stmt = $conexion->prepare( $sql);
+				$stmt->execute([$id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado]);
+		
+				if ($stmt->rowCount() == 0) {
+					throw new Exception("Ocurrió un error al registrar el cargo de trabajador.");
+				}
+	
+				$VD = "OK";
+				$conexion->commit();
+		
+			} catch (PDOException $e) {
+				$conexion->rollBack();
+				$VD = $e->getMessage();
+			} catch (Exception $exception) {
+				$conexion->rollBack();
+				$VD = $exception->getMessage();
+			} finally {
+				$conexionClass->Close();
+			}
+			return $VD;
+		}
+		
+		
+		
 
-            // Calcular el monto pendiente
-            $sqlPendiente = "SELECT (SUM(total) - IFNULL(SUM(monto_pagado), 0)) AS monto_pendiente
-                             FROM tb_ingreso i
-                             LEFT JOIN tb_pago p ON i.id_ingreso = p.id_ingreso
-							 INNER JOIN tb_ingreso i ON p.id_ingreso = i.id_ingreso
-                             WHERE i.id_ingreso = ?";
-            $stmtPendiente = $conexion->prepare($sqlPendiente);
-            $stmtPendiente->execute([$id_ingreso]);
-            $rowPendiente = $stmtPendiente->fetch(PDO::FETCH_ASSOC);
-            $monto_pendiente = $rowPendiente['monto_pendiente'] - $monto_pagado;
-
-            if ($monto_pendiente < 0) {
-                throw new Exception("El monto pagado excede el total pendiente.");
-            }
-
-            // Insertar el nuevo pago
-            $sql = "INSERT INTO tb_pago (id_ingreso, id_forma_pago, fecha_pago, monto_pagado, monto_pendiente)
-                    VALUES (?, ?, ?, ?, ?)";
-            $stmt = $conexion->prepare($sql);
-            $stmt->execute([$id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado, $monto_pendiente]);
-
-            if ($stmt->rowCount() == 0) {
-                throw new Exception("Error al registrar el pago.");
-            }
-
-            $VD = "OK";
-            $conexion->commit();
-
-        } catch (PDOException $e) {
-            $conexion->rollBack();
-            $VD = $e->getMessage();
-        } catch (Exception $exception) {
-            $conexion->rollBack();
-            $VD = $exception->getMessage();
-        } finally {
-            $conexionClass->Close();
-        }
-
-        return $VD;
-    }
 }
 
 	$OBJ_INGRESO = new ClassIngreso();

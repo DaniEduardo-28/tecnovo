@@ -131,22 +131,20 @@ $(document).ready(function () {
     }
   });
 
-  // Botón para mostrar el formulario de nuevo pago
   $("#btnNuevoPago").click(function () {
-    $("#nuevoPagoContainer").show(); // Mostrar el contenedor del nuevo registro
-});
+    $("#nuevoPagoContainer").show();
+  });
 
-// Botón para cancelar o eliminar el nuevo registro
-$("#nuevoPagoContainer .btn-danger").click(function () {
+  $("#nuevoPagoContainer .btn-danger").click(function () {
     $("#nuevoPagoContainer").hide(); // Ocultar el contenedor del nuevo registro
     limpiarCamposNuevoPago(); // Limpia los campos del formulario si es necesario
-});
+  });
 
-// Función para limpiar los campos del formulario del nuevo pago
-function limpiarCamposNuevoPago() {
+  // Función para limpiar los campos del formulario del nuevo pago
+  function limpiarCamposNuevoPago() {
     $("#nuevoPagoContainer input[type='text'], #nuevoPagoContainer input[type='number'], #nuevoPagoContainer input[type='date']").val("");
     $("#nuevoPagoContainer select").prop('selectedIndex', 0); // Reinicia los selects al primer valor
-}
+  }
 
   showData();
 
@@ -275,7 +273,13 @@ function limpiarCamposNuevoPago() {
     }
   });
 
+  $("#frmPago").submit(function (e) {
+    e.preventDefault();
+    savePago();
+  });
+
 });
+
 
 // Función para configurar las fechas predeterminadas
 function setDefaultDates() {
@@ -302,6 +306,10 @@ function cancelarForm() {
   var rows = tableForm.rows().remove().draw();
 }
 
+function cancelarFormPago() {
+  
+}
+
 function showDataOrden() {
 
   $("#tbody_orden").html("");
@@ -312,6 +320,57 @@ function showDataOrden() {
   set_callback(get_data_callback);
   cargaPagina(0);
 
+}
+
+function savePago() {
+  Swal.fire({
+    title: '¿Seguro de registrar el pago?',
+    text: "No podrás revertir esta operación.",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#22c63b',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Realizar ahora!'
+  }).then(function (result) {
+    if (result.value) {
+      var form = $("#frmPago");
+      var formdata = false;
+      if (window.FormData) {
+        formdata = new FormData(form[0]);
+      }
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=goPago",
+        datatype: "json",
+        processData: false,
+        contentType: false,
+        data: formdata,
+        success: function (data) {
+          try {
+            var response = JSON.parse(data);
+            if (response['error'] == "SI") {
+              runAlert("Oh No...!!!", response['message'], "warning");
+            } else {
+              cancelarFormPago();
+              runAlert("Bien hecho...!!!", response['message'], "success");
+              // showDataOrden();
+            }
+          } catch (e) {
+            runAlert("Oh No...!!!", data + e, "error");
+          }
+        },
+        error: function (data) {
+          runAlert("Oh No...!!!", data, "error");
+        },
+        beforeSend: function (xhr) {
+          showHideLoader('block');
+        },
+        complete: function (jqXHR, textStatus) {
+          showHideLoader('none');
+        }
+      });
+    }
+  });
 }
 
 function get_data_callback() {
@@ -374,8 +433,6 @@ function get_data_callback() {
         $("#paginador_orden").removeClass("d-none");
 
       } else {
-
-        console.log(data1["message"]);
         $("#paginador_orden").addClass("d-none");
 
       }
@@ -535,8 +592,6 @@ function get_data_callback2() {
 
         $("#paginador_listado").removeClass("d-none");
 
-      } else {
-        console.log(data1["message"]);
       }
     }
     catch (err) {
@@ -642,6 +697,11 @@ function verRegistro(id_ingreso) {
 
 }
 
+function showModalPagos(id_ingreso_pago) {
+  $("#id_ingreso_pago").val(id_ingreso_pago);
+  $("#modalPagos").modal("show");
+}
+
 function deleteRegistro(id_ingreso) {
 
   try {
@@ -714,36 +774,3 @@ document.addEventListener("DOMContentLoaded", function () {
     grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
   }
 });
-
-function showPagos(id_ingreso) {
-  
-  $("#modalPagos").modal("show");
-}
-
-
-$("#btnNuevoPago").click(function () {
-  const idIngreso = $(this).data("id");
-
-  const nuevoPago = {
-      fecha_pago: $("#fechaPago").val(),
-      id_forma_pago: $("#formaPago").val(),
-      monto_pagado: $("#montoPago").val(),
-  };
-
-  $.ajax({
-      url: "ajax.php?accion=addPago",
-      type: "POST",
-      data: { ...nuevoPago, id_ingreso: idIngreso },
-      success: function (response) {
-          const data = JSON.parse(response);
-          if (data.error === "NO") {
-              alert("Pago registrado correctamente.");
-              $("#modalPagos").modal("hide");
-          } else {
-              alert("Error al registrar el pago: " + data.message);
-          }
-      },
-  });
-});
-
-

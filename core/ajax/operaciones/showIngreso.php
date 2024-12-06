@@ -59,7 +59,7 @@
               $options.='&nbsp;<a href="javascript:deleteRegistro(' . $key['id_ingreso'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-na"></i></a>';
             }
           }
-          $options .= '&nbsp;<a href="javascript:showPagos(' . $key['id_ingreso'] . ')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
+          $options .= '&nbsp;<a href="javascript:showModalPagos(' . $key['id_ingreso'] . ')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
 
         }
 
