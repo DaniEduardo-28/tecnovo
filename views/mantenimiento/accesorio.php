@@ -248,7 +248,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <label for="precio_compra" class="label-control">Precio Compra (Incluido IGV*)</label>
                                 <input id="precio_compra" type="number" name="precio_compra" class="form-control"
                                   autocomplete="off" value="0.00" required min="0.00" pattern="^\d*(\.\d{0,2})?$"
-                                  step="0.10">
+                                  step="0.01">
                               </div>
 
                               <!-- <div class="form-group col-md-3 col-sm-4">
