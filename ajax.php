@@ -647,9 +647,9 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteIngreso.php");
         break;
-      case 'getPagos':
+      case 'getPago':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/operaciones/getPagos.php");
+        require("core/ajax/operaciones/getPago.php");
         break;
       case 'goPago':
         require("core/models/ClassAccesoOpcion.php");

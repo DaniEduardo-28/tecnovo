@@ -497,27 +497,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </button>
                             </div>
                             <div class="modal-body">
-                              <!-- Tablas de pagos -->
-                              <div class="table-responsive">
-                                <table class="table table-bordered" id="tablaPagos">
-                                  <thead>
-                                    <tr>
-                                      <th>#</th>
-                                      <th>Fecha de Pago</th>
-                                      <th>Método de Pago</th>
-                                      <th>Monto</th>
-                                      <th>Acción</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <!-- <tr>
-                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
-                                    </tr> -->
-                                  </tbody>
-                                </table>
-                              </div>
 
-                              <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
+                            <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
                                 <form id="frmPago" name="frmPago" enctype="multipart/form-data">
                                   <input type="hidden" name="id_ingreso_pago" id="id_ingreso_pago" value="0">
                                   <div class="row">
@@ -561,6 +542,25 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     </div>
                                   </div>
                                 </form>
+                              </div>
+                              <!-- Tablas de pagos -->
+                              <div class="table-responsive">
+                                <table class="table table-bordered" id="tablaPagos">
+                                  <thead>
+                                    <tr>
+                                      <th>#</th>
+                                      <th>Fecha de Pago</th>
+                                      <th>Método de Pago</th>
+                                      <th>Monto</th>
+                                      <th>Acción</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <!-- <tr>
+                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
+                                    </tr> -->
+                                  </tbody>
+                                </table>
                               </div>
                               <div class="row mt-3 text-right">
                                 <div class="col-md-12">

@@ -552,7 +552,7 @@
 					throw new Exception("ID de ingreso inválido.");
 				}
 	
-				$sql = "SELECT p.id_pago, p.fecha_pago, f.name_forma_pago, p.monto_pagado, p.monto_pendiente
+				$sql = "SELECT p.id_ingreso, p.id_pago, p.fecha_pago, f.name_forma_pago, p.monto_pagado
 						FROM tb_pago p
 						INNER JOIN tb_forma_pago f ON p.id_forma_pago = f.id_forma_pago
 						INNER JOIN tb_ingreso i ON p.id_ingreso = i.id_ingreso
@@ -600,7 +600,7 @@
 				$stmt->execute([$id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado]);
 		
 				if ($stmt->rowCount() == 0) {
-					throw new Exception("Ocurrió un error al registrar el cargo de trabajador.");
+					throw new Exception("Ocurrió un error al registrar pago.");
 				}
 	
 				$VD = "OK";

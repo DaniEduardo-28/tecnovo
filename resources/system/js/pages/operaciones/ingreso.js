@@ -833,3 +833,48 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+function cargarPagosExistentes(id_ingreso_pago) {
+  console.log("Cargando pagos existentes para:", id_ingreso_pago);
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=getPago",
+    data: { id_ingreso_pago: id_ingreso_pago },
+    success: function (data) {
+      console.log("Respuesta del servidor:",data); // Esto mostrará la respuesta en la consola del navegador
+      try {
+        const response = JSON.parse(data);
+        if (response.error === "NO") {
+          console.log("Pagos cargados correctamente");
+          const pagos = response.data;
+          const tablaPagos = $("#tablaPagos tbody");
+          tablaPagos.empty(); // Vaciar la tabla antes de llenarla
+          pagos.forEach((pago, index) => {
+            const fila = `
+              <tr>
+                <td>${index + 1}</td>
+                <td>${pago.fecha_pago}</td>
+                <td>${pago.name_forma_pago}</td>
+                <td>${parseFloat(pago.monto).toFixed(2)}</td>
+                <td>
+                  <button class="btn btn-danger btn-sm btnEliminarPago"><i class="fa fa-trash"></i></button>
+                </td>
+              </tr>
+            `;
+            tablaPagos.append(fila);
+          });
+          actualizarTotales();
+        } else {
+          runAlert("Error", response.message, "warning");
+        }
+      } catch (e) {
+        runAlert("Error", "La respuesta no es un JSON válido: " + e, "error");
+      }
+    },
+    error: function () {
+      runAlert("Error", "No se pudieron cargar los pagos.", "error");
+    }
+  });
+}
+
+
+
