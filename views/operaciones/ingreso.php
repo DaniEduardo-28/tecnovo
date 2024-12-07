@@ -510,9 +510,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
+                                    <!-- <tr>
                                       <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
-                                    </tr>
+                                    </tr> -->
                                   </tbody>
                                 </table>
                               </div>

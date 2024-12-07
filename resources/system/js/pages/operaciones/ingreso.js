@@ -141,10 +141,7 @@ $(document).ready(function () {
   });
 
   // Función para limpiar los campos del formulario del nuevo pago
-  function limpiarCamposNuevoPago() {
-    $("#nuevoPagoContainer input[type='text'], #nuevoPagoContainer input[type='number'], #nuevoPagoContainer input[type='date']").val("");
-    $("#nuevoPagoContainer select").prop('selectedIndex', 0); // Reinicia los selects al primer valor
-  }
+
 
   showData();
 
@@ -310,6 +307,11 @@ function cancelarFormPago() {
   
 }
 
+function limpiarCamposNuevoPago() {
+  $("#nuevoPagoContainer input[type='text'], #nuevoPagoContainer input[type='number'], #nuevoPagoContainer input[type='date']").val("");
+  $("#nuevoPagoContainer select").prop('selectedIndex', 0); // Reinicia los selects al primer valor
+}
+
 function showDataOrden() {
 
   $("#tbody_orden").html("");
@@ -322,6 +324,55 @@ function showDataOrden() {
 
 }
 
+// Función para agregar un nuevo registro a la tabla de pagos
+function agregarPagoTabla(pago) {
+  const tablaPagos = $("#tablaPagos tbody");
+  const numeroFila = tablaPagos.find("tr").length + 1;
+  const fila = `
+    <tr>
+      <td>${numeroFila}</td>
+      <td>${pago.fecha_pago}</td>
+      <td>${pago.metodo_pago}</td>
+      <td>${pago.monto}</td>
+      <td>
+        <button class="btn btn-danger btn-sm btnEliminarPago"><i class="fa fa-trash"></i></button>
+      </td>
+    </tr>
+  `;
+  tablaPagos.append(fila);
+  actualizarTotales();
+}
+
+// Función para eliminar un registro de la tabla
+$(document).on("click", ".btnEliminarPago", function () {
+  $(this).closest("tr").remove();
+  recalcularNumerosTabla(); 
+  actualizarTotales();
+});
+
+// Función para recalcular los números de la tabla
+function recalcularNumerosTabla() {
+  $("#tablaPagos tbody tr").each(function (index) {
+    $(this).find("td:eq(0)").text(index + 1); // Actualizar el número basado en el índice
+  });
+}
+
+// Función para actualizar los totales
+function actualizarTotales() {
+  let totalPagado = 0;
+  $("#tablaPagos tbody tr").each(function () {
+    const monto = parseFloat($(this).find("td:eq(3)").text());
+    totalPagado += monto || 0;
+  });
+
+  const totalPagar = parseFloat($("#lblTotalPagar").data("total-pagar")) || 0;
+  const pendientePago = totalPagar - totalPagado;
+
+  $("#lblTotalPagado").text(`Total Pagado: S/ ${totalPagado.toFixed(2)}`);
+  $("#lblPendientePago").text(`Pendiente de Pago: S/ ${pendientePago.toFixed(2)}`);
+}
+
+// Modificar la función savePago para incluir el registro en la tabla al éxito
 function savePago() {
   Swal.fire({
     title: '¿Seguro de registrar el pago?',
@@ -333,30 +384,34 @@ function savePago() {
     confirmButtonText: 'Si, Realizar ahora!'
   }).then(function (result) {
     if (result.value) {
-      var form = $("#frmPago");
-      var formdata = false;
-      if (window.FormData) {
-        formdata = new FormData(form[0]);
-      }
+      const form = $("#frmPago");
+      const formData = new FormData(form[0]);
+
       $.ajax({
         type: "POST",
         url: "ajax.php?accion=goPago",
         datatype: "json",
         processData: false,
         contentType: false,
-        data: formdata,
+        data: formData,
         success: function (data) {
           try {
-            var response = JSON.parse(data);
+            const response = JSON.parse(data);
             if (response['error'] == "SI") {
               runAlert("Oh No...!!!", response['message'], "warning");
             } else {
-              cancelarFormPago();
+              const nuevoPago = {
+                fecha_pago: $("#fecha_pago").val(),
+                metodo_pago: $("#id_forma_pago option:selected").text(),
+                monto: parseFloat($("#monto_pagado").val()).toFixed(2)
+              };
+
+              agregarPagoTabla(nuevoPago);
+              limpiarCamposNuevoPago();
               runAlert("Bien hecho...!!!", response['message'], "success");
-              // showDataOrden();
             }
           } catch (e) {
-            runAlert("Oh No...!!!", data + e, "error");
+            runAlert("Oh No...!!!", e, "error");
           }
         },
         error: function (data) {
@@ -774,3 +829,5 @@ document.addEventListener("DOMContentLoaded", function () {
     grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
   }
 });
+
+
