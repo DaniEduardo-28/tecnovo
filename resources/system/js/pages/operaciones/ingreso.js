@@ -308,8 +308,10 @@ function cancelarFormPago() {
 }
 
 function limpiarCamposNuevoPago() {
-  $("#nuevoPagoContainer input[type='text'], #nuevoPagoContainer input[type='number'], #nuevoPagoContainer input[type='date']").val("");
-  $("#nuevoPagoContainer select").prop('selectedIndex', 0); // Reinicia los selects al primer valor
+  const today = new Date().toISOString().split("T")[0]; // Obtener la fecha actual en formato YYYY-MM-DD
+  $("#fecha_pago").val(today); // Asignar la fecha al campo de pago
+  $("#id_forma_pago").prop('selectedIndex', 0); // Reiniciar el select
+  $("#monto_pagado").val(""); // Vaciar el monto
 }
 
 function showDataOrden() {
