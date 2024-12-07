@@ -285,7 +285,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     class="form-control">
                                 </div>
 
-                                <div class="form-group col-md-3 col-sm-4">
+                                <!-- <div class="form-group col-md-3 col-sm-4">
                                   <label for="id_forma_pago" class="label-material">Forma de Pago</label>
                                   <select name="id_forma_pago" id="id_forma_pago" class="form-control" required>
                                     <option value="">Seleccione</option>
@@ -299,7 +299,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     }
                                     ?>
                                   </select>
-                                </div>
+                                </div> -->
 
                                 <div id="totalPendiente" class="form-group col-md-3 col-sm-4">
                                   <label for="txtTotalPendienteForm" class="label-control">Total Pendiente</label>

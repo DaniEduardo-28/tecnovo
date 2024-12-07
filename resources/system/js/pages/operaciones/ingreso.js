@@ -334,8 +334,8 @@ function agregarPagoTabla(pago) {
     <tr>
       <td>${numeroFila}</td>
       <td>${pago.fecha_pago}</td>
-      <td>${pago.metodo_pago}</td>
-      <td>${pago.monto}</td>
+      <td>${pago.id_forma_pago}</td>
+      <td>${pago.monto_pagado}</td>
       <td>
         <button class="btn btn-danger btn-sm btnEliminarPago"><i class="fa fa-trash"></i></button>
       </td>
@@ -404,8 +404,8 @@ function savePago() {
             } else {
               const nuevoPago = {
                 fecha_pago: $("#fecha_pago").val(),
-                metodo_pago: $("#id_forma_pago option:selected").text(),
-                monto: parseFloat($("#monto_pagado").val()).toFixed(2)
+                id_forma_pago: $("#id_forma_pago option:selected").text(),
+                monto_pagado: parseFloat($("#monto_pagado").val()).toFixed(2)
               };
 
               agregarPagoTabla(nuevoPago);
