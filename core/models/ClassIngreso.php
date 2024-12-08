@@ -548,11 +548,7 @@
 			$VD = "";
 	
 			try {
-				if ($id_ingreso <= 0) {
-					throw new Exception("ID de ingreso inválido.");
-				}
-	
-				$sql = "SELECT p.id_ingreso, p.id_pago, p.fecha_pago, f.name_forma_pago, p.monto_pagado
+				$sql = "SELECT p.id_ingreso, p.id_pago, p.fecha_pago, f.name_forma_pago, p.monto_pagado, p.src_factura
 						FROM tb_pago p
 						INNER JOIN tb_forma_pago f ON p.id_forma_pago = f.id_forma_pago
 						INNER JOIN tb_ingreso i ON p.id_ingreso = i.id_ingreso
@@ -586,7 +582,7 @@
 		}
 
 		
-		public function addPagos($id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado) {
+		public function addPagos($id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado, $src_factura) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
@@ -595,9 +591,9 @@
 
 				$conexion->beginTransaction();
 		
-				$sql = "INSERT INTO tb_pago (id_ingreso, id_forma_pago, fecha_pago, monto_pagado) VALUES (?, ?, ?, ?)";
+				$sql = "INSERT INTO tb_pago (id_ingreso, id_forma_pago, fecha_pago, monto_pagado, src_factura) VALUES (?, ?, ?, ?, ?)";
 				$stmt = $conexion->prepare( $sql);
-				$stmt->execute([$id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado]);
+				$stmt->execute([$id_ingreso, $id_forma_pago, $fecha_pago, $monto_pagado, $src_factura]);
 		
 				if ($stmt->rowCount() == 0) {
 					throw new Exception("Ocurrió un error al registrar pago.");
@@ -617,6 +613,35 @@
 			}
 			return $VD;
 		}
+
+		public function deletepago($id_pago)
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+		try {
+
+			$conexion->beginTransaction();
+
+			$stmt = $conexion->prepare("DELETE FROM tb_pago WHERE id_pago = ?");
+			$stmt->execute([$id_pago]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Ocurrió un error al eliminar el registro.");
+			}
+
+			$VD = "OK";
+			$conexion->commit();
+		} catch (PDOException $e) {
+			$conexion->rollBack();
+			$VD = $e->getMessage();
+		} catch (Exception $exception) {
+			$conexion->rollBack();
+			$VD = $exception->getMessage();
+		} finally {
+			$conexionClass->Close();
+		}
+		return $VD;
+	}
 		
 		
 		

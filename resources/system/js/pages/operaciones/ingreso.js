@@ -756,15 +756,17 @@ function verRegistro(id_ingreso) {
 
 function showModalPagos(id_ingreso_pago) {
   $("#id_ingreso_pago").val(id_ingreso_pago);
+  console.log("Cargando pagos para el ingreso:", id_ingreso_pago);
+  cargarPagosExistentes(id_ingreso_pago); 
   $("#modalPagos").modal("show");
 }
 
-function deleteRegistro(id_ingreso) {
+function deleteRegistro(id_ingreso_pago) {
 
   try {
 
     var parametros = {
-      "id_ingreso": id_ingreso
+      "id_ingreso_pago": id_ingreso_pago
     };
 
     Swal.fire({
@@ -815,20 +817,20 @@ function deleteRegistro(id_ingreso) {
 
 // Escucha el cambio en el checkbox
 document.getElementById("flag_pagado").addEventListener("change", function () {
-  const grupoPago = document.getElementById("grupoPago"); // Selecciona el grupo de campos a ocultar/mostrar
+  const grupoPago = document.getElementById("grupoPago"); 
   if (this.checked) {
-    grupoPago.style.display = "block"; // Muestra los campos
+    grupoPago.style.display = "block";
   } else {
-    grupoPago.style.display = "none"; // Oculta los campos
+    grupoPago.style.display = "none";
   }
 });
 
-// Asegúrate de que el grupo esté oculto inicialmente si no está marcado
+
 document.addEventListener("DOMContentLoaded", function () {
   const flagPagado = document.getElementById("flag_pagado");
   const grupoPago = document.getElementById("grupoPago");
   if (!flagPagado.checked) {
-    grupoPago.style.display = "none"; // Oculta si el checkbox no está marcado
+    grupoPago.style.display = "none";
   }
 });
 
@@ -837,44 +839,41 @@ function cargarPagosExistentes(id_ingreso_pago) {
   console.log("Cargando pagos existentes para:", id_ingreso_pago);
   $.ajax({
     type: "POST",
-    url: "ajax.php?accion=getPago",
+    url: "ajax.php?accion=showPago",
     data: { id_ingreso_pago: id_ingreso_pago },
-    success: function (data) {
-      console.log("Respuesta del servidor:",data); // Esto mostrará la respuesta en la consola del navegador
-      try {
-        const response = JSON.parse(data);
-        if (response.error === "NO") {
-          console.log("Pagos cargados correctamente");
-          const pagos = response.data;
-          const tablaPagos = $("#tablaPagos tbody");
-          tablaPagos.empty(); // Vaciar la tabla antes de llenarla
-          pagos.forEach((pago, index) => {
-            const fila = `
-              <tr>
-                <td>${index + 1}</td>
-                <td>${pago.fecha_pago}</td>
-                <td>${pago.name_forma_pago}</td>
-                <td>${parseFloat(pago.monto).toFixed(2)}</td>
-                <td>
-                  <button class="btn btn-danger btn-sm btnEliminarPago"><i class="fa fa-trash"></i></button>
-                </td>
-              </tr>
-            `;
-            tablaPagos.append(fila);
-          });
-          actualizarTotales();
-        } else {
-          runAlert("Error", response.message, "warning");
-        }
-      } catch (e) {
-        runAlert("Error", "La respuesta no es un JSON válido: " + e, "error");
+    success: function (response) {
+      console.log("Respuesta del servidor:", response); 
+      if (response.error === "NO") {
+        llenarTablaPagos(response.data);
+      } else {
+        runAlert("Error", response.message, "warning");
       }
     },
     error: function () {
-      runAlert("Error", "No se pudieron cargar los pagos.", "error");
+      runAlert("Error", "No se pudo conectar con el servidor para cargar los pagos.", "error");
     }
   });
 }
 
+
+function llenarTablaPagos(pagos) {
+  const tablaPagos = $("#tablaPagos tbody"); 
+  tablaPagos.empty();
+
+  pagos.forEach((pago) => {
+    const fila = `
+      <tr>
+        <td>${pago.num}</td>
+        <td>${pago.fecha_pago}</td>
+        <td>${pago.name_forma_pago}</td>
+        <td>${parseFloat(pago.monto_pagado).toFixed(2)}</td>
+        <td>
+          ${pago.flag_eliminar} <!-- Botón generado dinámicamente -->
+        </td>
+      </tr>
+    `;
+    tablaPagos.append(fila);
+  });
+}
 
 

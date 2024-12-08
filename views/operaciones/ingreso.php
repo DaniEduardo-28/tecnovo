@@ -532,7 +532,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     </div>
                                     <div class="col-md-4">
                                       <label>Archivo</label>
-                                      <input type="file" class="form-control">
+                                      <input type="file" id="src_factura" name="src_factura" class="form-control">
                                     </div>
                                     <div class="col-md-1 text-center mt-4">
                                       <button type="submit" class="btn btn-success btn-sm btnGuardarPago"><i
@@ -552,6 +552,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                       <th>Fecha de Pago</th>
                                       <th>Método de Pago</th>
                                       <th>Monto</th>
+                                      <th>Evidencia</th>
                                       <th>Acción</th>
                                     </tr>
                                   </thead>
