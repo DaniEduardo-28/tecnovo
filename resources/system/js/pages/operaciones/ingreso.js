@@ -1,4 +1,4 @@
-var tableForm = $('#table_form').DataTable({
+var tableForm = $("#table_form").DataTable({
   language: languageSpanish,
   searching: false,
   ordering: false,
@@ -6,26 +6,17 @@ var tableForm = $('#table_form').DataTable({
   paging: false,
   destroy: true,
   info: false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'cod_producto' },
-    { 'data': 'name_producto' },
-    { 'data': 'cantidad_solicitada' },
-    { 'data': 'cantidad_ingresada' },
-    { 'data': 'cantidad' },
-    { 'data': 'observaciones' },
-    { 'data': 'name_tabla' },
-  ],
+  columns: [{ data: "num" }, { data: "cod_producto" }, { data: "name_producto" }, { data: "cantidad_solicitada" }, { data: "cantidad_ingresada" }, { data: "cantidad" }, { data: "observaciones" }, { data: "name_tabla" }],
   columnDefs: [
     {
-      "targets": [1, 7],
-      "visible": false,
-      "searchable": false
-    }
-  ]
+      targets: [1, 7],
+      visible: false,
+      searchable: false,
+    },
+  ],
 });
 
-var tableOrden = $('#tabla_orden').DataTable({
+var tableOrden = $("#tabla_orden").DataTable({
   language: languageSpanish,
   searching: false,
   ordering: false,
@@ -33,29 +24,17 @@ var tableOrden = $('#tabla_orden').DataTable({
   paging: false,
   destroy: true,
   info: false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'id_orden_compra' },
-    { 'data': 'name_proveedor' },
-    { 'data': 'name_usuario' },
-    { 'data': 'fecha_orden' },
-    { 'data': 'fecha_entrega' },
-    { 'data': 'name_forma_envio' },
-    { 'data': 'num_registros' },
-    { 'data': 'total' },
-    { 'data': 'estado' },
-    { 'data': 'opciones' }
-  ],
+  columns: [{ data: "num" }, { data: "id_orden_compra" }, { data: "name_proveedor" }, { data: "name_usuario" }, { data: "fecha_orden" }, { data: "fecha_entrega" }, { data: "name_forma_envio" }, { data: "num_registros" }, { data: "total" }, { data: "estado" }, { data: "opciones" }],
   columnDefs: [
     {
-      "targets": [1, 3],
-      "visible": false,
-      "searchable": false
-    }
-  ]
+      targets: [1, 3],
+      visible: false,
+      searchable: false,
+    },
+  ],
 });
 
-var tableListado = $('#tabla_listado').DataTable({
+var tableListado = $("#tabla_listado").DataTable({
   language: languageSpanish,
   searching: false,
   ordering: false,
@@ -63,28 +42,17 @@ var tableListado = $('#tabla_listado').DataTable({
   paging: false,
   destroy: true,
   info: false,
-  columns: [
-    { 'data': 'num' },
-    { 'data': 'id_ingreso' },
-    { 'data': 'documento' },
-    { 'data': 'name_proveedor' },
-    { 'data': 'name_usuario' },
-    { 'data': 'fecha_orden' },
-    { 'data': 'num_registros' },
-    { 'data': 'estado' },
-    { 'data': 'opciones' }
-  ],
+  columns: [{ data: "num" }, { data: "id_ingreso" }, { data: "documento" }, { data: "name_proveedor" }, { data: "name_usuario" }, { data: "fecha_orden" }, { data: "num_registros" }, { data: "estado" }, { data: "opciones" }],
   columnDefs: [
     {
-      "targets": [1, 4],
-      "visible": false,
-      "searchable": false
-    }
-  ]
+      targets: [1, 4],
+      visible: false,
+      searchable: false,
+    },
+  ],
 });
 
 $(document).ready(function () {
-
   $("#contenedor_formulario").addClass("d-none");
   $("#contenedor_orden").addClass("d-none");
 
@@ -104,14 +72,12 @@ $(document).ready(function () {
   });
 
   $("#btnCancelFormVer").click(function () {
-
     $("#btnSaveForm").removeClass("d-none");
     $("#btnCancelForm").removeClass("d-none");
     $("#btnCancelFormVer").addClass("d-none");
     $("#panelOptions").removeClass("d-none");
     $("#contenedor_listado").removeClass("d-none");
     $("#contenedor_formulario").addClass("d-none");
-
   });
 
   $("#btnVolverOrden").click(function () {
@@ -121,7 +87,7 @@ $(document).ready(function () {
     showData();
   });
 
-  $('#btnBuscarOrden').click(function () {
+  $("#btnBuscarOrden").click(function () {
     showDataOrden();
   });
 
@@ -133,22 +99,19 @@ $(document).ready(function () {
 
   $("#btnNuevoPago").click(function () {
     $("#nuevoPagoContainer").show();
+    $("#btnNuevoPago").hide();
   });
 
   $("#nuevoPagoContainer .btn-danger").click(function () {
-    $("#nuevoPagoContainer").hide(); // Ocultar el contenedor del nuevo registro
-    limpiarCamposNuevoPago(); // Limpia los campos del formulario si es necesario
+    $("#nuevoPagoContainer").hide();
+    $("#btnNuevoPago").show();
+    limpiarCamposNuevoPago();
   });
-
-  // Función para limpiar los campos del formulario del nuevo pago
-
 
   showData();
 
   $("#btnSaveForm").click(function (e) {
-
     try {
-
       var id_orden_compra = $("#id_orden_compra").val();
       var id_tipo_docu = $("#id_tipo_docu_form").val();
       var num_documento = $("#txtNumDocumento").val();
@@ -156,44 +119,41 @@ $(document).ready(function () {
       var src_evidencia = $("#src_evidencia")[0].files[0]; // Obtener el archivo seleccionado
       var total_ing = $("#txtTotal_ingForm").val();
 
-
       var countRows = tableForm.data().count();
 
       if (id_orden_compra == "0" || id_orden_compra == "" || id_orden_compra == 0) {
-        runAlert("Faltan Datos", "Error al seleccionar el id orden de compra.", "warning")
+        runAlert("Faltan Datos", "Error al seleccionar el id orden de compra.", "warning");
         return;
       }
 
       if (id_tipo_docu == "0" || id_tipo_docu == "" || id_tipo_docu == 0) {
-        runAlert("Faltan Datos", "Tiene que seleccionar el tipo de documento.", "warning")
+        runAlert("Faltan Datos", "Tiene que seleccionar el tipo de documento.", "warning");
         return;
       }
 
       if (num_documento == "0" || num_documento == "" || num_documento == 0) {
-        runAlert("Faltan Datos", "Tiene que ingresar el número documento de ingreso", "warning")
+        runAlert("Faltan Datos", "Tiene que ingresar el número documento de ingreso", "warning");
         return;
       }
 
       if (countRows == 0) {
-        runAlert("Faltan Datos", "Tiene que seleccionar por lo menos un producto.", "warning")
+        runAlert("Faltan Datos", "Tiene que seleccionar por lo menos un producto.", "warning");
         return;
       }
 
       var datos = [];
       var objeto = {};
 
-      $('#table_form > tbody  > tr').each(function () {
-
+      $("#table_form > tbody  > tr").each(function () {
         var cantidad = $(this).find("td").eq(4).find("input").val();
         var observaciones_detalle = $(this).find("td").eq(5).find("input").val();
         var data = tableForm.row($(this)).data();
         datos.push({
-          "cod_producto": data['cod_producto'],
-          "name_tabla": data['name_tabla'],
-          "cantidad": cantidad,
-          "observaciones": observaciones_detalle
+          cod_producto: data["cod_producto"],
+          name_tabla: data["name_tabla"],
+          cantidad: cantidad,
+          observaciones: observaciones_detalle,
         });
-
       });
 
       objeto.datos = datos;
@@ -211,13 +171,13 @@ $(document).ready(function () {
       }
 
       Swal.fire({
-        title: '¿Seguro de registrar el ingreso de productos?',
+        title: "¿Seguro de registrar el ingreso de productos?",
         text: "No podrás revertir esta operación.",
-        type: 'warning',
+        type: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#22c63b',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si, Realizar ahora!'
+        confirmButtonColor: "#22c63b",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Si, Realizar ahora!",
       }).then(function (result) {
         if (result.value) {
           $.ajax({
@@ -230,11 +190,11 @@ $(document).ready(function () {
             success: function (data) {
               try {
                 var response = JSON.parse(data);
-                if (response['error'] == "SI") {
-                  runAlert("Oh No...!!!", response['message'], "warning");
+                if (response["error"] == "SI") {
+                  runAlert("Oh No...!!!", response["message"], "warning");
                 } else {
                   cancelarForm();
-                  runAlert("Bien hecho...!!!", response['message'], "success");
+                  runAlert("Bien hecho...!!!", response["message"], "success");
                   showDataOrden();
                 }
               } catch (e) {
@@ -245,22 +205,20 @@ $(document).ready(function () {
               runAlert("Oh No...!!!", data, "error");
             },
             beforeSend: function (xhr) {
-              showHideLoader('block');
+              showHideLoader("block");
             },
             complete: function (jqXHR, textStatus) {
-              showHideLoader('none');
-            }
+              showHideLoader("none");
+            },
           });
         }
       });
-
     } catch (e) {
       runAlert("Oh No...!!!", "Error en Try Catch : " + e, "error");
     }
-
   });
 
-  $('#btnBuscarListado').click(function () {
+  $("#btnBuscarListado").click(function () {
     showData();
   });
 
@@ -274,11 +232,8 @@ $(document).ready(function () {
     e.preventDefault();
     savePago();
   });
-
 });
 
-
-// Función para configurar las fechas predeterminadas
 function setDefaultDates() {
   const today = new Date();
   const lastMonth = new Date();
@@ -297,98 +252,52 @@ function cancelarForm() {
   $("#txtObservacionesForm").val("");
   $("#id_orden_compra").val("0");
   $("#id_ingreso").val("0");
-  $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
+  $("#img_proveedor").attr("src", "resources/global/images/sin_imagen.png");
   $("#name_proveedor").html("No Seleccionado");
   $("#form_datos")[0].reset();
   var rows = tableForm.rows().remove().draw();
 }
 
-function cancelarFormPago() {
-  
-}
+function cancelarFormPago() {}
 
 function limpiarCamposNuevoPago() {
-  const today = new Date().toISOString().split("T")[0]; // Obtener la fecha actual en formato YYYY-MM-DD
-  $("#fecha_pago").val(today); // Asignar la fecha al campo de pago
-  $("#id_forma_pago").prop('selectedIndex', 0); // Reiniciar el select
-  $("#monto_pagado").val(""); // Vaciar el monto
+  const today = new Date().toISOString().split("T")[0];
+  $("#fecha_pago").val(today);
+  $("#id_forma_pago").prop("selectedIndex", 0);
+  $("#monto_pagado").val("");
 }
 
 function showDataOrden() {
-
   $("#tbody_orden").html("");
   $("#paginador_orden").addClass("d-none");
   paginador = $("#paginador_orden");
-  var items = 10, numeros = 6;
+  var items = 10,
+    numeros = 6;
   init_paginator(paginador, items, numeros);
   set_callback(get_data_callback);
   cargaPagina(0);
-
 }
 
-// Función para agregar un nuevo registro a la tabla de pagos
-function agregarPagoTabla(pago) {
-  const tablaPagos = $("#tablaPagos tbody");
-  const numeroFila = tablaPagos.find("tr").length + 1;
-  const fila = `
-    <tr>
-      <td>${numeroFila}</td>
-      <td>${pago.fecha_pago}</td>
-      <td>${pago.id_forma_pago}</td>
-      <td>${pago.monto_pagado}</td>
-      <td>
-        <button class="btn btn-danger btn-sm btnEliminarPago"><i class="fa fa-trash"></i></button>
-      </td>
-    </tr>
-  `;
-  tablaPagos.append(fila);
-  actualizarTotales();
-}
-
-// Función para eliminar un registro de la tabla
-$(document).on("click", ".btnEliminarPago", function () {
-  $(this).closest("tr").remove();
-  recalcularNumerosTabla(); 
-  actualizarTotales();
-});
-
-// Función para recalcular los números de la tabla
-function recalcularNumerosTabla() {
-  $("#tablaPagos tbody tr").each(function (index) {
-    $(this).find("td:eq(0)").text(index + 1); // Actualizar el número basado en el índice
-  });
-}
-
-// Función para actualizar los totales
-function actualizarTotales() {
-  let totalPagado = 0;
-  $("#tablaPagos tbody tr").each(function () {
-    const monto = parseFloat($(this).find("td:eq(3)").text());
-    totalPagado += monto || 0;
-  });
-
-  const totalPagar = parseFloat($("#lblTotalPagar").data("total-pagar")) || 0;
-  const pendientePago = totalPagar - totalPagado;
-
-  $("#lblTotalPagado").text(`Total Pagado: S/ ${totalPagado.toFixed(2)}`);
-  $("#lblPendientePago").text(`Pendiente de Pago: S/ ${pendientePago.toFixed(2)}`);
-}
-
-// Modificar la función savePago para incluir el registro en la tabla al éxito
 function savePago() {
+  console.log($("#total_pendiente").val());
+  console.log($("#monto_pagado").val());
+  if (parseFloat($("#total_pendiente").val()) < parseFloat($("#monto_pagado").val())) {
+    runAlert("Oh No...!!!", "El monto a pagar no puede ser mayor al pendiente.", "warning");
+    return;
+  }
+
   Swal.fire({
-    title: '¿Seguro de registrar el pago?',
+    title: "¿Seguro de registrar el pago?",
     text: "No podrás revertir esta operación.",
-    type: 'warning',
+    type: "warning",
     showCancelButton: true,
-    confirmButtonColor: '#22c63b',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Si, Realizar ahora!'
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Realizar ahora!",
   }).then(function (result) {
     if (result.value) {
       const form = $("#frmPago");
       const formData = new FormData(form[0]);
-
       $.ajax({
         type: "POST",
         url: "ajax.php?accion=goPago",
@@ -399,18 +308,14 @@ function savePago() {
         success: function (data) {
           try {
             const response = JSON.parse(data);
-            if (response['error'] == "SI") {
-              runAlert("Oh No...!!!", response['message'], "warning");
+            if (response["error"] == "SI") {
+              runAlert("Oh No...!!!", response["message"], "warning");
             } else {
-              const nuevoPago = {
-                fecha_pago: $("#fecha_pago").val(),
-                id_forma_pago: $("#id_forma_pago option:selected").text(),
-                monto_pagado: parseFloat($("#monto_pagado").val()).toFixed(2)
-              };
-
-              agregarPagoTabla(nuevoPago);
+              $("#nuevoPagoContainer").hide();
+              $("#btnNuevoPago").show();
               limpiarCamposNuevoPago();
-              runAlert("Bien hecho...!!!", response['message'], "success");
+              cargarPagosExistentes($("#id_ingreso_pago").val());
+              runAlert("Bien hecho...!!!", response["message"], "success");
             }
           } catch (e) {
             runAlert("Oh No...!!!", e, "error");
@@ -420,18 +325,17 @@ function savePago() {
           runAlert("Oh No...!!!", data, "error");
         },
         beforeSend: function (xhr) {
-          showHideLoader('block');
+          showHideLoader("block");
         },
         complete: function (jqXHR, textStatus) {
-          showHideLoader('none');
-        }
+          showHideLoader("none");
+        },
       });
     }
   });
 }
 
 function get_data_callback() {
-
   tableOrden.clear().draw();
   var fecha_inicio = $("#txtFechaInicioBuscarOrden").val();
   var fecha_fin = $("#txtFechaFinBuscarOrden").val();
@@ -445,75 +349,70 @@ function get_data_callback() {
       valor: valor,
       tipo_busqueda: tipo_busqueda,
       fecha_fin: fecha_fin,
-      fecha_inicio: fecha_inicio
+      fecha_inicio: fecha_inicio,
     },
     beforeSend: function (xhr) {
-      showHideLoader('block');
+      showHideLoader("block");
     },
     complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
+      showHideLoader("none");
       if (totalPaginas == 1 && pagina == 0) {
         paginador.find(".next_link").hide();
       }
     },
     type: "POST",
-    url: 'ajax.php?accion=showOrdenCompraIngreso'
-  }).done(function (data, textStatus, jqXHR) {
-    try {
-      var data1 = JSON.parse(data);
-      if (data1["error"] == "NO") {
+    url: "ajax.php?accion=showOrdenCompraIngreso",
+  })
+    .done(function (data, textStatus, jqXHR) {
+      try {
+        var data1 = JSON.parse(data);
+        if (data1["error"] == "NO") {
+          if (pagina == 0) {
+            creaPaginador(data1["cantidad"]);
+          }
 
-        if (pagina == 0) {
-          creaPaginador(data1["cantidad"]);
+          var o = data1["data"];
+
+          for (var i = 0; i < o.length; i++) {
+            tableOrden.row
+              .add({
+                num: o[i].num,
+                id_orden_compra: o[i].id_orden_compra,
+                name_proveedor: o[i].name_proveedor,
+                name_usuario: o[i].name_usuario,
+                fecha_orden: o[i].fecha_orden,
+                fecha_entrega: o[i].fecha_entrega,
+                name_forma_envio: o[i].name_forma_envio,
+                num_registros: o[i].num_registros,
+                total: o[i].total,
+                estado: o[i].estado,
+                opciones: o[i].options,
+              })
+              .draw();
+          }
+
+          $("#paginador_orden").removeClass("d-none");
+        } else {
+          $("#paginador_orden").addClass("d-none");
         }
-
-        var o = data1["data"];
-
-        for (var i = 0; i < o.length; i++) {
-
-          tableOrden.row.add({
-            "num": o[i].num,
-            "id_orden_compra": o[i].id_orden_compra,
-            "name_proveedor": o[i].name_proveedor,
-            "name_usuario": o[i].name_usuario,
-            "fecha_orden": o[i].fecha_orden,
-            "fecha_entrega": o[i].fecha_entrega,
-            "name_forma_envio": o[i].name_forma_envio,
-            "num_registros": o[i].num_registros,
-            "total": o[i].total,
-            "estado": o[i].estado,
-            "opciones": o[i].options
-          }).draw();
-
-        }
-
-        $("#paginador_orden").removeClass("d-none");
-
-      } else {
+      } catch (err) {
+        runAlert("Message", err + data, "warning");
         $("#paginador_orden").addClass("d-none");
-
       }
-    }
-    catch (err) {
-      runAlert("Message", err + data, "warning");
-      $("#paginador_orden").addClass("d-none");
-    }
-
-  }).fail(function (jqXHR, textStatus, textError) {
-    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
-  });
+    })
+    .fail(function (jqXHR, textStatus, textError) {
+      runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+    });
 }
 
 function seleccionarOrden(id_orden_compra) {
-
   try {
-
     cancelarForm();
 
     $.ajax({
       type: "POST",
       data: {
-        id_orden_compra: id_orden_compra
+        id_orden_compra: id_orden_compra,
       },
       url: "ajax.php?accion=getDataEditOrdenCompraIngreso",
       success: function (data) {
@@ -523,77 +422,72 @@ function seleccionarOrden(id_orden_compra) {
             var o = data1["data"];
             $("#id_orden_compra").val(o[0].id_orden_compra);
             $("#name_proveedor").html(o[0].name_proveedor);
-            $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
+            $("#img_proveedor").attr("src", o[0].src_imagen_proveedor);
             $("#txtNameMetodo").val(o[0].name_metodo);
             $("#txtFechaOrdenForm").val(o[0].fecha_orden);
             $("#txtEstadoForm").val(o[0].estado);
 
             for (var i = 0; i < o.length; i++) {
-
               var name_producto = '<div class="d-flex align-items-center">';
               name_producto += '<div class="bg-img mr-4">';
               name_producto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
               name_producto += 'alt="Producto" id="img_producto">';
-              name_producto += '</div>';
-              name_producto += '<p class="font-weight-bold">' + o[i].name_producto + '</p>';
-              name_producto += '</div>';
+              name_producto += "</div>";
+              name_producto += '<p class="font-weight-bold">' + o[i].name_producto + "</p>";
+              name_producto += "</div>";
 
-              tableForm.row.add({
-                "num": i + 1,
-                "name_tabla": o[i].name_tabla,
-                "cod_producto": o[i].cod_producto,
-                "name_producto": name_producto,
-                "cantidad_solicitada": o[i].cantidad_solicitada,
-                "cantidad_ingresada": o[i].cantidad_ingresada,
-                "cantidad": '<input class="form-control" value="0" type="number" min="0" max="' + (o[i].cantidad_solicitada - o[i].cantidad_ingresada) + '">',
-                "observaciones": '<input class="form-control" type="text">',
-              }).draw();
-
+              tableForm.row
+                .add({
+                  num: i + 1,
+                  name_tabla: o[i].name_tabla,
+                  cod_producto: o[i].cod_producto,
+                  name_producto: name_producto,
+                  cantidad_solicitada: o[i].cantidad_solicitada,
+                  cantidad_ingresada: o[i].cantidad_ingresada,
+                  cantidad: '<input class="form-control" value="0" type="number" min="0" max="' + (o[i].cantidad_solicitada - o[i].cantidad_ingresada) + '">',
+                  observaciones: '<input class="form-control" type="text">',
+                })
+                .draw();
             }
 
             $("#contenedor_formulario").removeClass("d-none");
             $("#contenedor_orden").addClass("d-none");
             $("#btnSaveForm").removeClass("d-none");
-
           } else {
             runAlert("Message", data1["message"], "warning");
           }
         } catch (e) {
           runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
-          showHideLoader('none');
+          showHideLoader("none");
         }
       },
       beforeSend: function (xhr) {
-        showHideLoader('block');
+        showHideLoader("block");
       },
       error: function (jqXHR, textStatus, errorThrown) {
         runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
       },
       complete: function (jqXHR, textStatus) {
-        showHideLoader('none');
-      }
+        showHideLoader("none");
+      },
     });
-
   } catch (e) {
     runAlert("Oh No...!!!", "Error Try Catch " + e, "warning");
   }
-
 }
 
 function showData() {
-
   tableListado.clear().draw();
   $("#paginador_listado").addClass("d-none");
   paginador = $("#paginador_listado");
-  var items = 10, numeros = 6;
+  var items = 10,
+    numeros = 6;
   init_paginator(paginador, items, numeros);
   set_callback(get_data_callback2);
   cargaPagina(0);
-
 }
 
 function get_data_callback2() {
-
   tableListado.clear().draw();
   var fecha_inicio = $("#txtFechaInicioBuscarListado").val();
   var fecha_fin = $("#txtFechaFinBuscarListado").val();
@@ -607,68 +501,63 @@ function get_data_callback2() {
       valor: valor,
       tipo_busqueda: tipo_busqueda,
       fecha_fin: fecha_fin,
-      fecha_inicio: fecha_inicio
+      fecha_inicio: fecha_inicio,
     },
     beforeSend: function (xhr) {
-      showHideLoader('block');
+      showHideLoader("block");
     },
     complete: function (jqXHR, textStatus) {
-      showHideLoader('none');
+      showHideLoader("none");
       if (totalPaginas == 1 && pagina == 0) {
         paginador.find(".next_link").hide();
       }
     },
     type: "POST",
-    url: 'ajax.php?accion=showIngreso'
-  }).done(function (data, textStatus, jqXHR) {
-    try {
+    url: "ajax.php?accion=showIngreso",
+  })
+    .done(function (data, textStatus, jqXHR) {
+      try {
+        var data1 = JSON.parse(data);
+        if (data1["error"] == "NO") {
+          if (pagina == 0) {
+            creaPaginador(data1["cantidad"]);
+          }
 
-      var data1 = JSON.parse(data);
-      if (data1["error"] == "NO") {
+          var o = data1["data"];
 
-        if (pagina == 0) {
-          creaPaginador(data1["cantidad"]);
+          for (var i = 0; i < o.length; i++) {
+            tableListado.row
+              .add({
+                num: o[i].num,
+                id_ingreso: o[i].id_ingreso,
+                documento: o[i].documento,
+                name_proveedor: o[i].name_proveedor,
+                name_usuario: o[i].name_usuario,
+                fecha_orden: o[i].fecha_orden,
+                num_registros: o[i].num_registros,
+                estado: o[i].estado,
+                opciones: o[i].options,
+              })
+              .draw();
+          }
+
+          $("#paginador_listado").removeClass("d-none");
         }
-
-        var o = data1["data"];
-
-        for (var i = 0; i < o.length; i++) {
-
-          tableListado.row.add({
-            "num": o[i].num,
-            "id_ingreso": o[i].id_ingreso,
-            "documento": o[i].documento,
-            "name_proveedor": o[i].name_proveedor,
-            "name_usuario": o[i].name_usuario,
-            "fecha_orden": o[i].fecha_orden,
-            "num_registros": o[i].num_registros,
-            "estado": o[i].estado,
-            "opciones": o[i].options
-          }).draw();
-        }
-
-        $("#paginador_listado").removeClass("d-none");
-
+      } catch (err) {
+        runAlert("Message", err + data, "warning");
       }
-    }
-    catch (err) {
-      runAlert("Message", err + data, "warning");
-    }
-
-  }).fail(function (jqXHR, textStatus, textError) {
-    runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
-  });
-
+    })
+    .fail(function (jqXHR, textStatus, textError) {
+      runAlert("Oh No...!!!", "Error al realizar la petición " + textError, "warning");
+    });
 }
 
 function verRegistro(id_ingreso) {
-
   try {
-
     $("#txtObservacionesForm").val("");
     $("#id_orden_compra").val("0");
     $("#id_ingreso").val("0");
-    $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
+    $("#img_proveedor").attr("src", "resources/global/images/sin_imagen.png");
     $("#name_proveedor").html("No Seleccionado");
     $("#form_datos")[0].reset();
     var rows = tableForm.rows().remove().draw();
@@ -676,21 +565,19 @@ function verRegistro(id_ingreso) {
     $.ajax({
       type: "POST",
       data: {
-        id_ingreso: id_ingreso
+        id_ingreso: id_ingreso,
       },
       url: "ajax.php?accion=getDataVerIngreso",
       success: function (data) {
-
         try {
           var data1 = JSON.parse(data);
           if (data1["error"] == "NO") {
-
             var o = data1["data"];
 
             $("#id_ingreso").val(o[0].id_ingreso);
             $("#id_orden_compra").val(o[0].id_orden_compra);
             $("#name_proveedor").html(o[0].name_proveedor);
-            $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
+            $("#img_proveedor").attr("src", o[0].src_imagen_proveedor);
             $("#txtNameMetodo").val(o[0].name_metodo);
             $("#txtFechaOrdenForm").val(o[0].fecha_orden);
             $("#txtObservacionesForm").val(o[0].observaciones);
@@ -699,26 +586,26 @@ function verRegistro(id_ingreso) {
             $("#txtNumDocumento").val(o[0].num_documento);
 
             for (var i = 0; i < o.length; i++) {
-
               var name_producto = '<div class="d-flex align-items-center">';
               name_producto += '<div class="bg-img mr-4">';
               name_producto += '<img src="' + o[i].src_imagen_producto + '" class="img-fluid"';
               name_producto += 'alt="Producto" id="img_producto">';
-              name_producto += '</div>';
-              name_producto += '<p class="font-weight-bold">' + o[i].name_producto + '</p>';
-              name_producto += '</div>';
+              name_producto += "</div>";
+              name_producto += '<p class="font-weight-bold">' + o[i].name_producto + "</p>";
+              name_producto += "</div>";
 
-              tableForm.row.add({
-                "num": i + 1,
-                "cod_producto": o[i].cod_producto,
-                "name_tabla": o[i].name_tabla,
-                "name_producto": name_producto,
-                "cantidad_solicitada": '',
-                "cantidad_ingresada": '',
-                "cantidad": o[i].cantidad,
-                "observaciones": o[i].observaciones_detalle,
-              }).draw();
-
+              tableForm.row
+                .add({
+                  num: i + 1,
+                  cod_producto: o[i].cod_producto,
+                  name_tabla: o[i].name_tabla,
+                  name_producto: name_producto,
+                  cantidad_solicitada: "",
+                  cantidad_ingresada: "",
+                  cantidad: o[i].cantidad,
+                  observaciones: o[i].observaciones_detalle,
+                })
+                .draw();
             }
 
             $("#contenedor_formulario").removeClass("d-none");
@@ -728,103 +615,97 @@ function verRegistro(id_ingreso) {
             $("#btnCancelForm").addClass("d-none");
             $("#btnCancelFormVer").removeClass("d-none");
             $("#title_form").html("Datos del Ingreso");
-
           } else {
             runAlert("Message", data1["message"], "warning");
           }
         } catch (e) {
           runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");
-          showHideLoader('none');
+          showHideLoader("none");
         }
       },
       beforeSend: function (xhr) {
-        showHideLoader('block');
+        showHideLoader("block");
       },
       error: function (jqXHR, textStatus, errorThrown) {
         runAlert("Oh No...!!!", "Error de petición: " + jqXHR, "warning");
       },
       complete: function (jqXHR, textStatus) {
-        showHideLoader('none');
-      }
+        showHideLoader("none");
+      },
     });
-
   } catch (e) {
     runAlert("Oh No...!!!", "Error Try Catch " + e, "warning");
   }
-
 }
 
-function showModalPagos(id_ingreso_pago) {
+function showModalPagos(id_ingreso_pago, total_ing, signo) {
   $("#id_ingreso_pago").val(id_ingreso_pago);
-  console.log("Cargando pagos para el ingreso:", id_ingreso_pago);
-  cargarPagosExistentes(id_ingreso_pago); 
+  $("#total_ingreso").val(total_ing);
+  $("#moneda_ingreso").val(signo);
+  $("#lblTotalPagar").html(`<strong>Total a Pagar:</strong> ${signo} ${total_ing.toFixed(2)}`);
+  cargarPagosExistentes(id_ingreso_pago);
   $("#modalPagos").modal("show");
 }
 
 function deleteRegistro(id_ingreso_pago) {
-
   try {
-
     var parametros = {
-      "id_ingreso_pago": id_ingreso_pago
+      id_ingreso_pago: id_ingreso_pago,
     };
 
     Swal.fire({
-      title: '¿Seguro de anular el ingreso seleccionado?',
+      title: "¿Seguro de anular el pago seleccionado?",
       text: "No podrás revertir esta operación.",
-      type: 'warning',
+      type: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#22c63b',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, Anular ahora!'
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Anular ahora!",
     }).then(function (result) {
       if (result.value) {
         $.ajax({
           type: "POST",
-          url: "ajax.php?accion=deleteIngreso",
+          url: "ajax.php?accion=deletePago",
           datatype: "json",
           data: parametros,
           success: function (data) {
             try {
               var response = JSON.parse(data);
-              if (response['error'] == "SI") {
-                runAlert("Oh No...!!!", response['message'], "warning");
+              if (response["error"] == "SI") {
+                runAlert("Oh No...!!!", response["message"], "warning");
               } else {
-                showData();
-                runAlert("Bien hecho...!!!", response['message'], "success");
+                cargarPagosExistentes($("#id_ingreso_pago").val());
+                runAlert("Bien hecho...!!!", response["message"], "success");
               }
             } catch (e) {
-              runAlert("Oh No...!!!", e + data, "error");
+              console.log(e);
             }
           },
           error: function (data) {
             runAlert("Oh No...!!!", data, "error");
           },
           beforeSend: function (xhr) {
-            showHideLoader('block');
+            showHideLoader("block");
           },
           complete: function (jqXHR, textStatus) {
-            showHideLoader('none');
-          }
+            showHideLoader("none");
+          },
         });
       }
     });
-
   } catch (e) {
     runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
   }
 }
 
-// Escucha el cambio en el checkbox
 document.getElementById("flag_pagado").addEventListener("change", function () {
-  const grupoPago = document.getElementById("grupoPago"); 
+  const grupoPago = document.getElementById("grupoPago");
   if (this.checked) {
     grupoPago.style.display = "block";
   } else {
     grupoPago.style.display = "none";
   }
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const flagPagado = document.getElementById("flag_pagado");
@@ -834,46 +715,60 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
 function cargarPagosExistentes(id_ingreso_pago) {
-  console.log("Cargando pagos existentes para:", id_ingreso_pago);
   $.ajax({
     type: "POST",
     url: "ajax.php?accion=showPago",
     data: { id_ingreso_pago: id_ingreso_pago },
     success: function (response) {
-      console.log("Respuesta del servidor:", response); 
-      if (response.error === "NO") {
-        llenarTablaPagos(response.data);
-      } else {
-        runAlert("Error", response.message, "warning");
+      try {
+        var data1 = JSON.parse(response);
+        var o = data1["data"];
+        llenarTablaPagos(o);
+      } catch (err) {
+        console.log(err);
       }
     },
     error: function () {
       runAlert("Error", "No se pudo conectar con el servidor para cargar los pagos.", "error");
-    }
+    },
   });
 }
-
 
 function llenarTablaPagos(pagos) {
-  const tablaPagos = $("#tablaPagos tbody"); 
+  const tablaPagos = $("#tablaPagos tbody");
   tablaPagos.empty();
-
-  pagos.forEach((pago) => {
-    const fila = `
-      <tr>
-        <td>${pago.num}</td>
-        <td>${pago.fecha_pago}</td>
-        <td>${pago.name_forma_pago}</td>
-        <td>${parseFloat(pago.monto_pagado).toFixed(2)}</td>
-        <td>
-          ${pago.flag_eliminar} <!-- Botón generado dinámicamente -->
-        </td>
-      </tr>
-    `;
-    tablaPagos.append(fila);
-  });
+  let total_pagado = 0;
+  let total_ing = parseFloat($("#total_ingreso").val());
+  let signo = $("#moneda_ingreso").val();
+  if (pagos && pagos.length > 0) {
+    pagos.forEach((pago) => {
+      const fila = `
+        <tr>
+          <td>${pago.num}</td>
+          <td>${pago.fecha_pago}</td>
+          <td>${pago.name_forma_pago}</td>
+          <td>${parseFloat(pago.monto_pagado).toFixed(2)}</td>
+          <td>
+          ${pago.src_factura !== "resources/global/images/sin_imagen.png" ? `<a href="${pago.src_factura}" target="_blank" download>Descargar</a>` : "-"}
+          </td>
+          <td>
+            ${pago.flag_eliminar}
+          </td>
+        </tr>
+      `;
+      total_pagado += parseFloat(pago.monto_pagado);
+      tablaPagos.append(fila);
+    });
+  }
+  let pendiente = total_ing - total_pagado;
+  $("#lblTotalPagado").html(`<strong>Total Pagado:</strong> ${signo} ${total_pagado.toFixed(2)}`);
+  $("#lblPendientePago").html(`<strong>Pendiente de Pago:</strong> ${signo} ${pendiente.toFixed(2)}`);
+  $("#total_pendiente").val(pendiente);
+  if (pendiente <= 0) {
+    $("#nuevoPagoContainer").hide();
+    $("#btnNuevoPago").hide();
+  } else {
+    $("#btnNuevoPago").show();
+  }
 }
-
-

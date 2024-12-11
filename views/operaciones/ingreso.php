@@ -501,6 +501,10 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
                                 <form id="frmPago" name="frmPago" enctype="multipart/form-data">
                                   <input type="hidden" name="id_ingreso_pago" id="id_ingreso_pago" value="0">
+                                  <input type="hidden" name="total_ingreso" id="total_ingreso" value="0">
+                                  <input type="hidden" name="total_pendiente" id="total_pendiente" value="0">
+                                  <input type="hidden" name="total_pagado" id="total_pagado" value="0">
+                                  <input type="hidden" name="moneda_ingreso" id="moneda_ingreso" value="">
                                   <div class="row">
                                     <div class="col-md-1 d-none">
                                       <label>#</label>

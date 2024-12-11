@@ -647,10 +647,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteIngreso.php");
         break;
-        case 'deletePago':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/deletePago.php");
-          break;
+      case 'deletePago':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/deletePago.php");
+        break;
       case 'showPago':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showPago.php");

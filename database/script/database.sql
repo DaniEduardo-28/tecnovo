@@ -6116,4 +6116,6 @@ ALTER TABLE `tb_pago` CHANGE `monto_pagado` `monto_pagado` DECIMAL(18,2) NULL;
 
 ALTER TABLE `tb_ingreso` CHANGE `total` `total_ing` DECIMAL(18,2) NULL DEFAULT NULL;
 
+ALTER TABLE `tb_pago` CHANGE `monto_pendiente` `src_factura` VARCHAR(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+
 COMMIT;

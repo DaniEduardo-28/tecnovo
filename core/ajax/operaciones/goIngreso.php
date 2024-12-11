@@ -11,7 +11,6 @@
   $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
   $detalle_compra = json_decode($array_detalle);
 
-
   try {
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("ingreso"));
