@@ -26,8 +26,8 @@ try {
         throw new Exception("Error al verificar los permisos.");
     }
 
-    require_once 'core/models/ClassCliente.php';
-    $Resultado = $OBJ_CLIENTE->showreporte("all", null, null);
+    require_once 'core/models/ClassCita.php';
+    $Resultado = $OBJ_CITA->showreporte("all", $fecha_inicio, $fecha_fin, null, null);
     if ($Resultado["error"] === "SI") {
         throw new Exception($Resultado["message"]);
     }
@@ -37,26 +37,25 @@ try {
 
 
     // Nombre del archivo Excel
-    $filename = 'reporte_cliente.xls';
+    $filename = 'reporte_cita.xls';
 
     // Establecer encabezados para la descarga
     header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
     header('Content-Disposition: attachment; filename="' . $filename . '"');
     header('Cache-Control: max-age=0');
 
-
     // Encabezados del archivo Excel
-    $excel_data = "Num\tNum Documento\tNombre Cliente\tTelefono\tFundos Propiedad\tEstado\n";
+    $excel_data = "Num\tFecha Cita\tEstado\tNombre de Servicio\tNombre de Trabajador\tMaquinaria\n";
 
     // Datos
     $x = 1;
     foreach ($arrayresultado as $key) {
         $excel_data .= $x . "\t" .
-            mb_convert_encoding($key['numero_documento'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['nombre_cliente'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['telefono'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['cant_fundos'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['estado'], 'UTF-8', 'auto') . "\n";
+            mb_convert_encoding($key['fecha_cita'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['estado'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['name_servicio'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['nombre_trabajador'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['name_maquinaria'], 'UTF-8', 'auto') . "\n";
         $x++;
     }
 
