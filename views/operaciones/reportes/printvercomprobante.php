@@ -234,7 +234,7 @@
     $pdfReporte->SetFont('Arial','',7);
     foreach ($arrayordenventa as $key) {
       $pdfReporte->setX(4);
-      $pdfReporte->Cell(43,3,strtolower(substr(utf8_decode('- '.$key['detalle_notas']),0,40)),0,'L');
+      $pdfReporte->Cell(43,3,strtolower(substr(utf8_decode('- '.$key['detalle_descripcion'].': '.$key['detalle_notas']),0,40)),0,'L');
       $pdfReporte->setX(43);
       $pdfReporte->Ln(3);
     }
