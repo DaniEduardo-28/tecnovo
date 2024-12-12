@@ -68,7 +68,11 @@
             if ($access_options[0]['flag_anular']) {
               $options.='&nbsp;<a href="javascript:deleteRegistro(' . $key['id_orden_compra'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-na"></i></a>';
             }
-          }
+          } elseif ($key['estado'] == "3") { // Estado "Anulado"
+            if ($access_options[0]['flag_eliminar']) { // Validar permiso para eliminar
+                $options .= '&nbsp;<a href="javascript:eliminarRegistro(' . $key['id_orden_compra'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-trash"></i></a>';
+            }
+        }
 
         }
 

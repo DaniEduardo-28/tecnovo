@@ -623,6 +623,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteOrdenCompra.php");
         break;
+        case 'eliminarOrdenCompra':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/operaciones/eliminarOrdenCompra.php");
+          break;
       case 'showOrdenCompraIngreso':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showOrdenCompraIngreso.php");

@@ -945,3 +945,55 @@ function deleteRegistro(id_orden_compra){
     runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
   }
 }
+
+function eliminarRegistro(id_orden_compra) {
+  try {
+    var parametros = {
+      "id_orden_compra": id_orden_compra
+    };
+
+    Swal.fire({
+      title: '¿Seguro de eliminar la orden de forma definitiva?',
+      text: "Esta operación no podrá ser revertida.",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#22c63b',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar ahora!'
+    }).then(function(result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=eliminarOrdenCompra", // URL al archivo PHP para manejar la eliminación
+          datatype: "json",
+          data: parametros,
+          success: function(data) {
+            try {
+              var response = JSON.parse(data);
+              if (response['error'] === "SI") {
+                runAlert("Error", response['message'], "warning");
+              } else {
+                showData(); // Recargar la tabla con los registros actualizados
+                runAlert("Éxito", response['message'], "success");
+              }
+            } catch (e) {
+              runAlert("Error de Sistema", e, "error");
+            }
+          },
+          error: function(data) {
+            runAlert("Error", "Ocurrió un error al procesar la solicitud.", "error");
+          },
+          beforeSend: function() {
+            showHideLoader('block'); // Mostrar un loader mientras se procesa
+          },
+          complete: function() {
+            showHideLoader('none'); // Ocultar el loader después de completarse
+          }
+        });
+      }
+    });
+  } catch (e) {
+    runAlert("Error de Sistema", "Ocurrió un error inesperado: " + e, "error");
+  }
+}
+

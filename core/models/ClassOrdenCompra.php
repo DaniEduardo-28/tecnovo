@@ -763,6 +763,46 @@
 			return $VD;
 		}
 
+		public function eliminarOrden($id_orden_compra) {
+			$conexionClass = new Conexion();
+			$conexion = $conexionClass->Open();
+			$VD = "";
+			try {
+				$conexion->beginTransaction();
+		
+				// Verificar si la orden está en estado "Anulado"
+				$stmt = $conexion->prepare("SELECT * FROM `tb_orden_compra` WHERE id_orden_compra = ? AND estado = '3'");
+				$stmt->execute([$id_orden_compra]);
+				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+				if (count($result) == 0) {
+					throw new Exception("No se encontró la orden en estado 'Anulado' o ya fue eliminada.");
+				}
+		
+				// Eliminar registros del detalle de la orden
+				$stmt = $conexion->prepare("DELETE FROM tb_detalle_compra WHERE id_orden_compra = ?");
+				$stmt->execute([$id_orden_compra]);
+		
+				// Eliminar la orden de compra
+				$stmt = $conexion->prepare("DELETE FROM tb_orden_compra WHERE id_orden_compra = ?");
+				$stmt->execute([$id_orden_compra]);
+		
+				$VD = "OK";
+				$conexion->commit();
+		
+			} catch(PDOException $e) {
+				$conexion->rollBack();
+				$VD = $e->getMessage();
+			} catch (Exception $exception) {
+				$conexion->rollBack();
+				$VD = $exception->getMessage();
+			} finally {
+				$conexionClass->Close();
+			}
+			return $VD;
+		}
+		
+
 	}
 
 	$OBJ_ORDEN_COMPRA = new ClassOrdenCompra();
