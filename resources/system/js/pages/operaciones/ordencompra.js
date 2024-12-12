@@ -964,7 +964,7 @@ function eliminarRegistro(id_orden_compra) {
       if (result.value) {
         $.ajax({
           type: "POST",
-          url: "ajax.php?accion=eliminarOrdenCompra", // URL al archivo PHP para manejar la eliminación
+          url: "ajax.php?accion=eliminarOrdenCompra", 
           datatype: "json",
           data: parametros,
           success: function(data) {
@@ -973,7 +973,7 @@ function eliminarRegistro(id_orden_compra) {
               if (response['error'] === "SI") {
                 runAlert("Error", response['message'], "warning");
               } else {
-                showData(); // Recargar la tabla con los registros actualizados
+                showData(); 
                 runAlert("Éxito", response['message'], "success");
               }
             } catch (e) {
@@ -984,10 +984,10 @@ function eliminarRegistro(id_orden_compra) {
             runAlert("Error", "Ocurrió un error al procesar la solicitud.", "error");
           },
           beforeSend: function() {
-            showHideLoader('block'); // Mostrar un loader mientras se procesa
+            showHideLoader('block'); 
           },
           complete: function() {
-            showHideLoader('none'); // Ocultar el loader después de completarse
+            showHideLoader('none'); 
           }
         });
       }
