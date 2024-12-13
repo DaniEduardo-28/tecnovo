@@ -44,120 +44,45 @@ if (!isset($_SESSION['id_trabajador'])) {
     }
     $arrayordenventa = $Resultado["data"];
 
-    // Limpiar cualquier salida previa
-    if (ob_get_length()) {
-        ob_end_clean();
-    }
+        // Nombre del archivo Excel
+        $filename = 'reporte_salida_productos.xls';
 
-    // Configurar cabeceras de salida para Excel
-    header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    header("Content-Disposition: attachment;filename=\"" . $empresa[0]['razon_social'] . " " . date("d-m-Y", strtotime($fecha_inicio)) . " - " . date("d-m-Y", strtotime($fecha_fin)) . ".xlsx\"");
-    header("Cache-Control: max-age=0");
-    header("Expires: 0");
-    header("Pragma: public");
 
-    $objPHPExcel = new PHPExcel();
-    $objPHPExcel->getProperties()
-          ->setCreator("TECNOVO PERU SAC")
-          ->setLastModifiedBy("TECNOVO PERU SAC")
-          ->setTitle("VENTAS " . date("d/m/Y", strtotime($fecha_inicio)) . " - " . date("d/m/Y", strtotime($fecha_fin)))
-          ->setSubject("Reporte de Ventas")
-          ->setDescription("Documento generado con PHPExcel")
-          ->setKeywords("excel phpexcel php")
-          ->setCategory("VENTAS " . date("d/m/Y", strtotime($fecha_inicio)) . " - " . date("d/m/Y", strtotime($fecha_fin)));
+    // Establecer encabezados para la descarga
+    header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
 
-    $objPHPExcel->setActiveSheetIndex(0);
-  	$objPHPExcel->getActiveSheet()->setTitle('Hoja 1');
 
-  	//TAMAÑOS DE EMNCABEZADOS
-/*   	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(60);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(20);
-    $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(20); */
+        // Encabezados del archivo Excel
+        $excel_data = "#\tDOCUMENTO\tCOMPROBANTE\tFECHA\tTIPO DOCUMENTO\tENCARGADO\n";
 
-  	 // Encabezados
-     $objPHPExcel->getActiveSheet()
-     ->setCellValue('A1', '#')
-     ->setCellValue('B1', 'DOCUMENTO')
-     ->setCellValue('C1', 'COMPROBANTE')
-     ->setCellValue('D1', 'FECHA')
-     ->setCellValue('E1', 'DOCUMENTO CLIENTE')
-     ->setCellValue('F1', 'CLIENTE')
-     ->setCellValue('G1', 'MONEDA')
-     ->setCellValue('H1', 'SUB TOTAL')
-     ->setCellValue('I1', 'IGV')
-     ->setCellValue('J1', 'DESCUENTO')
-     ->setCellValue('K1', 'TOTAL')
-     ->setCellValue('L1', 'ESTADO');
+// Datos
+$x = 1;
+foreach ($arrayordenventa as $key) {
+    $excel_data .= $x . "\t" .
+        mb_convert_encoding($key['name_documento_venta'], 'UTF-8', 'auto') . "\t" .
+        mb_convert_encoding($key['serie']."-". substr("000000". $key['correlativo'],-8), 'UTF-8', 'auto') . "\t" .
+        mb_convert_encoding(date("d/m/Y", strtotime($key['fecha'])), 'UTF-8', 'auto') . "\t" .
+        mb_convert_encoding($key['name_documento_cliente'].": ". $key['numero_documento_cliente'], 'UTF-8', 'auto') . "\t" .
+        mb_convert_encoding(utf8_decode($key['cliente']), 'UTF-8', 'auto') . "\n";
+    $x++;
+}
 
-  	//recorremos el array de datos
-  	$x=2;
+    // Imprimir los datos del archivo Excel
+    echo $excel_data;
 
-  	foreach ($arrayordenventa as $key) {
-
-      $estado = $key['estado'];
-      switch ($estado) {
-        case '1':
-          $estado = "Registrado";
-          break;
-        case '2':
-          $estado = "Pagado";
-          break;
-        case '3':
-          $estado = "Anulado";
-          break;
-      }
-
-  		$objPHPExcel->getActiveSheet()->setCellValue('A'.$x, $x-1);
-  		$objPHPExcel->getActiveSheet()->setCellValue('B'.$x, $key['name_documento_venta']);
-      $objPHPExcel->getActiveSheet()->setCellValue('C'.$x, $key['serie'] .'-' . substr("0000000" . $key['correlativo'],-8));
-      $objPHPExcel->getActiveSheet()->setCellValue('D'.$x, date("d/m/Y", strtotime($key['fecha'])));
-  		$objPHPExcel->getActiveSheet()->setCellValue('E'.$x, "[" . $key['codigo_documento_cliente'] . "] - " . $key['numero_documento_cliente']);
-  		$objPHPExcel->getActiveSheet()->setCellValue('F'.$x, $key['cliente']);
-  		$objPHPExcel->getActiveSheet()->setCellValue('G'.$x, $key['abreviatura_moneda']);
-  		$objPHPExcel->getActiveSheet()->setCellValue('H'.$x, $key['signo_moneda'] . " " . $key['sub_total']);
-  		$objPHPExcel->getActiveSheet()->setCellValue('I'.$x, $key['signo_moneda'] . " " . $key['igv']);
-  		$objPHPExcel->getActiveSheet()->setCellValue('J'.$x, $key['signo_moneda'] . " " . $key['descuento_total']);
-  		$objPHPExcel->getActiveSheet()->setCellValue('K'.$x, $key['signo_moneda'] . " " . $key['total']);
-      $objPHPExcel->getActiveSheet()->setCellValue('L'.$x, $estado);
-  		$x++;
-  	}
-
-  	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-  	$objWriter->save('php://output');
-
-  } catch (\Exception $e) {
-
-    echo "Error: " . $e->getMessage();
-    $pdf = new PDF('L','mm','A4');
-  	$pdf->AliasNbPages();
+} catch (\Exception $e) {
+    // En caso de error, genera un mensaje en PDF
+    require_once 'plantilla.php';
+    $pdf = new PDF('L', 'mm', 'A4');
+    $pdf->AliasNbPages();
     $pdf->AddPage();
     $pdf->setY(10);
     $pdf->setX(2);
-    $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(12,3,(utf8_decode($e->getMessage())),0,0,'L',0);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(12, 3, (utf8_decode($e->getMessage())), 0, 0, 'L', 0);
     $pdf->Output();
-
-  }
+}
 
 ?>

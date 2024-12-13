@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
   if (!isset($_SESSION['id_trabajador'])) {
     header('location: ?view=logout');
@@ -38,80 +40,48 @@
     }
     $arrayaccesorios = $Resultado["data"];
 
+    
 
-    $objPHPExcel = new PHPExcel();
-  	$objPHPExcel->getProperties()
-          ->setCreator("TECNOVO PERU SAC")
-          ->setLastModifiedBy("TECNOVO PERU SAC")
-          ->setTitle("Reporte de Productos")
-          ->setSubject("Reporte de Productos")
-          ->setDescription("Documento generado con PHPExcel")
-          ->setKeywords("excel phpexcel php")
-          ->setCategory("Reporte de Productos");
+    // Nombre del archivo Excel
+    $filename = 'reporte_productos.xls';
 
-    $objPHPExcel->setActiveSheetIndex(0);
-  	$objPHPExcel->getActiveSheet()->setTitle('Hoja 1');
-
-  	//TAMAÑOS DE EMNCABEZADOS
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(10);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(50);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setAutoSize(false);
-  	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-
-    // ENCABEZADO
-    $objPHPExcel->getActiveSheet()->setCellValue('A1', '#');
-    $objPHPExcel->getActiveSheet()->setCellValue('B1', 'CATEGORÍA');
-    $objPHPExcel->getActiveSheet()->setCellValue('C1', 'ACCESORIO');
-    $objPHPExcel->getActiveSheet()->setCellValue('D1', 'STOCK');
-    $objPHPExcel->getActiveSheet()->setCellValue('E1', 'STOCK MIN');
-    $objPHPExcel->getActiveSheet()->setCellValue('F1', 'P. COMPRA');
-    $objPHPExcel->getActiveSheet()->setCellValue('G1', 'P. VENTA');
-    $objPHPExcel->getActiveSheet()->setCellValue('H1', 'ESTADO');
-
-  	$x=2;
-
-  	foreach ($arrayaccesorios as $key) {
-      $objPHPExcel->getActiveSheet()->setCellValue('A'.$x, $x-1);
-      $objPHPExcel->getActiveSheet()->setCellValue('B'.$x, $key['name_categoria']);
-      $objPHPExcel->getActiveSheet()->setCellValue('C'.$x, $key['name_accesorio']);
-      $objPHPExcel->getActiveSheet()->setCellValue('D'.$x, $key['stock'] . " " . $key['name_unidad']);
-      $objPHPExcel->getActiveSheet()->setCellValue('E'.$x, $key['stock_minimo'] . " " . $key['name_unidad']);
-      $objPHPExcel->getActiveSheet()->setCellValue('F'.$x, $key['signo_moneda'] . " " . $key['precio_compra']);
-      $objPHPExcel->getActiveSheet()->setCellValue('G'.$x, $key['signo_moneda'] . " " . $key['precio_venta']);
-      $objPHPExcel->getActiveSheet()->setCellValue('H'.$x, $key['estado']);
-  		$x++;
-  	}
-
-    header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    header('Content-Disposition: attachment;filename="' . $empresa[0]['razon_social'] . " - " . $_SESSION['nombre_sucursal'] . " - " . ' Reporte de Productos' .  '.xlsx"');
+    // Establecer encabezados para la descarga
+    header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
     header('Cache-Control: max-age=0');
 
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-    $objWriter->save('php://output');
 
-  } catch (\Exception $e) {
+    // Encabezados del archivo Excel
+    $excel_data = "NUM\tCATEGORÍA\tPRODUCTO\tSTOCK\tS. MINIMO\tP. COMPRA\n";
 
-    $pdf = new PDF('L','mm','A4');
-  	$pdf->AliasNbPages();
+    // Datos
+    $x = 1;
+    foreach ($arrayaccesorios as $key) {
+        $excel_data .= $x . "\t" .
+            mb_convert_encoding($key['name_categoria'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['name_accesorio'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['stock'] . " " . $key['name_unidad'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['stock_minimo'] . " " . $key['name_unidad'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding(utf8_decode($key['signo_moneda']) . " " . $key['precio_compra'], 'UTF-8', 'auto') . "\n";
+        $x++;
+    }
+
+    // Imprimir los datos del archivo Excel
+    echo $excel_data;
+
+} catch (\Exception $e) {
+    // En caso de error, genera un mensaje en PDF
+    require_once 'plantilla.php';
+    $pdf = new PDF('L', 'mm', 'A4');
+    $pdf->AliasNbPages();
     $pdf->AddPage();
     $pdf->setY(10);
     $pdf->setX(2);
-    $pdf->SetFont('Arial','B',12);
-    $pdf->Cell(12,3,(utf8_decode($e->getMessage())),0,0,'L',0);
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(12, 3, (utf8_decode($e->getMessage())), 0, 0, 'L', 0);
     $pdf->Output();
+}
 
-  }
+
 
 ?>

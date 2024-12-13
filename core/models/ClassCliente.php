@@ -627,20 +627,6 @@ END AS estado
       INNER JOIN tb_documento_identidad d ON p.id_documento = d.id_documento
     WHERE 
       1=1";
-
-
-/* 			if (!empty($val)) {
-				if ($tipobusqueda == 1) {
-					$sql .= " AND pm.id_personalmilitar = ?";
-					$parametros[] = $val;
-				} elseif ($tipobusqueda == 2) {
-					$sql .= " AND b.id_bungalow = ?";
-					$parametros[] = $val;
-				} elseif ($tipobusqueda == 3) {
-					$sql .= " AND d.id_departamento = ?";
-					$parametros[] = $val;
-				}
-			} */
 			$sql .= "
 				GROUP BY 
 					c.id_cliente,

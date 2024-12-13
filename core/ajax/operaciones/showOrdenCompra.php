@@ -2,7 +2,7 @@
 
   try {
 
-    // obtiene los valores para realizar la paginacion
+
     $limit = isset($_POST["limit"]) && intval($_POST["limit"]) > 0 ? intval($_POST["limit"])	: 10;
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
@@ -69,7 +69,7 @@
               $options.='&nbsp;<a href="javascript:deleteRegistro(' . $key['id_orden_compra'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-na"></i></a>';
             }
           } elseif ($key['estado'] == "3") { // Estado "Anulado"
-            if ($access_options[0]['flag_eliminar']) { // Validar permiso para eliminar
+            if ($access_options[0]['flag_eliminar']) { 
                 $options .= '&nbsp;<a href="javascript:eliminarRegistro(' . $key['id_orden_compra'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-trash"></i></a>';
             }
         }
