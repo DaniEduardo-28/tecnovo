@@ -541,6 +541,70 @@
 			return $VD;
 		}
 
+		public function showreporte($estado, $val, $tipobusqueda)
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+
+			$parametros = [];
+			$sql = "SELECT pr.id_proveedor,
+    CONCAT(d.name_documento, ': ', p.num_documento) AS numero_documento, 
+    CONCAT(p.nombres, ' ', p.apellidos) AS nombre_proveedor,
+    p.apodo, 
+    p.direccion, 
+    p.telefono, 
+    CASE 
+        WHEN pr.estado = 1 THEN 'activo'
+        WHEN pr.estado = 0 THEN 'inactivo'
+        ELSE 'inactivo'
+    END AS estado
+	FROM 
+    tb_proveedor pr
+    INNER JOIN tb_persona p ON pr.id_persona = p.id_persona
+    INNER JOIN tb_documento_identidad d ON p.id_documento = d.id_documento
+    WHERE  1=1";
+			$sql .= "
+				GROUP BY 
+    pr.id_proveedor,
+    d.name_documento, 
+    p.num_documento, 
+    p.nombres,
+    p.apellidos,
+    p.apodo, 
+    p.direccion,
+    p.telefono,
+    pr.estado";
+
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
+
+		return $VD;
+	}
+
 	}
 
 	$OBJ_PROVEEDOR = new ClassProveedor();

@@ -157,7 +157,7 @@ function printCodeOption($controller)
       case 'vistaestadisticas':
         $VD = 705;
         break;
-      case 'observacionesproveedor':
+      case 'vistareporteproveedor':
         $VD = 706;
         break;
       case 'vistareportecita':

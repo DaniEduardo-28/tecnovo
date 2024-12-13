@@ -531,6 +531,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/reportes/showClienteReporte.php");
         break;
+        case 'showProveedorReporte':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/reportes/showProveedorReporte.php");
+          break;
       case 'showProveedor':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showProveedor.php");

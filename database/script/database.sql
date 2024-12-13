@@ -6169,4 +6169,8 @@ CREATE TABLE tb_pagos_clientes (
     CONSTRAINT fk_cronograma_pago FOREIGN KEY (id_cronograma) REFERENCES tb_cronograma(id_cronograma) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
+UPDATE `tb_opcion` SET `name_opcion` = 'Reporte de Proveedores' WHERE `tb_opcion`.`id_opcion` = 706;
+
+
 COMMIT;

@@ -78,7 +78,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           Reportes
                         </li>
                         <li class="breadcrumb-item active text-primary" aria-current="page">
-                          Proforma
+                          Reporte de Citas
                         </li>
                       </ol>
                     </nav>

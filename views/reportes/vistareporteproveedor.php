@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
 <head>
   <?php include("views/overall/header.php"); ?>
-  <title>Reporte cliente | <?= APP_TITLE; ?> </title>
+  <title>Reporte proveedor | <?= APP_TITLE; ?> </title>
   <style media="screen">
     .pagination {
       display: inline-block;
@@ -78,7 +78,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           Reportes
                         </li>
                         <li class="breadcrumb-item active text-primary" aria-current="page">
-                          Reporte de Clientes
+                          Reporte de Proveedores
                         </li>
                       </ol>
                     </nav>
@@ -87,7 +87,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions"
                     name="panelOptions">
                     <?php
-                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("vistareportecliente"));
+                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("vistareporteproveedor"));
                     if ($access_options[0]['error'] == "NO") {
 
                       if ($access_options[0]['flag_descargar']) {
@@ -117,7 +117,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <div class="card card-statistics">
                   <div class="card-header">
                     <div class="card-heading">
-                      <h4 class="card-title">Reporte de Clientes</h4>
+                      <h4 class="card-title">Reporte de Proveedores</h4>
                     </div>
                   </div>
                   <div class="card-body">
@@ -159,10 +159,10 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <th>Num</th>
                                   <th>Id</th>
                                   <th>N° Documento</th>
-                                  <th>Cliente</th>
+                                  <th>Proveedor</th>
+                                  <th>Apodo</th>
                                   <th>Dirección</th>
                                   <th>Teléfono</th>
-                                  <th>Fundos Pertenecientes</th>
                                   <th>Estado</th>
                                   <!-- <th>Acciones</th> -->
                                 </tr>
@@ -200,10 +200,10 @@ if (!isset($_SESSION['id_trabajador'])) {
 
   <!-- JavaScript files-->
   <?php include("views/overall/js.php"); ?>
-  <script src="resources/system/js/pages/reportes/vistareportecliente.js?v=<?= APP_VERSION; ?>"></script>
+  <script src="resources/system/js/pages/reportes/vistareporteproveedor.js?v=<?= APP_VERSION; ?>"></script>
   <script>
     $("#menureportes").addClass('active');
-    $("#submenureportecliente").addClass('active');
+    $("#submenureporteproveedor").addClass('active');
   </script>
 
 </body>
