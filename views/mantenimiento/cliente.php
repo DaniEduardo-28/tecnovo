@@ -302,7 +302,7 @@
 
                                         <div class="col-md-2 col-sm-4">
     <div class="form-group">
-      <label for="cboTipoBusqueda" class="label-control">Tipo de Búsqueda</label>
+      <label for="cboTipoBusqueda" class="label-control">Búsqueda por:</label>
       <select class="form-control" name="cboTipoBusqueda" id="cboTipoBusqueda">
         <option value="todos">Apodo</option>
         <option value="nombre">Nombre / Apellido</option>
