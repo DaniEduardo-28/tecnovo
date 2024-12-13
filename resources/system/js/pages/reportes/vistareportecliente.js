@@ -1,6 +1,7 @@
 var table = $('#example').DataTable({
     language: languageSpanish,
     destroy: true,
+    dom: 'tip',
     columns: [
       { 'data': 'num' },
       { 'data': 'id_cliente' },
@@ -16,7 +17,7 @@ var table = $('#example').DataTable({
       {
         "targets": [1],
         "visible": false,
-        "searchable": true
+        "searchable": false
       }
     ]
   });
@@ -38,10 +39,58 @@ var table = $('#example').DataTable({
     $("#txtFechaFin").change(showLista);
     $("#filterUser").change(showLista);
     $("#filterTable").change(showLista);
-  
+
     // Mostrar la lista inicial
     showLista();
   });
+
+  // Función para buscar datos personalizados
+$('#btnBuscarOrden').on('click', function () {
+  const tipoBusqueda = $('#cboTipoBuscarOrden').val(); // Tipo de búsqueda (1: Nombres/Apellidos, 2: Apodo)
+  const valorBusqueda = $('#txtBuscarOrden').val(); // Valor ingresado en el input de búsqueda
+
+  // Limpiar y buscar en la tabla con lógica personalizada
+  table.clear().draw(); // Limpia la tabla antes de cargar nuevos datos
+
+  $.ajax({
+      type: "POST",
+      url: "ajax.php?accion=showClienteReporte", // Ruta a tu backend
+      data: {
+          tipo_busqueda: tipoBusqueda, // Envía el tipo de búsqueda seleccionado
+          valor_busqueda: valorBusqueda, // Envía el valor ingresado
+          estado: "all"
+      },
+      success: function (response) {
+          try {
+              const data = JSON.parse(response);
+              if (data.error === "NO") {
+                  data.data.forEach(function (item) {
+                      table.row.add({
+                          num: item.num,
+                          id_cliente: item.id_cliente,
+                          numero_documento: item.numero_documento,
+                          nombre_cliente: item.nombre_cliente,
+                          apodo: item.apodo,
+                          direccion: item.direccion,
+                          telefono: item.telefono,
+                          cant_fundos: item.cant_fundos,
+                          estado: item.estado
+                      }).draw();
+                  });
+              } else {
+                  alert(data.message || "No se encontraron resultados.");
+              }
+          } catch (err) {
+              console.error("Error procesando los datos:", err);
+              alert("Ocurrió un error al procesar la respuesta del servidor.");
+          }
+      },
+      error: function (xhr, status, error) {
+          console.error("Error en la solicitud AJAX:", error);
+          alert("Ocurrió un error al realizar la búsqueda.");
+      }
+  });
+});
   
   
   // Función para configurar las fechas predeterminadas
@@ -197,6 +246,7 @@ var table = $('#example').DataTable({
     table.clear().draw();
     var fecha_inicio = $("#txtFechaInicio").val();
     var fecha_fin = $("#txtFechaFin").val();
+    var tipo_busqueda = $("#cboTipoBuscarOrden").val();
     $("#divPaginador").addClass("d-none");
   
     $.ajax({
