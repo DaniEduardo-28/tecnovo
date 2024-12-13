@@ -53,7 +53,7 @@ var innerdivHtml1 = '<table class="table clients-contant-table mb-0">';
 innerdivHtml1 += '<thead>';
 innerdivHtml1 += '<tr>';
 innerdivHtml1 += '<th scope="col">Servicio</th>';
-innerdivHtml1 += '<th scope="col">Tipo</th>';
+innerdivHtml1 += '<th scope="col">Unidad de Negocio</th>';
 innerdivHtml1 += '<th scope="col">Maquinaria</th>';
 innerdivHtml1 += '<th scope="col">Medida</th>';
 innerdivHtml1 += '<th scope="col">Precio</th>';
@@ -107,7 +107,7 @@ function get_data_callback() {
         innerdivHtml += '<thead>';
         innerdivHtml += '<tr>';
         innerdivHtml += '<th scope="col">Servicio</th>';
-        innerdivHtml += '<th scope="col">Tipo</th>';
+        innerdivHtml += '<th scope="col">Unidad de Negocio</th>';
         innerdivHtml += '<th scope="col">Maquinaria</th>';
         innerdivHtml += '<th scope="col">Medida</th>';
         innerdivHtml += '<th scope="col">Precio</th>';

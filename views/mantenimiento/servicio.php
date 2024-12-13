@@ -154,7 +154,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <div class="form-group col-sm-6">
 
                                 <div class="form-group col-xs-12">
-                                  <label for="id_tipo_servicio" class="label-control">Tipo Servicio</label>
+                                  <label for="id_tipo_servicio" class="label-control">Unidad de negocio</label>
                                   <select name="id_tipo_servicio" id="id_tipo_servicio" class="form-control" required>
                                     <option value="">Seleccione...</option>
                                     <?php
