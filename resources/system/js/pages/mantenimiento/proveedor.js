@@ -156,7 +156,7 @@ function get_data_callback(){
           innerdivHtml += '<img src="' + o[i].src_imagen + '" alt="" class="img-fluid">';
           innerdivHtml += '</div>';
           innerdivHtml += '<div class="ml-3">';
-          innerdivHtml += '<h5 class="mb-0">' + o[i].apellidos + ' ' + o[i].nombres + '</h5>';
+          innerdivHtml += '<h5 class="mb-0">' + o[i].apellidos + ' ' + o[i].nombres + ' | Apodo: '+o[i].apodo+'</h5>';
           innerdivHtml += '<p>' + o[i].estado;
           innerdivHtml += o[i].options;
           innerdivHtml += '</p>';
@@ -338,6 +338,7 @@ function getDataEdit(id_proveedor){
           $("#id_proveedor").val(o[0].id_proveedor);
           $("#accion").val("edit");
           $("#flag_imagen").val("0");
+          $("#apodo").val(o[0].apodo);
           var estado = o[0].estado;
           estado=="1" ? $("#estado").prop('checked', true) : $("#estado").prop('checked', false);
           $('#img_destino').attr('src', o[0].src_imagen);

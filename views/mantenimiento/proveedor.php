@@ -185,6 +185,12 @@
                                                 autocomplete="off" required data-msg="Campo obligatorio...">
                                               </div>
 
+                                              <div class="form-group col-xs-12">
+                                                <label for="apodo" class="label-control">Apodo o Nick</label>
+                                                <input id="apodo" type="text" name="apodo" class="form-control"
+                                                autocomplete="off">
+                                              </div>
+
                                             </div>
 
 

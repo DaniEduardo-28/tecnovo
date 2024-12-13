@@ -634,7 +634,7 @@ END AS estado
 		if ($tipobusqueda == 1) { // Nombres / Apellidos
 			$sql .= " AND CONCAT(p.nombres, ' ', p.apellidos) LIKE :valor";
 			$parametros[':valor'] = '%' . $val . '%';
-		} elseif ($tipobusqueda == 2) { // Apodo
+		} elseif ($tipobusqueda == 2) { 
 			$sql .= " AND p.apodo LIKE :valor";
 			$parametros[':valor'] = '%' . $val . '%';
 		}

@@ -173,7 +173,7 @@
 			return $VD;
 		}
 
-		public function insert($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen) {
+		public function insert($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen, $apodo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
@@ -213,9 +213,10 @@
 					$sql .=" direccion = ?, ";
 					$sql .=" correo = ?, ";
 					$sql .=" telefono = ? ";
+					$sql .=" apodo = ?, ";
 					$sql .=" WHERE id_persona = ? ";
 					$stmt = $conexion->prepare($sql);
-					if ($stmt->execute([$nombres,$apellidos,$direccion,$correo,$telefono,$id_persona])==false) {
+					if ($stmt->execute([$nombres,$apellidos,$direccion,$correo,$telefono,$apodo,$id_persona])==false) {
 						throw new Exception("Ocurrió un error al actualizar los datos del proveedor.");
 					}
 
@@ -230,13 +231,13 @@
 						}
 					}
 
-					$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `sexo`) VALUES ";
+					$sql = "INSERT INTO tb_persona (`id_persona`, `id_documento`, `num_documento`, `nombres`, `apellidos`, `direccion`, `telefono`, `correo`, `fecha_nacimiento`, `apodo`, `sexo`) VALUES ";
 					$sql .= "(";
 					$sql .= "(SELECT CASE COUNT(p.id_persona) WHEN 0 THEN 1 ELSE (MAX(p.id_persona) + 1) end FROM `tb_persona` p),";
-					$sql .= "?,?,?,?,?,?,?,?,?";
+					$sql .= "?,?,?,?,?,?,?,?,?,?";
 					$sql .= ")";
 					$stmt = $conexion->prepare($sql);
-					$stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$direccion,$telefono,$correo,date('Y-m-d'),"masculino"]);
+					$stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$direccion,$telefono,$correo,date('Y-m-d'), $apodo,"masculino"]);
 					if ($stmt->rowCount()==0) {
 						throw new Exception("1. Error al registrar los datos del proveedor.");
 					}
@@ -321,7 +322,7 @@
 			return $VD;
 		}
 
-		public function update($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen) {
+		public function update($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen, $apodo) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD = "";
@@ -369,10 +370,11 @@
 				$sql .=" apellidos = ?, ";
 				$sql .=" direccion = ?, ";
 				$sql .=" correo = ?, ";
-				$sql .=" telefono = ? ";
+				$sql .=" telefono = ?, ";
+				$sql .=" apodo = ? ";
 				$sql .=" WHERE id_persona = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$id_persona])==false) {
+				if ($stmt->execute([$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$apodo,$id_persona])==false) {
 					throw new Exception("1. Error al actualizar los datos del proveedor.");
 				}
 

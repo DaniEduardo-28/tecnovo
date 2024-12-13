@@ -4,6 +4,7 @@
   $id_proveedor = isset($_POST["id_proveedor"]) ? $_POST["id_proveedor"] : "";
   $id_documento = isset($_POST["id_documento"]) ? $_POST["id_documento"] : "";
   $num_documento = isset($_POST["num_documento"]) ? $_POST["num_documento"] : "";
+  $apodo = isset($_POST["apodo"]) ? $_POST["apodo"] : "";
   $nombres = isset($_POST["nombres"]) ? $_POST["nombres"] : "";
   $apellidos = isset($_POST["apellidos"]) ? $_POST["apellidos"] : "";
   $direccion = isset($_POST["direccion"]) ? $_POST["direccion"] : "";
@@ -129,10 +130,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_PROVEEDOR->insert($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen);
+        $VD = $OBJ_PROVEEDOR->insert($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen,$apodo);
         break;
       case 'edit':
-        $VD = $OBJ_PROVEEDOR->update($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen);
+        $VD = $OBJ_PROVEEDOR->update($id_persona,$id_proveedor,$id_documento,$num_documento,$nombres,$apellidos,$direccion,$correo,$telefono,$estado,$flag_imagen,$src_imagen,$apodo);
         break;
       default:
         $VD = "No se recibió parametro de acción.";
