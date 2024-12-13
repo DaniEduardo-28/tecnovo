@@ -60,7 +60,8 @@
   	$pdf->SetFont('Arial','B',8);
   	$pdf->Cell(10,5,'#',1,0,'C',0);
   	$pdf->Cell(40,5,'NUM. DOCUMENTO',1,0,'C',0);
-    $pdf->Cell(95,5,'NOMBRE DEL CLIENTE',1,0,'C',0);
+    $pdf->Cell(80,5,'NOMBRE DEL CLIENTE',1,0,'C',0);
+    $pdf->Cell(15,5,'APODO',1,0,'C',0);
   	$pdf->Cell(25,5,'TELEFONO',1,0,'C',0);
     $pdf->Cell(90,5,'FUNDOS EN PROPIEDAD',1,0,'C',0);
     $pdf->Cell(17,5,'ESTADO',1,0,'C',0);
@@ -73,7 +74,8 @@
       $pdf->SetX(5);
   		$pdf->Cell(10,5,$x,1,0,'C',0);
   		$pdf->Cell(40,5,utf8_decode($key['numero_documento']),1,0,'C',0);
-      $pdf->Cell(95,5,utf8_decode($key['nombre_cliente']),1,0,'L',0);
+      $pdf->Cell(80,5,utf8_decode($key['nombre_cliente']),1,0,'L',0);
+      $pdf->Cell(15,5,$key['apodo'],1,0,'C',0);
       $pdf->Cell(25,5,$key['telefono'],1,0,'C',0);
       $pdf->Cell(90,5,$key['cant_fundos'],1,0,'L',0);
       $pdf->Cell(17,5,$key['estado'],1,0,'C',0);

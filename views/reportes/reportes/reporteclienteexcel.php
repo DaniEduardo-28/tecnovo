@@ -46,7 +46,7 @@ try {
 
 
     // Encabezados del archivo Excel
-    $excel_data = "Num\tNum Documento\tNombre Cliente\tTelefono\tFundos Propiedad\tEstado\n";
+    $excel_data = "NUM\tDOCUMENTO\tNOMBRE CLIENTE\tAPODO\tTELEFONO\tFUNDOS PROPIEDAD\tESTADO\n";
 
     // Datos
     $x = 1;
@@ -54,6 +54,7 @@ try {
         $excel_data .= $x . "\t" .
             mb_convert_encoding($key['numero_documento'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['nombre_cliente'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['apodo'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['telefono'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['cant_fundos'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['estado'], 'UTF-8', 'auto') . "\n";
