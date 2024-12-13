@@ -623,10 +623,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/deleteOrdenCompra.php");
         break;
-        case 'eliminarOrdenCompra':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/operaciones/eliminarOrdenCompra.php");
-          break;
+      case 'eliminarOrdenCompra':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/eliminarOrdenCompra.php");
+        break;
       case 'showOrdenCompraIngreso':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showOrdenCompraIngreso.php");
@@ -669,7 +669,26 @@ try {
       case 'buscar-ruc':
         require("core/ajax/utils/buscarRUC.php");
         break;
-
+      case 'showCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/showCronograma.php");
+        break;
+      case 'registrarCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/registrarCronograma.php");
+        break;
+      case 'actualizarCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/actualizarCronograma.php");
+        break;
+      case 'eliminarCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/eliminarCronograma.php");
+        break;
+      case 'getCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        include("core/ajax/citas/getCronograma.php");
+        break;
       default:
         $data["error"] = "SI";
         $data["message"] = "No se encontró el ajax especificado.";

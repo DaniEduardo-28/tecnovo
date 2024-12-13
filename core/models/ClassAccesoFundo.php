@@ -18,7 +18,7 @@ class ClassAccesoFundo extends Conexion
 
 		try {
 
-			$sql = "SELECT  * FROM tb_cliente_fundo WHERE id_cliente = ?";
+			$sql = "SELECT  c.*,f.nombre as nombre_fundo FROM tb_cliente_fundo c INNER JOIN tb_fundo f on f.id_fundo = c.id_fundo WHERE c.id_cliente = ? ";
 			/* $sql= "SELECT f.id_fundo, f.nombre, cf.cantidad_hc 
 									  FROM tb_fundo f
 									  LEFT JOIN tb_cliente_fundo cf ON f.id_fundo = cf.id_fundo AND cf.id_cliente = ?

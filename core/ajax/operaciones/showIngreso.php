@@ -56,13 +56,13 @@ try {
       if ($tipo != 'reporte') {
         if ($key['estado'] == "1") {
           if ($access_options[0]['flag_anular']) {
-            $options .= '&nbsp;<a href="javascript:deleteRegistro(' . $key['id_ingreso'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-na"></i></a>';
+            $options .= '&nbsp;<a href="javascript:deleteIngreso(' . $key['id_ingreso'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-na"></i></a>';
           }
-        }
-        $options .= '&nbsp;<a href="javascript:showModalPagos('
+          $options .= '&nbsp;<a href="javascript:showModalPagos('
           . $key['id_ingreso'] . ','
           . $key['total_ing'] . ',\''
           . $key['signo'] . '\')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
+        }
       }
 
       $retorno_array[] = array(

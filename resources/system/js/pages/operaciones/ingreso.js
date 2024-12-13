@@ -647,6 +647,57 @@ function showModalPagos(id_ingreso_pago, total_ing, signo) {
   $("#modalPagos").modal("show");
 }
 
+function deleteIngreso(id_ingreso) {
+  try {
+    var parametros = {
+      id_ingreso: id_ingreso,
+    };
+
+    Swal.fire({
+      title: "¿Seguro de anular el ingreso seleccionado?",
+      text: "No podrás revertir esta operación.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Anular ahora!",
+    }).then(function (result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=deleteIngreso",
+          datatype: "json",
+          data: parametros,
+          success: function (data) {
+            try {
+              var response = JSON.parse(data);
+              if (response["error"] == "SI") {
+                runAlert("Oh No...!!!", response["message"], "warning");
+              } else {
+                showData();
+                runAlert("Bien hecho...!!!", response["message"], "success");
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          },
+          error: function (data) {
+            runAlert("Oh No...!!!", data, "error");
+          },
+          beforeSend: function (xhr) {
+            showHideLoader("block");
+          },
+          complete: function (jqXHR, textStatus) {
+            showHideLoader("none");
+          },
+        });
+      }
+    });
+  } catch (e) {
+    runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
+  }
+}
+
 function deleteRegistro(id_ingreso_pago) {
   try {
     var parametros = {
