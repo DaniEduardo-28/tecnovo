@@ -13,6 +13,10 @@ $(document).ready(function () {
     }
   });
 
+  $("#cboTipoBusqueda").change(function () {
+    showData(); // Actualizar datos al cambiar el tipo de búsqueda
+  });
+
   $("#id_documento").change(function () {
     changeOption();
   });
@@ -106,12 +110,14 @@ function validarYEnviar() {
 function get_data_callback() {
   var valor = $("#txtBuscar").val();
   var id_documento = $("#cboDocumentoBuscar").val();
+  var tipo_busqueda = $("#cboTipoBusqueda").val();
   $.ajax({
     data: {
       limit: itemsPorPagina,
       offset: desde,
       valor: valor,
-      id_documento: id_documento,
+      id_documento: id_documento || "",
+      tipo_busqueda: tipo_busqueda || "todos",
     },
     beforeSend: function (xhr) {
       showHideLoader("block");
@@ -145,7 +151,7 @@ function get_data_callback() {
             innerdivHtml += '<img src="' + o[i].src_imagen + '" alt="" class="img-fluid">';
             innerdivHtml += "</div>";
             innerdivHtml += '<div class="ml-3">';
-            innerdivHtml += '<h5 class="mb-0">' + o[i].apellidos + " " + o[i].nombres + " | Apodo: "+o[i].apodo+"</h5>";
+            innerdivHtml += '<h5 class="mb-0">'+o[i].apodo+" | " + o[i].apellidos + " " + o[i].nombres + "</h5>";
             innerdivHtml += "<p>" + o[i].estado;
             innerdivHtml += o[i].options;
             innerdivHtml += "</p>";

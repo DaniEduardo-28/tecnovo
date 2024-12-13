@@ -7,6 +7,7 @@
     $offset = isset($_POST["offset"]) && intval($_POST["offset"])>=0	? intval($_POST["offset"])	: 0;
     $valor = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $id_documento = isset($_POST["id_documento"])	? $_POST["id_documento"]	: "";
+    $tipo_busqueda = isset($_POST["tipo_busqueda"]) ? $_POST["tipo_busqueda"] : "todos"; // Nuevo parámetro
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("cliente"));
 
@@ -19,12 +20,12 @@
     }
 
     require_once "core/models/ClassCliente.php";
-    $DataCantidad = $OBJ_CLIENTE->getCount("all",$id_documento,$valor);
+    $DataCantidad = $OBJ_CLIENTE->getCount("all",$id_documento,$valor, $tipo_busqueda);
 
     if ($DataCantidad["error"]=="NO") {
 
       $cantidad = $DataCantidad["data"][0]["cantidad"];
-      $Resultado = $OBJ_CLIENTE->show("all",$id_documento,$valor,$offset,$limit);
+      $Resultado = $OBJ_CLIENTE->show("all",$id_documento,$valor,$tipo_busqueda,$offset,$limit);
 
       $count = 1;
       foreach ($Resultado["data"] as $key) {

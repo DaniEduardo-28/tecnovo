@@ -299,18 +299,28 @@
                                           </div>
                                         </div>
 
-                                        <div class="col-md-10 col-sm-8">
-                                          <label for="">&nbsp;</label>
-                                          <div class="input-group mb-3">
-                                            <input type="text" class="form-control" placeholder="Search..."
-                                            aria-label="Recipient's username" aria-describedby="basic-addon2"
-                                            id="txtBuscar" name="txtBuscar">
-                                            <div class="input-group-append">
-                                              <button class="btn btn-outline-primary" id="btnSearch" type="button">Buscar</button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
+
+                                        <div class="col-md-2 col-sm-4">
+    <div class="form-group">
+      <label for="cboTipoBusqueda" class="label-control">Tipo de Búsqueda</label>
+      <select class="form-control" name="cboTipoBusqueda" id="cboTipoBusqueda">
+        <option value="todos">Apodo</option>
+        <option value="nombre">Nombre / Apellido</option>
+        <!-- <option value="apodo">Apodo</option> -->
+      </select>
+    </div>
+  </div>
+
+  <div class="col-md-8 col-sm-8">
+    <label for="">&nbsp;</label>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search..." aria-label="Search" id="txtBuscar" name="txtBuscar">
+      <div class="input-group-append">
+        <button class="btn btn-outline-primary" id="btnSearch" type="button">Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
                                       <div class="row" id="divDatos">
 

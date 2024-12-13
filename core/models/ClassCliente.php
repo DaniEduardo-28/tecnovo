@@ -8,7 +8,7 @@ class ClassCliente extends Conexion
 	{
 	}
 
-	public function getCount($estado, $id_documento, $valor)
+	public function getCount($estado, $id_documento, $valor, $tipo_busqueda)
 	{
 
 		$conexionClass = new Conexion();
@@ -20,12 +20,22 @@ class ClassCliente extends Conexion
 			$parametros = null;
 			$sql = "SELECT COUNT(*) as cantidad FROM `tb_persona` p
 							  INNER JOIN tb_cliente c ON c.id_persona = p.id_persona
-								WHERE (p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ?) ";
-
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-
+							WHERE";
+// Construir condición de búsqueda según el tipo de búsqueda
+if ($tipo_busqueda === "nombre") {
+	$sql .= "(p.nombres LIKE ? OR p.apellidos LIKE ?)";
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+} elseif ($tipo_busqueda === "apodo") {
+	$sql .= "p.apodo LIKE ?";
+	$parametros[] = $valor;
+} else { // "todos"
+	$sql .= "(p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ? OR p.apodo LIKE ?)";
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+}
 			if ($estado != "all") {
 				$sql .= " AND c.estado = ?";
 				$parametros[] = $estado;
@@ -68,7 +78,7 @@ class ClassCliente extends Conexion
 		return $VD;
 	}
 
-	public function show($estado, $id_documento, $valor, $offset, $limit)
+	public function show($estado, $id_documento, $valor,$tipo_busqueda, $offset, $limit)
 	{
 
 		$conexionClass = new Conexion();
@@ -84,10 +94,22 @@ class ClassCliente extends Conexion
 								FROM `tb_persona` p
 								INNER JOIN tb_documento_identidad d ON d.id_documento = p.id_documento
 							  INNER JOIN tb_cliente c ON c.id_persona = p.id_persona
-								WHERE (p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ?) ";
-			$parametros[] = $valor;
-			$parametros[] = $valor;
-			$parametros[] = $valor;
+								WHERE ";
+			// Construir condición de búsqueda según el tipo de búsqueda
+			if ($tipo_busqueda === "nombre") {
+				$sql .= "(p.nombres LIKE ? OR p.apellidos LIKE ?)";
+				$parametros[] = $valor;
+				$parametros[] = $valor;
+			} elseif ($tipo_busqueda === "apodo") {
+				$sql .= "p.apodo LIKE ?";
+				$parametros[] = $valor;
+			} else { // "todos"
+				$sql .= "(p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ? OR p.apodo LIKE ?)";
+				$parametros[] = $valor;
+				$parametros[] = $valor;
+				$parametros[] = $valor;
+				$parametros[] = $valor;
+			}
 			if ($estado != "all") {
 				$sql .= " AND c.estado = ?";
 				$parametros[] = $estado;
