@@ -304,9 +304,9 @@
     <div class="form-group">
       <label for="cboTipoBusqueda" class="label-control">Búsqueda por:</label>
       <select class="form-control" name="cboTipoBusqueda" id="cboTipoBusqueda">
-        <option value="todos">Apodo</option>
+        <option value="todos">Todos...</option>
         <option value="nombre">Nombre / Apellido</option>
-        <!-- <option value="apodo">Apodo</option> -->
+        <option value="apodo">Apodo</option>
       </select>
     </div>
   </div>

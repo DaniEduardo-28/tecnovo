@@ -14,6 +14,10 @@ $(document).ready(function(){
     }
   });
 
+  $("#cboTipoBusqueda").change(function () {
+    showData(); // Actualizar datos al cambiar el tipo de búsqueda
+  });
+
   $("#id_documento").change(function(){
     changeOption();
 	});
@@ -116,12 +120,14 @@ function showData(){
 function get_data_callback(){
   var valor = $("#txtBuscar").val();
   var id_documento = $("#cboDocumentoBuscar").val();
+  var tipo_busqueda = $("#cboTipoBusqueda").val();
   $.ajax({
 		data:{
   		limit: itemsPorPagina,
   		offset: desde,
       valor: valor,
-      id_documento: id_documento
+      id_documento: id_documento || "",
+      tipo_busqueda: tipo_busqueda || "todos",
 		},
     beforeSend: function (xhr) {
       showHideLoader('block');

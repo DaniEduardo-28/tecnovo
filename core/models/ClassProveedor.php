@@ -7,7 +7,7 @@
 
 		}
 
-		public function getCount($estado,$id_documento,$valor) {
+		public function getCount($estado,$id_documento,$valor,$tipo_busqueda) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -18,12 +18,22 @@
 				$parametros = null;
 				$sql = "SELECT COUNT(*) as cantidad FROM `tb_persona` p
 							  INNER JOIN tb_proveedor c ON c.id_persona = p.id_persona
-								WHERE (p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ?) ";
-
-				$parametros[] = $valor;
-				$parametros[] = $valor;
-				$parametros[] = $valor;
-
+								WHERE ";
+								// Construir condición de búsqueda según el tipo de búsqueda
+if ($tipo_busqueda === "nombre") {
+	$sql .= "(p.nombres LIKE ? OR p.apellidos LIKE ?)";
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+} else if ($tipo_busqueda === "apodo") {
+	$sql .= "(p.apodo LIKE ?)";
+	$parametros[] = $valor;
+} else { // "todos"
+	$sql .= "(p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ? OR p.apodo LIKE ?)";
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+	$parametros[] = $valor;
+}
 				if ($estado!="all") {
 					$sql .= " AND c.estado = ?";
 					$parametros[] = $estado;
@@ -69,7 +79,7 @@
 			return $VD;
 		}
 
-		public function show($estado,$id_documento,$valor,$offset,$limit) {
+		public function show($estado,$id_documento,$valor,$tipo_busqueda,$offset,$limit) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -83,10 +93,22 @@
 								FROM `tb_persona` p
 								INNER JOIN tb_documento_identidad d ON d.id_documento = p.id_documento
 							  INNER JOIN tb_proveedor c ON c.id_persona = p.id_persona
-								WHERE (p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ?) ";
+								WHERE ";
+			// Construir condición de búsqueda según el tipo de búsqueda
+			if ($tipo_busqueda === "nombre") {
+				$sql .= "(p.nombres LIKE ? OR p.apellidos LIKE ?)";
+				$parametros[] = $valor;
+				$parametros[] = $valor;
+			} else if ($tipo_busqueda === "apodo") {
+				$sql .= "(p.apodo LIKE ?)";
+				$parametros[] = $valor;
+			} else { // "todos"
+				$sql .= "(p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ? OR p.apodo LIKE ?)";
 				$parametros[] = $valor;
 				$parametros[] = $valor;
 				$parametros[] = $valor;
+				$parametros[] = $valor;
+			}
 				if ($estado!="all") {
 					$sql .= " AND c.estado = ?";
 					$parametros[] = $estado;

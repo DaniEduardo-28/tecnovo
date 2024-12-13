@@ -26,8 +26,8 @@ if ($tipo_busqueda === "nombre") {
 	$sql .= "(p.nombres LIKE ? OR p.apellidos LIKE ?)";
 	$parametros[] = $valor;
 	$parametros[] = $valor;
-} elseif ($tipo_busqueda === "apodo") {
-	$sql .= "p.apodo LIKE ?";
+} else if ($tipo_busqueda === "apodo") {
+	$sql .= "(p.apodo LIKE ?)";
 	$parametros[] = $valor;
 } else { // "todos"
 	$sql .= "(p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ? OR p.apodo LIKE ?)";
@@ -100,8 +100,8 @@ if ($tipo_busqueda === "nombre") {
 				$sql .= "(p.nombres LIKE ? OR p.apellidos LIKE ?)";
 				$parametros[] = $valor;
 				$parametros[] = $valor;
-			} elseif ($tipo_busqueda === "apodo") {
-				$sql .= "p.apodo LIKE ?";
+			} else if ($tipo_busqueda === "apodo") {
+				$sql .= "(p.apodo LIKE ?)";
 				$parametros[] = $valor;
 			} else { // "todos"
 				$sql .= "(p.num_documento LIKE ? OR p.nombres LIKE ? OR p.apellidos LIKE ? OR p.apodo LIKE ?)";
