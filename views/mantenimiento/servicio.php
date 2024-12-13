@@ -285,7 +285,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                         <div class="row">
                           <div class="col-md-4 col-sm-4">
                             <div class="form-group">
-                              <label for="cboTipoBuscar" class="label-control">Tipo de Servicio</label>
+                              <label for="cboTipoBuscar" class="label-control">Unidad de Negocio</label>
                               <select class="form-control" name="cboTipoBuscar" id="cboTipoBuscar">
                                 <option value="">Todos...</option>
                                 <?php

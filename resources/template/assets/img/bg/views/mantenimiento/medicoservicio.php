@@ -192,7 +192,7 @@
                                               <tr>
                                                 <th style="width:50px; text-align: center;">#</th>
                                                 <th>Id</th>
-                                                <th>Tipo de Servicio</th>
+                                                <th>Unidad de Negocio</th>
                                                 <th>Servicio</th>
                                                 <th style="width:40px; text-align: center;">Acceso</th>
                                               </tr>

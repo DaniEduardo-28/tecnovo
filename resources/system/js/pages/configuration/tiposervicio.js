@@ -74,7 +74,7 @@ $(document).ready(function(){
       };
 
       Swal.fire({
-        title: '¿Seguro de eliminar el tipo de servicio : ' + name_tipo + '?',
+        title: '¿Seguro de eliminar la unidad de negocio : ' + name_tipo + '?',
         text: "No podrás revertir esta operación.",
         type: 'warning',
         showCancelButton: true,

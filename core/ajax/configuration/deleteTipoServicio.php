@@ -16,7 +16,7 @@
     }
 
     if (empty($id_tipo_servicio)) {
-        throw new Exception("No se recibió el campo id tipo de servicio.");
+        throw new Exception("No se recibió el campo id unidad de negocio.");
     }
 
     require_once "core/models/ClassTipoServicio.php";

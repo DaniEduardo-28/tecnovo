@@ -68,7 +68,7 @@
               <li id="menucategoriaaccesorio"> <a href="?view=categoriaaccesorio">Categorias de Productos</a> </li>
             <?php endif; ?>
             <?php if ($flag_tiposervicio): ?>
-              <li id="menutiposervicio"> <a href="?view=tiposervicio">Tipos de Servicio</a> </li>
+              <li id="menutiposervicio"> <a href="?view=tiposervicio">Unidad de Negocio</a> </li>
             <?php endif; ?>
             <?php if ($flag_formapago): ?>
               <li id="menuformapago"> <a href="?view=formapago">Métodos de Pago</a> </li>

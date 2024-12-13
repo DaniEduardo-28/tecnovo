@@ -39,7 +39,7 @@
     }
 
     if (empty(trim($id_tipo_servicio))) {
-      throw new Exception("Campo obligatorio : Tipo de Servicio.");
+      throw new Exception("Campo obligatorio : Unidad de negocio.");
     }
     if (empty(trim($id_maquinaria))) {
       throw new Exception("Campo obligatorio : Maquinaria.");

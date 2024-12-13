@@ -31,7 +31,7 @@
     }
 
     if (empty(trim($name_tipo))) {
-      throw new Exception("Campo Obligatorio : Nombre de Tipo de Servicio.");
+      throw new Exception("Campo Obligatorio : Nombre de Unidad de negocio.");
     }
 
     require_once "core/models/ClassTipoServicio.php";
