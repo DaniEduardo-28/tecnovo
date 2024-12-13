@@ -40,6 +40,7 @@
           "id_cliente" => $key['id_cliente'],
           "numero_documento" => $key['numero_documento'],
           "nombre_cliente" => $key['nombre_cliente'],
+          "apodo" => $key['apodo'],
           "direccion" => $key['direccion'],
           "telefono" => $key['telefono'],
           "cant_fundos" => $key['cant_fundos'],

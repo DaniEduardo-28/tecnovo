@@ -160,6 +160,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <th>Id</th>
                                   <th>N° Documento</th>
                                   <th>Cliente</th>
+                                  <th>Apodo</th>
                                   <th>Dirección</th>
                                   <th>Teléfono</th>
                                   <th>Fundos Pertenecientes</th>

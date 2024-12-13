@@ -611,7 +611,8 @@ class ClassCliente extends Conexion
 			$sql = "SELECT 
 			c.id_cliente,
       CONCAT(d.name_documento, ': ', p.num_documento) AS numero_documento, 
-      CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente, 
+      CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
+	  p.apodo,
       p.direccion, 
       p.telefono, 
       GROUP_CONCAT(CONCAT('- ',f.nombre, ' = ', cf.cantidad_hc, ' hc') SEPARATOR ' <br> ') AS cant_fundos,
@@ -633,7 +634,8 @@ END AS estado
 					d.name_documento, 
 					p.num_documento, 
 					p.nombres,
-					p.apellidos, 
+					p.apellidos,
+					p.apodo, 
 					p.direccion,
 					p.telefono,
 					c.estado";
