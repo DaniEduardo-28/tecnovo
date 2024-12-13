@@ -144,6 +144,26 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <input type="date" id="txtFechaFin" value="<?= date("Y-m-d"); ?>" class="form-control">
                           </div> -->
 
+                          <div class="form-group col-md-4 col-sm-4">
+                            <label for="cboTipoBuscarOrden" class="label-control">Tipo Busqueda</label>
+                            <select class="form-control" id="cboTipoBuscarOrden" name="cboTipoBuscarOrden">
+                              <option value="1">Nombres / Apellidos</option>
+                              <option value="2">Apodo</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-8 col-sm-8">
+                            <label for="">&nbsp;</label>
+                            <div class="input-group mb-3">
+                              <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
+                                aria-describedby="basic-addon2" id="txtBuscarOrden" name="txtBuscarOrden">
+                              <div class="input-group-append">
+                                <button class="btn btn-outline-primary" id="btnBuscarOrden"
+                                  type="button">Buscar</button>
+                              </div>
+                            </div>
+                          </div>
+
 
                         </div>
 

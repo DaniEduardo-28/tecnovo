@@ -552,7 +552,9 @@
 		try {
 
 			$parametros = [];
-			$sql = "SELECT pr.id_proveedor,
+			$sql = "SELECT 
+			ROW_NUMBER() OVER (ORDER BY pr.id_proveedor) AS num,
+			pr.id_proveedor,
     CONCAT(d.name_documento, ': ', p.num_documento) AS numero_documento, 
     CONCAT(p.nombres, ' ', p.apellidos) AS nombre_proveedor,
     p.apodo, 
@@ -568,6 +570,21 @@
     INNER JOIN tb_persona p ON pr.id_persona = p.id_persona
     INNER JOIN tb_documento_identidad d ON p.id_documento = d.id_documento
     WHERE  1=1";
+	// Agregar filtros dinámicos
+	if (!empty($val)) {
+		if ($tipobusqueda == 1) { // Nombres / Apellidos
+			$sql .= " AND CONCAT(p.nombres, ' ', p.apellidos) LIKE :valor";
+			$parametros[':valor'] = '%' . $val . '%';
+		} elseif ($tipobusqueda == 2) { 
+			$sql .= " AND p.apodo LIKE :valor";
+			$parametros[':valor'] = '%' . $val . '%';
+		}
+	}
+
+	if ($estado !== "all") {
+		$sql .= " AND c.estado = :estado";
+		$parametros[':estado'] = $estado;
+	}
 			$sql .= "
 				GROUP BY 
     pr.id_proveedor,
@@ -584,9 +601,9 @@
 			$stmt->execute($parametros);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (count($result) == 0) {
+			/* if (count($result) == 0) {
 				throw new Exception("No se encontraron datos.");
-			}
+			} */
 
 			$VD1['error'] = "NO";
 			$VD1['message'] = "Success";
