@@ -56,7 +56,7 @@ class ClassAccesoOpcion extends Conexion {
 
 			$options[] =array(
 				"error" => "SI",
-				"message" => $e->getMessage(),
+				"message" => $exception->getMessage(),
 			);
 			$VD = $options;
 

@@ -17,7 +17,7 @@
 
   try {
 
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_persona'],printCodeOption("servicio"));
+    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("servicio"));
     if ($access_options[0]['error']=="NO") {
       switch ($accion) {
         case 'add':
