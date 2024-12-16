@@ -77,6 +77,10 @@ if (!isset($_SESSION['id_trabajador'])) {
         <?php include("views/overall/leftNav.php"); ?>
         <!-- end app-navbar -->
 
+        <?php
+          $primerDiaMes = date('Y-m-01');
+        ?>
+
         <!-- begin app-main -->
         <div class="app-main" id="main">
           <!-- begin container-fluid -->
@@ -112,14 +116,13 @@ if (!isset($_SESSION['id_trabajador'])) {
                     if ($access_options[0]['error'] == "NO") {
 
                       if ($access_options[0]['flag_agregar']) {
-                        ?>
+                    ?>
                         <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
                           data-original-title="Agregar" id="btnAdd">
                           <i class="fe fe-plus-circle btn btn-icon text-success"></i>
                         </a>
-                        <?php
+                    <?php
                       }
-
                     }
                     ?>
                   </div>
@@ -176,7 +179,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </div>
                             </div>
 
-                            <div class="form-group col-md-3 col-sm-4">
+                            <div class="form-group col-md-3 col-sm-4 d-none">
                               <label for="" class="label-control">Forma de Envío</label>
                               <input type="text" id="txtNameMetodo" readonly name="txtNameMetodo" value=""
                                 class="form-control">
@@ -188,8 +191,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 readonly value="">
                             </div>
 
-                            <div class="col-sm-12">
-                              &nbsp;
+                            <div class="form-group col-sm-3">
+                              <label for="txtEstadoForm" class="label-control">Estado</label>
+                              <input type="text" name="txtEstadoForm" id="txtEstadoForm" class="form-control" readonly>
                             </div>
 
                             <div class="form-group col-md-3 col-sm-4">
@@ -199,9 +203,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 $resultTipoDocu = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'], 1);
                                 if ($resultTipoDocu['error'] == "NO") {
                                   foreach ($resultTipoDocu['data'] as $key) {
-                                    ?>
+                                ?>
                                     <option value="<?= $key['id_documento_venta']; ?>"><?= $key['nombre_corto']; ?></option>
-                                    <?php
+                                <?php
                                   }
                                 }
                                 ?>
@@ -214,9 +218,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 value="" class="form-control">
                             </div>
 
-                            <div class="form-group col-sm-3">
-                              <label for="txtEstadoForm" class="label-control">Estado</label>
-                              <input type="text" name="txtEstadoForm" id="txtEstadoForm" class="form-control" readonly>
+                            
+
+                            <div class="form-group col-md-3 col-sm-4">
+                              <label for="txtTotal_ingForm" class="label-control">Total</label>
+                              <input type="number" name="txtTotal_ingForm" id="txtTotal_ingForm" class="form-control"
+                                min="0" step="1.00">
                             </div>
 
                           </div>
@@ -263,18 +270,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </div>
                             </div>
 
-                            <div class="form-group col-md-3 col-sm-4">
-                              <label for="txtTotal_ingForm" class="label-control">Total</label>
-                              <input type="number" name="txtTotal_ingForm" id="txtTotal_ingForm" class="form-control"
-                                min="0" step="1.00">
-                            </div>
-
-                            <div class="form-group col-md-2 col-sm-3">
+                            <!-- <div class="form-group col-md-2 col-sm-3">
                               <div class="form-check">
                                 <input id="flag_pagado" name="flag_pagado" type="checkbox" class="form-check-input">
                                 <label for="flag_pagado" class="form-check-label">¿Añadir un pago?</label>
                               </div>
-                            </div>
+                            </div> -->
 
                             <!-- Grupo de campos que se ocultarán -->
                             <div id="grupoPago" style="display: none;">
@@ -339,7 +340,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="form-group col-md-2 col-sm-4">
                             <label for="txtFechaInicioBuscarOrden" class="label-control">Fecha Inicio</label>
                             <input id="txtFechaInicioBuscarOrden" type="date" name="txtFechaInicioBuscarOrden"
-                              class="form-control" autocomplete="off" value="<?= date("Y-m-d"); ?>">
+                              class="form-control" autocomplete="off" value="<?= $primerDiaMes; ?>">
                           </div>
 
                           <div class="form-group col-md-2 col-sm-4">
@@ -390,7 +391,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th>Usuario</th>
                                 <th>Fecha Orden</th>
                                 <th>Fecha Entrega</th>
-                                <th>Forma de Envío</th>
+                                <!-- <th>Forma de Envío</th> -->
                                 <th># Productos</th>
                                 <th>Total</th>
                                 <th>Estado</th>
@@ -420,7 +421,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="form-group col-md-3 col-sm-4">
                             <label for="txtFechaInicioBuscarListado" class="label-control">Fecha Inicio</label>
                             <input id="txtFechaInicioBuscarListado" type="date" name="txtFechaInicioBuscarListado"
-                              class="form-control" autocomplete="off" value="<?= date("Y-m-d"); ?>">
+                              class="form-control" autocomplete="off" value="<?= $primerDiaMes; ?>">
                           </div>
 
                           <div class="form-group col-md-3 col-sm-4">
@@ -498,7 +499,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                             </div>
                             <div class="modal-body">
 
-                            <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
+                              <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
                                 <form id="frmPago" name="frmPago" enctype="multipart/form-data">
                                   <input type="hidden" name="id_ingreso_pago" id="id_ingreso_pago" value="0">
                                   <input type="hidden" name="total_ingreso" id="total_ingreso" value="0">
@@ -513,7 +514,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     <div class="col-md-2">
                                       <label>Fecha de Pago</label>
                                       <input type="date" id="fecha_pago" name="fecha_pago" class="form-control"
-                                      value="<?=date("Y-m-d",strtotime(date("Y-m-d"))); ?>">
+                                        value="<?= date("Y-m-d", strtotime(date("Y-m-d"))); ?>">
                                     </div>
                                     <div class="col-md-3">
                                       <label>Método de Pago</label>

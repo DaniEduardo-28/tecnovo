@@ -24,7 +24,7 @@ var tableOrden = $("#tabla_orden").DataTable({
   paging: false,
   destroy: true,
   info: false,
-  columns: [{ data: "num" }, { data: "id_orden_compra" }, { data: "name_proveedor" }, { data: "name_usuario" }, { data: "fecha_orden" }, { data: "fecha_entrega" }, { data: "name_forma_envio" }, { data: "num_registros" }, { data: "total" }, { data: "estado" }, { data: "opciones" }],
+  columns: [{ data: "num" }, { data: "id_orden_compra" }, { data: "name_proveedor" }, { data: "name_usuario" }, { data: "fecha_orden" }, { data: "fecha_entrega" }, { data: "num_registros" }, { data: "total" }, { data: "estado" }, { data: "opciones" }],
   columnDefs: [
     {
       targets: [1, 3],
@@ -63,8 +63,6 @@ $(document).ready(function () {
     $("#title_form").html("Datos de la Orden");
     showDataOrden();
   });
-
-  setDefaultDates();
 
   $("#btnCancelForm").click(function () {
     cancelarForm();
@@ -233,18 +231,6 @@ $(document).ready(function () {
     savePago();
   });
 });
-
-function setDefaultDates() {
-  const today = new Date();
-  const lastMonth = new Date();
-  lastMonth.setDate(today.getDate() - 30);
-
-  $("#txtFechaInicioBuscarOrden").val(lastMonth.toISOString().split("T")[0]);
-  $("#txtFechaFinBuscarOrden").val(today.toISOString().split("T")[0]);
-
-  $("#txtFechaInicioBuscarListado").val(lastMonth.toISOString().split("T")[0]);
-  $("#txtFechaFinBuscarListado").val(today.toISOString().split("T")[0]);
-}
 
 function cancelarForm() {
   $("#contenedor_formulario").addClass("d-none");
