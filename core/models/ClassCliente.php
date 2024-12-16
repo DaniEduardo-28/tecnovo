@@ -632,17 +632,20 @@ if ($tipo_busqueda === "nombre") {
 			$parametros = [];
 			$sql = "SELECT 
 	ROW_NUMBER() OVER (ORDER BY c.id_cliente) AS num,
-			c.id_cliente,
+	c.id_cliente,
       CONCAT(d.name_documento, ': ', p.num_documento) AS numero_documento, 
-      CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
+      CONCAT(p.nombres, ', ', p.apellidos) AS nombre_cliente,
 	  p.apodo,
+	  p.fecha_nacimiento,
       p.direccion, 
       p.telefono, 
-      GROUP_CONCAT(CONCAT('- ',f.nombre, ' = ', cf.cantidad_hc, ' hc') SEPARATOR ' <br> ') AS cant_fundos,
+	  p.correo,
+	  p.sexo,
 	  CASE 
     WHEN c.estado IS NULL OR c.estado = '' THEN 'inactivo'
     ELSE c.estado
-END AS estado
+END AS estado,
+      GROUP_CONCAT(CONCAT('- ',f.nombre, ' = ', cf.cantidad_hc, ' hc') SEPARATOR ' <br> ') AS cant_fundos
     FROM 
       tb_cliente c
       LEFT JOIN tb_cliente_fundo cf ON cf.id_cliente = c.id_cliente

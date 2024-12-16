@@ -10,8 +10,8 @@ var table = $('#example').DataTable({
       { 'data': 'apodo'},
       { 'data': 'direccion' },
       { 'data': 'telefono' },
-      { 'data': 'cant_fundos' },
-      { 'data': 'estado'}
+      { 'data': 'estado'},
+      { 'data': 'cant_fundos' }
     ],
     columnDefs: [
       {
@@ -73,8 +73,8 @@ $('#btnBuscarOrden').on('click', function () {
                           apodo: item.apodo,
                           direccion: item.direccion,
                           telefono: item.telefono,
-                          cant_fundos: item.cant_fundos,
-                          estado: item.estado
+                          estado: item.estado,
+                          cant_fundos: item.cant_fundos
                       }).draw();
                   });
               } else {
@@ -193,8 +193,8 @@ $('#btnBuscarOrden').on('click', function () {
                         apodo: item.apodo,
                         direccion: item.direccion,
                         telefono: item.telefono,
-                        cant_fundos: item.cant_fundos,
-                        estado: item.estado
+                        estado: item.estado,
+                        cant_fundos: item.cant_fundos
                     }).draw();
                 });
                 $("#divPaginador").removeClass("d-none");
@@ -272,8 +272,8 @@ $('#btnBuscarOrden').on('click', function () {
               "apodo": item.apodo,
               "direccion": item.direccion,
               "telefono": item.telefono,
-              "cant_fundos": item.cant_fundos,
-              "estado": item.estado
+              "estado": item.estado,
+              "cant_fundos": item.cant_fundos
             }).draw();
           });
           $("#divPaginador").removeClass("d-none");

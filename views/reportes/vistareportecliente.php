@@ -183,8 +183,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <th>Apodo</th>
                                   <th>Dirección</th>
                                   <th>Teléfono</th>
-                                  <th>Fundos Pertenecientes</th>
                                   <th>Estado</th>
+                                  <th>Fundos Pertenecientes</th>
                                   <!-- <th>Acciones</th> -->
                                 </tr>
                               </thead>

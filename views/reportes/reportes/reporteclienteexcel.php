@@ -46,7 +46,7 @@ try {
 
 
     // Encabezados del archivo Excel
-    $excel_data = "NUM\tDOCUMENTO\tNOMBRE CLIENTE\tAPODO\tTELEFONO\tFUNDOS PROPIEDAD\tESTADO\n";
+    $excel_data = "NUM\tDOCUMENTO\tNOMBRE CLIENTE\tAPODO\tFECHA NACIMIENTO\tDIRECCION\tTELEFONO\tCORREO\tSEXO\tESTADO\tFUNDOS PERTENECIENTES\n";
 
     // Datos
     $x = 1;
@@ -55,9 +55,13 @@ try {
             mb_convert_encoding($key['numero_documento'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['nombre_cliente'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['apodo'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['fecha_nacimiento'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['direccion'], 'UTF-8', 'auto') . "\t" .
             mb_convert_encoding($key['telefono'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['cant_fundos'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['estado'], 'UTF-8', 'auto') . "\n";
+            mb_convert_encoding($key['correo'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['sexo'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['estado'], 'UTF-8', 'auto') . "\t" .
+            mb_convert_encoding($key['cant_fundos'], 'UTF-8', 'auto') . "\n";
         $x++;
     }
 
