@@ -8,8 +8,12 @@ if (!isset($_SESSION['id_trabajador'])) {
     exit();
 }
 
-require_once 'plantilla.php';
-require_once 'resources/PHPExcel/Classes/PHPExcel.php';
+require_once 'resources/vendor/autoload.php'; // Cargar PhpSpreadsheet
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 try {
     // Obtener parámetros para el filtro
@@ -26,6 +30,7 @@ try {
         throw new Exception("Error al verificar los permisos.");
     }
 
+    // Obtener datos del reporte
     require_once 'core/models/ClassCliente.php';
     $Resultado = $OBJ_CLIENTE->showreporte("all", null, null);
     if ($Resultado["error"] === "SI") {
@@ -34,50 +39,81 @@ try {
 
     $arrayresultado = $Resultado["data"];
 
+    // Crear un nuevo objeto Spreadsheet
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
 
+    // Título principal "Syscos"
+    $sheet->mergeCells('A1:K1');
+    $sheet->setCellValue('A1', 'Syscos');
+    $sheet->getStyle('A1')->getFont()->setSize(20)->setBold(true);
+    $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-    // Nombre del archivo Excel
-    $filename = 'reporte_cliente.xls';
+    // Espacio de separación
+    $startRow = 5;
 
-    // Establecer encabezados para la descarga
-    header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
-    header('Content-Disposition: attachment; filename="' . $filename . '"');
-    header('Cache-Control: max-age=0');
+    // Encabezados de la tabla
+    $headers = [
+        'NUM', 'DOCUMENTO', 'NOMBRE CLIENTE', 'APODO', 'FECHA NACIMIENTO',
+        'DIRECCION', 'TELEFONO', 'CORREO', 'SEXO', 'ESTADO', 'FUNDOS PERTENECIENTES'
+    ];
+    $sheet->fromArray($headers, null, 'A' . $startRow);
 
+    // Estilo de encabezados
+    $headerStyle = [
+        'font' => ['bold' => true],
+        'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
+        'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFCCCCCC']],
+        'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
+    ];
+    $sheet->getStyle('A' . $startRow . ':K' . $startRow)->applyFromArray($headerStyle);
 
-    // Encabezados del archivo Excel
-    $excel_data = "NUM\tDOCUMENTO\tNOMBRE CLIENTE\tAPODO\tFECHA NACIMIENTO\tDIRECCION\tTELEFONO\tCORREO\tSEXO\tESTADO\tFUNDOS PERTENECIENTES\n";
-
-    // Datos
+    // Llenado de datos
+    $rowNum = $startRow + 1;
     $x = 1;
     foreach ($arrayresultado as $key) {
-        $excel_data .= $x . "\t" .
-            mb_convert_encoding($key['numero_documento'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['nombre_cliente'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['apodo'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['fecha_nacimiento'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['direccion'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['telefono'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['correo'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['sexo'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['estado'], 'UTF-8', 'auto') . "\t" .
-            mb_convert_encoding($key['cant_fundos'], 'UTF-8', 'auto') . "\n";
+        $sheet->fromArray([
+            $x,
+            $key['numero_documento'],
+            $key['nombre_cliente'],
+            $key['apodo'],
+            $key['fecha_nacimiento'],
+            $key['direccion'],
+            $key['telefono'],
+            $key['correo'],
+            $key['sexo'],
+            $key['estado'],
+            strip_tags($key['cant_fundos']) // Eliminar etiquetas HTML
+        ], null, 'A' . $rowNum);
+        $rowNum++;
         $x++;
     }
 
-    // Imprimir los datos del archivo Excel
-    echo $excel_data;
+    // Ajustar automáticamente el ancho de las columnas
+    foreach (range('A', 'K') as $columnID) {
+        $sheet->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    // Aplicar bordes a todas las celdas con datos
+    $sheet->getStyle('A' . $startRow . ':K' . ($rowNum - 1))->applyFromArray([
+        'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
+    ]);
+
+    // Nombre del archivo Excel
+    $filename = 'reporte_cliente.xlsx';
+
+    // Configuración de salida para descargar el archivo
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+
+    $writer = new Xlsx($spreadsheet);
+    $writer->save('php://output');
+    exit();
 
 } catch (\Exception $e) {
-    // En caso de error, genera un mensaje en PDF
-    require_once 'plantilla.php';
-    $pdf = new PDF('L', 'mm', 'A4');
-    $pdf->AliasNbPages();
-    $pdf->AddPage();
-    $pdf->setY(10);
-    $pdf->setX(2);
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(12, 3, (utf8_decode($e->getMessage())), 0, 0, 'L', 0);
-    $pdf->Output();
+    // En caso de error
+    echo "Error: " . $e->getMessage();
+    exit();
 }
 ?>
