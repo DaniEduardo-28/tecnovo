@@ -42,7 +42,7 @@ var tableListado = $("#tabla_listado").DataTable({
   paging: false,
   destroy: true,
   info: false,
-  columns: [{ data: "num" }, { data: "id_ingreso" }, { data: "documento" }, { data: "name_proveedor" }, { data: "name_usuario" }, { data: "fecha_orden" }, { data: "num_registros" }, { data: "estado" }, { data: "opciones" }],
+  columns: [{ data: "num" }, { data: "id_ingreso" }, { data: "documento" }, { data: "name_proveedor" }, { data: "name_usuario" }, { data: "fecha_orden" }, { data: "num_registros" }, { data: "total_ing" }, { data: "saldo" }, { data: "estado" }, { data: "opciones" }],
   columnDefs: [
     {
       targets: [1, 4],
@@ -159,6 +159,7 @@ $(document).ready(function () {
       var formData = new FormData();
       formData.append("id_orden_compra", id_orden_compra);
       formData.append("id_tipo_docu", id_tipo_docu);
+      formData.append("total_ing", total_ing);
       formData.append("num_documento", num_documento);
       formData.append("observaciones", observaciones);
       formData.append("array_detalle", JSON.stringify(objeto));
@@ -182,8 +183,8 @@ $(document).ready(function () {
             type: "POST",
             url: "ajax.php?accion=goIngreso",
             datatype: "json",
-            processData: false, // Impedir que jQuery procese los datos
-            contentType: false, // Impedir que jQuery configure el tipo de contenido
+            processData: false,
+            contentType: false,
             data: formData,
             success: function (data) {
               try {
@@ -521,6 +522,8 @@ function get_data_callback2() {
                 name_usuario: o[i].name_usuario,
                 fecha_orden: o[i].fecha_orden,
                 num_registros: o[i].num_registros,
+                total_ing: o[i].total_ing,
+                saldo: o[i].saldo,
                 estado: o[i].estado,
                 opciones: o[i].options,
               })

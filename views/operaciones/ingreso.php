@@ -78,7 +78,7 @@ if (!isset($_SESSION['id_trabajador'])) {
         <!-- end app-navbar -->
 
         <?php
-          $primerDiaMes = date('Y-m-01');
+        $primerDiaMes = date('Y-m-01');
         ?>
 
         <!-- begin app-main -->
@@ -203,9 +203,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 $resultTipoDocu = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'], 1);
                                 if ($resultTipoDocu['error'] == "NO") {
                                   foreach ($resultTipoDocu['data'] as $key) {
+                                    if ($key['flag_ingreso']) {
                                 ?>
-                                    <option value="<?= $key['id_documento_venta']; ?>"><?= $key['nombre_corto']; ?></option>
+                                      <option value="<?= $key['id_documento_venta']; ?>"><?= $key['nombre_corto']; ?></option>
                                 <?php
+                                    }
                                   }
                                 }
                                 ?>
@@ -218,7 +220,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 value="" class="form-control">
                             </div>
 
-                            
+
 
                             <div class="form-group col-md-3 col-sm-4">
                               <label for="txtTotal_ingForm" class="label-control">Total</label>
@@ -464,6 +466,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th>Usuario</th>
                                 <th>Fecha Ingreso</th>
                                 <th># Productos</th>
+                                <th>Total</th>
+                                <th>Saldo</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                               </tr>

@@ -76,7 +76,17 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     <label for="cboFundoBuscar">Fundo</label>
                                     <select class="form-control" id="cboFundoBuscar" name="cboFundoBuscar">
                                         <option value="all">Todos</option>
-                                        <!-- Se llenará dinámicamente según el cliente seleccionado en el modal -->
+                                        <?php
+                                        include("core/models/ClassFundo.php");
+                                        $dataFundo = $OBJ_FUNDO->show(1,'1');
+                                        if ($dataFundo["error"] == "NO") {
+                                            foreach ($dataFundo["data"] as $key) {
+                                                ?>
+                                                <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre'] ?></option>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 

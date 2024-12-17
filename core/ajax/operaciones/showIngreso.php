@@ -59,9 +59,9 @@ try {
             $options .= '&nbsp;<a href="javascript:deleteIngreso(' . $key['id_ingreso'] . ')" class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0 "><i class="ti ti-na"></i></a>';
           }
           $options .= '&nbsp;<a href="javascript:showModalPagos('
-          . $key['id_ingreso'] . ','
-          . $key['total_ing'] . ',\''
-          . $key['signo'] . '\')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
+            . $key['id_ingreso'] . ','
+            . $key['total_ing'] . ',\''
+            . $key['signo'] . '\')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
         }
       }
 
@@ -72,7 +72,10 @@ try {
         "name_proveedor" => $key['nombre_proveedor'],
         "name_usuario" => $key['nombres_trabajador'],
         "total_ing" => $key['total_ing'],
-        "documento" => $key['documento'],
+        "saldo" => 0,
+        "documento" => $key['src_evidencia'] != 'resources/global/images/sin_imagen.png'
+          ? "<a href='" . $key['src_evidencia'] . "' download>" . $key['documento'] . "</a>"
+          : $key['documento'],
         "fecha_orden" => date('d/m/Y H:i', strtotime($key['fecha'])),
         "num_registros" => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $key['num_registros'],
         "estado" => $estado,

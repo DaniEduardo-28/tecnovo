@@ -1,10 +1,9 @@
 var fundosData = [];
 
 $(document).ready(function () {
-  // Inicializar calendario
+  
   crearCalendario();
 
-  // Filtros
   $("#cboFundoBuscar, #cboMaquinariaBuscar, #cboMedicoBuscar, #cboClienteBuscar").change(function () {
     crearCalendario();
   });
@@ -117,8 +116,7 @@ function crearCalendario() {
           cliente: cliente !== "all" ? cliente : "",
         },
         error: function (e) {
-          console.log(e);
-          Swal.fire("Error", "Ocurrió un error al cargar los cronogramas", "error");
+          // Swal.fire("Error", "Ocurrió un error al cargar los cronogramas", "error");
         },
         color: "yellow",
         textColor: "black",
