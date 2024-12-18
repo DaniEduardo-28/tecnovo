@@ -72,7 +72,7 @@ try {
         "name_proveedor" => $key['nombre_proveedor'],
         "name_usuario" => $key['nombres_trabajador'],
         "total_ing" => $key['total_ing'],
-        "saldo" => 0,
+        "saldo" => $key['saldo'],
         "documento" => $key['src_evidencia'] != 'resources/global/images/sin_imagen.png'
           ? "<a href='" . $key['src_evidencia'] . "' download>" . $key['documento'] . "</a>"
           : $key['documento'],

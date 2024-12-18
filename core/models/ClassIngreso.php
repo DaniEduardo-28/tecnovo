@@ -89,16 +89,38 @@ class ClassIngreso extends Conexion
 
 			$valor = "%$valor%";
 			$parametros = null;
-			$sql = "SELECT i.*,p.nombre_proveedor,t.nombres_trabajador,
-								(SELECT COUNT(*) FROM tb_detalle_ingreso di WHERE di.id_ingreso = i.id_ingreso) AS num_registros,
-								CONCAT(td.nombre_corto,' ',i.num_documento) as documento, mo.signo
-								FROM `tb_ingreso` i
-								INNER JOIN tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
-								INNER JOIN tb_documento_venta td ON td.id_documento_venta = i.id_tipo_docu
-								INNER JOIN tb_moneda mo ON mo.id_moneda = o.id_moneda
-								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
+			$sql = "SELECT 
+						i.*, 
+						p.nombre_proveedor, 
+						t.nombres_trabajador,
+						(SELECT COUNT(*) 
+						FROM tb_detalle_ingreso di 
+						WHERE di.id_ingreso = i.id_ingreso) AS num_registros,
+						CONCAT(td.nombre_corto, ' ', i.num_documento) AS documento, 
+						mo.signo,
+						(i.total_ing - IFNULL(
+							(SELECT SUM(pag.monto_pagado) 
+							FROM tb_pago pag 
+							WHERE pag.id_ingreso = i.id_ingreso), 
+							0
+						)) AS saldo
+					FROM 
+						tb_ingreso i
+					INNER JOIN 
+						tb_orden_compra o ON o.id_orden_compra = i.id_ingreso
+					INNER JOIN 
+						tb_documento_venta td ON td.id_documento_venta = i.id_tipo_docu
+					INNER JOIN 
+						tb_moneda mo ON mo.id_moneda = o.id_moneda
+					INNER JOIN 
+						vw_proveedor p ON p.id_proveedor = o.id_proveedor
+					INNER JOIN 
+						vw_trabajadores t ON t.id_trabajador = o.id_trabajador
+					WHERE 
+						o.fecha_orden >= ? 
+						AND o.fecha_orden < ? 
+						AND o.id_sucursal = ?";
+
 
 			$parametros[] = $fecha_inicio;
 			$parametros[] = $fecha_fin;

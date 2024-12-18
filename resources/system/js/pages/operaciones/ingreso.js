@@ -303,6 +303,7 @@ function savePago() {
               limpiarCamposNuevoPago();
               cargarPagosExistentes($("#id_ingreso_pago").val());
               runAlert("Bien hecho...!!!", response["message"], "success");
+              showData();
             }
           } catch (e) {
             runAlert("Oh No...!!!", e, "error");
