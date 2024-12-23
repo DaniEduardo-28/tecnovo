@@ -3,7 +3,6 @@
 class ClassCita extends Conexion
 {
 
-	//constructor de la clase
 	public function __construct()
 	{
 
@@ -14,7 +13,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -82,7 +81,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -131,7 +130,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -187,7 +186,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -235,7 +234,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -275,7 +274,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -315,7 +314,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -347,7 +346,7 @@ class ClassCita extends Conexion
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 

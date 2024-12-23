@@ -41,7 +41,7 @@ class ClassAccesoSucursal extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -83,7 +83,7 @@ class ClassAccesoSucursal extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -130,7 +130,7 @@ class ClassAccesoSucursal extends Conexion {
 	public function updateAccesoSucursal($id_trabajador,$datos) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 		try {
 
 			$conexion->beginTransaction();

@@ -166,14 +166,13 @@ function crearCalendario(){
   $('#calendario').fullCalendar('destroy');
   var id_documento = $('#cboDocumentoBuscar').val();
   var valor = $('#txtBuscar').val();
-  var calendario = $('#calendario').fullCalendar({  // assign calendar
+  var calendario = $('#calendario').fullCalendar({
     defaultView: 'month',
     editable: false,
     selectable: false,
     allDaySlot: false,
-    locale: 'es', // Idioma
-    //titleFormat: '[Horario Carrera, Semestre y Sección]', //Título
-    weekends: false, // Oculta fin de semana
+    locale: 'es',
+    weekends: false,
     displayEventTime: true,
     displayEventEnd: true,
     columnHeader: true,
@@ -210,10 +209,7 @@ function crearCalendario(){
     selectOverlap: false,
     eventOverlap: false,
     droppable: false,
-
     eventSources: [
-
-      // your event source
       {
         url: 'ajax.php?accion=showCitasTrabajador',
         type: 'POST',
@@ -225,12 +221,9 @@ function crearCalendario(){
           console.log(e);
           runAlert('there was an error while fetching events!');
         },
-        color: 'yellow',   // a non-ajax option
-        textColor: 'black' // a non-ajax option
+        color: 'yellow', 
+        textColor: 'black'
       }
-
-      // any other sources...
-
     ],
     eventRender: function(event, element) {
       element.find('.fc-title').append("<br/>" + event.description);

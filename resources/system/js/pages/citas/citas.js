@@ -7,7 +7,6 @@ $(document).ready(function () {
     crearCalendario();
   });
 
-  // Al enviar formulario de nuevo cronograma
   $("#frmCronograma").submit(function (e) {
     e.preventDefault();
     registrarCronograma();
@@ -89,8 +88,7 @@ $(document).ready(function () {
 });
 
 function crearCalendario() {
-  $("#calendario").fullCalendar("destroy");
-
+  $('#calendario').fullCalendar('destroy');
   var fundo = $("#cboFundoBuscar").val();
   var maquinaria = $("#cboMaquinariaBuscar").val();
   var operador = $("#cboMedicoBuscar").val();
@@ -111,8 +109,6 @@ function crearCalendario() {
       var hora_ingreso = moment(start).format("HH:mm");
       var fecha_salida = moment(end).format("YYYY-MM-DD");
       var hora_salida = moment(end).format("HH:mm");
-
-      // Validar fecha no pasada
       var hoy = moment().startOf("day");
       var seleccion = moment(start);
       if (seleccion.isBefore(hoy)) {
@@ -120,9 +116,6 @@ function crearCalendario() {
         $("#calendario").fullCalendar("unselect");
         return;
       }
-
-      // Resetear fundos cuando se abra el modal
-      // $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
 
       $("#fecha_ingreso").val(fecha_ingreso);
       $("#hora_ingreso").val(hora_ingreso);
@@ -145,16 +138,28 @@ function crearCalendario() {
         url: "ajax.php?accion=showCronograma",
         type: "POST",
         data: {
-          fundo: fundo !== "all" ? fundo : "",
-          maquinaria: maquinaria !== "all" ? maquinaria : "",
-          operador: operador !== "all" ? operador : "",
-          cliente: cliente !== "all" ? cliente : "",
+          fundo: fundo,
+          maquinaria: maquinaria,
+          operador: operador,
+          cliente: cliente,
         },
-        error: function (e) {},
+        error: function(e) {
+          console.log(e);
+        },
         color: "yellow",
         textColor: "black",
       },
     ],
+    eventRender: function(event, element) {
+      element.find('.fc-title').append("<br/>" + event.description);
+    },
+    loading: function( isLoading, view ) {
+      if(isLoading) {
+        showHideLoader('block');
+      } else {
+        showHideLoader('none');
+      }
+    }
   });
 }
 
@@ -410,9 +415,4 @@ function cargarFundosPorCliente(id_cliente) {
       showHideLoader("none");
     },
   });
-}
-
-function showHideLoader(display) {
-  // Ajustar esta función según su loader
-  // Por ejemplo: $('.loader').css('display', display);
 }

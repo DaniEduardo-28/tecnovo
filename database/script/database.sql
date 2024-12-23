@@ -6172,4 +6172,14 @@ CREATE TABLE tb_pagos_clientes (
 
 UPDATE `tb_opcion` SET `name_opcion` = 'Reporte de Proveedores' WHERE `tb_opcion`.`id_opcion` = 706;
 
+ALTER TABLE `syscos`.`tb_cronograma`
+ADD COLUMN `id_fundo` INT(11) NULL;
+
+ALTER TABLE `syscos`.`tb_cronograma`
+ADD COLUMN `id_cliente` INT(11) NULL;
+
+ALTER TABLE `syscos`.`tb_cronograma`
+CHANGE `fecha_ingreso` `fecha_ingreso` datetime(2) NOT NULL,
+CHANGE `fecha_salida` `fecha_salida` datetime(2) NOT NULL;
+
 COMMIT;

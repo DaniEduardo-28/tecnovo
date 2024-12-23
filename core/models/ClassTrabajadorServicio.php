@@ -11,7 +11,7 @@ class ClassTrabajadorServicio extends Conexion {
 
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 
 		try {
 
@@ -52,7 +52,7 @@ class ClassTrabajadorServicio extends Conexion {
 	public function updateTrabajadorServicio($id_trabajador,$datos) {
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
-		$VD;
+		$VD = null;
 		try {
 
 			$conexion->beginTransaction();
