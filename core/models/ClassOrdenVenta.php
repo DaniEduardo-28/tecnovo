@@ -331,7 +331,7 @@ class ClassOrdenVenta extends Conexion
 					break;
 				case 'producto':
 					$sql .= "SELECT name_accesorio as descripcion,id_accesorio as cod_producto,
-										id_moneda,precio_venta as precio_unitario
+										id_moneda,precio_venta as precio_unitario, stock
 										FROM tb_accesorio WHERE id_sucursal = ? AND name_accesorio LIKE ? AND flag_consumo ='SI'";
 					$parametros[] = $id_sucursal;
 					$parametros[] = $valor;
@@ -1194,9 +1194,10 @@ class ClassOrdenVenta extends Conexion
                DV.igv as detalle_igv,
                DV.total as detalle_total,
                DV.notas as detalle_notas,
-			   DV.id_maquinaria as detalle_maquinaria
+			   M.descripcion as detalle_maquinaria
         FROM tb_venta V
         INNER JOIN tb_detalle_venta DV ON DV.id_venta = V.id_venta
+		LEFT JOIN tb_maquinaria M ON M.id_maquinaria = DV.id_maquinaria
         WHERE V.id_venta = ?";
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_venta]);

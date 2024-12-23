@@ -552,7 +552,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                     <th>Código</th>
                     <th>Descripción</th>
                     <th>Cantidad</th>
-                    <th>Precio Unit.</th>
+                    <th>Stock Actual</th>
                     <th>Precio Unit.</th>
                     <th style="width:30px;">Seleccionar</th>
                   </tr>

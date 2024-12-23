@@ -1,7 +1,6 @@
 var fundosData = [];
 
 $(document).ready(function () {
-  
   crearCalendario();
 
   $("#cboFundoBuscar, #cboMaquinariaBuscar, #cboMedicoBuscar, #cboClienteBuscar").change(function () {
@@ -29,7 +28,6 @@ $(document).ready(function () {
     recalcularMontos();
   });
 
-  // Cuando se seleccione el cliente en el modal, cargar fundos
   $("#id_cliente").on("change", function () {
     var id_cliente = $(this).val();
     cargarFundosPorCliente(id_cliente);
@@ -49,6 +47,43 @@ $(document).ready(function () {
     } else {
       $("#total_hectareas").val(0);
       recalcularMontos();
+    }
+  });
+
+  $("#cboMaquinariaBuscar").on("change", function () {
+    const selectedValue = $(this).val();
+    $("#id_maquinaria").val(selectedValue);
+  });
+
+  $("#cboClienteBuscar").on("change", function () {
+    const selectedValue = $(this).val();
+    $("#id_cliente").val(selectedValue);
+    cargarFundosPorCliente(selectedValue);
+  });
+
+  $("#id_servicio").on("change", function () {
+    if ($("#id_servicio").val() == "") {
+      return false;
+    }
+    const json_servicio = $("#json_servicio").val();
+    var data = JSON.parse(json_servicio);
+    if (data && Array.isArray(data) && data.length > 0) {
+      const service_selected = data.find((x) => x.id_servicio == $("#id_servicio").val());
+      $("#label_precio").html("Precio por " + service_selected.unidad);
+      $("#label_total").html("Total de " + service_selected.unidad);
+      $("#precio_hectarea").val(service_selected.precio);
+    }
+  });
+
+  $("#id_maquinaria").on("change", function () {
+    if ($("#id_maquinaria").val() == "") {
+      return false;
+    }
+    const json_maquinaria = $("#json_maquinaria").val();
+    var data = JSON.parse(json_maquinaria);
+    if (data && Array.isArray(data) && data.length > 0) {
+      const maquinaria_selected = data.find((x) => x.id_maquinaria == $("#id_maquinaria").val());
+      $("#id_operador").val(maquinaria_selected.id_trabajador);
     }
   });
 });
@@ -87,7 +122,7 @@ function crearCalendario() {
       }
 
       // Resetear fundos cuando se abra el modal
-      $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
+      // $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
 
       $("#fecha_ingreso").val(fecha_ingreso);
       $("#hora_ingreso").val(hora_ingreso);
@@ -115,9 +150,7 @@ function crearCalendario() {
           operador: operador !== "all" ? operador : "",
           cliente: cliente !== "all" ? cliente : "",
         },
-        error: function (e) {
-          // Swal.fire("Error", "Ocurrió un error al cargar los cronogramas", "error");
-        },
+        error: function (e) {},
         color: "yellow",
         textColor: "black",
       },
@@ -150,6 +183,7 @@ function registrarCronograma() {
         },
         success: function (response) {
           try {
+            console.log(response);
             var data = JSON.parse(response);
             if (data.error === "NO") {
               Swal.fire("Éxito", data.message, "success");
@@ -339,47 +373,43 @@ function recalcularMontos() {
 }
 
 function cargarFundosPorCliente(id_cliente) {
-    if (id_cliente === 'all') {
-        $('#id_fundo').html('<option value="all">Seleccione un cliente primero</option>');
-        return;
-    }
+  if (id_cliente === "all") {
+    $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
+    return;
+  }
 
-    $.ajax({
-        type: "POST",
-        url: "ajax.php?accion=showFundoCliente",
-        data: {id_cliente: id_cliente},
-        beforeSend: function() {
-            showHideLoader('block');
-        },
-        success: function(response) {
-            try {
-                var data = JSON.parse(response);
-                $('#id_fundo').empty();
-                if (data.error === "NO") {
-                    // Guardamos los fundos en la variable global fundosData
-                    fundosData = data.data;
-                    
-                    $('#id_fundo').append('<option value="all">Seleccione...</option>');
-                    data.data.forEach(function(fundo) {
-                        $('#id_fundo').append(
-                          '<option value="'+fundo.id_fundo+'">'+fundo.nombre_fundo + ' (' + fundo.cantidad_hc + ' ha)</option>'
-                        );
-                    });
-                } else {
-                    fundosData = [];
-                    $('#id_fundo').append('<option value="all">'+data.message+'</option>');
-                }
-            } catch (e) {
-                Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
-            }
-        },
-        error: function(xhr) {
-            Swal.fire("Error", xhr.responseText, "error");
-        },
-        complete: function() {
-            showHideLoader('none');
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=showFundoCliente",
+    data: { id_cliente: id_cliente },
+    beforeSend: function () {
+      showHideLoader("block");
+    },
+    success: function (response) {
+      try {
+        var data = JSON.parse(response);
+        $("#id_fundo").empty();
+        if (data.error === "NO") {
+          fundosData = data.data;
+          $("#id_fundo").append('<option value="all">Seleccione...</option>');
+          data.data.forEach(function (fundo) {
+            $("#id_fundo").append('<option value="' + fundo.id_fundo + '">' + fundo.nombre_fundo + " (" + fundo.cantidad_hc + " ha)</option>");
+          });
+        } else {
+          fundosData = [];
+          $("#id_fundo").append('<option value="all">' + data.message + "</option>");
         }
-    });
+      } catch (e) {
+        Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+      }
+    },
+    error: function (xhr) {
+      Swal.fire("Error", xhr.responseText, "error");
+    },
+    complete: function () {
+      showHideLoader("none");
+    },
+  });
 }
 
 function showHideLoader(display) {

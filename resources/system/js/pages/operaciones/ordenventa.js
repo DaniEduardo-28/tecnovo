@@ -58,7 +58,7 @@ var table_detalle_modal = $("#example2").DataTable({
   columns: [{ data: "num" }, { data: "cod_producto" }, { data: "descripcion" }, { data: "cantidad" }, { data: "precio_unitario" }, { data: "precio_unitario_string" }, { data: "seleccionar" }],
   columnDefs: [
     {
-      targets: [1, 4, 5],
+      targets: [1, 5],
       visible: false,
       searchable: false,
     },
@@ -72,6 +72,7 @@ $(document).ready(function () {
       let data = table_detalle_modal.row($(this).parents("tr")).data();
 
       let cod_producto = data["cod_producto"];
+      let stock = data["precio_unitario"];
       let name_tabla = $("input:radio[name=opcion_busqueda]:checked").val();
 
       if (num > 1 && verificarproductoontable(name_tabla, cod_producto)) {
@@ -82,7 +83,7 @@ $(document).ready(function () {
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
       var precio_unitario = 1;
       var descuento = 0;
-      var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
+      var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="0.01" max="' + stock + '" step="1" style="width:90px;">';
       var inputDescuento = '<input type="number" value="0" class="form-control" min="0" style="width:90px;" readonly>';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
@@ -758,8 +759,8 @@ function get_data_callback_detalle() {
                 num: o[i].num,
                 descripcion: o[i].descripcion,
                 cod_producto: o[i].cod_producto,
-                precio_unitario: o[i].precio_unitario,
-                cantidad: '<input class="form-control" type="number" min="1" value="1">',
+                precio_unitario: o[i].stock,
+                cantidad: '<input class="form-control" type="number" step="1" min="0.01" value="1" max="' + o[i].stock + '">',
                 precio_unitario_string: o[i].precio_unitario_string,
                 seleccionar: o[i].seleccionar,
               })
@@ -864,7 +865,7 @@ function saveOperation() {
         tipo_igv: data["tipo_igv"],
         igv: data["igv"],
         total: data["total"],
-        notas: notas, // Asegúrate de incluir 'notas' aquí.
+        notas: notas,
         id_maquinaria: id_maquinaria,
       });
     });
@@ -1034,9 +1035,6 @@ function saveOperationBorrador() {
     var objeto = {};
 
     $("#example1 > tbody  > tr").each(function () {
-      for (let i = 0; i < 11; i++) {
-        console.log("Valor de columna " + i + ":", $(this).find("td").eq(i).text());
-      }
       var cantidad = $(this).find("td").eq(1).find("input").val();
       var descuento = $(this).find("td").eq(3).find("input").val();
       var notas = $(this).find("td").eq(2).find("input").val(); // Captura el valor del campo 'notas'.
@@ -1055,7 +1053,7 @@ function saveOperationBorrador() {
         tipo_igv: data["tipo_igv"],
         igv: data["igv"],
         total: data["total"],
-        notas: notas, // Asegúrate de incluir 'notas' aquí.
+        notas: notas,
         id_maquinaria: id_maquinaria,
       });
     });
@@ -1191,7 +1189,6 @@ function getDataEdit(id_venta) {
             var precio_unitario = o[i].detalle_precio_unitario;
             var descuento = o[i].detalle_descuento;
             var notas = o[i].detalle_notas;
-            /* var id_maquinaria = o[i].detalle_maquinaria; */
             var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
@@ -1296,7 +1293,7 @@ function verRegistro(id_venta) {
             var inputCantidad = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="1" style="width:90px;">';
             var inputDescuento = '<input readonly onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + descuento + '" class="form-control" min="0" style="width:90px;">';
             var inputNotas = '<input class="form-control" value="' + notas + '" type="text" readonly>';
-            var inputMaquinaria = '<input class="form-control" value="' + o[i].detalle_maquinaria + '" type="text" readonly>';
+            var inputMaquinaria = `<option selected value="${o[i].detalle_maquinaria}">${o[i].detalle_maquinaria}</option>`;
             var botonEliminar = "";
             var sub_total = o[i].detalle_sub_total;
             var igv = o[i].detalle_igv;
@@ -1321,6 +1318,8 @@ function verRegistro(id_venta) {
               .draw();
 
             calcularTotal();
+            $("#example1 .select-maquinaria").last().html(inputMaquinaria);
+            // $("#example1 .select-maquinaria").last().val(id_maquinaria);
           }
 
           addClassDiv();

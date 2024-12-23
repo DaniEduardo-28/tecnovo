@@ -444,11 +444,11 @@ class ClassServicio extends Conexion
 
 		try {
 
-			$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion,u.name_unidad AS unidad
+			$sql = "SELECT s.*,t.name_tipo,q.descripcion AS maquinaria_descripcion,u.cod_sunat AS unidad
 								FROM `tb_servicio` s
 							  INNER JOIN tb_tipo_servicio t ON t.id_tipo_servicio = s.id_tipo_servicio
 							  INNER JOIN tb_maquinaria q ON q.id_maquinaria = s.id_maquinaria
-						       INNER JOIN tb_unidad_medida u ON u.id_unidad_medida = s.unidad_medida
+						       INNER JOIN tb_unidad_medida u ON u.id_unidad_medida = s.id_unidad_medida
 
 								WHERE s.estado = 'activo'";
 			$stmt = $conexion->prepare($sql);
