@@ -12,7 +12,6 @@
 <script type="text/javascript" src="resources/global/notyy/demo/notification_html.js"></script>
 <script src="resources/global/js/star-rating.min.js?v=<?=APP_VERSION;?>"></script>
 <script src="resources/assets-web/js/pnotify.custom.js?v=<?=APP_VERSION;?>"></script>
-<!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-<!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>

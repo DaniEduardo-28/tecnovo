@@ -27,3 +27,4 @@
 <link rel="stylesheet" href="resources/global/css/star-rating.min.css?v=<?=APP_VERSION;?>">
 <link rel="stylesheet" href="resources/global/css/star-rating.css?v=<?=APP_VERSION;?>">
 <link href="resources/assets-web/css/pnotify.custom.css?v=<?=APP_VERSION;?>" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />

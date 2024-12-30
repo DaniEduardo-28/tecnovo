@@ -7,59 +7,55 @@ class ClassCronograma extends Conexion
 
   public function showCitas($id_maquinaria, $id_operador, $id_cliente, $id_fundo)
   {
-
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = null;
 
     try {
+      $parametros = [];
 
-      $parametros = null;
-
-      $sql = "SELECT * FROM tb_cronograma WHERE 1=1 ";
+      $sql = "SELECT c.*, 
+                       mq.descripcion AS nombre_maquinaria, 
+                       pe.nombres AS nombre_operador, 
+                       CONCAT(pec.nombres, ' ', pec.apellidos,' (', pec.apodo ,')') AS nombre_cliente, 
+                       f.nombre AS nombre_fundo 
+                FROM tb_cronograma c
+                LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
+                LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria
+                LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
+                LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
+                LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+                LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medico = 1
+                LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
+                LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
+                WHERE 1=1 ";
 
       if ($id_maquinaria != "all") {
-        $sql .= " AND M.id_maquinaria = ? ";
+        $sql .= " AND m.id_maquinaria = ? ";
         $parametros[] = $id_maquinaria;
       }
 
       if ($id_operador != "all") {
-        $sql .= " AND C.id_operador = ? ";
+        $sql .= " AND co.id_trabajador = ? ";
         $parametros[] = $id_operador;
       }
 
       if ($id_cliente != "all") {
-        $sql .= " AND C.id_cliente = ? ";
+        $sql .= " AND c.id_cliente = ? ";
         $parametros[] = $id_cliente;
       }
 
       if ($id_fundo != "all") {
-        $sql .= " AND C.id_fundo = ? ";
+        $sql .= " AND c.id_fundo = ? ";
         $parametros[] = $id_fundo;
       }
 
+
       $stmt = $conexion->prepare($sql);
       $stmt->execute($parametros);
-      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-      if (count($result) == 0) {
-        throw new Exception("No se encontraron datos.");
-      }
-
-      $VD1['error'] = "NO";
-      $VD1['message'] = "Success";
-      $VD1['data'] = $result;
-      $VD = $VD1;
-    } catch (PDOException $e) {
-
-      $VD1['error'] = "SI";
-      $VD1['message'] = $e->getMessage();
-      $VD = $VD1;
-    } catch (Exception $exception) {
-
-      $VD1['error'] = "SI";
-      $VD1['message'] = $exception->getMessage();
-      $VD = $VD1;
+      $VD = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      error_log($e->getMessage());
     } finally {
       $conexionClass->Close();
     }

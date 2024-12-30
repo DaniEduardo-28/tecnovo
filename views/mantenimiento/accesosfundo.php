@@ -187,7 +187,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 foreach ($dataTrabajador['data'] as $key) {
                           ?>
                                   <option value="<?= $key['id_cliente']; ?>">
-                                    <?= $key['apellidos_cliente'] . ' ' . $key['nombres_cliente'] . ' - ' . $key['name_documento'] . ' ' . $key['num_documento']; ?>
+                                    <?= $key['apellidos_cliente'] . ' ' . $key['nombres_cliente'] . ' - ' . $key['name_documento'] . ' ' . $key['num_documento'] . '(' . $key['apodo'] . ')'; ?>
                                   </option>
                           <?php
                                 }
@@ -288,7 +288,6 @@ if (!isset($_SESSION['id_trabajador'])) {
     $("#menuaccesofundo").addClass('active');
   </script>
   <script>
-    // Código JavaScript para la funcionalidad de búsqueda
     document.addEventListener('DOMContentLoaded', function() {
       const searchInput = document.getElementById('searchCliente');
       const searchResults = document.getElementById('searchResults');
@@ -322,6 +321,12 @@ if (!isset($_SESSION['id_trabajador'])) {
         }
       });
     });
+
+    $('#cboCliente').select2({
+      placeholder: "Seleccione un cliente",
+      allowClear: true
+    });
+
   </script>
 </body>
 

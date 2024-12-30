@@ -22,7 +22,6 @@ $(document).ready(function () {
     recalcularMontos();
   });
 
-  // Recalcular montos al mostrar el modal
   $("#modal-calendario").on("shown.bs.modal", function () {
     recalcularMontos();
   });
@@ -85,10 +84,33 @@ $(document).ready(function () {
       $("#id_operador").val(maquinaria_selected.id_trabajador);
     }
   });
+
+  $("#id_unidad").on("change", function () {
+    const servicioData = JSON.parse($("#json_servicio").val());
+    const selectedUnidadId = $(this).val();
+    const filteredServices = servicioData.filter((service) => service.id_tipo_servicio === selectedUnidadId);
+
+    $("#id_servicio").empty().append('<option value="">Seleccione...</option>');
+
+    filteredServices.forEach((service) => {
+      $("#id_servicio").append(`<option value="${service.id_servicio}">${service.name_servicio} (${service.precio} x ${service.unidad})</option>`);
+    });
+  });
+
+  $("#cboClienteBuscar").select2({
+    placeholder: "Seleccione un cliente",
+    allowClear: true,
+  });
+
+  $("#id_cliente").select2({
+    placeholder: "Seleccione un cliente",
+    allowClear: true,
+    dropdownParent: $("#modal-calendario"),
+  });
 });
 
 function crearCalendario() {
-  $('#calendario').fullCalendar('destroy');
+  $("#calendario").fullCalendar("destroy");
   var fundo = $("#cboFundoBuscar").val();
   var maquinaria = $("#cboMaquinariaBuscar").val();
   var operador = $("#cboMedicoBuscar").val();
@@ -143,23 +165,31 @@ function crearCalendario() {
           operador: operador,
           cliente: cliente,
         },
-        error: function(e) {
+        error: function (e) {
           console.log(e);
         },
         color: "yellow",
         textColor: "black",
       },
     ],
-    eventRender: function(event, element) {
-      element.find('.fc-title').append("<br/>" + event.description);
+    eventRender: function (event, element) {
+      let description = `
+          <br/>${event.description}
+          <br/>Cliente: ${event.nombre_cliente}
+          <br/>Operador: ${event.nombre_operador}
+          <br/>Maquinaria: ${event.nombre_maquinaria}
+          <br/>Fundo: ${event.nombre_fundo}
+          <br/>Observaciones: ${event.observaciones}
+      `;
+      element.find(".fc-title").append(description);
     },
-    loading: function( isLoading, view ) {
-      if(isLoading) {
-        showHideLoader('block');
+    loading: function (isLoading, view) {
+      if (isLoading) {
+        showHideLoader("block");
       } else {
-        showHideLoader('none');
+        showHideLoader("none");
       }
-    }
+    },
   });
 }
 

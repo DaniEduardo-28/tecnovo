@@ -6,7 +6,7 @@
   $id_fundo = isset($_POST['fundo']) ? $_POST['fundo'] : "all";
 
   try {
-    // throw new Exception("No tienes permisos para realizar busquedas.");
+
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'],printCodeOption("citas"));
     if ($access_options[0]['error']=="NO") {
       if ($access_options[0]['flag_buscar']==false) {

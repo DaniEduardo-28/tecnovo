@@ -165,11 +165,19 @@ try {
   $pdfReporte->Ln(4);
   $pdfReporte->SetFont('Arial', '', 7);
   foreach ($arrayordenventa as $key) {
-    $pdfReporte->setX(4);
-    $pdfReporte->Cell(43, 3, strtolower(substr(utf8_decode('- ' . $key['detalle_descripcion'] . ($key['detalle_maquinaria'] ? " (" . $key['detalle_maquinaria'] . ")" : "")), 0, 40)), 0, 'L');
-    $pdfReporte->setX(43);
-    $pdfReporte->Cell(26, 3, number_format(round($key['detalle_cantidad'], 2), 2, ".", ""), 0, 'R', 0);
-    $pdfReporte->Ln(3);
+    $descripcion = utf8_decode('- ' . $key['detalle_descripcion'] . ($key['detalle_maquinaria'] ? " (" . $key['detalle_maquinaria'] . ")" : ""));
+    $descripcionFragmentos = str_split($descripcion, 50);
+    foreach ($descripcionFragmentos as $indice => $fragmento) {
+        $pdfReporte->setX(4);
+        $pdfReporte->Cell(43, 3, $fragmento, 0, 'L');
+        
+        if ($indice === 0) {
+            $pdfReporte->setX(43);
+            $pdfReporte->Cell(26, 3, number_format(round($key['detalle_cantidad'], 2), 2, ".", ""), 0, 'R', 0);
+        }
+        
+        $pdfReporte->Ln(3);
+    }
   }
 
   $pdfReporte->SetFont('Arial', '', 4);

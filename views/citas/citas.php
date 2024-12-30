@@ -103,7 +103,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                       if ($dataCliente["error"] == "NO") {
                         foreach ($dataCliente["data"] as $key) {
                       ?>
-                          <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?></option>
+                          <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')'?></option>
                       <?php
                         }
                       }
@@ -159,6 +159,38 @@ if (!isset($_SESSION['id_trabajador'])) {
               <div class="row">
 
                 <?php
+                include("core/models/ClassTipoServicio.php");
+                $dataUnidadNegocio = $OBJ_TIPO_SERVICIO->show('activo');
+                if ($dataUnidadNegocio["error"] == "NO") {
+                  foreach ($dataUnidadNegocio["data"] as $key) {
+                ?>
+                    <input type="hidden" id="json_unidad_negocio" name="json_unidad_negocio" value='<?= json_encode($dataUnidadNegocio["data"], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
+                  <?php
+                  }
+                } else {
+                  ?>
+                  <input type="hidden" id="json_unidad_negocio" name="json_unidad_negocio" value="{}">
+                <?php
+                }
+                ?>
+
+                <div class="form-group col-sm-12">
+                  <label for="id_unidad">Unidad Negocio</label>
+                  <select class="form-control" id="id_unidad" require name="id_unidad" style="width:100%;">
+                    <option value="">Seleccione...</option>
+                    <?php
+                    if ($dataUnidadNegocio["error"] == "NO") {
+                      foreach ($dataUnidadNegocio["data"] as $key) {
+                    ?>
+                        <option value="<?= $key['id_tipo_servicio']; ?>"><?= $key['name_tipo'] ?></option>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <?php
                 include("core/models/ClassServicio.php");
                 $dataServicio = $OBJ_SERVICIO->show_activos();
                 if ($dataServicio["error"] == "NO") {
@@ -177,15 +209,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <label for="id_servicio">Servicio</label>
                   <select class="form-control" id="id_servicio" require name="id_servicio" style="width:100%;">
                     <option value="">Seleccione...</option>
-                    <?php
-                    if ($dataServicio["error"] == "NO") {
-                      foreach ($dataServicio["data"] as $key) {
-                    ?>
-                        <option value="<?= $key['id_servicio']; ?>"><?= $key['name_servicio'] . " (" . $key['precio'] . " x " . $key['unidad'] . ")" ?></option>
-                    <?php
-                      }
-                    }
-                    ?>
                   </select>
                 </div>
 
@@ -198,7 +221,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                     if ($dataCliente["error"] == "NO") {
                       foreach ($dataCliente["data"] as $key) {
                     ?>
-                        <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?></option>
+                        <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')'?></option>
                     <?php
                       }
                     }
@@ -261,7 +284,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                 <div class="form-group col-sm-6">
                   <label for="fecha_ingreso">Fecha Ingreso</label>
-                  <input type="date" id="fecha_ingreso" name="fecha_ingreso" class="form-control" required readonly>
+                  <input type="date" id="fecha_ingreso" name="fecha_ingreso" class="form-control" required>
                 </div>
 
                 <div class="form-group col-sm-6">
