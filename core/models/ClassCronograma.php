@@ -52,16 +52,36 @@ class ClassCronograma extends Conexion
 
 
       $stmt = $conexion->prepare($sql);
-      $stmt->execute($parametros);
-      $VD = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (Exception $e) {
-      error_log($e->getMessage());
-    } finally {
-      $conexionClass->Close();
-    }
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    return $VD;
-  }
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+
+		} catch (PDOException $e) {
+
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+
+		} catch (Exception $exception) {
+
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+
+		} finally {
+			$conexionClass->Close();
+		}
+
+		return $VD;
+	}
 
   public function registrarCronograma($id_servicio, $fecha_1, $fecha_2, $id_fundo, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $estado_pago, $estado_trabajo, $id_cliente, $id_maquinaria)
   {

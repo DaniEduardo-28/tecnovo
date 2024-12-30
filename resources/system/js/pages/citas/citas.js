@@ -166,7 +166,7 @@ function crearCalendario() {
           cliente: cliente,
         },
         error: function (e) {
-          console.log(e);
+          console.log(e.responseText);
         },
         color: "yellow",
         textColor: "black",
