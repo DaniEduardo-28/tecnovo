@@ -14,21 +14,26 @@ class ClassCronograma extends Conexion
     try {
       $parametros = [];
 
-      $sql = "SELECT c.*, 
-                       mq.descripcion AS nombre_maquinaria, 
-                       pe.nombres AS nombre_operador, 
-                       CONCAT(pec.nombres, ' ', pec.apellidos,' (', pec.apodo ,')') AS nombre_cliente, 
-                       f.nombre AS nombre_fundo 
-                FROM tb_cronograma c
-                LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
-                LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria
-                LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
-                LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
-                LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
-                LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medico = 1
-                LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
-                LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
-                WHERE 1=1 ";
+      $sql = "SELECT c.*,
+                c.id_cronograma,
+                c.fecha_ingreso AS start,
+                c.fecha_salida AS end,
+                CONCAT(pec.nombres, ' ', pec.apellidos, ' (', pec.apodo, ')') AS nombre_cliente,
+                f.nombre AS nombre_fundo,
+                ser.name_servicio AS nombre_servicio,
+                GROUP_CONCAT(DISTINCT mq.descripcion SEPARATOR ', ') AS nombre_maquinaria,
+                GROUP_CONCAT(DISTINCT CONCAT(pe.nombres) SEPARATOR ', ') AS nombre_operador
+            FROM tb_cronograma c
+            LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
+            LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria
+            LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
+            LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
+            LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+            LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medico = 1
+            LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
+            LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
+            LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio
+            where 1=1 ";
 
       if ($id_maquinaria != "all") {
         $sql .= " AND m.id_maquinaria = ? ";
@@ -50,38 +55,36 @@ class ClassCronograma extends Conexion
         $parametros[] = $id_fundo;
       }
 
+      $sql.= " GROUP BY c.id_cronograma";
 
       $stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $stmt->execute($parametros);
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos.");
-			}
+      if (count($result) == 0) {
+        throw new Exception("No se encontraron datos.");
+      }
 
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
+      $VD1['error'] = "NO";
+      $VD1['message'] = "Success";
+      $VD1['data'] = $result;
+      $VD = $VD1;
+    } catch (PDOException $e) {
 
-		} catch (PDOException $e) {
+      $VD1['error'] = "SI";
+      $VD1['message'] = $e->getMessage();
+      $VD = $VD1;
+    } catch (Exception $exception) {
 
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
+      $VD1['error'] = "SI";
+      $VD1['message'] = $exception->getMessage();
+      $VD = $VD1;
+    } finally {
+      $conexionClass->Close();
+    }
 
-		} catch (Exception $exception) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-	}
+    return $VD;
+  }
 
   public function registrarCronograma($id_servicio, $fecha_1, $fecha_2, $id_fundo, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $estado_pago, $estado_trabajo, $id_cliente, $id_maquinaria)
   {

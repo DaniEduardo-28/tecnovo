@@ -75,6 +75,8 @@ try {
     );
   }
 
+  var_dump($data); exit;
+  
   echo json_encode($data);
 } catch (\Exception $e) {
 

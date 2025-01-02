@@ -67,8 +67,12 @@
         "fecha_inicio" => date('d/m/Y H:i', strtotime($elemento['fecha_ingreso'])),
         "fecha_fin" => date('d/m/Y H:i', strtotime($elemento['fecha_salida'])),
         "description" => 'Estado : ' . $elemento['estado_trabajo'],
+        "nombre_maquinaria" => $elemento['nombre_maquinaria'],
+        "nombre_operador" => $elemento['nombre_operador'],
+        "nombre_cliente" => $elemento['nombre_cliente'],
+        "nombre_fundo" => $elemento['nombre_fundo'],
+        "nombre_servicio" => $elemento['nombre_servicio']
       );
-
     }
 
     echo json_encode($data);

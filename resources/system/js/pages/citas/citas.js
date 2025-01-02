@@ -131,14 +131,6 @@ function crearCalendario() {
       var hora_ingreso = moment(start).format("HH:mm");
       var fecha_salida = moment(end).format("YYYY-MM-DD");
       var hora_salida = moment(end).format("HH:mm");
-      var hoy = moment().startOf("day");
-      var seleccion = moment(start);
-      if (seleccion.isBefore(hoy)) {
-        Swal.fire("Advertencia", "No puedes crear cronogramas en fechas pasadas.", "warning");
-        $("#calendario").fullCalendar("unselect");
-        return;
-      }
-
       $("#fecha_ingreso").val(fecha_ingreso);
       $("#hora_ingreso").val(hora_ingreso);
       $("#fecha_salida").val(fecha_salida);
@@ -173,13 +165,14 @@ function crearCalendario() {
       },
     ],
     eventRender: function (event, element) {
+      console.log(event);
       let description = `
           <br/>${event.description}
+          <br/>Servicio: ${event.nombre_servicio}
           <br/>Cliente: ${event.nombre_cliente}
           <br/>Operador: ${event.nombre_operador}
           <br/>Maquinaria: ${event.nombre_maquinaria}
           <br/>Fundo: ${event.nombre_fundo}
-          <br/>Observaciones: ${event.observaciones}
       `;
       element.find(".fc-title").append(description);
     },

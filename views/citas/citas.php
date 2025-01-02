@@ -103,7 +103,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                       if ($dataCliente["error"] == "NO") {
                         foreach ($dataCliente["data"] as $key) {
                       ?>
-                          <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')'?></option>
+                          <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')' ?></option>
                       <?php
                         }
                       }
@@ -162,13 +162,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                 include("core/models/ClassTipoServicio.php");
                 $dataUnidadNegocio = $OBJ_TIPO_SERVICIO->show('activo');
                 if ($dataUnidadNegocio["error"] == "NO") {
-                  foreach ($dataUnidadNegocio["data"] as $key) {
                 ?>
-                    <input type="hidden" id="json_unidad_negocio" name="json_unidad_negocio" value='<?= json_encode($dataUnidadNegocio["data"], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
-                  <?php
-                  }
+                  <input type="hidden" id="json_unidad_negocio" name="json_unidad_negocio" value='<?= json_encode($dataUnidadNegocio["data"], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
+                <?php
                 } else {
-                  ?>
+                ?>
                   <input type="hidden" id="json_unidad_negocio" name="json_unidad_negocio" value="{}">
                 <?php
                 }
@@ -194,13 +192,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                 include("core/models/ClassServicio.php");
                 $dataServicio = $OBJ_SERVICIO->show_activos();
                 if ($dataServicio["error"] == "NO") {
-                  foreach ($dataServicio["data"] as $key) {
                 ?>
-                    <input type="hidden" id="json_servicio" name="json_servicio" value='<?= json_encode($dataServicio["data"], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
-                  <?php
-                  }
+                  <input type="hidden" id="json_servicio" name="json_servicio" value='<?= json_encode($dataServicio["data"], JSON_HEX_APOS | JSON_HEX_QUOT) ?>'>
+                <?php
                 } else {
-                  ?>
+                ?>
                   <input type="hidden" id="json_servicio" name="json_servicio" value="{}">
                 <?php
                 }
@@ -221,7 +217,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                     if ($dataCliente["error"] == "NO") {
                       foreach ($dataCliente["data"] as $key) {
                     ?>
-                        <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')'?></option>
+                        <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')' ?></option>
                     <?php
                       }
                     }
