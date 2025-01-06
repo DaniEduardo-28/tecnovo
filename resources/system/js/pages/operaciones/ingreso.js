@@ -517,6 +517,7 @@ function get_data_callback2() {
   })
     .done(function (data, textStatus, jqXHR) {
       try {
+        console.log(data);
         var data1 = JSON.parse(data);
         if (data1["error"] == "NO") {
           if (pagina == 0) {
@@ -750,23 +751,6 @@ function deleteRegistro(id_ingreso_pago) {
     runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
   }
 }
-
-document.getElementById("flag_pagado").addEventListener("change", function () {
-  const grupoPago = document.getElementById("grupoPago");
-  if (this.checked) {
-    grupoPago.style.display = "block";
-  } else {
-    grupoPago.style.display = "none";
-  }
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  const flagPagado = document.getElementById("flag_pagado");
-  const grupoPago = document.getElementById("grupoPago");
-  if (!flagPagado.checked) {
-    grupoPago.style.display = "none";
-  }
-});
 
 function cargarPagosExistentes(id_ingreso_pago) {
   $.ajax({

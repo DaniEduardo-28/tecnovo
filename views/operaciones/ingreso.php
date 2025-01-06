@@ -272,13 +272,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </div>
                             </div>
 
-                            <!-- <div class="form-group col-md-2 col-sm-3">
-                              <div class="form-check">
-                                <input id="flag_pagado" name="flag_pagado" type="checkbox" class="form-check-input">
-                                <label for="flag_pagado" class="form-check-label">¿Añadir un pago?</label>
-                              </div>
-                            </div> -->
-
                             <!-- Grupo de campos que se ocultarán -->
                             <div id="grupoPago" style="display: none;">
                               <div class="row">

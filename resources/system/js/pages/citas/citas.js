@@ -89,7 +89,7 @@ $(document).ready(function () {
   $("#id_unidad").on("change", function () {
     const servicioData = JSON.parse($("#json_servicio").val());
     const selectedUnidadId = $(this).val();
-    const filteredServices = servicioData.filter((service) => service.id_tipo_servicio === selectedUnidadId);
+    const filteredServices = servicioData.filter((service) => service.id_tipo_servicio == selectedUnidadId);
 
     $("#id_servicio").empty().append('<option value="">Seleccione...</option>');
 
@@ -214,7 +214,7 @@ function registrarCronograma() {
           try {
             console.log(response);
             var data = JSON.parse(response);
-            if (data.error === "NO") {
+            if (data.error == "NO") {
               Swal.fire("Éxito", data.message, "success");
               $("#frmCronograma")[0].reset();
               $("#modal-calendario").modal("hide");
@@ -248,7 +248,7 @@ function getCronograma(id_cronograma) {
     success: function (response) {
       try {
         var data = JSON.parse(response);
-        if (data.error === "NO") {
+        if (data.error == "NO") {
           var info = data.data[0];
           $("#id_cronograma").val(info.id_cronograma);
           $("#fundo_show").val(info.fundo);
@@ -298,7 +298,7 @@ function anularCronograma() {
         success: function (response) {
           try {
             var data = JSON.parse(response);
-            if (data.error === "NO") {
+            if (data.error == "NO") {
               Swal.fire("Éxito", data.message, "success");
               $("#modal-calendario-show").modal("hide");
               crearCalendario();
@@ -353,7 +353,7 @@ function actualizarFechaCronograma(event, revertFunc) {
         success: function (response) {
           try {
             var data = JSON.parse(response);
-            if (data.error === "NO") {
+            if (data.error == "NO") {
               Swal.fire("Éxito", data.message, "success");
               crearCalendario();
             } else {
@@ -394,7 +394,7 @@ function recalcularMontos() {
 }
 
 function cargarFundosPorCliente(id_cliente) {
-  if (id_cliente === "all") {
+  if (id_cliente == "all") {
     $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
     return;
   }
@@ -410,7 +410,7 @@ function cargarFundosPorCliente(id_cliente) {
       try {
         var data = JSON.parse(response);
         $("#id_fundo").empty();
-        if (data.error === "NO") {
+        if (data.error == "NO") {
           fundosData = data.data;
           $("#id_fundo").append('<option value="all">Seleccione...</option>');
           data.data.forEach(function (fundo) {

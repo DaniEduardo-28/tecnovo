@@ -3,7 +3,6 @@
 class ClassIngreso extends Conexion
 {
 
-	//constructor de la clase
 	public function __construct() {}
 
 	public function getCount($id_sucursal, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda)
@@ -22,7 +21,7 @@ class ClassIngreso extends Conexion
 			$sql = "SELECT COUNT(*) as cantidad FROM `tb_ingreso` i
 								INNER JOIN tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								WHERE o.fecha_orden >= ? AND o.fecha_orden < ? AND o.id_sucursal = ? ";
+								WHERE i.fecha >= ? AND i.fecha < ? AND i.id_sucursal = ? ";
 
 			$parametros[] = $fecha_inicio;
 			$parametros[] = $fecha_fin;
@@ -117,9 +116,9 @@ class ClassIngreso extends Conexion
 					INNER JOIN 
 						vw_trabajadores t ON t.id_trabajador = o.id_trabajador
 					WHERE 
-						o.fecha_orden >= ? 
-						AND o.fecha_orden < ? 
-						AND o.id_sucursal = ? ";
+						i.fecha >= ? 
+						AND i.fecha < ? 
+						AND i.id_sucursal = ? ";
 
 
 			$parametros[] = $fecha_inicio;
@@ -128,11 +127,11 @@ class ClassIngreso extends Conexion
 
 			if ($tipo_busqueda != '') {
 				switch ($tipo_busqueda) {
-					case 1:
+					case "1":
 						$sql .= " AND p.num_documento_proveedor LIKE ? ";
 						$parametros[] = $valor;
 						break;
-					case 2:
+					case "2":
 						$sql .= " AND p.nombre_proveedor LIKE ? ";
 						$parametros[] = $valor;
 						break;
@@ -161,11 +160,13 @@ class ClassIngreso extends Conexion
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
 			$VD = $VD1;
+
 		} catch (Exception $exception) {
 
 			$VD1['error'] = "SI";
 			$VD1['message'] = $exception->getMessage();
 			$VD = $VD1;
+
 		} finally {
 			$conexionClass->Close();
 		}
