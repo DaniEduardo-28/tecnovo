@@ -1,6 +1,7 @@
 var fundosData = [];
 
 $(document).ready(function () {
+
   crearCalendario();
 
   $("#cboFundoBuscar, #cboMaquinariaBuscar, #cboMedicoBuscar, #cboClienteBuscar").change(function () {
@@ -117,7 +118,7 @@ function crearCalendario() {
   var cliente = $("#cboClienteBuscar").val();
 
   $("#calendario").fullCalendar({
-    defaultView: "agendaWeek",
+    defaultView: "month",
     editable: true,
     selectable: true,
     locale: "es",
@@ -326,14 +327,6 @@ function actualizarFechaCronograma(event, revertFunc) {
   var hora_ingreso = moment(event.start).format("HH:mm");
   var hora_salida = event.end ? moment(event.end).format("HH:mm") : hora_ingreso;
 
-  var hoy = moment().startOf("day");
-  var seleccion = moment(event.start);
-  if (seleccion.isBefore(hoy)) {
-    Swal.fire("Advertencia", "No puedes establecer cronogramas en fechas pasadas.", "warning");
-    revertFunc();
-    return;
-  }
-
   Swal.fire({
     title: "¿Actualizar fechas del cronograma?",
     text: "Esta acción no se puede deshacer.",
@@ -346,7 +339,7 @@ function actualizarFechaCronograma(event, revertFunc) {
     if (result.value) {
       $.ajax({
         type: "POST",
-        url: "ajax.php?accion=actualizarCronograma",
+        url: "ajax.php?accion=actualizarFechaCita",
         data: {
           id_cronograma: id_cronograma,
           fecha_ingreso: fecha_ingreso,

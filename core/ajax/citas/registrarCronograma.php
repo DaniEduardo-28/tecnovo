@@ -32,7 +32,8 @@ try {
         $_POST['monto_total'] - $_POST['adelanto'] <= 0 ? 'PAGADO' : 'PENDIENTE',
         'EN PROCESO',
         $_POST['id_cliente'],
-        $_POST['id_maquinaria']
+        $_POST['id_maquinaria'],
+        $_POST['id_operador']
     );
 
     if ($Resultado != "OK") {

@@ -83,7 +83,7 @@ $(document).ready(function () {
       var cantidad = $(this).parents("tr").find("td").eq(2).find("input").val();
       var precio_unitario = 1;
       var descuento = 0;
-      var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="0.01" max="' + stock + '" step="1" style="width:90px;">';
+      var inputCantidad = '<input onkeypress="calcularTotal();" onchange="calcularTotal();" type="number" value="' + cantidad + '" class="form-control" min="0" max="' + stock + '" step="1" style="width:90px;">';
       var inputDescuento = '<input type="number" value="0" class="form-control" min="0" style="width:90px;" readonly>';
       var botonEliminar = '<a href="javascript:void(0);" id="botonEliminar" class="btn btn-danger"><i class="fa fa-close"></i></a>';
 
@@ -463,6 +463,18 @@ $(document).ready(function () {
       console.log(e);
     }
   });
+
+  $("#table_detalle_modal").on("input", 'input[type="number"]', function () {
+    const min = parseFloat($(this).attr("min"));
+    const max = parseFloat($(this).attr("max"));
+    const value = parseFloat($(this).val());
+
+    if (value < min || value > max) {
+      alert(`La cantidad ingresada debe estar entre ${min} y ${max}.`);
+      $(this).val(value < min ? min : max);
+    }
+  });
+
 });
 
 function cargarMaquinariasActivas() {
@@ -760,7 +772,7 @@ function get_data_callback_detalle() {
                 descripcion: o[i].descripcion,
                 cod_producto: o[i].cod_producto,
                 precio_unitario: o[i].stock,
-                cantidad: '<input class="form-control" type="number" step="1" min="0.01" value="1" max="' + o[i].stock + '">',
+                cantidad: '<input class="form-control" type="number" step="1" min="0" value="1" max="' + o[i].stock + '">',
                 precio_unitario_string: o[i].precio_unitario_string,
                 seleccionar: o[i].seleccionar,
               })

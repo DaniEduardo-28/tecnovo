@@ -231,6 +231,18 @@ $(document).ready(function () {
     e.preventDefault();
     savePago();
   });
+
+  $("#table_form").on("input", 'input[type="number"]', function () {
+    const min = parseInt($(this).attr("min"), 10);
+    const max = parseInt($(this).attr("max"), 10);
+    const value = parseInt($(this).val(), 10);
+
+    if (value < min || value > max) {
+      alert(`La cantidad ingresada debe estar entre ${min} y ${max}.`);
+      $(this).val(value < min ? min : max);
+    }
+  });
+
 });
 
 function cancelarForm() {

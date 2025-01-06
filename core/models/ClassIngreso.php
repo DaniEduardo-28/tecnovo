@@ -119,7 +119,7 @@ class ClassIngreso extends Conexion
 					WHERE 
 						o.fecha_orden >= ? 
 						AND o.fecha_orden < ? 
-						AND o.id_sucursal = ?";
+						AND o.id_sucursal = ? ";
 
 
 			$parametros[] = $fecha_inicio;
@@ -155,6 +155,7 @@ class ClassIngreso extends Conexion
 			$VD1['message'] = "Success";
 			$VD1['data'] = $result;
 			$VD = $VD1;
+
 		} catch (PDOException $e) {
 
 			$VD1['error'] = "SI";

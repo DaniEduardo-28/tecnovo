@@ -55,7 +55,7 @@ class ClassCronograma extends Conexion
         $parametros[] = $id_fundo;
       }
 
-      $sql.= " GROUP BY c.id_cronograma";
+      $sql .= " GROUP BY c.id_cronograma";
 
       $stmt = $conexion->prepare($sql);
       $stmt->execute($parametros);
@@ -86,7 +86,7 @@ class ClassCronograma extends Conexion
     return $VD;
   }
 
-  public function registrarCronograma($id_servicio, $fecha_1, $fecha_2, $id_fundo, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $estado_pago, $estado_trabajo, $id_cliente, $id_maquinaria)
+  public function registrarCronograma($id_servicio, $fecha_1, $fecha_2, $id_fundo, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $estado_pago, $estado_trabajo, $id_cliente, $id_maquinaria, $id_operador)
   {
 
     $conexionClass = new Conexion();
@@ -123,16 +123,23 @@ class ClassCronograma extends Conexion
         throw new Exception("Error al realizar el registro en la base de datos.");
       }
 
-      // $sql = "INSERT INTO tb_detalle_cita (`id_detalle`, `id_cita`, `name_servicio`) VALUES ";
-      // $sql .= "(";
-      // $sql .= "(SELECT CASE COUNT(a.id_detalle) WHEN 0 THEN 1 ELSE (MAX(a.id_detalle) + 1) end FROM `tb_detalle_cita` a),";
-      // $sql .= "(SELECT MAX(id_cita) FROM tb_cita),(SELECT name_servicio FROM tb_servicio WHERE id_servicio = ?)";
-      // $sql .= ")";
-      // $stmt = $conexion->prepare($sql);
-      // $stmt->execute([$id_servicio]);
-      // if ($stmt->rowCount() == 0) {
-      // 	throw new Exception("Error al realizar el registro en la base de datos.");
-      // }
+      $id_cronograma = $conexion->lastInsertId();
+
+      $sql = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria) VALUES (?, ?)";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma, $id_maquinaria]);
+
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Error al registrar la maquinaria en la base de datos.");
+      }
+
+      $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas) VALUES (?, ?, 0.0)";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma, $id_operador]);
+
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Error al registrar el operador en la base de datos.");
+      }
 
       $VD = "OK";
       $conexion->commit();
@@ -273,7 +280,7 @@ class ClassCronograma extends Conexion
     return $VD;
   }
 
-  public function actualizarFechaCita($id_cita, $fecha_1, $fecha_2)
+  public function actualizarFechaCita($id_cronograma, $fecha_1, $fecha_2)
   {
 
     $conexionClass = new Conexion();
@@ -284,9 +291,9 @@ class ClassCronograma extends Conexion
 
       $conexion->beginTransaction();
 
-      $sql = "UPDATE tb_cita SET fecha_cita = ?, fecha_termino = ? WHERE id_cita = ?";
+      $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ? WHERE id_cronograma = ?";
       $stmt = $conexion->prepare($sql);
-      if ($stmt->execute([$fecha_1, $fecha_2, $id_cita]) == false) {
+      if ($stmt->execute([$fecha_1, $fecha_2, $id_cronograma]) == false) {
         throw new Exception("Error al realizar el registro en la base de datos.");
       }
 

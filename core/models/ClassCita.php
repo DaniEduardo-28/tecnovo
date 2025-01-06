@@ -309,7 +309,7 @@ class ClassCita extends Conexion
 		return $VD;
 	}
 
-	public function actualizarFechaCita($id_cita, $fecha_1, $fecha_2)
+	public function actualizarFechaCita($id_cronograma, $fecha_1, $fecha_2)
 	{
 
 		$conexionClass = new Conexion();
@@ -320,9 +320,9 @@ class ClassCita extends Conexion
 
 			$conexion->beginTransaction();
 
-			$sql = "UPDATE tb_cita SET fecha_cita = ?, fecha_termino = ? WHERE id_cita = ?";
+			$sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ? WHERE id_cronograma = ?";
 			$stmt = $conexion->prepare($sql);
-			if ($stmt->execute([$fecha_1, $fecha_2, $id_cita]) == false) {
+			if ($stmt->execute([$fecha_1, $fecha_2, $id_cronograma]) == false) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
