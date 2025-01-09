@@ -68,10 +68,9 @@
                       </div>
                     </div>
 
+                    <!-- Filtros -->
                     <div class="row">
-
                       <div class="container">
-
                         <div class="row" id="panelDetalle">
 
                           <div class="col-md-12">
@@ -234,7 +233,7 @@
                          <div class="row" id="panelCalendario">
 
                            <div class="form-group col-sm-6 col-md-4">
-                            <label for="cboDocumentoBuscar">Documento Cliente</label>
+                            <label for="cboDocumentoBuscar">Maquinaria</label>
                             <select class="form-control" id="cboDocumentoBuscar" name="cboDocumentoBuscar">
                               <option value="all">Todos</option>
                               <?php

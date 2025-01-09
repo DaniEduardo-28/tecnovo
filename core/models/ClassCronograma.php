@@ -463,7 +463,7 @@ WHERE 1=1 ";
 
     return $VD;
   }
-  public function showreporte($estado, $fecha_inicio, $fecha_fin, $val, $tipobusqueda)
+  public function showreporte()
   {
 
     $conexionClass = new Conexion();
@@ -472,38 +472,36 @@ WHERE 1=1 ";
 
     try {
 
-      $fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
-      $fecha_inicio = date("Y-m-d", strtotime($fecha_inicio));
+      $sql = "SELECT 
+                  c.id_cronograma,
+                  f.nombre AS nombre_fundo,
+                  CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
+                  s.name_servicio AS nombre_servicio,
+                  GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
+                  GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
+                  c.fecha_ingreso,
+                  c.fecha_salida,
+                  c.estado_trabajo
+              FROM tb_cronograma c 
+              LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
+              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio
+              LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
+              LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
+              LEFT JOIN tb_cronograma_maquinaria cm ON c.id_cronograma = cm.id_cronograma
+              LEFT JOIN tb_maquinaria m ON cm.id_maquinaria = m.id_maquinaria
+              LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+              LEFT JOIN tb_trabajador t ON co.id_trabajador = t.id_trabajador
+              LEFT JOIN tb_persona op ON t.id_persona = op.id_persona
+              GROUP BY
+                    c.id_cronograma,
+                    f.nombre,
+                    s.name_servicio,
+                    p.nombres,
+                    p.apellidos";
 
-      $parametros = [];
-      $sql = "SELECT c.id_cita, c.fecha_cita, c.estado, dc.name_servicio, 
-CONCAT(p.nombres, ' ', p.apellidos) AS nombre_trabajador,
-m.descripcion AS name_maquinaria
-FROM tb_cita c 
-INNER JOIN tb_detalle_cita dc ON dc.id_cita = c.id_cita
-INNER JOIN tb_trabajador t ON t.id_trabajador = c.id_trabajador
-INNER JOIN tb_persona p ON p.id_persona = t.id_persona
-INNER JOIN tb_maquinaria m ON m.id_trabajador = t.id_trabajador
-WHERE 1+1 AND t.flag_medico=1";
-
-      // Filtro por fechas (siempre activo)
-      $sql .= " AND DATE(c.fecha_cita) BETWEEN ? AND ?";
-      $parametros[] = $fecha_inicio;
-      $parametros[] = $fecha_fin;
-
-      /* if (!empty($val)) {
-				if ($tipobusqueda == 1) {
-					$sql .= " AND dc.name_servicio = ?";
-					$parametros[] = $val;
-				} elseif ($tipobusqueda == 2) {
-					$sql .= " AND nombre_trabajador = ?";
-					$parametros[] = $val;
-				}
-			} */
-      // Orden
-      $sql .= " ORDER BY c.fecha_cita DESC";
+      $sql .= " ORDER BY c.fecha_ingreso DESC";
       $stmt = $conexion->prepare($sql);
-      $stmt->execute($parametros);
+      $stmt->execute();
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       if (count($result) == 0) {

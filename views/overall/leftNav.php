@@ -282,10 +282,9 @@
       $flag_vistareporteaccesorios = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteaccesorios"));
       $flag_vistareportemedicamentos = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportemedicamentos"));
       $flag_observacionesproveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("observacionesproveedor"));
-      $flag_vistareportecita = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportecita"));
       $flag_vistareportecliente = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportecliente"));
       $flag_vistareporteproveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteproveedor"));
-      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor || $flag_vistareportecita || $flag_vistareportecliente || $flag_vistareporteproveedor) {
+      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor || $flag_vistareportecliente || $flag_vistareporteproveedor) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -309,9 +308,6 @@
             <?php endif; ?>
             <?php if ($flag_vistareporteaccesorios): ?>
               <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>
-            <?php endif; ?>
-            <?php if ($flag_vistareportecita): ?>
-              <li id="submenureportecita"><a href="?view=vistareportecita">Reporte de citas</a></li>
             <?php endif; ?>
             <?php if ($flag_vistareportecliente): ?>
               <li id="submenureportecliente"><a href="?view=vistareportecliente">Reporte de clientes</a></li>

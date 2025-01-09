@@ -527,6 +527,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/reportes/showCitaReporte.php");
         break;
+      case 'showOrdenServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/showOrdenServicio.php");
+        break;
       case 'showClienteReporte':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/reportes/showClienteReporte.php");

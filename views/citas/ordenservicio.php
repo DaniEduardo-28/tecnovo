@@ -17,6 +17,28 @@ if (!isset($_SESSION['id_trabajador'])) {
   <link href="resources/select2/css/select2.min.css" rel="stylesheet" />
   <!-- SweetAlert2 CSS -->
   <link rel="stylesheet" href="resources/sweetalert2/sweetalert2.min.css">
+  <style media="screen">
+    .pagination {
+      display: inline-block;
+    }
+
+    .pagination li {
+      color: black;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .pagination li.active {
+      background-color: #9e61da;
+      color: white;
+    }
+
+    .pagination li:hover:not(.active) {
+      background-color: #ddd;
+    }
+  </style>
 </head>
 
 <body>
@@ -133,6 +155,33 @@ if (!isset($_SESSION['id_trabajador'])) {
               </div>
             </div>
 
+            <div class="row">
+                          <br>
+                        </div>
+
+                        <div class="user-block block">
+                          <div class="table-responsive">
+                            <table id="example" class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Num</th>
+                                  <th>Id</th>
+                                  <th>Fundo</th>
+                                  <th>Nombre Cliente</th>
+                                  <th>Servicio</th>
+                                  <th>Nombre Operador</th>
+                                  <th>Maquinaria</th>
+                                  <th>Fecha Ingreso</th>
+                                  <th>Fecha Salida</th>
+                                  <th>Estado Actual</th>
+                                  <!-- <th>Acciones</th> -->
+                                </tr>
+                              </thead>
+                            </table>
+                          </div>
+                        </div>
+
+
           </div>
         </div>
       </div>
@@ -142,7 +191,7 @@ if (!isset($_SESSION['id_trabajador'])) {
   </div>
 
   <!-- Modal REGISTRAR CRONOGRAMA -->
-  <form action="#" method="post" id="frmCronograma" name="frmCronograma">
+<!--   <form action="#" method="post" id="frmCronograma" name="frmCronograma">
     <div class="modal fade" id="modal-calendario" tabindex="-1" role="dialog" aria-labelledby="modal-calendario-label" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -204,7 +253,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <input type="text" id="estado_trabajo" name="estado_trabajo" value="EN PROCESO" class="form-control" readonly>
                 </div>
 
-                <!-- Campos adicionales -->
+                
                 <div class="form-group col-sm-6">
                   <label for="precio_hectarea">Precio por Hectárea</label>
                   <input type="number" id="precio_hectarea" name="precio_hectarea" class="form-control" value="0" required>
@@ -261,10 +310,10 @@ if (!isset($_SESSION['id_trabajador'])) {
         </div>
       </div>
     </div>
-  </form>
+  </form> -->
 
   <!-- Modal VER CRONOGRAMA -->
-  <form action="#" method="post" id="frmCronogramaView" name="frmCronogramaView">
+  <!-- <form action="#" method="post" id="frmCronogramaView" name="frmCronogramaView">
     <div class="modal fade" id="modal-calendario-show" tabindex="-1" role="dialog" aria-labelledby="modal-calendario-show-label" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -276,41 +325,7 @@ if (!isset($_SESSION['id_trabajador'])) {
           </div>
           <div class="modal-body">
 
-            <input type="hidden" id="id_cronograma" name="id_cronograma" value="">
-            <div class="form-group col-sm-12">
-              <label for="fundo_show">Fundo</label>
-              <input type="text" id="fundo_show" class="form-control" readonly>
-            </div>
 
-            <div class="form-group col-sm-12">
-              <label for="cliente_show">Cliente</label>
-              <input type="text" id="cliente_show" class="form-control" readonly>
-            </div>
-
-            <div class="form-group col-sm-12">
-              <label for="operador_show">Operador</label>
-              <input type="text" id="operador_show" class="form-control" readonly>
-            </div>
-
-            <div class="form-group col-sm-12">
-              <label for="maquinaria_show">Maquinaria</label>
-              <input type="text" id="maquinaria_show" class="form-control" readonly>
-            </div>
-
-            <div class="form-group col-sm-6">
-              <label for="fecha_ingreso_show">Fecha Ingreso</label>
-              <input type="text" id="fecha_ingreso_show" class="form-control" readonly>
-            </div>
-
-            <div class="form-group col-sm-6">
-              <label for="fecha_salida_show">Fecha Salida</label>
-              <input type="text" id="fecha_salida_show" class="form-control" readonly>
-            </div>
-
-            <div class="form-group col-sm-12">
-              <label for="estado_trabajo_show">Estado del Trabajo</label>
-              <input type="text" id="estado_trabajo_show" class="form-control" readonly>
-            </div>
 
           </div>
 
@@ -321,14 +336,14 @@ if (!isset($_SESSION['id_trabajador'])) {
         </div>
       </div>
     </div>
-  </form>
+  </form> -->
 
   <?php include("views/overall/js.php"); ?>
   <script src="resources/moment/min/moment.min.js"></script>
   <script src="resources/fullcalendar/fullcalendar.min.js"></script>
   <script src="resources/fullcalendar/locale/es.js"></script>
 
-  <script src="resources/system/js/pages/citas/citas.js?v=<?= APP_VERSION; ?>"></script>
+  <script src="resources/system/js/pages/citas/ordenservicio.js?v=<?= APP_VERSION; ?>"></script>
   <script>
     $("#menucitas").addClass('active');
     $("#submenuordenservicio").addClass('active');
