@@ -300,7 +300,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                 <div class="form-group col-sm-12">
                   <label for="estado_trabajo">Estado Trabajo</label>
-                  <input type="text" id="estado_trabajo" name="estado_trabajo" value="EN PROCESO" class="form-control" readonly>
+                  <input type="text" id="estado_trabajo" name="estado_trabajo" value="PENDIENTE" class="form-control" readonly>
                 </div>
 
                 <!-- Campos adicionales -->

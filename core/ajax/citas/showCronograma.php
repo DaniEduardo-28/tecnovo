@@ -28,20 +28,22 @@
 
       $estado = $elemento['estado_trabajo'];
       $color = "#757571";
-      $editable = true;
+      $editable = ($estado === 'PENDIENTE');;
       switch ($estado) {
         case 'EN PROCESO':
-          $color = '#757571';
+          $color = '#ffd500';
+          $editable = false;
           break;
-        case 'aceptada':
-          $color = '#dede0a';
+        case 'PENDIENTE':
+          $color = '#757571';
+          $editable = true;
           break;
         case 'cancelada':
           $color = '#f62f41';
           $editable = false;
           break;
-        case 'anulada':
-          $color = '#f76d09';
+        case 'ANULADO':
+          $color = '#f62f41';
           $editable = false;
           break;
         case 'TERMINADO':

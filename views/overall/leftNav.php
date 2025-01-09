@@ -222,7 +222,7 @@
               <li id="submenucitas"> <a href="?view=citas">Gestionar Cronograma</a></li>
             <?php endif; ?>
             <?php if ($flag_atencioncitas): ?>
-              <li id="submenuatencioncitas"> <a href="?view=atencioncitas">Atención de Cronograma</a></li>
+              <li id="submenuatencioncitas"> <a href="?view=atencioncitas">Aprobación de Cronograma</a></li>
             <?php endif; ?>
             <?php if ($flag_citas): ?>
               <li id="submenuordenservicio"> <a href="?view=ordenservicio">Orden de Servicios</a></li>

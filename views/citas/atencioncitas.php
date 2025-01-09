@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Atención de Cronograma | <?=APP_TITLE;?> </title>
+    <title>Aprobación de Cronograma | <?=APP_TITLE;?> </title>
     <link rel="stylesheet" href="resources/fullcalendar/fullcalendar.css">
 
   </head>

@@ -14,26 +14,27 @@ class ClassCronograma extends Conexion
     try {
       $parametros = [];
 
-      $sql = "SELECT c.*,
-                c.id_cronograma,
-                c.fecha_ingreso AS start,
-                c.fecha_salida AS end,
-                CONCAT(pec.nombres, ' ', pec.apellidos, ' (', pec.apodo, ')') AS nombre_cliente,
-                f.nombre AS nombre_fundo,
-                ser.name_servicio AS nombre_servicio,
-                GROUP_CONCAT(DISTINCT mq.descripcion SEPARATOR ', ') AS nombre_maquinaria,
-                GROUP_CONCAT(DISTINCT CONCAT(pe.nombres) SEPARATOR ', ') AS nombre_operador
-            FROM tb_cronograma c
-            LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
-            LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria
-            LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
-            LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
-            LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
-            LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medico = 1
-            LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
-            LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
-            LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio
-            where 1=1 ";
+      $sql = "SELECT 
+    c.*,
+    c.id_cronograma,
+    c.fecha_ingreso AS start,
+    c.fecha_salida AS end,
+    CONCAT(pec.nombres, ' ', pec.apellidos, ' (', pec.apodo, ')') AS nombre_cliente,
+    f.nombre AS nombre_fundo,
+    ser.name_servicio AS nombre_servicio,
+    GROUP_CONCAT(DISTINCT mq.descripcion SEPARATOR ', ') AS nombre_maquinaria,
+    GROUP_CONCAT(DISTINCT CONCAT(pe.nombres) SEPARATOR ', ') AS nombre_operador
+FROM tb_cronograma c
+LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
+LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria
+LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
+LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
+LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medico = 1
+LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
+LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
+LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio
+WHERE 1=1 ";
 
       if ($id_maquinaria != "all") {
         $sql .= " AND m.id_maquinaria = ? ";
@@ -55,7 +56,15 @@ class ClassCronograma extends Conexion
         $parametros[] = $id_fundo;
       }
 
-      $sql .= " GROUP BY c.id_cronograma";
+      $sql .= "GROUP BY 
+                c.id_cronograma,
+                c.fecha_ingreso,
+                c.fecha_salida,
+                pec.nombres,
+                pec.apellidos,
+                pec.apodo,
+                f.nombre,
+                ser.name_servicio ";
 
       $stmt = $conexion->prepare($sql);
       $stmt->execute($parametros);
@@ -152,6 +161,59 @@ class ClassCronograma extends Conexion
     } finally {
       $conexionClass->Close();
     }
+    return $VD;
+  }
+
+  public function getCronogramaById($id_cronograma)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->open();
+    $VD = null;
+
+    try {
+      $sql = "SELECT
+                  c.id_cronograma,
+                  c.id_servicio,
+                  c.fecha_ingreso,
+                  c.fecha_salida,
+                  c.cantidad,
+                  c.monto_unitario,
+                  c.descuento,
+                  c.adelanto,
+                  c.monto_total,
+                  c.saldo_por_pagar,
+                  c.estado_pago,
+                  c.estado_trabajo,
+                  c.id_fundo,
+                  c.id_cliente,
+                  f.nombre AS nombre_fundo,
+                  s.name_servicio AS nombre_servicio,
+                  CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente
+              FROM tb_cronograma c
+              LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
+              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio
+              LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
+              LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
+              WHERE c.id_cronograma = :id_cronograma";
+
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(':id_cronograma', $id_cronograma, PDO::PARAM_INT);
+      $stmt->execute();
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if (!$result) {
+        throw new Exception("No se encontró el cronograma");
+      }
+
+        $VD = ["error" => "NO", "data" => $result];
+    } catch (PDOException $e) {
+        $VD = ["error" => "SI", "message" => $e->getMessage()];
+    } catch (Exception $e) {
+        $VD = ["error" => "SI", "message" => $e->getMessage()];
+    } finally {
+        $conexionClass->Close();
+    }
+
     return $VD;
   }
 

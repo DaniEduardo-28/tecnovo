@@ -250,6 +250,7 @@ function getCronograma(id_cronograma) {
         var data = JSON.parse(response);
         if (data.error == "NO") {
           var info = data.data[0];
+          
           $("#id_cronograma").val(info.id_cronograma);
           $("#fundo_show").val(info.fundo);
           $("#cliente_show").val(info.cliente);

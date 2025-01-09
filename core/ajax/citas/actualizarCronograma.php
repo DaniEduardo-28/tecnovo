@@ -15,7 +15,7 @@ try {
         'id_fundo' => $_POST['id_fundo'] ?? null,
         'fecha_ingreso' => $_POST['fecha_ingreso'] ?? null,
         'fecha_salida' => $_POST['fecha_salida'] ?? null,
-        'estado_trabajo' => $_POST['estado_trabajo'] ?? 'EN PROCESO',
+        'estado_trabajo' => $_POST['estado_trabajo'] ?? 'PENDIENTE',
         'id_cliente' => $_POST['id_cliente'] ?? null,
         'adelanto' => $_POST['adelanto'] ?? 0,
         'precio_hectarea' => $_POST['precio_hectarea'] ?? 0,
