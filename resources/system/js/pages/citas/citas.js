@@ -158,6 +158,13 @@ function crearCalendario() {
           operador: operador,
           cliente: cliente,
         },
+        success: function (events) {
+          console.log(events);
+          events.forEach(function (event){
+            event.estado_trabajo = event.estado_trabajo;
+          });
+        },
+
         error: function (e) {
           console.log(e.responseText);
         },
@@ -246,19 +253,28 @@ function getCronograma(id_cronograma) {
       showHideLoader("block");
     },
     success: function (response) {
+      console.log(response);
       try {
-        var data = JSON.parse(response);
-        if (data.error == "NO") {
-          var info = data.data[0];
-          
+        var data = typeof response === "string" ? JSON.parse(response) : response;
+        if (data.error === "NO") {
+          var info = data.data;
+
           $("#id_cronograma").val(info.id_cronograma);
-          $("#fundo_show").val(info.fundo);
-          $("#cliente_show").val(info.cliente);
-          $("#operador_show").val(info.operador);
-          $("#maquinaria_show").val(info.maquinaria);
-          $("#fecha_ingreso_show").val(info.fecha_ingreso);
-          $("#fecha_salida_show").val(info.fecha_salida);
+          $("#fundo_show").val(info.nombre_fundo);
+          $("#cliente_show").val(info.nombre_cliente);
+          $("#operador_show").val(info.nombre_operador);
+          $("#maquinaria_show").val(info.nombre_maquinaria);
+          $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("DD/MM/YYYY HH:mm"));
+          $("#fecha_salida_show").val(moment(info.fecha_salida).format("DD/MM/YYYY HH:mm"));
           $("#estado_trabajo_show").val(info.estado_trabajo);
+
+
+          //Ocultar el botón Anular
+          if (info.estado_trabajo === "PENDIENTE") {
+            $("#btnAnularCronograma").show();
+          } else {
+            $("#btnAnularCronograma").hide();
+          }
 
           $("#modal-calendario-show").modal("show");
         } else {
@@ -322,6 +338,12 @@ function anularCronograma() {
 }
 
 function actualizarFechaCronograma(event, revertFunc) {
+  if (event.estado_trabajo === "EN PROCESO") {
+    Swal.fire("Advertencia", "No se puede mover un cronograma en estado 'EN PROCESO'.", "warning");
+    revertFunc();
+    return;
+  }
+
   var id_cronograma = event.id;
   var fecha_ingreso = moment(event.start).format("YYYY-MM-DD");
   var fecha_salida = event.end ? moment(event.end).format("YYYY-MM-DD") : fecha_ingreso;

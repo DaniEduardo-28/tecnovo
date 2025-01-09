@@ -188,13 +188,40 @@ WHERE 1=1 ";
                   c.id_cliente,
                   f.nombre AS nombre_fundo,
                   s.name_servicio AS nombre_servicio,
+                  GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
+                  GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
                   CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente
               FROM tb_cronograma c
               LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
               LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio
               LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
               LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
-              WHERE c.id_cronograma = :id_cronograma";
+              LEFT JOIN tb_cronograma_maquinaria cm ON c.id_cronograma = cm.id_cronograma
+              LEFT JOIN tb_maquinaria m ON cm.id_maquinaria = m.id_maquinaria
+              LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+              LEFT JOIN tb_trabajador t ON co.id_trabajador = t.id_trabajador
+              LEFT JOIN tb_persona op ON t.id_persona = op.id_persona
+              WHERE c.id_cronograma = :id_cronograma
+              
+              GROUP BY
+                    c.id_cronograma,
+                    c.id_servicio,
+                    c.fecha_ingreso,
+                    c.fecha_salida,
+                    c.cantidad,
+                    c.monto_unitario,
+                    c.descuento,
+                    c.adelanto,
+                    c.monto_total,
+                    c.saldo_por_pagar,
+                    c.estado_pago,
+                    c.estado_trabajo,
+                    c.id_fundo,
+                    c.id_cliente,
+                    f.nombre,
+                    s.name_servicio,
+                    p.nombres,
+                    p.apellidos";
 
       $stmt = $conexion->prepare($sql);
       $stmt->bindParam(':id_cronograma', $id_cronograma, PDO::PARAM_INT);
