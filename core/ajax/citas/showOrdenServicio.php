@@ -14,10 +14,14 @@
 
     if ($Resultado["error"] == "NO" && count($Resultado["data"]) > 0) {
 
-      $options="";
       $count = 1;
       foreach ($Resultado["data"] as $key) {
-        $retorno_array[] =array(
+        // Reiniciar la variable $options en cada iteración
+        $options = '&nbsp;<a href="javascript:showModalOperador(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
+        
+        $options .= '&nbsp;<a href="javascript:showModalMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-cog"></i></a>';
+                $retorno_array[] =array(
+          "options" => "$options",
           "num" => "$count",
           "id_cronograma" => $key['id_cronograma'],
           "nombre_fundo" => $key['nombre_fundo'],

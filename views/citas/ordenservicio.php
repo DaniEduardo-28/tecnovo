@@ -34,6 +34,11 @@ if (!isset($_SESSION['id_trabajador'])) {
       background-color: #9e61da;
       color: white;
     }
+    .modal-lg-custom {
+      max-width: 70%;
+      /* Ajusta el ancho a tu necesidad */
+    }
+
 
     .pagination li:hover:not(.active) {
       background-color: #ddd;
@@ -204,6 +209,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                     <div id="nuevoOperadorContainer" class="mt-3" style="display: none;">
                       <form id="frmOperador" name="frmOperador" enctype="multipart/form-data">
+                      <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
                         <div class="row">
                           <div class="col-md-1 d-none">
                             <label>#</label>
@@ -211,9 +217,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                           </div>
                           <div class="col-md-3">
                             <label>Nombre Operador</label>
-                            <select id="cboOperadorBuscar" name="cboOperadorBuscar" class="form-control">
+                            <select id="nombre_operador" name="nombre_operador" class="form-control">
                               <?php
-                              include("core/models/ClassAccesoSucursal.php");
                               $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
                               if ($dataOperador["error"] == "NO") {
                                 foreach ($dataOperador["data"] as $key) {
@@ -230,17 +235,17 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                           <div class="col-md-2">
                             <label>Horas trabajadas</label>
-                            <input type="number" id="hora_trabajo" name="hora_trabajo" class="form-control" min="0"
+                            <input type="number" id="horas_trabajadas" name="horas_trabajadas" class="form-control" min="0"
                               step="1.00">
                           </div>
                           <div class="col-md-2">
                             <label>Pago / Hora</label>
-                            <input type="number" id="pago_hora" name="pago_hora" class="form-control" min="0"
+                            <input type="number" id="pago_por_hora" name="pago_por_hora" class="form-control" min="0"
                               step="1.00">
                           </div>
                           <div class="col-md-2">
                             <label>Pago total</label>
-                            <input type="number" id="pago_total_op" name="pago_total_op" class="form-control" min="0"
+                            <input type="number" id="total_pago" name="total_pago" class="form-control" min="0"
                               step="1.00">
                           </div>
                           <div class="col-md-1 text-center mt-4">
@@ -252,7 +257,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                         </div>
                       </form>
                     </div>
-                    <!-- Tablas de pagos -->
+                    <!-- Tablas de operadores -->
                     <div class="table-responsive">
                       <table class="table table-bordered" id="tablaOperador">
                         <thead>
@@ -266,9 +271,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                           </tr>
                         </thead>
                         <tbody>
-                          <!-- <tr>
-                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
-                                    </tr> -->
                         </tbody>
                       </table>
                     </div>
@@ -304,7 +306,6 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <label>Nombre Maquinaria</label>
                             <select id="cboMaquinaBuscar" name="cboMaquinaBuscar" class="form-control">
                               <?php
-                              include("core/models/ClassMaquinaria.php");
                               $dataMaquina = $OBJ_MAQUINARIA->showActivos();
                               if ($dataMaquina["error"] == "NO") {
                                 foreach ($dataMaquina["data"] as $key) {
@@ -351,7 +352,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                         </div>
                       </form>
                     </div>
-                    <!-- Tablas de pagos -->
+                    <!-- Tablas de maquinarias -->
                     <div class="table-responsive">
                       <table class="table table-bordered" id="tablaMaquinaria">
                         <thead>
@@ -360,14 +361,13 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <th>Maquinaria</th>
                             <th>Ing. Petroleo</th>
                             <th>Sal. Petroleo</th>
-                            <th>Cons</th>
+                            <th>Consumo Petroleo</th>
+                            <th>Precio Petroleo</th>
+                            <th>Pago Total Petroleo</th>
                             <th>Acción</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <!-- <tr>
-                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
-                                    </tr> -->
                         </tbody>
                       </table>
                     </div>

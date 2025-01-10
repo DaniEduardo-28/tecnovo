@@ -3,23 +3,7 @@ var table = $('#example').DataTable({
     destroy: true,
     data: [],
     columns: [
-      {
-        data: null,
-        render: function (data, type, row) {
-          return `
-            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalOperadores" 
-               class="btn btn-icon btn-outline-info btn-round mr-1" title="Ver Operadores">
-              <i class="ti ti-user"></i>
-            </a>
-            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalMaquinaria" 
-               class="btn btn-icon btn-outline-warning btn-round" title="Ver Maquinaria">
-              <i class="ti ti-settings"></i>
-            </a>
-          `;
-        },
-        orderable: false,
-      searchable: false,
-      },
+      { 'data': 'opciones'},
       { 'data': 'num' },
       { 'data': 'id_cronograma' },
       { 'data': 'nombre_fundo' },
@@ -61,6 +45,22 @@ var table = $('#example').DataTable({
     $("#cboFundoBuscar").change(showLista);      
     $("#cboMaquinariaBuscar").change(showLista); 
     $("#cboMedicoBuscar").change(showLista);
+
+    $("#btnNuevoOperador").click(function () {
+      $("#nuevoOperadorContainer").show();
+      $("#btnNuevoOperador").hide();
+    });
+  
+    $("#nuevoOperadorContainer .btn-danger").click(function () {
+      $("#nuevoOperadorContainer").hide();
+      $("#btnNuevoOperador").show();
+      limpiarCamposNuevoOperador();
+    });
+
+    $("#frmPOperador").submit(function (e) {
+      e.preventDefault();
+      saveOperadorC();
+    });
   
     // Mostrar la lista inicial
     showLista();
@@ -135,8 +135,6 @@ var table = $('#example').DataTable({
     }
   });
   
-  
-  
   // Función para mostrar la lista
   function showLista() {
     table.clear().draw();
@@ -163,7 +161,6 @@ var table = $('#example').DataTable({
         url: "ajax.php?accion=showOrdenServicio"
     })
     .done(function (data) {
-      console.log("Respuesta AJAX:", data);
         try {
             const data1 = JSON.parse(data);
             console.log("Datos recibidos:", data1);
@@ -171,6 +168,7 @@ var table = $('#example').DataTable({
                 const registros = data1["data"];
                 registros.forEach(function (item) {
                     table.row.add({
+                        opciones: item.options,
                         num: item.num,
                         id_cronograma: item.id_cronograma,
                         nombre_fundo: item.nombre_fundo,
@@ -258,6 +256,7 @@ var table = $('#example').DataTable({
           var o = data1["data"];
           o.forEach(function (item) {
             table.row.add({
+              "opciones": item.options,
               "num": item.num,
               "id_cronograma": item.id_cronograma,
               "nombre_fundo": item.nombre_fundo,
@@ -282,5 +281,164 @@ var table = $('#example').DataTable({
       console.error("Error al realizar la petición:", textError);
     });
   }
-  
-  
+
+function showModalOperador(id_cronograma) {
+  $("#id_cronograma").val(id_cronograma);
+  cargarOperadoresExistentes(id_cronograma);
+  $("#modalOperador").modal("show");
+}
+
+
+function cargarOperadoresExistentes(id_cronograma) {
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=getOperadoresByCronograma",
+    data: { id_cronograma: id_cronograma },
+    success: function (response) {
+      try {
+        var data1 = JSON.parse(response);
+        var o = data1["data"];
+        llenarTablaOperadores(o);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    error: function () {
+      runAlert("Error", "No se pudo conectar con el servidor para cargar los operadores.", "error");
+    },
+  });
+}
+
+function llenarTablaOperadores(operadores) {
+  const tablaOperador = $("#tablaOperador tbody");
+  tablaOperador.empty();
+  if (operadores && operadores.length > 0) {
+    operadores.forEach((operadores) => {
+      const fila = `
+        <tr>
+          <td>${operadores.num}</td>
+          <td>${operadores.nombre_operador}</td>
+          <td>${parseFloat(operadores.horas_trabajadas).toFixed(2)}</td>
+          <td>${parseFloat(operadores.pago_por_hora).toFixed(2)}</td>
+          <td>${parseFloat(operadores.total_pago).toFixed(2)}</td>
+          <td>
+            ${operadores.flag_eliminar}
+          </td>
+        </tr>
+      `;
+      tablaOperador.append(fila);
+    });
+  }
+}
+
+function deleteRegistro(id_cronograma) {
+  try {
+    var parametros = {
+      id_cronograma: id_cronograma,
+    };
+
+    Swal.fire({
+      title: "¿Seguro de anular el operador seleccionado?",
+      text: "No podrás revertir esta operación.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Anular ahora!",
+    }).then(function (result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=deleteOperadorCronograma",
+          datatype: "json",
+          data: parametros,
+          success: function (data) {
+            try {
+              var response = JSON.parse(data);
+              if (response["error"] == "SI") {
+                runAlert("Oh No...!!!", response["message"], "warning");
+              } else {
+                cargarOperadoresExistentes($("#id_cronograma").val());
+                runAlert("Bien hecho...!!!", response["message"], "success");
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          },
+          error: function (data) {
+            runAlert("Oh No...!!!", data, "error");
+          },
+          beforeSend: function (xhr) {
+            showHideLoader("block");
+          },
+          complete: function (jqXHR, textStatus) {
+            showHideLoader("none");
+          },
+        });
+      }
+    });
+  } catch (e) {
+    runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
+  }
+}
+
+function saveOperadorC() {
+
+  Swal.fire({
+    title: "¿Seguro de registrar el operador?",
+    text: "No podrás revertir esta operación.",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Realizar ahora!",
+  }).then(function (result) {
+    if (result.value) {
+      const form = $("#frmOperador");
+      const formData = new FormData(form[0]);
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=goOperadorCronograma",
+        datatype: "json",
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (data) {
+          try {
+            const response = JSON.parse(data);
+            if (response["error"] == "SI") {
+              runAlert("Oh No...!!!", response["message"], "warning");
+            } else {
+              $("#nuevoOperadorContainer").hide();
+              $("#btnNuevoOperador").show();
+              limpiarCamposNuevoOperador();
+              cargarOperadoresExistentes($("#id_cronograma").val());
+              runAlert("Bien hecho...!!!", response["message"], "success");
+              showData();
+            }
+          } catch (e) {
+            runAlert("Oh No...!!!", e, "error");
+          }
+        },
+        error: function (data) {
+          runAlert("Oh No...!!!", data, "error");
+        },
+        beforeSend: function (xhr) {
+          showHideLoader("block");
+        },
+        complete: function (jqXHR, textStatus) {
+          showHideLoader("none");
+        },
+      });
+    }
+  });
+}
+
+function cancelarFormOperador() {}
+
+function limpiarCamposNuevoOperador() {
+  $("#nombre_operador").prop("selectedIndex", 0);
+  $("#horas_trabajadas").val("");
+  $("#pago_por_hora").val("");
+  $("#total_pago").val("");
+}

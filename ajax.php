@@ -531,14 +531,26 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/showOrdenServicio.php");
         break;
+      case 'getOperadoresByCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/getOperadoresByCronograma.php");
+        break;
+      case 'goOperadorCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/goOperadorCronograma.php");
+        break;
+      case 'deleteOperadorCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/deleteOperadorCronograma.php");
+        break;
       case 'showClienteReporte':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/reportes/showClienteReporte.php");
         break;
-        case 'showProveedorReporte':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/reportes/showProveedorReporte.php");
-          break;
+      case 'showProveedorReporte':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/reportes/showProveedorReporte.php");
+        break;
       case 'showProveedor':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showProveedor.php");
