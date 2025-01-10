@@ -1,7 +1,25 @@
 var table = $('#example').DataTable({
     language: languageSpanish,
     destroy: true,
+    data: [],
     columns: [
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `
+            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalOperadores" 
+               class="btn btn-icon btn-outline-info btn-round mr-1" title="Ver Operadores">
+              <i class="ti ti-user"></i>
+            </a>
+            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modalMaquinaria" 
+               class="btn btn-icon btn-outline-warning btn-round" title="Ver Maquinaria">
+              <i class="ti ti-settings"></i>
+            </a>
+          `;
+        },
+        orderable: false,
+      searchable: false,
+      },
       { 'data': 'num' },
       { 'data': 'id_cronograma' },
       { 'data': 'nombre_fundo' },
@@ -15,7 +33,7 @@ var table = $('#example').DataTable({
     ],
     columnDefs: [
       {
-        "targets": [1],
+        "targets": [2],
         "visible": false,
         "searchable": true
       }

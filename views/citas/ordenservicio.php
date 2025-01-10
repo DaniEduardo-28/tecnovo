@@ -87,9 +87,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataCliente = $OBJ_CLIENTE->listarClientes();
                       if ($dataCliente["error"] == "NO") {
                         foreach ($dataCliente["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?></option>
-                      <?php
+                          ?>
+                          <option value="<?= $key['id_cliente']; ?>">
+                            <?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?>
+                          </option>
+                          <?php
                         }
                       }
                       ?>
@@ -105,9 +107,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataFundo = $OBJ_FUNDO->show(1, '1');
                       if ($dataFundo["error"] == "NO") {
                         foreach ($dataFundo["data"] as $key) {
-                      ?>
+                          ?>
                           <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre'] ?></option>
-                      <?php
+                          <?php
                         }
                       }
                       ?>
@@ -123,9 +125,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataMaquinaria = $OBJ_MAQUINARIA->showActivos();
                       if ($dataMaquinaria["error"] == "NO") {
                         foreach ($dataMaquinaria["data"] as $key) {
-                      ?>
+                          ?>
                           <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
-                      <?php
+                          <?php
                         }
                       }
                       ?>
@@ -141,9 +143,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
                       if ($dataOperador["error"] == "NO") {
                         foreach ($dataOperador["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_trabajador']; ?>"><?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?></option>
-                      <?php
+                          ?>
+                          <option value="<?= $key['id_trabajador']; ?>">
+                            <?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?>
+                          </option>
+                          <?php
                         }
                       }
                       ?>
@@ -156,31 +160,221 @@ if (!isset($_SESSION['id_trabajador'])) {
             </div>
 
             <div class="row">
-                          <br>
-                        </div>
+              <br>
+            </div>
 
-                        <div class="user-block block">
-                          <div class="table-responsive">
-                            <table id="example" class="table table-bordered">
-                              <thead>
-                                <tr>
-                                  <th>Num</th>
-                                  <th>Id</th>
-                                  <th>Fundo</th>
-                                  <th>Nombre Cliente</th>
-                                  <th>Servicio</th>
-                                  <th>Nombre Operador</th>
-                                  <th>Maquinaria</th>
-                                  <th>Fecha Ingreso</th>
-                                  <th>Fecha Salida</th>
-                                  <th>Estado Actual</th>
-                                  <!-- <th>Acciones</th> -->
-                                </tr>
-                              </thead>
-                            </table>
+            <div class="user-block block">
+              <div class="table-responsive">
+                <table id="example" class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Acciones</th>
+                      <th>Num</th>
+                      <th>Id</th>
+                      <th>Fundo</th>
+                      <th>Nombre Cliente</th>
+                      <th>Servicio</th>
+                      <th>Nombre Operador</th>
+                      <th>Maquinaria</th>
+                      <th>Fecha Ingreso</th>
+                      <th>Fecha Salida</th>
+                      <th>Estado Actual</th>
+                      <!-- <th>Acciones</th> -->
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+
+            <!-- Modal Operadores -->
+            <div class="modal fade" id="modalOperador" tabindex="-1" role="dialog" aria-labelledby="modalOperadorLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-lg-custom" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalOperadorLabel">Operadores</h5>
+                    <div class="col text-right">
+                      <button id="btnNuevoOperador" class="btn btn-success">+ Nuevo</button>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <div id="nuevoOperadorContainer" class="mt-3" style="display: none;">
+                      <form id="frmOperador" name="frmOperador" enctype="multipart/form-data">
+                        <div class="row">
+                          <div class="col-md-1 d-none">
+                            <label>#</label>
+                            <input type="text" class="form-control" readonly value="AUTO">
+                          </div>
+                          <div class="col-md-3">
+                            <label>Nombre Operador</label>
+                            <select id="cboOperadorBuscar" name="cboOperadorBuscar" class="form-control">
+                              <?php
+                              include("core/models/ClassAccesoSucursal.php");
+                              $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
+                              if ($dataOperador["error"] == "NO") {
+                                foreach ($dataOperador["data"] as $key) {
+                                  ?>
+                                  <option value="<?= $key['id_trabajador']; ?>">
+                                    <?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?>
+                                  </option>
+                                  <?php
+                                }
+                              }
+                              ?>
+                            </select>
+                          </div>
+
+                          <div class="col-md-2">
+                            <label>Horas trabajadas</label>
+                            <input type="number" id="hora_trabajo" name="hora_trabajo" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-2">
+                            <label>Pago / Hora</label>
+                            <input type="number" id="pago_hora" name="pago_hora" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-2">
+                            <label>Pago total</label>
+                            <input type="number" id="pago_total_op" name="pago_total_op" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-1 text-center mt-4">
+                            <button type="submit" class="btn btn-success btn-sm btnGuardarOper"><i
+                                class="fa fa-check"></i></button>
+                            <button type="reset" class="btn btn-danger btn-sm btnCancelarOper"><i
+                                class="fa fa-trash"></i></button>
                           </div>
                         </div>
+                      </form>
+                    </div>
+                    <!-- Tablas de pagos -->
+                    <div class="table-responsive">
+                      <table class="table table-bordered" id="tablaOperador">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Nombre Operador</th>
+                            <th>Horas trabajadas</th>
+                            <th>Pago / H.</th>
+                            <th>Total</th>
+                            <th>Acción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- <tr>
+                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
+                                    </tr> -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
+            <!-- Modal Maquinarias -->
+            <div class="modal fade" id="modalMaquinaria" tabindex="-1" role="dialog"
+              aria-labelledby="modalMaquinariaLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg-custom" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalMaquinariaLabel">Maquinarias</h5>
+                    <div class="col text-right">
+                      <button id="btnNuevaMaquina" class="btn btn-success">+ Nuevo</button>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    <div id="nuevaMaquinariaContainer" class="mt-3" style="display: none;">
+                      <form id="frmMaquinaria" name="frmMaquinaria" enctype="multipart/form-data">
+                        <div class="row">
+                          <div class="col-md-1 d-none">
+                            <label>#</label>
+                            <input type="text" class="form-control" readonly value="AUTO">
+                          </div>
+                          <div class="col-md-3">
+                            <label>Nombre Maquinaria</label>
+                            <select id="cboMaquinaBuscar" name="cboMaquinaBuscar" class="form-control">
+                              <?php
+                              include("core/models/ClassMaquinaria.php");
+                              $dataMaquina = $OBJ_MAQUINARIA->showActivos();
+                              if ($dataMaquina["error"] == "NO") {
+                                foreach ($dataMaquina["data"] as $key) {
+                                  ?>
+                                  <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
+                                  <?php
+                                }
+                              }
+                              ?>
+                            </select>
+                          </div>
+
+                          <div class="col-md-2">
+                            <label>Ingreso de Petroleo (L)</label>
+                            <input type="number" id="ingreso_petroleo" name="ingreso_petroleo" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-2">
+                            <label>Salida de Petroleo (L)</label>
+                            <input type="number" id="salida_petroleo" name="salida_petroleo" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-2">
+                            <label>Consumo Petroleo</label>
+                            <input type="number" id="consumo_petroleo" name="consumo_petroleo" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-2">
+                            <label>Precio Petroleo</label>
+                            <input type="number" id="precio_petroleo" name="precio_petroleo" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-2">
+                            <label>Pago Petroleo</label>
+                            <input type="number" id="pago_petroleo" name="pago_petroleo" class="form-control" min="0"
+                              step="1.00">
+                          </div>
+                          <div class="col-md-1 text-center mt-4">
+                            <button type="submit" class="btn btn-success btn-sm btnGuardarMaqui"><i
+                                class="fa fa-check"></i></button>
+                            <button type="reset" class="btn btn-danger btn-sm btnCancelarMaqui"><i
+                                class="fa fa-trash"></i></button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- Tablas de pagos -->
+                    <div class="table-responsive">
+                      <table class="table table-bordered" id="tablaMaquinaria">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Maquinaria</th>
+                            <th>Ing. Petroleo</th>
+                            <th>Sal. Petroleo</th>
+                            <th>Cons</th>
+                            <th>Acción</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <!-- <tr>
+                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
+                                    </tr> -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -190,155 +384,8 @@ if (!isset($_SESSION['id_trabajador'])) {
     </div>
   </div>
 
-  <!-- Modal REGISTRAR CRONOGRAMA -->
-<!--   <form action="#" method="post" id="frmCronograma" name="frmCronograma">
-    <div class="modal fade" id="modal-calendario" tabindex="-1" role="dialog" aria-labelledby="modal-calendario-label" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">Nuevo Registro de Cronograma
-            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="col-md-12">
-
-              <div class="row">
-                <div class="form-group col-sm-12">
-                  <label for="id_cliente">Cliente</label>
-                  <select class="form-control" id="id_cliente" name="id_cliente" style="width:100%;">
-                    <option value="all">Seleccione...</option>
-                    <?php
-                    $dataCliente = $OBJ_CLIENTE->listarClientes();
-                    if ($dataCliente["error"] == "NO") {
-                      foreach ($dataCliente["data"] as $key) {
-                    ?>
-                        <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?></option>
-                    <?php
-                      }
-                    }
-                    ?>
-                  </select>
-                </div>
-
-                <div class="form-group col-sm-12">
-                  <label for="id_fundo">Fundo</label>
-                  <select class="form-control" id="id_fundo" name="id_fundo">
-                    <option value="all">Seleccione un cliente primero</option>
-                  </select>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="fecha_ingreso">Fecha Ingreso</label>
-                  <input type="date" id="fecha_ingreso" name="fecha_ingreso" class="form-control" required readonly>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="hora_ingreso">Hora Ingreso</label>
-                  <input type="time" id="hora_ingreso" name="hora_ingreso" class="form-control" required>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="fecha_salida">Fecha Salida</label>
-                  <input type="date" id="fecha_salida" name="fecha_salida" class="form-control" required>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="hora_salida">Hora Salida</label>
-                  <input type="time" id="hora_salida" name="hora_salida" class="form-control" required>
-                </div>
-
-                <div class="form-group col-sm-12">
-                  <label for="estado_trabajo">Estado Trabajo</label>
-                  <input type="text" id="estado_trabajo" name="estado_trabajo" value="EN PROCESO" class="form-control" readonly>
-                </div>
-
-                
-                <div class="form-group col-sm-6">
-                  <label for="precio_hectarea">Precio por Hectárea</label>
-                  <input type="number" id="precio_hectarea" name="precio_hectarea" class="form-control" value="0" required>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="total_hectareas">Total de Hectáreas</label>
-                  <input type="number" id="total_hectareas" name="total_hectareas" class="form-control" value="0" required>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="descuento">Descuento</label>
-                  <input type="number" id="descuento" name="descuento" class="form-control" value="0">
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="adelanto">Adelanto</label>
-                  <input type="number" id="adelanto" name="adelanto" class="form-control" value="0">
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="monto_total">Monto Total</label>
-                  <input type="number" id="monto_total" name="monto_total" class="form-control" value="0" readonly>
-                </div>
-
-                <div class="form-group col-sm-6">
-                  <label for="saldo_por_pagar">Saldo por Pagar</label>
-                  <input type="number" id="saldo_por_pagar" name="saldo_por_pagar" class="form-control" value="0" readonly>
-                </div>
-
-                <div class="form-group col-sm-6 d-none">
-                  <label for="precio_petroleo">Precio del Petróleo</label>
-                  <input type="number" id="precio_petroleo" name="precio_petroleo" class="form-control" value="0">
-                </div>
-
-                <div class="form-group col-sm-6 d-none">
-                  <label for="consumo_petroleo">Consumo de Petróleo</label>
-                  <input type="number" id="consumo_petroleo" name="consumo_petroleo" class="form-control" value="0">
-                </div>
-
-                <div class="form-group col-sm-6 d-none">
-                  <label for="pago_petroleo">Pago por Petróleo</label>
-                  <input type="number" id="pago_petroleo" name="pago_petroleo" class="form-control" value="0">
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="modal-footer">
-            <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-            <input type="submit" name="btnSave" id="btnSave" value="Guardar Cronograma" class="btn btn-success">
-          </div>
-        </div>
-      </div>
-    </div>
-  </form> -->
-
-  <!-- Modal VER CRONOGRAMA -->
-  <!-- <form action="#" method="post" id="frmCronogramaView" name="frmCronogramaView">
-    <div class="modal fade" id="modal-calendario-show" tabindex="-1" role="dialog" aria-labelledby="modal-calendario-show-label" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Datos del Cronograma</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-
-
-
-          </div>
-
-          <div class="modal-footer">
-            <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-            <button type="button" id="btnAnularCronograma" class="btn btn-warning">Anular Cronograma</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form> -->
-
   <?php include("views/overall/js.php"); ?>
+
   <script src="resources/moment/min/moment.min.js"></script>
   <script src="resources/fullcalendar/fullcalendar.min.js"></script>
   <script src="resources/fullcalendar/locale/es.js"></script>
