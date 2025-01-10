@@ -1,19 +1,20 @@
 <?php
 
 $id_cronograma = $_POST['id_cronograma'] ?? null;
-$id_trabajador = $_POST['id_trabajador'] ?? null;
+$id_trabajador = $_POST['nombre_operador'] ?? null;
 $horas_trabajadas = $_POST['horas_trabajadas'] ?? null;
 $pago_por_hora = $_POST['pago_por_hora'] ?? null;
 
 try {
 
-    // Validar datos obligatorios
-    if (!$id_cronograma || !$id_trabajador || !$horas_trabajadas || !$pago_por_hora) {
+    if (empty($id_cronograma) || empty($id_trabajador) || $horas_trabajadas === null || $pago_por_hora === null) {
         throw new Exception("Todos los campos son obligatorios.");
     }
+    
+    
 
     require_once "core/models/ClassCronograma.php";
-    $VD = $OBJ_CRONOGRAMA->addOperador($id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora);
+    $VD = $OBJ_CRONOGRAMA->addOperador($id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago);
 
     if ($VD != "OK") {
         throw new Exception($VD);

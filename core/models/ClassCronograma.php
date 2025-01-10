@@ -559,7 +559,40 @@ WHERE 1=1 ";
     return $VD;
   }
 
-  public function addOperador($id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora)
+  public function getOperadoresByCronograma($id_cronograma)
+{
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    
+    try {
+        $sql = "SELECT 
+                    o.id_cronograma_operador, 
+                    CONCAT(p.apellidos, ' ', p.nombres) AS nombre_operador,
+                    o.horas_trabajadas, 
+                    o.pago_por_hora, 
+                    (o.horas_trabajadas * o.pago_por_hora) AS total_pago
+                FROM tb_cronograma_operadores o
+                INNER JOIN tb_trabajador t ON o.id_trabajador = t.id_trabajador
+                INNER JOIN tb_persona p ON t.id_persona = p.id_persona
+                WHERE o.id_cronograma = :id_cronograma";
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($result) > 0) {
+            return ["error" => "NO", "data" => $result];
+        } else {
+            return ["error" => "SI", "message" => "No se encontraron operadores para este cronograma."];
+        }
+    } catch (Exception $e) {
+        return ["error" => "SI", "message" => $e->getMessage()];
+    }
+}
+
+
+  public function addOperador($id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago)
   {
       $conexionClass = new Conexion();
       $conexion = $conexionClass->Open();
@@ -568,10 +601,10 @@ WHERE 1=1 ";
       try {
           $conexion->beginTransaction();
   
-          $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora) 
-                  VALUES (?, ?, ?, ?)";
+          $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora, total_pago) 
+                  VALUES (?, ?, ?, ?, ?)";
           $stmt = $conexion->prepare($sql);
-          $stmt->execute([$id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora]);
+          $stmt->execute([$id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago]);
   
           if ($stmt->rowCount() == 0) {
               throw new Exception("Ocurrió un error al registrar el operador.");

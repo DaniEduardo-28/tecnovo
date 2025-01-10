@@ -57,9 +57,16 @@ var table = $('#example').DataTable({
       limpiarCamposNuevoOperador();
     });
 
-    $("#frmPOperador").submit(function (e) {
+    $("#frmOperador").submit(function (e) {
       e.preventDefault();
       saveOperadorC();
+    });
+
+    $("#horas_trabajadas, #pago_por_hora").on("input", function () {
+      const horas = parseFloat($("#horas_trabajadas").val()) || 0;
+      const pagoHora = parseFloat($("#pago_por_hora").val()) || 0;
+      const total = horas * pagoHora;
+      $("#total_pago").val(total.toFixed(2)); // Mostrar el total con 2 decimales
     });
   
     // Mostrar la lista inicial
@@ -313,20 +320,28 @@ function llenarTablaOperadores(operadores) {
   const tablaOperador = $("#tablaOperador tbody");
   tablaOperador.empty();
   if (operadores && operadores.length > 0) {
-    operadores.forEach((operadores) => {
+    operadores.forEach((operador, index) => {
       const fila = `
         <tr>
-          <td>${operadores.num}</td>
-          <td>${operadores.nombre_operador}</td>
-          <td>${parseFloat(operadores.horas_trabajadas).toFixed(2)}</td>
-          <td>${parseFloat(operadores.pago_por_hora).toFixed(2)}</td>
-          <td>${parseFloat(operadores.total_pago).toFixed(2)}</td>
+          <td>${index + 1}</td>
+          <td>${operador.nombre_operador}</td>
+          <td>${parseFloat(operador.horas_trabajadas).toFixed(2)}</td>
+          <td>${parseFloat(operador.pago_por_hora).toFixed(2)}</td>
+          <td>${(operador.horas_trabajadas * operador.pago_por_hora).toFixed(2)}</td>
           <td>
-            ${operadores.flag_eliminar}
+            <button class="btn btn-danger btn-sm btnEliminarOperador" data-id="${operador.id_cronograma}">
+              <i class="fa fa-trash"></i>
+            </button>
           </td>
         </tr>
       `;
       tablaOperador.append(fila);
+    });
+    $(".btnEliminarOperador").click(function () {
+      const id_cronograma = $(this).data("id");
+      if (id_cronograma) {
+        deleteRegistro(id_cronograma);
+      }
     });
   }
 }
@@ -396,6 +411,10 @@ function saveOperadorC() {
     if (result.value) {
       const form = $("#frmOperador");
       const formData = new FormData(form[0]);
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
       $.ajax({
         type: "POST",
         url: "ajax.php?accion=goOperadorCronograma",
@@ -414,7 +433,6 @@ function saveOperadorC() {
               limpiarCamposNuevoOperador();
               cargarOperadoresExistentes($("#id_cronograma").val());
               runAlert("Bien hecho...!!!", response["message"], "success");
-              showData();
             }
           } catch (e) {
             runAlert("Oh No...!!!", e, "error");
