@@ -4,15 +4,15 @@
     $estado = isset($_POST["estado"])	? $_POST["estado"]	: "all";
     $val = isset($_POST["valor"])	? $_POST["valor"]	: "";
     $tipobusqueda = isset($_POST["tipobusqueda"])	? $_POST["tipobusqueda"]	: "-1";
-    $cliente = isset($_POST["cliente"]) ? $_POST["cliente"] : "all";
-    $fundo = isset($_POST["fundo"]) ? $_POST["fundo"] : "all";
-    $maquinaria = isset($_POST["maquinaria"]) ? $_POST["maquinaria"] : "all";
-    $operador = isset($_POST["operador"]) ? $_POST["operador"] : "all";
+    $cliente = isset($_POST["id_cliente"]) ? $_POST["id_cliente"] : "all";
+    $fundo = isset($_POST["id_fundo"]) ? $_POST["id_fundo"] : "all";
+    $maquinaria = isset($_POST["id_maquinaria"]) ? $_POST["id_maquinaria"] : "all";
+    $operador = isset($_POST["id_trabajador"]) ? $_POST["id_trabajador"] : "all";
     
     require_once "core/models/ClassCronograma.php";
-    $Resultado = $OBJ_CRONOGRAMA->showreporte();
+    $Resultado = $OBJ_CRONOGRAMA->showreporte($estado, $cliente, $fundo, $maquinaria, $operador);
 
-    if ($Resultado["error"]=="NO") {
+    if ($Resultado["error"] == "NO" && count($Resultado["data"]) > 0) {
 
       $options="";
       $count = 1;

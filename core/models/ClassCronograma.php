@@ -463,11 +463,13 @@ WHERE 1=1 ";
 
     return $VD;
   }
-  public function showreporte()
+  public function showreporte($estado, $cliente, $fundo, $maquinaria, $operador)
   {
 
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
+    $conexion->exec("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
     $VD = "";
 
     try {
@@ -492,16 +494,45 @@ WHERE 1=1 ";
               LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
               LEFT JOIN tb_trabajador t ON co.id_trabajador = t.id_trabajador
               LEFT JOIN tb_persona op ON t.id_persona = op.id_persona
-              GROUP BY
-                    c.id_cronograma,
-                    f.nombre,
-                    s.name_servicio,
-                    p.nombres,
-                    p.apellidos";
+              WHERE 1=1 ";
 
-      $sql .= " ORDER BY c.fecha_ingreso DESC";
+      //Aplicar filtros
+      $parametros = [];
+
+      if ($cliente != "all"){
+        $sql .= "AND c.id_cliente = :cliente";
+        $parametros[":cliente"] = $cliente;
+      }
+
+      if ($fundo != "all"){
+        $sql .= "AND c.id_fundo = :fundo";
+        $parametros[":fundo"] = $fundo;
+      }
+
+      if ($maquinaria != "all") {
+        $sql .= " AND m.id_maquinaria = :maquinaria";
+        $parametros[":maquinaria"] = $maquinaria;
+      }
+
+      if ($operador != "all") {
+        $sql .= " AND t.id_trabajador = :operador";
+        $parametros[":operador"] = $operador;
+      } 
+
+      $sql .= " GROUP BY 
+                  c.id_cronograma, 
+                  f.nombre, 
+                  s.name_servicio, 
+                  p.nombres, 
+                  p.apellidos,
+                  c.fecha_ingreso,
+                  c.fecha_salida,
+                  c.estado_trabajo
+      
+      ORDER BY c.fecha_ingreso DESC";
+
       $stmt = $conexion->prepare($sql);
-      $stmt->execute();
+      $stmt->execute($parametros);
       $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
       if (count($result) == 0) {

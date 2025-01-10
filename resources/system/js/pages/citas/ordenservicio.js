@@ -39,6 +39,10 @@ var table = $('#example').DataTable({
     $("#txtFechaFin").change(showLista);
     $("#filterUser").change(showLista);
     $("#filterTable").change(showLista);
+    $("#cboClienteBuscar").change(showLista);    
+    $("#cboFundoBuscar").change(showLista);      
+    $("#cboMaquinariaBuscar").change(showLista); 
+    $("#cboMedicoBuscar").change(showLista);
   
     // Mostrar la lista inicial
     showLista();
@@ -132,15 +136,16 @@ var table = $('#example').DataTable({
         data: {
             fecha_inicio: fechaInicio,
             fecha_fin: fechaFin,
-            cliente: cliente,
-            fundo: fundo,
-            maquinaria: maquinaria,
-            operador: operador
+            id_cliente: cliente,
+            id_fundo: fundo,
+            id_maquinaria: maquinaria,
+            id_trabajador: operador
         },
         type: "POST",
         url: "ajax.php?accion=showOrdenServicio"
     })
     .done(function (data) {
+      console.log("Respuesta AJAX:", data);
         try {
             const data1 = JSON.parse(data);
             console.log("Datos recibidos:", data1);
@@ -209,6 +214,10 @@ var table = $('#example').DataTable({
     table.clear().draw();
     var fecha_inicio = $("#txtFechaInicio").val();
     var fecha_fin = $("#txtFechaFin").val();
+    var cliente = $("#cboClienteBuscar").val();
+    var fundo = $("#cboFundoBuscar").val();
+    var maquinaria = $("#cboMaquinariaBuscar").val();
+    var operador = $("#cboMedicoBuscar").val();
     $("#divPaginador").addClass("d-none");
   
     $.ajax({
@@ -217,6 +226,10 @@ var table = $('#example').DataTable({
         offset: desde,
         fecha_inicio: fecha_inicio,
         fecha_fin: fecha_fin,
+        cliente: cliente,
+        fundo: fundo,
+        maquinaria: maquinaria,
+        operador: operador
       },
       type: "POST",
       url: 'ajax.php?accion=showOrdenServicio'
