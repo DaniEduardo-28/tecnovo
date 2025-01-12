@@ -551,6 +551,26 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getOperadorById.php");
         break;
+      case 'getMaquinariasByCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/getMaquinariasByCronograma.php");
+        break;
+      case 'actualizarMaquinariaCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/actualizarMaquinariaCronograma.php");
+        break;
+      case 'goMaquinariaCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/goMaquinariaCronograma.php");
+        break;
+      case 'deleteMaquinariaCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/deleteMaquinariaCronograma.php");
+        break;
+      case 'getMaquinariaById':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/getMaquinariaById.php");
+        break;
       case 'showClienteReporte':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/reportes/showClienteReporte.php");

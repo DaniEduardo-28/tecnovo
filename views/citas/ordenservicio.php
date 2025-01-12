@@ -34,6 +34,7 @@ if (!isset($_SESSION['id_trabajador'])) {
       background-color: #9e61da;
       color: white;
     }
+
     .modal-lg-custom {
       max-width: 70%;
       /* Ajusta el ancho a tu necesidad */
@@ -92,11 +93,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataCliente = $OBJ_CLIENTE->listarClientes();
                       if ($dataCliente["error"] == "NO") {
                         foreach ($dataCliente["data"] as $key) {
-                          ?>
+                      ?>
                           <option value="<?= $key['id_cliente']; ?>">
                             <?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?>
                           </option>
-                          <?php
+                      <?php
                         }
                       }
                       ?>
@@ -112,9 +113,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataFundo = $OBJ_FUNDO->show(1, '1');
                       if ($dataFundo["error"] == "NO") {
                         foreach ($dataFundo["data"] as $key) {
-                          ?>
+                      ?>
                           <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre'] ?></option>
-                          <?php
+                      <?php
                         }
                       }
                       ?>
@@ -130,9 +131,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataMaquinaria = $OBJ_MAQUINARIA->showActivos();
                       if ($dataMaquinaria["error"] == "NO") {
                         foreach ($dataMaquinaria["data"] as $key) {
-                          ?>
+                      ?>
                           <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
-                          <?php
+                      <?php
                         }
                       }
                       ?>
@@ -148,11 +149,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                       $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
                       if ($dataOperador["error"] == "NO") {
                         foreach ($dataOperador["data"] as $key) {
-                          ?>
+                      ?>
                           <option value="<?= $key['id_trabajador']; ?>">
                             <?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?>
                           </option>
-                          <?php
+                      <?php
                         }
                       }
                       ?>
@@ -209,7 +210,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                     <div id="nuevoOperadorContainer" class="mt-3" style="display: none;">
                       <form id="frmOperador" name="frmOperador" enctype="multipart/form-data">
-                      <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
+                        <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
                         <div class="row">
                           <div class="col-md-1 d-none">
                             <label>#</label>
@@ -222,11 +223,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                               $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
                               if ($dataOperador["error"] == "NO") {
                                 foreach ($dataOperador["data"] as $key) {
-                                  ?>
+                              ?>
                                   <option value="<?= $key['id_trabajador']; ?>">
                                     <?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?>
                                   </option>
-                                  <?php
+                              <?php
                                 }
                               }
                               ?>
@@ -297,6 +298,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                     <div id="nuevaMaquinariaContainer" class="mt-3" style="display: none;">
                       <form id="frmMaquinaria" name="frmMaquinaria" enctype="multipart/form-data">
+                        <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
                         <div class="row">
                           <div class="col-md-1 d-none">
                             <label>#</label>
@@ -304,14 +306,14 @@ if (!isset($_SESSION['id_trabajador'])) {
                           </div>
                           <div class="col-md-3">
                             <label>Nombre Maquinaria</label>
-                            <select id="cboMaquinaBuscar" name="cboMaquinaBuscar" class="form-control">
+                            <select id="nombre_maquinaria" name="nombre_maquinaria" class="form-control">
                               <?php
                               $dataMaquina = $OBJ_MAQUINARIA->showActivos();
                               if ($dataMaquina["error"] == "NO") {
                                 foreach ($dataMaquina["data"] as $key) {
-                                  ?>
+                              ?>
                                   <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
-                                  <?php
+                              <?php
                                 }
                               }
                               ?>
@@ -320,12 +322,12 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                           <div class="col-md-2">
                             <label>Ingreso de Petroleo (L)</label>
-                            <input type="number" id="ingreso_petroleo" name="ingreso_petroleo" class="form-control" min="0"
+                            <input type="number" id="petroleo_entrada" name="petroleo_entrada" class="form-control" min="0"
                               step="1.00">
                           </div>
                           <div class="col-md-2">
                             <label>Salida de Petroleo (L)</label>
-                            <input type="number" id="salida_petroleo" name="salida_petroleo" class="form-control" min="0"
+                            <input type="number" id="petroleo_salida" name="petroleo_salida" class="form-control" min="0"
                               step="1.00">
                           </div>
                           <div class="col-md-2">
@@ -363,7 +365,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <th>Sal. Petroleo</th>
                             <th>Consumo Petroleo</th>
                             <th>Precio Petroleo</th>
-                            <th>Pago Total Petroleo</th>
+                            <th>Pago Total</th>
                             <th>Acción</th>
                           </tr>
                         </thead>
