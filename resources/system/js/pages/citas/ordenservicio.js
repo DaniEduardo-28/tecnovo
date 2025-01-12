@@ -181,7 +181,10 @@ var table = $('#example').DataTable({
                         nombre_fundo: item.nombre_fundo,
                         nombre_cliente: item.nombre_cliente,
                         nombre_servicio: item.nombre_servicio,
-                        nombre_operador: item.nombre_operador,
+                        nombre_operador: item.nombre_operador
+                            .split(",")
+                            .map(op => `<li>${op.trim()}</li>`)
+                            .join(""),
                         nombre_maquinaria: item.nombre_maquinaria,
                         fecha_ingreso: item.fecha_ingreso,
                         fecha_salida: item.fecha_salida,
@@ -433,7 +436,7 @@ function saveOperadorC() {
 
       // Verificar si es una edición o un nuevo registro
       const idEdicion = form.data("editing");
-      const accion = idEdicion ? "updateOperadorCronograma" : "goOperadorCronograma";
+      const accion = idEdicion ? "actualizarOperadorCronograma" : "goOperadorCronograma";
       
       if (idEdicion) {
         formData.append("id_cronograma_operador", idEdicion); // Agregar el ID para la edición

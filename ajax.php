@@ -535,9 +535,9 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getOperadoresByCronograma.php");
         break;
-      case 'updateOperadorCronograma':
+      case 'actualizarOperadorCronograma':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/citas/updateOperadorCronograma.php");
+        require("core/ajax/citas/actualizarOperadorCronograma.php");
         break;
       case 'goOperadorCronograma':
         require("core/models/ClassAccesoOpcion.php");

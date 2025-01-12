@@ -17,9 +17,9 @@
       $count = 1;
       foreach ($Resultado["data"] as $key) {
         // Reiniciar la variable $options en cada iteración
-        $options = '&nbsp;<a href="javascript:showModalOperador(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-desktop"></i></a>';
+        $options = '&nbsp;<a href="javascript:showModalOperador(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-user"></i></a>';
         
-        $options .= '&nbsp;<a href="javascript:showModalMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-cog"></i></a>';
+        $options .= '&nbsp;<a href="javascript:showModalMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-harddrives"></i></a>';
                 $retorno_array[] =array(
           "options" => "$options",
           "num" => "$count",
