@@ -535,6 +535,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getOperadoresByCronograma.php");
         break;
+      case 'updateOperadorCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/updateOperadorCronograma.php");
+        break;
       case 'goOperadorCronograma':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/goOperadorCronograma.php");
@@ -542,6 +546,10 @@ try {
       case 'deleteOperadorCronograma':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/deleteOperadorCronograma.php");
+        break;
+      case 'getOperadorById':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/getOperadorById.php");
         break;
       case 'showClienteReporte':
         require("core/models/ClassAccesoOpcion.php");

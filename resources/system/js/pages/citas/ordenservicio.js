@@ -430,9 +430,19 @@ function saveOperadorC() {
       for (var pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
+
+      // Verificar si es una edición o un nuevo registro
+      const idEdicion = form.data("editing");
+      const accion = idEdicion ? "updateOperadorCronograma" : "goOperadorCronograma";
+      
+      if (idEdicion) {
+        formData.append("id_cronograma_operador", idEdicion); // Agregar el ID para la edición
+      }
+
+
       $.ajax({
         type: "POST",
-        url: "ajax.php?accion=goOperadorCronograma",
+        url: `ajax.php?accion=${accion}`,
         datatype: "json",
         processData: false,
         contentType: false,
@@ -449,6 +459,9 @@ function saveOperadorC() {
               cargarOperadoresExistentes($("#id_cronograma").val());
               runAlert("Bien hecho...!!!", response["message"], "success");
             }
+
+            // Limpiar estado de edición
+            form.removeData("editing");
           } catch (e) {
             runAlert("Oh No...!!!", e, "error");
           }

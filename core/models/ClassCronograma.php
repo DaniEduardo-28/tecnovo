@@ -232,13 +232,13 @@ WHERE 1=1 ";
         throw new Exception("No se encontró el cronograma");
       }
 
-        $VD = ["error" => "NO", "data" => $result];
+      $VD = ["error" => "NO", "data" => $result];
     } catch (PDOException $e) {
-        $VD = ["error" => "SI", "message" => $e->getMessage()];
+      $VD = ["error" => "SI", "message" => $e->getMessage()];
     } catch (Exception $e) {
-        $VD = ["error" => "SI", "message" => $e->getMessage()];
+      $VD = ["error" => "SI", "message" => $e->getMessage()];
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
 
     return $VD;
@@ -499,12 +499,12 @@ WHERE 1=1 ";
       //Aplicar filtros
       $parametros = [];
 
-      if ($cliente != "all"){
+      if ($cliente != "all") {
         $sql .= "AND c.id_cliente = :cliente";
         $parametros[":cliente"] = $cliente;
       }
 
-      if ($fundo != "all"){
+      if ($fundo != "all") {
         $sql .= "AND c.id_fundo = :fundo";
         $parametros[":fundo"] = $fundo;
       }
@@ -517,7 +517,7 @@ WHERE 1=1 ";
       if ($operador != "all") {
         $sql .= " AND t.id_trabajador = :operador";
         $parametros[":operador"] = $operador;
-      } 
+      }
 
       $sql .= " GROUP BY 
                   c.id_cronograma, 
@@ -560,12 +560,12 @@ WHERE 1=1 ";
   }
 
   public function getOperadoresByCronograma($id_cronograma)
-{
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
-    
+
     try {
-        $sql = "SELECT 
+      $sql = "SELECT 
                     o.id_cronograma_operador, 
                     CONCAT(p.apellidos, ' ', p.nombres) AS nombre_operador,
                     o.horas_trabajadas, 
@@ -576,23 +576,55 @@ WHERE 1=1 ";
                 INNER JOIN tb_persona p ON t.id_persona = p.id_persona
                 WHERE o.id_cronograma = :id_cronograma";
 
-        $stmt = $conexion->prepare($sql);
-        $stmt->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
+      $stmt->execute();
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($result) > 0) {
-            return ["error" => "NO", "data" => $result];
-        } else {
-            return ["error" => "SI", "message" => "No se encontraron operadores para este cronograma."];
-        }
+      if (count($result) > 0) {
+        return ["error" => "NO", "data" => $result];
+      } else {
+        return ["error" => "SI", "message" => "No se encontraron operadores para este cronograma."];
+      }
     } catch (Exception $e) {
-        return ["error" => "SI", "message" => $e->getMessage()];
+      return ["error" => "SI", "message" => $e->getMessage()];
     }
-}
+  }
 
 
   public function addOperador($id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+      $conexion->beginTransaction();
+
+      $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora, total_pago) 
+                  VALUES (?, ?, ?, ?, ?)";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago]);
+
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Ocurrió un error al registrar el operador.");
+      }
+
+      $VD = "OK";
+      $conexion->commit();
+    } catch (PDOException $e) {
+      $conexion->rollBack();
+      $VD = $e->getMessage();
+    } catch (Exception $exception) {
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
+    } finally {
+      $conexionClass->Close();
+    }
+    return $VD;
+  }
+
+  public function updateOperador($id_cronograma_operador, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago)
   {
       $conexionClass = new Conexion();
       $conexion = $conexionClass->Open();
@@ -601,13 +633,13 @@ WHERE 1=1 ";
       try {
           $conexion->beginTransaction();
   
-          $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora, total_pago) 
-                  VALUES (?, ?, ?, ?, ?)";
-          $stmt = $conexion->prepare($sql);
-          $stmt->execute([$id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago]);
+          $stmt = $conexion->prepare("UPDATE tb_cronograma_operadores 
+                                      SET id_trabajador = ?, horas_trabajadas = ?, pago_por_hora = ?, total_pago = ? 
+                                      WHERE id_cronograma_operador = ?");
+          $stmt->execute([$id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago, $id_cronograma_operador]);
   
           if ($stmt->rowCount() == 0) {
-              throw new Exception("Ocurrió un error al registrar el operador.");
+              throw new Exception("No se pudo actualizar el operador. Verifica los datos.");
           }
   
           $VD = "OK";
@@ -623,40 +655,56 @@ WHERE 1=1 ";
       }
       return $VD;
   }
+  
+
 
   public function deleteOperador($id_cronograma_operador)
-{
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = "";
 
     try {
-        $conexion->beginTransaction();
+      $conexion->beginTransaction();
 
-        $stmt = $conexion->prepare("DELETE FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?");
-        $stmt->execute([$id_cronograma_operador]);
+      $stmt = $conexion->prepare("DELETE FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?");
+      $stmt->execute([$id_cronograma_operador]);
 
-        if ($stmt->rowCount() == 0) {
-            throw new Exception("Ocurrió un error al eliminar el operador.");
-        }
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Ocurrió un error al eliminar el operador.");
+      }
 
-        $VD = "OK";
-        $conexion->commit();
+      $VD = "OK";
+      $conexion->commit();
     } catch (PDOException $e) {
-        $conexion->rollBack();
-        $VD = $e->getMessage();
+      $conexion->rollBack();
+      $VD = $e->getMessage();
     } catch (Exception $exception) {
-        $conexion->rollBack();
-        $VD = $exception->getMessage();
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
     return $VD;
-}
+  }
 
-  
+  public function getOperadorById($id_cronograma_operador)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
 
+    try {
+      $sql = "SELECT * FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma_operador]);
 
+      return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+      return false;
+    } finally {
+      $conexionClass->Close();
+    }
+  }
 }
 
 $OBJ_CRONOGRAMA = new ClassCronograma();
