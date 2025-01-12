@@ -323,33 +323,34 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-2">
                             <label>Ingreso de Petroleo (L)</label>
                             <input type="number" id="petroleo_entrada" name="petroleo_entrada" class="form-control" min="0"
-                              step="1.00">
+                              step="0.01">
                           </div>
                           <div class="col-md-2">
                             <label>Salida de Petroleo (L)</label>
                             <input type="number" id="petroleo_salida" name="petroleo_salida" class="form-control" min="0"
-                              step="1.00">
+                              step="0.01">
                           </div>
                           <div class="col-md-2">
                             <label>Consumo Petroleo</label>
                             <input type="number" id="consumo_petroleo" name="consumo_petroleo" class="form-control" min="0"
-                              step="1.00">
+                              step="0.01">
                           </div>
                           <div class="col-md-2">
                             <label>Precio Petroleo</label>
                             <input type="number" id="precio_petroleo" name="precio_petroleo" class="form-control" min="0"
-                              step="1.00">
+                              step="0.01">
                           </div>
                           <div class="col-md-2">
                             <label>Pago Petroleo</label>
                             <input type="number" id="pago_petroleo" name="pago_petroleo" class="form-control" min="0"
-                              step="1.00">
+                              step="0.01">
                           </div>
                           <div class="col-md-1 text-center mt-4">
                             <button type="submit" class="btn btn-success btn-sm btnGuardarMaqui"><i
                                 class="fa fa-check"></i></button>
-                            <button type="reset" class="btn btn-danger btn-sm btnCancelarMaqui"><i
-                                class="fa fa-trash"></i></button>
+                            <button type="reset" class="btn btn-danger btn-sm btnCancelarMaqui" onclick="cancelarFormMaquinaria()">
+                              <i class="fa fa-trash"></i>
+                            </button>
                           </div>
                         </div>
                       </form>

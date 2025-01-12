@@ -52,7 +52,7 @@ var table = $('#example').DataTable({
     });
 
     $("#btnNuevaMaquina").click(function () {
-      $("#nuevaMaquinariarContainer").show();
+      $("#nuevaMaquinariaContainer").show();
       $("#btnNuevaMaquina").hide();
     });
   
@@ -83,6 +83,18 @@ var table = $('#example').DataTable({
       const pago_por_hora = parseFloat($("#pago_por_hora").val()) || 0;
       const total = horas_trabajadas * pago_por_hora;
       $("#total_pago").val(total.toFixed(2)); // Mostrar el total con 2 decimales
+    });
+
+    $("#petroleo_entrada, #petroleo_salida, #precio_petroleo").on("input", function () {
+      const petroleoEntrada = parseFloat($("#petroleo_entrada").val()) || 0;
+      const petroleoSalida = parseFloat($("#petroleo_salida").val()) || 0;
+      const precioPetroleo = parseFloat($("#precio_petroleo").val()) || 0;
+    
+      const consumoPetroleo = petroleoEntrada - petroleoSalida;
+      const pagoPetroleo = consumoPetroleo * precioPetroleo;
+    
+      $("#consumo_petroleo").val(consumoPetroleo.toFixed(2));
+      $("#pago_petroleo").val(pagoPetroleo.toFixed(2));
     });
   
     // Mostrar la lista inicial
@@ -197,10 +209,7 @@ var table = $('#example').DataTable({
                         nombre_fundo: item.nombre_fundo,
                         nombre_cliente: item.nombre_cliente,
                         nombre_servicio: item.nombre_servicio,
-                        nombre_operador: item.nombre_operador
-                            .split(",")
-                            .map(op => `<li>${op.trim()}</li>`)
-                            .join(""),
+                        nombre_operador: item.nombre_operador,
                         nombre_maquinaria: item.nombre_maquinaria,
                         fecha_ingreso: item.fecha_ingreso,
                         fecha_salida: item.fecha_salida,
@@ -550,7 +559,12 @@ function editarOperador(id_cronograma_operador) {
 /******************************************** */
 
 function showModalMaquinaria(id_cronograma) {
-  $("#id_cronograma").val(id_cronograma);
+  if (!id_cronograma || id_cronograma === 0) {
+    runAlert("Error", "El ID del cronograma es inválido.", "warning");
+    return;
+  }
+
+  $("#id_cronograma").val(id_cronograma); 
   cargarMaquinariasExistentes(id_cronograma);
   $("#modalMaquinaria").modal("show");
 }
@@ -580,17 +594,22 @@ function llenarTablaMaquinarias(maquinarias) {
   tablaMaquinaria.empty();
   if (maquinarias && maquinarias.length > 0) {
     maquinarias.forEach((maquinaria, index) => {
-      const consumoPetroleo = maquinaria.petroleo_entrada - maquinaria.petroleo_salida;
-      const pagoPetroleo = consumoPetroleo * maquinaria.precio_petroleo;
+      const petroleoEntrada = parseFloat(maquinaria.petroleo_entrada) || 0;
+      const petroleoSalida = parseFloat(maquinaria.petroleo_salida) || 0;
+      const precioPetroleo = parseFloat(maquinaria.precio_petroleo) || 0;
+
+      const consumoPetroleo = petroleoEntrada - petroleoSalida;
+      const pagoPetroleo = consumoPetroleo * precioPetroleo;
+
       const fila = `
         <tr>
           <td>${index + 1}</td>
           <td>${maquinaria.nombre_maquinaria}</td>
-          <td>${parseFloat(maquinaria.petroleo_entrada).toFixed(2)}</td>
-          <td>${parseFloat(maquinaria.petroleo_salida).toFixed(2)}</td>
-          <td>${(consumoPetroleo).toFixed(2)}</td>
-          <td>${parseFloat(maquinaria.precio_petroleo).toFixed(2)}</td>
-          <td>${(pagoPetroleo).toFixed(2)}</td>
+          <td>${petroleoEntrada.toFixed(2)}</td>
+          <td>${petroleoSalida.toFixed(2)}</td>
+          <td>${consumoPetroleo.toFixed(2)}</td>
+          <td>${precioPetroleo.toFixed(2)}</td>
+          <td>${pagoPetroleo.toFixed(2)}</td>
           <td>
             <button class="btn btn-warning btn-sm btnEditarMaquinaria" data-id="${maquinaria.id_cronograma_maquinaria}">
               <i class="fa fa-edit"></i>
@@ -604,9 +623,10 @@ function llenarTablaMaquinarias(maquinarias) {
       tablaMaquinaria.append(fila);
     });
 
+    // Asignar eventos a los botones de editar y eliminar
     $(".btnEditarMaquinaria").click(function () {
       const id_cronograma_maquinaria = $(this).data("id");
-      editarOperador(id_cronograma_maquinaria);
+      editarMaquinaria(id_cronograma_maquinaria);
     });
 
     $(".btnEliminarMaquinaria").click(function () {
@@ -618,10 +638,11 @@ function llenarTablaMaquinarias(maquinarias) {
   }
 }
 
-function deleteRegistroMaquinaria(id_cronograma) {
+
+function deleteRegistroMaquinaria(id_cronograma_maquinaria) {
   try {
     var parametros = {
-      id_cronograma_maquinaria: id_cronograma,
+      id_cronograma_maquinaria: id_cronograma_maquinaria,
     };
 
     Swal.fire({
@@ -672,6 +693,8 @@ function deleteRegistroMaquinaria(id_cronograma) {
 
 
 function saveMaquinariaC() {
+  const idCronograma = $("#id_cronograma").val();
+  console.log("ID Cronograma:", idCronograma);
 
   Swal.fire({
     title: "¿Seguro de registrar la maquinaria?",
@@ -685,6 +708,10 @@ function saveMaquinariaC() {
     if (result.value) {
       const form = $("#frmMaquinaria");
       const formData = new FormData(form[0]);
+
+      const idCronograma = $("#id_cronograma").val();
+      console.log("ID Cronograma antes de enviar:", idCronograma); // Log para depuración
+      formData.append("id_cronograma", idCronograma);
 
       const petroleoEntrada = parseFloat($("#petroleo_entrada").val()) || 0;
       const petroleoSalida = parseFloat($("#petroleo_salida").val()) || 0;
@@ -773,10 +800,9 @@ function editarMaquinaria(id_cronograma_maquinaria) {
           $("#nombre_maquinaria").val(maquinaria.id_maquinaria);
           $("#petroleo_entrada").val(maquinaria.petroleo_entrada);
           $("#petroleo_salida").val(maquinaria.petroleo_salida);
-          const consumoPetroleo = maquinaria.petroleo_entrada - maquinaria.petroleo_salida;
-          $("#consumo_petroleo").val(consumoPetroleo.toFixed(2));         
-          $("#precio_petroleo").val(maquinaria.precio_petroleo);
-          $("#pago_petroleo").val((consumoPetroleo * maquinaria.precio_petroleo).toFixed(2));
+          $("#consumo_petroleo").val(parseFloat(maquinaria.consumo_petroleo).toFixed(2));         
+          $("#precio_petroleo").val(parseFloat(maquinaria.precio_petroleo).toFixed(2));
+          $("#pago_petroleo").val(parseFloat(maquinaria.pago_petroleo).toFixed(2));
 
 
           // Cambiar el texto del botón de guardar y mostrar el contenedor de edición

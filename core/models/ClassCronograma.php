@@ -716,7 +716,7 @@ public function getMaquinariasByCronograma($id_cronograma)
     try {
         $sql = "SELECT 
                     m.id_cronograma_maquinaria, 
-                    maq.nombre_maquinaria, 
+                    maq.descripcion AS nombre_maquinaria, 
                     m.petroleo_entrada, 
                     m.petroleo_salida, 
                     (m.petroleo_entrada - m.petroleo_salida) AS consumo_petroleo, 
@@ -750,6 +750,9 @@ public function addMaquinaria($id_cronograma, $id_maquinaria, $petroleo_entrada,
     try {
         $conexion->beginTransaction();
 
+        $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
+        $pago_petroleo = $consumo_petroleo * $precio_petroleo;
+
         $sql = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria, petroleo_entrada, petroleo_salida, consumo_petroleo, precio_petroleo, pago_petroleo) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conexion->prepare($sql);
@@ -781,6 +784,9 @@ public function updateMaquinaria($id_cronograma_maquinaria, $id_maquinaria, $pet
 
     try {
         $conexion->beginTransaction();
+
+        $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
+        $pago_petroleo = $consumo_petroleo * $precio_petroleo;
 
         $stmt = $conexion->prepare("UPDATE tb_cronograma_maquinaria 
                                     SET id_maquinaria = ?, petroleo_entrada = ?, petroleo_salida = ?, consumo_petroleo = ?, precio_petroleo = ?, pago_petroleo = ? 
