@@ -329,7 +329,7 @@ function llenarTablaOperadores(operadores) {
           <td>${parseFloat(operador.pago_por_hora).toFixed(2)}</td>
           <td>${(operador.horas_trabajadas * operador.pago_por_hora).toFixed(2)}</td>
           <td>
-            <button class="btn btn-primary btn-sm btnEditarOperador" data-id="${operador.id_cronograma_operador}">
+            <button class="btn btn-warning btn-sm btnEditarOperador" data-id="${operador.id_cronograma_operador}">
               <i class="fa fa-edit"></i>
             </button>
             <button class="btn btn-danger btn-sm btnEliminarOperador" data-id="${operador.id_cronograma_operador}">
