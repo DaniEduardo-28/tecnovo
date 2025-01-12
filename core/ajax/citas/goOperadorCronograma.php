@@ -4,10 +4,11 @@ $id_cronograma = $_POST['id_cronograma'] ?? null;
 $id_trabajador = $_POST['nombre_operador'] ?? null;
 $horas_trabajadas = $_POST['horas_trabajadas'] ?? null;
 $pago_por_hora = $_POST['pago_por_hora'] ?? null;
+$total_pago = $_POST['total_pago'] ?? null;
 
 try {
 
-    if (empty($id_cronograma) || empty($id_trabajador) || $horas_trabajadas === null || $pago_por_hora === null) {
+    if (empty($id_cronograma) || empty($id_trabajador) || $horas_trabajadas === null || $pago_por_hora === null || $total_pago === null) {
         throw new Exception("Todos los campos son obligatorios.");
     }
     

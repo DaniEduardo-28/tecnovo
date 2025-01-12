@@ -329,7 +329,10 @@ function llenarTablaOperadores(operadores) {
           <td>${parseFloat(operador.pago_por_hora).toFixed(2)}</td>
           <td>${(operador.horas_trabajadas * operador.pago_por_hora).toFixed(2)}</td>
           <td>
-            <button class="btn btn-danger btn-sm btnEliminarOperador" data-id="${operador.id_cronograma}">
+            <button class="btn btn-primary btn-sm btnEditarOperador" data-id="${operador.id_cronograma_operador}">
+              <i class="fa fa-edit"></i>
+            </button>
+            <button class="btn btn-danger btn-sm btnEliminarOperador" data-id="${operador.id_cronograma_operador}">
               <i class="fa fa-trash"></i>
             </button>
           </td>
@@ -337,6 +340,12 @@ function llenarTablaOperadores(operadores) {
       `;
       tablaOperador.append(fila);
     });
+
+    $(".btnEditarOperador").click(function () {
+      const id_cronograma_operador = $(this).data("id");
+      editarOperador(id_cronograma_operador);
+    });
+
     $(".btnEliminarOperador").click(function () {
       const id_cronograma = $(this).data("id");
       if (id_cronograma) {
@@ -349,7 +358,7 @@ function llenarTablaOperadores(operadores) {
 function deleteRegistro(id_cronograma) {
   try {
     var parametros = {
-      id_cronograma: id_cronograma,
+      id_cronograma_operador: id_cronograma,
     };
 
     Swal.fire({
@@ -362,6 +371,7 @@ function deleteRegistro(id_cronograma) {
       confirmButtonText: "Si, Anular ahora!",
     }).then(function (result) {
       if (result.value) {
+        console.log(parametros);
         $.ajax({
           type: "POST",
           url: "ajax.php?accion=deleteOperadorCronograma",
@@ -412,6 +422,11 @@ function saveOperadorC() {
       const form = $("#frmOperador");
       const formData = new FormData(form[0]);
 
+      const horas = parseFloat($("#horas_trabajadas").val()) || 0;
+      const pagoHora = parseFloat($("#pago_por_hora").val()) || 0;
+      const total = horas * pagoHora;
+      formData.append("total_pago", total.toFixed(2));
+
       for (var pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
@@ -459,4 +474,37 @@ function limpiarCamposNuevoOperador() {
   $("#horas_trabajadas").val("");
   $("#pago_por_hora").val("");
   $("#total_pago").val("");
+}
+
+function editarOperador(id_cronograma_operador) {
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=getOperadorById",
+    data: { id_cronograma_operador: id_cronograma_operador },
+    success: function (response) {
+      try {
+        const data = JSON.parse(response);
+        if (data.error === "NO") {
+          const operador = data.data;
+          $("#nombre_operador").val(operador.id_trabajador);
+          $("#horas_trabajadas").val(operador.horas_trabajadas);
+          $("#pago_por_hora").val(operador.pago_por_hora);
+          $("#total_pago").val((operador.horas_trabajadas * operador.pago_por_hora).toFixed(2));
+
+          // Cambiar el texto del botón de guardar y mostrar el contenedor de edición
+          $("#btnNuevoOperador").hide();
+          $("#nuevoOperadorContainer").show();
+          $("#frmOperador").data("editing", id_cronograma_operador); // Guardar el ID para la edición
+        } else {
+          runAlert("Error", data.message, "error");
+        }
+      } catch (e) {
+        console.error("Error al procesar la respuesta:", e);
+        runAlert("Error", "No se pudo procesar la respuesta del servidor", "error");
+      }
+    },
+    error: function () {
+      runAlert("Error", "No se pudo conectar con el servidor", "error");
+    }
+  });
 }
