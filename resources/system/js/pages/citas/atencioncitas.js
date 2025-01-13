@@ -459,6 +459,7 @@ function cargarFundosPorCliente(id_cliente) {
 function cambiarEstadoCronograma(nuevoEstado) {
   var id_cronograma = $("#id_cronograma").val();
   var mensajeConfirmacion = "";
+
   switch (nuevoEstado) {
     case "ANULADO":
       mensajeConfirmacion = "¿Está seguro de anular este cronograma?";
@@ -468,6 +469,9 @@ function cambiarEstadoCronograma(nuevoEstado) {
       break;
     case "EN PROCESO":
       mensajeConfirmacion = "¿Iniciar el trabajo de este cronograma?";
+      break;
+    case "TERMINADO":
+      mensajeConfirmacion = "¿Finalizar el trabajo de este cronograma?";
       break;
   }
 
@@ -490,24 +494,12 @@ function cambiarEstadoCronograma(nuevoEstado) {
           showHideLoader("block");
         },
         success: function (response) {
-          console.log("Respuesta del servidor:", response); 
           try {
             var data = typeof response === "object" ? response : JSON.parse(response);
             if (data.error == "NO") {
               Swal.fire("Éxito", data.message, "success");
-
-              $("#estado_trabajo_show").val(nuevoEstado);
-
-              if (nuevoEstado === "ANULADO") {
-                $("#btnAnularCronograma").hide();
-                $("#btnAprobarCronograma").hide();
-              } else if (nuevoEstado === "APROBADO") {
-                $("#btnAprobarCronograma").hide();
-                $("#btnAnularCronograma").hide();
-              }
               $("#modal-calendario-show").modal("hide");
               crearCalendario();
-              console.log("Calendario actualizado.");
             } else {
               Swal.fire("Error", data.message, "error");
             }
@@ -525,6 +517,7 @@ function cambiarEstadoCronograma(nuevoEstado) {
     }
   });
 }
+
 
 function mostrarOpcionesAprobacion(info) {
   // Limpiar el contenedor de botones antes de agregar las nuevas opciones
@@ -571,6 +564,16 @@ function mostrarOpcionesAprobacion(info) {
     // Evento para Iniciar Trabajo
     $("#btnIniciarTrabajo").click(function () {
       cambiarEstadoCronograma("EN PROCESO");
+    });
+  }
+
+  if (info.estado_trabajo === "EN PROCESO") {
+    $("#accionesAprobacion").append(`
+      <button type="button" class="btn btn-primary" id="btnFinalizarTrabajo">Finalizar Trabajo</button>
+    `);
+
+    $("#btnFinalizarTrabajo").click(function () {
+      cambiarEstadoCronograma("TERMINADO");
     });
   }
 
