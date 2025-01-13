@@ -274,18 +274,7 @@ function getCronograma(id_cronograma) {
           $("#estado_trabajo_show").val(info.estado_trabajo);
 
 
-          //Ocultar el botón Anular
-          if (info.estado_trabajo === "PENDIENTE" || info.estado_trabajo === "REGISTRADO") {
-            $("#btnAnularCronograma").show();
-          } else {
-            $("#btnAnularCronograma").hide();
-          }
-
-          if (info.estado_trabajo === "REGISTRADO") {
-            $("#btnAprobarCronograma").show();
-          } else {
-            $("#btnAprobarCronograma").hide();
-          }
+          mostrarOpcionesAprobacion(info);
 
           $("#modal-calendario-show").modal("show");
         } else {
@@ -469,15 +458,27 @@ function cargarFundosPorCliente(id_cliente) {
 
 function cambiarEstadoCronograma(nuevoEstado) {
   var id_cronograma = $("#id_cronograma").val();
+  var mensajeConfirmacion = "";
+  switch (nuevoEstado) {
+    case "ANULADO":
+      mensajeConfirmacion = "¿Está seguro de anular este cronograma?";
+      break;
+    case "PENDIENTE":
+      mensajeConfirmacion = "¿Pasar este cronograma a estado pendiente?";
+      break;
+    case "EN PROCESO":
+      mensajeConfirmacion = "¿Iniciar el trabajo de este cronograma?";
+      break;
+  }
 
   Swal.fire({
-    title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} este cronograma?`,
+    title: mensajeConfirmacion,
     text: "Esta acción no se puede deshacer.",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#22c63b",
     cancelButtonColor: "#d33",
-    confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} ahora`,
+    confirmButtonText: "Sí, confirmar",
   }).then(function (result) {
     if (result.value) {
       $.ajax({
@@ -524,4 +525,56 @@ function cambiarEstadoCronograma(nuevoEstado) {
     }
   });
 }
+
+function mostrarOpcionesAprobacion(info) {
+  // Limpiar el contenedor de botones antes de agregar las nuevas opciones
+  $("#accionesAprobacion").empty();
+
+  if (info.estado_trabajo === "APROBADO") {
+    // Botón para Anular el cronograma
+    $("#accionesAprobacion").append(`
+      <button type="button" class="btn btn-danger" id="btnAnularCronograma">Anular Cronograma</button>
+    `);
+
+    // Botón para Pasar a Pendiente
+    $("#accionesAprobacion").append(`
+      <button type="button" class="btn btn-warning" id="btnPendienteCronograma">Pasar a Pendiente</button>
+    `);
+
+    // Evento para Anular el cronograma
+    $("#btnAnularCronograma").click(function () {
+      cambiarEstadoCronograma("ANULADO");
+    });
+
+    // Evento para Pasar a Pendiente el cronograma
+    $("#btnPendienteCronograma").click(function () {
+      cambiarEstadoCronograma("PENDIENTE");
+    });
+  }
+
+  if (info.estado_trabajo === "PENDIENTE") {
+    // Botón para Anular el cronograma
+    $("#accionesAprobacion").append(`
+      <button type="button" class="btn btn-danger" id="btnAnularPendiente">Anular Registro</button>
+    `);
+
+    // Botón para Iniciar Trabajo
+    $("#accionesAprobacion").append(`
+      <button type="button" class="btn btn-success" id="btnIniciarTrabajo">Iniciar Trabajo</button>
+    `);
+
+    // Evento para Anular el cronograma
+    $("#btnAnularPendiente").click(function () {
+      cambiarEstadoCronograma("ANULADO");
+    });
+
+    // Evento para Iniciar Trabajo
+    $("#btnIniciarTrabajo").click(function () {
+      cambiarEstadoCronograma("EN PROCESO");
+    });
+  }
+
+}
+
+
 
