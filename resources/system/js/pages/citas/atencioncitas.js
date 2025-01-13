@@ -162,6 +162,7 @@ function crearCalendario() {
           maquinaria: maquinaria,
           operador: operador,
           cliente: cliente,
+          tipo_vista: "aprobacion" 
         },
         success: function (events) {
           console.log(events);

@@ -275,11 +275,8 @@ function getCronograma(id_cronograma) {
 
 
           //Ocultar el botón Anular
-          if (info.estado_trabajo === "PENDIENTE" || info.estado_trabajo === "REGISTRADO") {
-            $("#btnAnularCronograma").show();
-          } else {
-            $("#btnAnularCronograma").hide();
-          }
+          $("#btnAnularCronograma").hide();
+
 
           if (info.estado_trabajo === "REGISTRADO") {
             $("#btnAprobarCronograma").show();

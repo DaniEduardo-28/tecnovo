@@ -5,6 +5,7 @@ $id_operador = isset($_POST['operador']) ? $_POST['operador'] : "all";
 $id_cliente = isset($_SESSION['cliente']) ? $_SESSION['cliente'] : "all";
 $id_fundo = isset($_POST['fundo']) ? $_POST['fundo'] : "all";
 
+$tipo_vista = isset($_POST['tipo_vista']) ? $_POST['tipo_vista'] : "";
 try {
 
   $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("citas"));
@@ -17,8 +18,16 @@ try {
   }
 
   require_once "core/models/ClassCronograma.php";
-  $Resultado = $OBJ_CRONOGRAMA->showCitas($id_maquinaria, $id_operador, $id_cliente, $id_fundo);
+  if ($tipo_vista === "aprobacion") {
+    $Resultado = $OBJ_CRONOGRAMA->showCitas($id_maquinaria, $id_operador, $id_cliente, $id_fundo);
 
+    // Filtrar los registros que no estén en estado 'REGISTRADO'
+    $Resultado['data'] = array_filter($Resultado['data'], function ($elemento) {
+        return $elemento['estado_trabajo'] !== 'REGISTRADO';
+    });
+} else {
+    $Resultado = $OBJ_CRONOGRAMA->showCitas($id_maquinaria, $id_operador, $id_cliente, $id_fundo);
+}
   if ($Resultado["error"] == "SI") {
     throw new Exception($Resultado["message"]);
   }
