@@ -737,6 +737,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         include("core/ajax/citas/getCronograma.php");
         break;
+      case 'cambiarEstadoCronograma':
+        require("core/models/ClassAccesoOpcion.php");
+        include("core/ajax/citas/cambiarEstadoCronograma.php");
+        break;
       default:
         $data["error"] = "SI";
         $data["message"] = "No se encontró el ajax especificado.";

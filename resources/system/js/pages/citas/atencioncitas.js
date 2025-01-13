@@ -1,260 +1,527 @@
-$(document).ready(function(){
+var fundosData = [];
 
-    $('#panelDetalle').addClass('d-none');
+$(document).ready(function () {
 
+  crearCalendario();
+
+  $("#cboFundoBuscar, #cboMaquinariaBuscar, #cboMedicoBuscar, #cboClienteBuscar").change(function () {
     crearCalendario();
+  });
 
-    $('#cboDocumentoBuscar').change(function(){
-      crearCalendario();
+  $("#frmCronograma").submit(function (e) {
+    e.preventDefault();
+    registrarCronograma();
+  });
+
+  // Botón anular cronograma en el modal de vista
+  $("#btnAnularCronograma").click(function () {
+    cambiarEstadoCronograma('ANULADO');
+  });
+  
+  // Botón aprobar cronograma en el modal de vista
+  $("#btnAprobarCronograma").click(function () {
+    cambiarEstadoCronograma('APROBADO');
+  });
+
+  // Recalcular montos al cambiar valores
+  $("#precio_hectarea, #total_hectareas, #descuento, #adelanto").on("input", function () {
+    recalcularMontos();
+  });
+
+  $("#modal-calendario").on("shown.bs.modal", function () {
+    recalcularMontos();
+  });
+
+  $("#id_cliente").on("change", function () {
+    var id_cliente = $(this).val();
+    cargarFundosPorCliente(id_cliente);
+  });
+
+  $("#id_fundo").on("change", function () {
+    var id_fundo_seleccionado = $(this).val();
+    if (id_fundo_seleccionado !== "all" && fundosData.length > 0) {
+      var fundoSeleccionado = fundosData.find(function (fundo) {
+        return fundo.id_fundo == id_fundo_seleccionado;
+      });
+
+      if (fundoSeleccionado) {
+        $("#total_hectareas").val(fundoSeleccionado.cantidad_hc);
+        recalcularMontos();
+      }
+    } else {
+      $("#total_hectareas").val(0);
+      recalcularMontos();
+    }
+  });
+
+  $("#cboMaquinariaBuscar").on("change", function () {
+    const selectedValue = $(this).val();
+    $("#id_maquinaria").val(selectedValue);
+  });
+
+  $("#cboClienteBuscar").on("change", function () {
+    const selectedValue = $(this).val();
+    $("#id_cliente").val(selectedValue);
+    cargarFundosPorCliente(selectedValue);
+  });
+
+  $("#id_servicio").on("change", function () {
+    if ($("#id_servicio").val() == "") {
+      return false;
+    }
+    const json_servicio = $("#json_servicio").val();
+    var data = JSON.parse(json_servicio);
+    if (data && Array.isArray(data) && data.length > 0) {
+      const service_selected = data.find((x) => x.id_servicio == $("#id_servicio").val());
+      $("#label_precio").html("Precio por " + service_selected.unidad);
+      $("#label_total").html("Total de " + service_selected.unidad);
+      $("#precio_hectarea").val(service_selected.precio);
+    }
+  });
+
+  $("#id_maquinaria").on("change", function () {
+    if ($("#id_maquinaria").val() == "") {
+      return false;
+    }
+    const json_maquinaria = $("#json_maquinaria").val();
+    var data = JSON.parse(json_maquinaria);
+    if (data && Array.isArray(data) && data.length > 0) {
+      const maquinaria_selected = data.find((x) => x.id_maquinaria == $("#id_maquinaria").val());
+      $("#id_operador").val(maquinaria_selected.id_trabajador);
+    }
+  });
+
+  $("#id_unidad").on("change", function () {
+    const servicioData = JSON.parse($("#json_servicio").val());
+    const selectedUnidadId = $(this).val();
+    const filteredServices = servicioData.filter((service) => service.id_tipo_servicio == selectedUnidadId);
+
+    $("#id_servicio").empty().append('<option value="">Seleccione...</option>');
+
+    filteredServices.forEach((service) => {
+      $("#id_servicio").append(`<option value="${service.id_servicio}">${service.name_servicio} (${service.precio} x ${service.unidad})</option>`);
     });
+  });
 
-    $('#btnSearch').click(function(){
-      crearCalendario();
-    });
+  $("#cboClienteBuscar").select2({
+    placeholder: "Seleccione un cliente",
+    allowClear: true,
+  });
 
-    $('#btnCancel').click(function(){
-      $('#panelDetalle').addClass('d-none');
-      $('#panelCalendario').removeClass('d-none');
-      $('#calendario').removeClass('d-none');
-    });
-
-    $('#btnAtenderCita').click(function(){
-
-        try {
-
-          var id_cita = $("#id_cita").val();
-          var parametros = {
-            "id_cita" : id_cita
-          };
-
-          Swal.fire({
-            title: '¿Seguro de atender esta cita : ' + $("#fecha_inicio").val() + '?',
-            text: "No podrás revertir esta operación.",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#22c63b',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, Atender ahora!'
-          }).then(function(result) {
-            if (result.value) {
-              $.ajax({
-                type: "POST",
-                url: "ajax.php?accion=getDetalleCita",
-                datatype: "json",
-                data: parametros,
-                success: function(data){
-            			try {
-                    var response = JSON.parse(data);
-                    if (response['error']=="SI") {
-                      runAlert("Oh No...!!!",response['message'],"warning");
-                    } else {
-                      var o = response['data'];
-                      $('#id_tipo_mascota').val(o[0]['id_tipo_mascota']);
-                      $('#nombre_mascota').val(o[0]['name_mascota']);
-                      $('#raza').val(o[0]['raza']);
-                      $('#color').val(o[0]['color']);
-                      $('#peso').val(o[0]['peso']);
-                      $('#sexo').val(o[0]['sexo']);
-                      $('#fecha_nacimiento').val(o[0]['fecha_nacimiento']);
-                      $('#estado').val(o[0]['estado']);
-                      $('#motivo').val(o[0]['sintoma']);
-                      $('#img_destino').attr('src', o[0]['src_imagen']);
-                      $('#sintomas_edit').val(o[0]['detalle_sintomas']);
-                      $('#observaciones_edit').val(o[0]['detalle_observaciones']);
-                      $('#tratamiento_edit').val(o[0]['detalle_tratamiento']);
-                      $('#vacunas_edit').val(o[0]['detalle_vacunas_aplicadas']);
-                      $('#panelDetalle').removeClass('d-none');
-                      $('#panelCalendario').addClass('d-none');
-                      $('#calendario').addClass('d-none');
-                      $('#modal-calendario-show').modal('hide');
-                    }
-                  } catch (e) {
-                    runAlert("Oh No...!!!",e,"error");
-                  }
-            		},
-            		error: function(data){
-                  runAlert("Oh No...!!!",data,"error");
-            		},
-                beforeSend: function (xhr) {
-                  showHideLoader('block');
-                },
-                complete: function (jqXHR, textStatus) {
-                  showHideLoader('none');
-                }
-              });
-            }
-          });
-        } catch (e){
-          runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
-        }
-
-    });
-
-    $('#btnSave').click(function(){
-
-        try {
-
-          var id_cita = $("#id_cita").val();
-          var peso = $("#peso").val();
-          var observaciones = $("#observaciones_edit").val();
-          var sintomas = $("#sintomas_edit").val();
-          var tratamiento = $("#tratamiento_edit").val();
-          var vacunas = $("#vacunas_edit").val();
-          var motivo = $("#motivo").val();
-          var parametros = {
-            "id_cita" : id_cita,
-            "peso" : peso,
-            "observaciones" : observaciones,
-            "sintomas" : sintomas,
-            "tratamiento" : tratamiento,
-            "vacunas" : vacunas,
-            "motivo" : motivo,
-          };
-          Swal.fire({
-            title: '¿Seguro de registrar la atención de esta cita?',
-            text: "No podrás revertir esta operación.",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#22c63b',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, Registrar ahora!'
-          }).then(function(result) {
-            if (result.value) {
-              $.ajax({
-                type: "POST",
-                url: "ajax.php?accion=goRegistrarAtencion",
-                datatype: "json",
-                data: parametros,
-                success: function(data){
-            			try {
-                    var response = JSON.parse(data);
-                    if (response['error']=="SI") {
-                      runAlert("Oh No...!!!",response['message'],"warning");
-                    } else {
-                      runAlert("¡Bien Hecho!",response['message'],"success");
-                      $('#panelDetalle').addClass('d-none');
-                      $('#panelCalendario').removeClass('d-none');
-                      $('#calendario').removeClass('d-none');
-                      crearCalendario();
-                    }
-                  } catch (e) {
-                    runAlert("Oh No...!!!",e,"error");
-                  }
-            		},
-            		error: function(data){
-                  runAlert("Oh No...!!!",data,"error");
-            		},
-                beforeSend: function (xhr) {
-                  showHideLoader('block');
-                },
-                complete: function (jqXHR, textStatus) {
-                  showHideLoader('none');
-                }
-              });
-            }
-          });
-        } catch (e){
-          runAlert("Oh No...!!!","Error en TryCatch: " + e,"error");
-        }
-
-    });
-
+  $("#id_cliente").select2({
+    placeholder: "Seleccione un cliente",
+    allowClear: true,
+    dropdownParent: $("#modal-calendario"),
+  });
 });
 
-function crearCalendario(){
+function crearCalendario() {
+  $("#calendario").fullCalendar("destroy");
+  var fundo = $("#cboFundoBuscar").val();
+  var maquinaria = $("#cboMaquinariaBuscar").val();
+  var operador = $("#cboMedicoBuscar").val();
+  var cliente = $("#cboClienteBuscar").val();
 
-  $('#calendario').fullCalendar('destroy');
-  var id_documento = $('#cboDocumentoBuscar').val();
-  var valor = $('#txtBuscar').val();
-  var calendario = $('#calendario').fullCalendar({
-    defaultView: 'month',
-    editable: false,
-    selectable: false,
-    allDaySlot: false,
-    locale: 'es',
-    weekends: false,
-    displayEventTime: true,
-    displayEventEnd: true,
-    columnHeader: true,
-    columnHeaderText: function(mom) {
-      switch (mom.weekday()) {
-        case 0:
-          return 'Lunes';
-          break;
-        case 1:
-          return 'Martes';
-          break;
-        case 2:
-          return 'Miércoles';
-          break;
-        case 3:
-          return 'Jueves';
-          break;
-        case 4:
-          return 'Viernes';
-          break;
-        case 5:
-          return 'Sábado';
-          break;
-        case 6:
-          return 'Domingo';
-          break;
-        default:
-          return 'Lunes XD';
-      }
+  $("#calendario").fullCalendar({
+    defaultView: "month",
+    editable: true,
+    selectable: true,
+    locale: "es",
+    header: {
+      left: "prev,next today",
+      center: "title",
+      right: "month,agendaWeek,agendaDay",
     },
-    slotLabelFormat: 'hh:mm',
-    slotLabelInterval: '01:00:00',
-    selectHelper: false,
-    selectOverlap: false,
-    eventOverlap: false,
-    droppable: false,
+    select: function (start, end) {
+      var fecha_ingreso = moment(start).format("YYYY-MM-DD");
+      var hora_ingreso = moment(start).format("HH:mm");
+      var fecha_salida = moment(end).format("YYYY-MM-DD");
+      var hora_salida = moment(end).format("HH:mm");
+      $("#fecha_ingreso").val(fecha_ingreso);
+      $("#hora_ingreso").val(hora_ingreso);
+      $("#fecha_salida").val(fecha_salida);
+      $("#hora_salida").val(hora_salida);
+
+      $("#modal-calendario").modal("show");
+    },
+    eventClick: function (event) {
+      getCronograma(event.id);
+    },
+    eventDrop: function (event, delta, revertFunc) {
+      actualizarFechaCronograma(event, revertFunc);
+    },
+    eventResize: function (event, delta, revertFunc) {
+      actualizarFechaCronograma(event, revertFunc);
+    },
     eventSources: [
       {
-        url: 'ajax.php?accion=showCitasTrabajador',
-        type: 'POST',
+        url: "ajax.php?accion=showCronograma",
+        type: "POST",
         data: {
-          id_documento: id_documento,
-          valor: valor
+          fundo: fundo,
+          maquinaria: maquinaria,
+          operador: operador,
+          cliente: cliente,
         },
-        error: function(e) {
-          console.log(e);
-          runAlert('there was an error while fetching events!');
+        success: function (events) {
+          console.log(events);
+          events.forEach(function (event){
+            event.estado_trabajo = event.estado_trabajo;
+          });
         },
-        color: 'yellow', 
-        textColor: 'black'
-      }
+
+        error: function (e) {
+          console.log(e.responseText);
+        },
+        color: "yellow",
+        textColor: "black",
+      },
     ],
-    eventRender: function(event, element) {
-      element.find('.fc-title').append("<br/>" + event.description);
+    eventRender: function (event, element) {
+      console.log(event);
+      let description = `
+          <br/>${event.description}
+          <br/>Servicio: ${event.nombre_servicio}
+          <br/>Cliente: ${event.nombre_cliente}
+          <br/>Operador: ${event.nombre_operador}
+          <br/>Maquinaria: ${event.nombre_maquinaria}
+          <br/>Fundo: ${event.nombre_fundo}
+      `;
+      element.find(".fc-title").append(description);
     },
-    loading: function( isLoading, view ) {
-      if(isLoading) {
-        showHideLoader('block');
+    loading: function (isLoading, view) {
+      if (isLoading) {
+        showHideLoader("block");
       } else {
-        showHideLoader('none');
+        showHideLoader("none");
       }
-    }
-
+    },
   });
-  date = new Date();
-  $('#calendario').fullCalendar('gotoDate', date);
-
-  var calendarioEvent = $('#calendario').fullCalendar('getCalendar');
-  calendarioEvent.on('eventClick', function(event, jsEvent, view){
-
-    $('#id_cita').val(event.id);
-    $('#name_mascota').val(event.id_mascota);
-    $('#name_servicio').val(event.id_servicio);
-    $('#fecha_inicio').val(event.fecha_inicio);
-    $('#fecha_fin').val(event.fecha_fin);
-    $('#sintomas').val(event.sintoma);
-    $('#num_documento_show').val(event.num_documento);
-    $('#name_documento').val(event.name_documento);
-    $('#name_medico').val(event.name_medico);
-
-    $('#modal-calendario-show').modal('show');
-
-  });
-
 }
+
+function registrarCronograma() {
+  Swal.fire({
+    title: "¿Desea guardar este cronograma?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, guardar",
+  }).then(function (result) {
+    if (result.value) {
+      var form = $("#frmCronograma")[0];
+      var formData = new FormData(form);
+
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=registrarCronograma",
+        contentType: false,
+        processData: false,
+        data: formData,
+        beforeSend: function () {
+          showHideLoader("block");
+        },
+        success: function (response) {
+          try {
+            console.log(response);
+            var data = JSON.parse(response);
+            if (data.error == "NO") {
+              Swal.fire("Éxito", data.message, "success");
+              $("#frmCronograma")[0].reset();
+              $("#modal-calendario").modal("hide");
+              crearCalendario();
+            } else {
+              Swal.fire("Error", data.message, "error");
+            }
+          } catch (e) {
+            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+          }
+        },
+        error: function (xhr) {
+          Swal.fire("Error", xhr.responseText, "error");
+        },
+        complete: function () {
+          showHideLoader("none");
+        },
+      });
+    }
+  });
+}
+
+function getCronograma(id_cronograma) {
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=getCronograma",
+    data: { id_cronograma: id_cronograma },
+    beforeSend: function () {
+      showHideLoader("block");
+    },
+    success: function (response) {
+      console.log(response);
+      try {
+        var data = typeof response === "string" ? JSON.parse(response) : response;
+        if (data.error === "NO") {
+          var info = data.data;
+
+          $("#id_cronograma").val(info.id_cronograma);
+          $("#fundo_show").val(info.nombre_fundo);
+          $("#cliente_show").val(info.nombre_cliente);
+          $("#operador_show").val(info.nombre_operador);
+          $("#maquinaria_show").val(info.nombre_maquinaria);
+          $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("DD/MM/YYYY HH:mm"));
+          $("#fecha_salida_show").val(moment(info.fecha_salida).format("DD/MM/YYYY HH:mm"));
+          $("#estado_trabajo_show").val(info.estado_trabajo);
+
+
+          //Ocultar el botón Anular
+          if (info.estado_trabajo === "PENDIENTE" || info.estado_trabajo === "REGISTRADO") {
+            $("#btnAnularCronograma").show();
+          } else {
+            $("#btnAnularCronograma").hide();
+          }
+
+          if (info.estado_trabajo === "REGISTRADO") {
+            $("#btnAprobarCronograma").show();
+          } else {
+            $("#btnAprobarCronograma").hide();
+          }
+
+          $("#modal-calendario-show").modal("show");
+        } else {
+          Swal.fire("Error", data.message, "error");
+        }
+      } catch (e) {
+        Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+      }
+    },
+    error: function (xhr) {
+      Swal.fire("Error", xhr.responseText, "error");
+    },
+    complete: function () {
+      showHideLoader("none");
+    },
+  });
+}
+
+function anularCronograma() {
+  var id_cronograma = $("#id_cronograma").val();
+  Swal.fire({
+    title: "¿Seguro de anular este cronograma?",
+    text: "No podrás revertir esta acción.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, anular ahora",
+  }).then(function (result) {
+    if (result.value) {
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=eliminarCronograma",
+        data: { id_cronograma: id_cronograma },
+        beforeSend: function () {
+          showHideLoader("block");
+        },
+        success: function (response) {
+          try {
+            var data = JSON.parse(response);
+            if (data.error == "NO") {
+              Swal.fire("Éxito", data.message, "success");
+              $("#modal-calendario-show").modal("hide");
+              crearCalendario();
+            } else {
+              Swal.fire("Error", data.message, "error");
+            }
+          } catch (e) {
+            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+          }
+        },
+        error: function (xhr) {
+          Swal.fire("Error", xhr.responseText, "error");
+        },
+        complete: function () {
+          showHideLoader("none");
+        },
+      });
+    }
+  });
+}
+
+function actualizarFechaCronograma(event, revertFunc) {
+  if (event.estado_trabajo === "EN PROCESO") {
+    Swal.fire("Advertencia", "No se puede mover un cronograma en estado 'EN PROCESO'.", "warning");
+    revertFunc();
+    return;
+  }
+
+  var id_cronograma = event.id;
+  var fecha_ingreso = moment(event.start).format("YYYY-MM-DD");
+  var fecha_salida = event.end ? moment(event.end).format("YYYY-MM-DD") : fecha_ingreso;
+  var hora_ingreso = moment(event.start).format("HH:mm");
+  var hora_salida = event.end ? moment(event.end).format("HH:mm") : hora_ingreso;
+
+  Swal.fire({
+    title: "¿Actualizar fechas del cronograma?",
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Sí, actualizar ahora",
+  }).then(function (result) {
+    if (result.value) {
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=actualizarFechaCita",
+        data: {
+          id_cronograma: id_cronograma,
+          fecha_ingreso: fecha_ingreso,
+          hora_ingreso: hora_ingreso,
+          fecha_salida: fecha_salida,
+          hora_salida: hora_salida,
+        },
+        beforeSend: function () {
+          showHideLoader("block");
+        },
+        success: function (response) {
+          try {
+            var data = JSON.parse(response);
+            if (data.error == "NO") {
+              Swal.fire("Éxito", data.message, "success");
+              crearCalendario();
+            } else {
+              Swal.fire("Error", data.message, "error");
+              revertFunc();
+            }
+          } catch (e) {
+            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+            revertFunc();
+          }
+        },
+        error: function (xhr) {
+          Swal.fire("Error", xhr.responseText, "error");
+          revertFunc();
+        },
+        complete: function () {
+          showHideLoader("none");
+        },
+      });
+    } else {
+      revertFunc();
+    }
+  });
+}
+
+function recalcularMontos() {
+  var precio = parseFloat($("#precio_hectarea").val()) || 0;
+  var hectareas = parseFloat($("#total_hectareas").val()) || 0;
+  var descuento = parseFloat($("#descuento").val()) || 0;
+  var adelanto = parseFloat($("#adelanto").val()) || 0;
+
+  var subtotal = precio * hectareas;
+  var monto_total = subtotal - descuento;
+  var saldo_por_pagar = monto_total - adelanto;
+
+  $("#monto_total").val(monto_total.toFixed(2));
+  $("#saldo_por_pagar").val(saldo_por_pagar.toFixed(2));
+}
+
+function cargarFundosPorCliente(id_cliente) {
+  if (id_cliente == "all") {
+    $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
+    return;
+  }
+
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=showFundoCliente",
+    data: { id_cliente: id_cliente },
+    beforeSend: function () {
+      showHideLoader("block");
+    },
+    success: function (response) {
+      try {
+        var data = JSON.parse(response);
+        $("#id_fundo").empty();
+        if (data.error == "NO") {
+          fundosData = data.data;
+          $("#id_fundo").append('<option value="all">Seleccione...</option>');
+          data.data.forEach(function (fundo) {
+            $("#id_fundo").append('<option value="' + fundo.id_fundo + '">' + fundo.nombre_fundo + " (" + fundo.cantidad_hc + " ha)</option>");
+          });
+        } else {
+          fundosData = [];
+          $("#id_fundo").append('<option value="all">' + data.message + "</option>");
+        }
+      } catch (e) {
+        Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+      }
+    },
+    error: function (xhr) {
+      Swal.fire("Error", xhr.responseText, "error");
+    },
+    complete: function () {
+      showHideLoader("none");
+    },
+  });
+}
+
+function cambiarEstadoCronograma(nuevoEstado) {
+  var id_cronograma = $("#id_cronograma").val();
+
+  Swal.fire({
+    title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} este cronograma?`,
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} ahora`,
+  }).then(function (result) {
+    if (result.value) {
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=cambiarEstadoCronograma",
+        data: JSON.stringify({ id_cronograma: id_cronograma, estado: nuevoEstado }),
+        contentType: "application/json",
+        beforeSend: function () {
+          showHideLoader("block");
+        },
+        success: function (response) {
+          console.log("Respuesta del servidor:", response); 
+          try {
+            var data = typeof response === "object" ? response : JSON.parse(response);
+            if (data.error == "NO") {
+              Swal.fire("Éxito", data.message, "success");
+
+              $("#estado_trabajo_show").val(nuevoEstado);
+
+              if (nuevoEstado === "ANULADO") {
+                $("#btnAnularCronograma").hide();
+                $("#btnAprobarCronograma").hide();
+              } else if (nuevoEstado === "APROBADO") {
+                $("#btnAprobarCronograma").hide();
+                $("#btnAnularCronograma").hide();
+              }
+              $("#modal-calendario-show").modal("hide");
+              crearCalendario();
+              console.log("Calendario actualizado.");
+            } else {
+              Swal.fire("Error", data.message, "error");
+            }
+          } catch (e) {
+            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+          }
+        },
+        error: function (xhr) {
+          Swal.fire("Error", xhr.responseText, "error");
+        },
+        complete: function () {
+          showHideLoader("none");
+        },
+      });
+    }
+  });
+}
+

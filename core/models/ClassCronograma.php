@@ -34,7 +34,8 @@ LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medic
 LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
 LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
 LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio
-WHERE 1=1 ";
+WHERE 1=1 
+AND c.estado_trabajo != 'ANULADO' ";
 
       if ($id_maquinaria != "all") {
         $sql .= " AND m.id_maquinaria = ? ";
@@ -858,6 +859,23 @@ public function getMaquinariaById($id_cronograma_maquinaria)
         $conexionClass->Close();
     }
 }
+
+public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado) {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+  try {
+      $sql = "UPDATE tb_cronograma SET estado_trabajo = :estado WHERE id_cronograma = :id";
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(':estado', $nuevo_estado, PDO::PARAM_STR);
+      $stmt->bindParam(':id', $id_cronograma, PDO::PARAM_INT);
+      $stmt->execute();
+
+      return "OK";
+  } catch (PDOException $e) {
+      return "Error: " . $e->getMessage();
+  }
+}
+
 
 
 }

@@ -15,7 +15,12 @@ $(document).ready(function () {
 
   // Botón anular cronograma en el modal de vista
   $("#btnAnularCronograma").click(function () {
-    anularCronograma();
+    cambiarEstadoCronograma('ANULADO');
+  });
+  
+  // Botón aprobar cronograma en el modal de vista
+  $("#btnAprobarCronograma").click(function () {
+    cambiarEstadoCronograma('APROBADO');
   });
 
   // Recalcular montos al cambiar valores
@@ -270,10 +275,16 @@ function getCronograma(id_cronograma) {
 
 
           //Ocultar el botón Anular
-          if (info.estado_trabajo === "PENDIENTE") {
+          if (info.estado_trabajo === "PENDIENTE" || info.estado_trabajo === "REGISTRADO") {
             $("#btnAnularCronograma").show();
           } else {
             $("#btnAnularCronograma").hide();
+          }
+
+          if (info.estado_trabajo === "REGISTRADO") {
+            $("#btnAprobarCronograma").show();
+          } else {
+            $("#btnAprobarCronograma").hide();
           }
 
           $("#modal-calendario-show").modal("show");
@@ -455,3 +466,62 @@ function cargarFundosPorCliente(id_cliente) {
     },
   });
 }
+
+function cambiarEstadoCronograma(nuevoEstado) {
+  var id_cronograma = $("#id_cronograma").val();
+
+  Swal.fire({
+    title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} este cronograma?`,
+    text: "Esta acción no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} ahora`,
+  }).then(function (result) {
+    if (result.value) {
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=cambiarEstadoCronograma",
+        data: JSON.stringify({ id_cronograma: id_cronograma, estado: nuevoEstado }),
+        contentType: "application/json",
+        beforeSend: function () {
+          showHideLoader("block");
+        },
+        success: function (response) {
+          console.log("Respuesta del servidor:", response); 
+          try {
+            var data = typeof response === "object" ? response : JSON.parse(response);
+            if (data.error == "NO") {
+              Swal.fire("Éxito", data.message, "success");
+
+              $("#estado_trabajo_show").val(nuevoEstado);
+
+              if (nuevoEstado === "ANULADO") {
+                $("#btnAnularCronograma").hide();
+                $("#btnAprobarCronograma").hide();
+              } else if (nuevoEstado === "APROBADO") {
+                $("#btnAprobarCronograma").hide();
+                $("#btnAnularCronograma").hide();
+              }
+              $("#modal-calendario-show").modal("hide");
+              crearCalendario();
+              console.log("Calendario actualizado.");
+            } else {
+              Swal.fire("Error", data.message, "error");
+            }
+          } catch (e) {
+            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+          }
+        },
+        error: function (xhr) {
+          Swal.fire("Error", xhr.responseText, "error");
+        },
+        complete: function () {
+          showHideLoader("none");
+        },
+      });
+    }
+  });
+}
+

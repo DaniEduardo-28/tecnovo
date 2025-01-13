@@ -300,7 +300,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                 <div class="form-group col-sm-12">
                   <label for="estado_trabajo">Estado Trabajo</label>
-                  <input type="text" id="estado_trabajo" name="estado_trabajo" value="PENDIENTE" class="form-control" readonly>
+                  <input type="text" id="estado_trabajo" name="estado_trabajo" value="REGISTRADO" class="form-control" readonly>
                 </div>
 
                 <!-- Campos adicionales -->
@@ -416,6 +416,7 @@ if (!isset($_SESSION['id_trabajador'])) {
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
             <button type="button" id="btnAnularCronograma" class="btn btn-warning">Anular Cronograma</button>
+            <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;">Aprobar Cronograma</button>
           </div>
         </div>
       </div>

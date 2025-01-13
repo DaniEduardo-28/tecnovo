@@ -30,7 +30,7 @@ try {
         $_POST['monto_total'],
         $_POST['saldo_por_pagar'],
         $_POST['monto_total'] - $_POST['adelanto'] <= 0 ? 'PAGADO' : 'PENDIENTE',
-        'PENDIENTE',
+        'REGISTRADO',
         $_POST['id_cliente'],
         $_POST['id_maquinaria'],
         $_POST['id_operador']
