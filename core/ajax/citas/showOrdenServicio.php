@@ -28,6 +28,9 @@
       $retorno_array[] =array(
           "options" => "$options",
           "num" => "$count",
+          "total" => number_format($key['total'], 2),
+          "gastos" => number_format($key['gastos'], 2),
+          "ganancia" => number_format($key['ganancia'], 2),
           "id_cronograma" => $key['id_cronograma'],
           "nombre_fundo" => $key['nombre_fundo'],
           "nombre_cliente" => $key['nombre_cliente'],

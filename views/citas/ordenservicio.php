@@ -176,6 +176,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                     <tr>
                       <th>Acciones</th>
                       <th>Num</th>
+                      <th>Total</th>
+                      <th>Gastos</th>
+                      <th>Ganancia</th>
                       <th>Id</th>
                       <th>Fundo</th>
                       <th>Nombre Cliente</th>

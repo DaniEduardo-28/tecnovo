@@ -509,14 +509,35 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $sql = "SELECT 
                   c.id_cronograma,
-                  f.nombre AS nombre_fundo,
-                  CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
-                  s.name_servicio AS nombre_servicio,
-                  GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
-                  GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
-                  c.fecha_ingreso,
-                  c.fecha_salida,
-                  c.estado_trabajo
+                f.nombre AS nombre_fundo,
+                CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
+                s.name_servicio AS nombre_servicio,
+                GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
+                GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
+                c.fecha_ingreso,
+                c.fecha_salida,
+                c.estado_trabajo,
+                c.monto_total AS total,
+                IFNULL((
+                    SELECT SUM(cm.pago_petroleo) 
+                    FROM tb_cronograma_maquinaria cm 
+                    WHERE cm.id_cronograma = c.id_cronograma
+                ), 0) + IFNULL((
+                    SELECT SUM(co.total_pago) 
+                    FROM tb_cronograma_operadores co 
+                    WHERE co.id_cronograma = c.id_cronograma
+                ), 0) AS gastos,
+                c.monto_total - (
+                    IFNULL((
+                        SELECT SUM(cm.pago_petroleo) 
+                        FROM tb_cronograma_maquinaria cm 
+                        WHERE cm.id_cronograma = c.id_cronograma
+                    ), 0) + IFNULL((
+                        SELECT SUM(co.total_pago) 
+                        FROM tb_cronograma_operadores co 
+                        WHERE co.id_cronograma = c.id_cronograma
+                    ), 0)
+                ) AS ganancia
               FROM tb_cronograma c 
               LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
               LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio
@@ -560,7 +581,8 @@ AND c.estado_trabajo != 'ANULADO' ";
                   p.apellidos,
                   c.fecha_ingreso,
                   c.fecha_salida,
-                  c.estado_trabajo
+                  c.estado_trabajo,
+                  c.monto_total
       
       ORDER BY c.fecha_ingreso DESC";
 

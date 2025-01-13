@@ -5,6 +5,9 @@ var table = $('#example').DataTable({
     columns: [
       { 'data': 'opciones'},
       { 'data': 'num' },
+      { 'data': 'total' },
+      { 'data': 'gastos' },
+      { 'data': 'ganancia' },
       { 'data': 'id_cronograma' },
       { 'data': 'nombre_fundo' },
       { 'data': 'nombre_cliente' },
@@ -17,7 +20,7 @@ var table = $('#example').DataTable({
     ],
     columnDefs: [
       {
-        "targets": [2],
+        "targets": [5],
         "visible": false,
         "searchable": true
       }
@@ -211,6 +214,9 @@ $(document).on('click', '.btnEliminarCronograma', function () {
                     table.row.add({
                         opciones: item.options,
                         num: item.num,
+                        total: item.total,
+                        gastos: item.gastos,
+                        ganancia: item.ganancia,
                         id_cronograma: item.id_cronograma,
                         nombre_fundo: item.nombre_fundo,
                         nombre_cliente: item.nombre_cliente,
@@ -299,6 +305,9 @@ $(document).on('click', '.btnEliminarCronograma', function () {
             table.row.add({
               "opciones": item.options,
               "num": item.num,
+              "total": item.total,
+              "gastos": item.gastos,
+              "ganancia": item.ganancia,
               "id_cronograma": item.id_cronograma,
               "nombre_fundo": item.nombre_fundo,
               "nombre_cliente": item.nombre_cliente,

@@ -306,7 +306,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <!-- Campos adicionales -->
                 <div class="form-group col-sm-6">
                   <label for="precio_hectarea" id="label_precio">Precio por </label>
-                  <input type="number" id="precio_hectarea" name="precio_hectarea" class="form-control" value="0" required>
+                  <input type="number" id="precio_hectarea" name="precio_hectarea" class="form-control" value="0" min= required>
                 </div>
 
                 <div class="form-group col-sm-6">
