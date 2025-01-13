@@ -165,6 +165,38 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
+  public function eliminarCronograma($id_cronograma) {
+
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = null;
+
+    try {
+
+      $conexion->beginTransaction();
+        // Validar que el ID sea numérico y mayor a 0
+        if (empty($id_cronograma) || !is_numeric($id_cronograma) || $id_cronograma <= 0) {
+            throw new Exception("ID de cronograma inválido.");
+        }
+
+        // Preparar la consulta de eliminación
+        $sql = "DELETE FROM tb_cronograma WHERE id_cronograma = :id_cronograma";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':id_cronograma', $id_cronograma, PDO::PARAM_INT);
+
+        // Ejecutar la consulta
+        if ($stmt->execute()) {
+            return "OK"; // Retornar OK si la eliminación fue exitosa
+        } else {
+            throw new Exception("No se pudo eliminar el cronograma. Error en la base de datos.");
+        }
+    } catch (Exception $e) {
+        // Capturar cualquier excepción y retornar el mensaje de error
+        return $e->getMessage();
+    }
+}
+
+
   public function getCronogramaById($id_cronograma)
   {
     $conexionClass = new Conexion();

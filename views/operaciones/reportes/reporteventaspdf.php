@@ -46,13 +46,14 @@
     $pdf = new PDF('L','mm','A4');
   	$pdf->AliasNbPages();
   	$pdf->AddPage();
-
   	$pdf->SetFillColor(234,232,232);
-  	$pdf->Image($empresa[0]['src_logo'], 10, 5, -600 );
+
+    $pdf->Image($empresa[0]['src_logo'], 15, 5, -600);
+
   	$pdf->SetY(13);
   	$pdf->SetX(35);
-    $pdf->SetFont('Arial','',13);
-  	$pdf->Cell(100,8,$empresa[0]['razon_social'],0,0,'L',0);
+    $pdf->SetFont('Arial','',11);
+  	$pdf->Cell(15,30,$empresa[0]['razon_social'],0,0,'C',0);
   	$pdf->Ln(10);
   	$pdf->SetFont('Arial','U',11);
   	$pdf->Cell(280,1,'REPORTE DE SALIDA DE PRODUCTOS',0,0,'C',0);

@@ -1,28 +1,49 @@
 <?php
+error_log("Entrando a eliminarCronograma.php con ID: " . $_POST['id_cronograma']);
 
-require_once "core/models/ClassCronograma.php";
 
-$OBJ_CRONOGRAMA = new ClassCronograma();
+// Obtener el ID del cronograma desde la petición POST
+$id_cronograma = isset($_POST["id_cronograma"]) ? $_POST["id_cronograma"] : "";
 
 try {
-    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("citas"));
-    if ($access_options[0]['error'] == "NO" && !$access_options[0]['flag_eliminar']) {
-        throw new Exception("No tienes permisos para eliminar.");
+    // Validar que el ID sea numérico y mayor a 0
+    if (empty($id_cronograma) || !is_numeric($id_cronograma) || $id_cronograma <= 0) {
+        throw new Exception("ID de cronograma no especificado o no válido.");
     }
 
-    $id_cronograma = $_POST['id_cronograma'] ?? null;
+    // Incluir el modelo ClassCronograma
+    require_once "core/models/ClassCronograma.php";
 
-    if (empty($id_cronograma)) {
-        throw new Exception("ID de cronograma no especificado.");
-    }
+    // Log para depuración
+    error_log("Intentando eliminar cronograma con ID: " . $id_cronograma);
 
+    // Llamar a la función eliminarCronograma del modelo
     $Resultado = $OBJ_CRONOGRAMA->eliminarCronograma($id_cronograma);
 
-    if ($Resultado != "OK") {
-        throw new Exception($Resultado);
+    // Verificar el resultado de la eliminación
+    if ($Resultado !== "OK") {
+        throw new Exception("Error al eliminar el cronograma: $Resultado");
     }
 
-    echo json_encode(["error" => "NO", "message" => "Cronograma eliminado correctamente."]);
+    // Respuesta exitosa
+    $data = array(
+        "error" => "NO",
+        "message" => "Registro eliminado correctamente.",
+        "data" => null
+    );
+    echo json_encode($data);
+
 } catch (Exception $e) {
-    echo json_encode(["error" => "SI", "message" => $e->getMessage()]);
+    // Respuesta de error con el mensaje capturado
+    $data = array(
+        "error" => "SI",
+        "message" => $e->getMessage(),
+        "data" => null
+    );
+    echo json_encode($data);
+
+    // Log del error para depuración
+    error_log("Error en eliminarCronograma.php: " . $e->getMessage());
+
+    exit();
 }

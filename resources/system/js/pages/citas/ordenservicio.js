@@ -21,7 +21,8 @@ var table = $('#example').DataTable({
         "visible": false,
         "searchable": true
       }
-    ]
+    ],
+    order: [[1, 'asc']]
   });
   
   // PUNTO ANTES DEL GRAN CAMBIO
@@ -139,7 +140,12 @@ var table = $('#example').DataTable({
         console.error("Error en la petición AJAX para filtros:", textError);
     });
 }
-  
+
+$(document).on('click', '.btnEliminarCronograma', function () {
+  const idCronograma = $(this).data('id'); // Obtener el ID del cronograma
+  deleteCronograma(idCronograma); // Llamar a la función de eliminación
+});
+
   $('#btnReporteExcel').click(function () {
     try {
         const fecha_inicio = $("#txtFechaInicio").val();
