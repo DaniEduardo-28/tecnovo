@@ -107,20 +107,16 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $conexion->beginTransaction();
 
-      $sql = "SELECT id_tipo_servicio FROM tb_servicio WHERE id_servicio = ?";
+      $sql = "SELECT ts.serie
+                FROM tb_servicio s
+                JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio
+                WHERE s.id_servicio = ?";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([$id_servicio]);
-      $id_tipo_servicio = $stmt->fetchColumn();
+      $serie = $stmt->fetchColumn();
 
-      if (!$id_tipo_servicio) {
-          throw new Exception("No se encontró el tipo de servicio para el ID de servicio proporcionado.");
-      }
-
-      $prefijo = "";
-      if ($id_tipo_servicio == 5) { // Para tractor
-          $prefijo = "SE-TRA";
-      } elseif ($id_tipo_servicio == 4) {  // Para cosechadora
-          $prefijo = "SE-COS";
+      if (!$serie) {
+        throw new Exception("No se encontró la serie para el servicio proporcionado.");
       }
 
       $sql = "SELECT codigo 
@@ -129,17 +125,16 @@ AND c.estado_trabajo != 'ANULADO' ";
               ORDER BY id_cronograma DESC 
               LIMIT 1";
       $stmt = $conexion->prepare($sql);
-      $stmt->execute([':prefijo' => $prefijo . '%']);
+      $stmt->execute([':prefijo' => $serie . '%']);
       $ultimoCodigo = $stmt->fetchColumn();
 
-      // Generar el nuevo código secuencial
+      // Generar el código
       if ($ultimoCodigo) {
-          $numeroSecuencial = (int) substr($ultimoCodigo, 7) + 1;
+        $numeroSecuencial = (int) substr($ultimoCodigo, strlen($serie) + 1) + 1;
       } else {
-          $numeroSecuencial = 1;
+        $numeroSecuencial = 1;
       }
-      $nuevoCodigo = $prefijo . str_pad($numeroSecuencial, 5, '0', STR_PAD_LEFT);
-
+      $nuevoCodigo = $serie . str_pad($numeroSecuencial, 5, '0', STR_PAD_LEFT);
 
       $sql = "INSERT INTO tb_cronograma (
             codigo, id_servicio, fecha_ingreso, fecha_salida, lugar, cantidad, 
@@ -200,7 +195,8 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
-  public function eliminarCronograma($id_cronograma) {
+  public function eliminarCronograma($id_cronograma)
+  {
 
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
@@ -209,27 +205,27 @@ AND c.estado_trabajo != 'ANULADO' ";
     try {
 
       $conexion->beginTransaction();
-        // Validar que el ID sea numérico y mayor a 0
-        if (empty($id_cronograma) || !is_numeric($id_cronograma) || $id_cronograma <= 0) {
-            throw new Exception("ID de cronograma inválido.");
-        }
+      // Validar que el ID sea numérico y mayor a 0
+      if (empty($id_cronograma) || !is_numeric($id_cronograma) || $id_cronograma <= 0) {
+        throw new Exception("ID de cronograma inválido.");
+      }
 
-        // Preparar la consulta de eliminación
-        $sql = "DELETE FROM tb_cronograma WHERE id_cronograma = :id_cronograma";
-        $stmt = $conexion->prepare($sql);
-        $stmt->bindParam(':id_cronograma', $id_cronograma, PDO::PARAM_INT);
+      // Preparar la consulta de eliminación
+      $sql = "DELETE FROM tb_cronograma WHERE id_cronograma = :id_cronograma";
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(':id_cronograma', $id_cronograma, PDO::PARAM_INT);
 
-        // Ejecutar la consulta
-        if ($stmt->execute()) {
-            return "OK"; // Retornar OK si la eliminación fue exitosa
-        } else {
-            throw new Exception("No se pudo eliminar el cronograma. Error en la base de datos.");
-        }
+      // Ejecutar la consulta
+      if ($stmt->execute()) {
+        return "OK"; // Retornar OK si la eliminación fue exitosa
+      } else {
+        throw new Exception("No se pudo eliminar el cronograma. Error en la base de datos.");
+      }
     } catch (Exception $e) {
-        // Capturar cualquier excepción y retornar el mensaje de error
-        return $e->getMessage();
+      // Capturar cualquier excepción y retornar el mensaje de error
+      return $e->getMessage();
     }
-}
+  }
 
 
   public function getCronogramaById($id_cronograma)
@@ -723,36 +719,36 @@ AND c.estado_trabajo != 'ANULADO' ";
 
   public function updateOperador($id_cronograma_operador, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago)
   {
-      $conexionClass = new Conexion();
-      $conexion = $conexionClass->Open();
-      $VD = "";
-  
-      try {
-          $conexion->beginTransaction();
-  
-          $stmt = $conexion->prepare("UPDATE tb_cronograma_operadores 
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+      $conexion->beginTransaction();
+
+      $stmt = $conexion->prepare("UPDATE tb_cronograma_operadores 
                                       SET id_trabajador = ?, horas_trabajadas = ?, pago_por_hora = ?, total_pago = ? 
                                       WHERE id_cronograma_operador = ?");
-          $stmt->execute([$id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago, $id_cronograma_operador]);
-  
-          if ($stmt->rowCount() == 0) {
-              throw new Exception("No se pudo actualizar el operador. Verifica los datos.");
-          }
-  
-          $VD = "OK";
-          $conexion->commit();
-      } catch (PDOException $e) {
-          $conexion->rollBack();
-          $VD = $e->getMessage();
-      } catch (Exception $exception) {
-          $conexion->rollBack();
-          $VD = $exception->getMessage();
-      } finally {
-          $conexionClass->Close();
+      $stmt->execute([$id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago, $id_cronograma_operador]);
+
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("No se pudo actualizar el operador. Verifica los datos.");
       }
-      return $VD;
+
+      $VD = "OK";
+      $conexion->commit();
+    } catch (PDOException $e) {
+      $conexion->rollBack();
+      $VD = $e->getMessage();
+    } catch (Exception $exception) {
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
+    } finally {
+      $conexionClass->Close();
+    }
+    return $VD;
   }
-  
+
 
 
   public function deleteOperador($id_cronograma_operador)
@@ -803,15 +799,15 @@ AND c.estado_trabajo != 'ANULADO' ";
     }
   }
 
-// Para Maquinarias
+  // Para Maquinarias
 
-public function getMaquinariasByCronograma($id_cronograma)
-{
+  public function getMaquinariasByCronograma($id_cronograma)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
 
     try {
-        $sql = "SELECT 
+      $sql = "SELECT 
                     m.id_cronograma_maquinaria, 
                     maq.descripcion AS nombre_maquinaria, 
                     m.petroleo_entrada, 
@@ -823,143 +819,144 @@ public function getMaquinariasByCronograma($id_cronograma)
                 INNER JOIN tb_maquinaria maq ON m.id_maquinaria = maq.id_maquinaria
                 WHERE m.id_cronograma = :id_cronograma";
 
-        $stmt = $conexion->prepare($sql);
-        $stmt->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
+      $stmt->execute();
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($result) > 0) {
-            return ["error" => "NO", "data" => $result];
-        } else {
-            return ["error" => "SI", "message" => "No se encontraron maquinarias para este cronograma."];
-        }
+      if (count($result) > 0) {
+        return ["error" => "NO", "data" => $result];
+      } else {
+        return ["error" => "SI", "message" => "No se encontraron maquinarias para este cronograma."];
+      }
     } catch (Exception $e) {
-        return ["error" => "SI", "message" => $e->getMessage()];
+      return ["error" => "SI", "message" => $e->getMessage()];
     }
-}
+  }
 
-public function addMaquinaria($id_cronograma, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo)
-{
+  public function addMaquinaria($id_cronograma, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = "";
 
     try {
-        $conexion->beginTransaction();
+      $conexion->beginTransaction();
 
-        $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
-        $pago_petroleo = $consumo_petroleo * $precio_petroleo;
+      $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
+      $pago_petroleo = $consumo_petroleo * $precio_petroleo;
 
-        $sql = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria, petroleo_entrada, petroleo_salida, consumo_petroleo, precio_petroleo, pago_petroleo) 
+      $sql = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria, petroleo_entrada, petroleo_salida, consumo_petroleo, precio_petroleo, pago_petroleo) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_cronograma, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo]);
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo]);
 
-        if ($stmt->rowCount() == 0) {
-            throw new Exception("Ocurrió un error al registrar la maquinaria.");
-        }
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Ocurrió un error al registrar la maquinaria.");
+      }
 
-        $VD = "OK";
-        $conexion->commit();
+      $VD = "OK";
+      $conexion->commit();
     } catch (PDOException $e) {
-        $conexion->rollBack();
-        $VD = $e->getMessage();
+      $conexion->rollBack();
+      $VD = $e->getMessage();
     } catch (Exception $exception) {
-        $conexion->rollBack();
-        $VD = $exception->getMessage();
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
     return $VD;
-}
+  }
 
-public function updateMaquinaria($id_cronograma_maquinaria, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo)
-{
+  public function updateMaquinaria($id_cronograma_maquinaria, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = "";
 
     try {
-        $conexion->beginTransaction();
+      $conexion->beginTransaction();
 
-        $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
-        $pago_petroleo = $consumo_petroleo * $precio_petroleo;
+      $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
+      $pago_petroleo = $consumo_petroleo * $precio_petroleo;
 
-        $stmt = $conexion->prepare("UPDATE tb_cronograma_maquinaria 
+      $stmt = $conexion->prepare("UPDATE tb_cronograma_maquinaria 
                                     SET id_maquinaria = ?, petroleo_entrada = ?, petroleo_salida = ?, consumo_petroleo = ?, precio_petroleo = ?, pago_petroleo = ? 
                                     WHERE id_cronograma_maquinaria = ?");
-        $stmt->execute([$id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo, $id_cronograma_maquinaria]);
+      $stmt->execute([$id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo, $id_cronograma_maquinaria]);
 
-        if ($stmt->rowCount() == 0) {
-            throw new Exception("No se pudo actualizar la maquinaria. Verifica los datos.");
-        }
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("No se pudo actualizar la maquinaria. Verifica los datos.");
+      }
 
-        $VD = "OK";
-        $conexion->commit();
+      $VD = "OK";
+      $conexion->commit();
     } catch (PDOException $e) {
-        $conexion->rollBack();
-        $VD = $e->getMessage();
+      $conexion->rollBack();
+      $VD = $e->getMessage();
     } catch (Exception $exception) {
-        $conexion->rollBack();
-        $VD = $exception->getMessage();
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
     return $VD;
-}
+  }
 
-public function deleteMaquinaria($id_cronograma_maquinaria)
-{
+  public function deleteMaquinaria($id_cronograma_maquinaria)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = "";
 
     try {
-        $conexion->beginTransaction();
+      $conexion->beginTransaction();
 
-        $stmt = $conexion->prepare("DELETE FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?");
-        $stmt->execute([$id_cronograma_maquinaria]);
+      $stmt = $conexion->prepare("DELETE FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?");
+      $stmt->execute([$id_cronograma_maquinaria]);
 
-        if ($stmt->rowCount() == 0) {
-            throw new Exception("Ocurrió un error al eliminar la maquinaria.");
-        }
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Ocurrió un error al eliminar la maquinaria.");
+      }
 
-        $VD = "OK";
-        $conexion->commit();
+      $VD = "OK";
+      $conexion->commit();
     } catch (PDOException $e) {
-        $conexion->rollBack();
-        $VD = $e->getMessage();
+      $conexion->rollBack();
+      $VD = $e->getMessage();
     } catch (Exception $exception) {
-        $conexion->rollBack();
-        $VD = $exception->getMessage();
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
     return $VD;
-}
+  }
 
-public function getMaquinariaById($id_cronograma_maquinaria)
-{
+  public function getMaquinariaById($id_cronograma_maquinaria)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
 
     try {
-        $sql = "SELECT * FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_cronograma_maquinaria]);
+      $sql = "SELECT * FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma_maquinaria]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+      return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        return false;
+      return false;
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
-}
+  }
 
-public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado) {
+  public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
-  try {
+    try {
       $sql = "UPDATE tb_cronograma SET estado_trabajo = :estado WHERE id_cronograma = :id";
       $stmt = $conexion->prepare($sql);
       $stmt->bindParam(':estado', $nuevo_estado, PDO::PARAM_STR);
@@ -967,13 +964,10 @@ public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado) {
       $stmt->execute();
 
       return "OK";
-  } catch (PDOException $e) {
+    } catch (PDOException $e) {
       return "Error: " . $e->getMessage();
+    }
   }
-}
-
-
-
 }
 
 $OBJ_CRONOGRAMA = new ClassCronograma();
