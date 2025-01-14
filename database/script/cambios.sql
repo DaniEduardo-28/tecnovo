@@ -6,7 +6,7 @@ MODIFY COLUMN estado_trabajo ENUM('EN PROCESO', 'TERMINADO', 'PENDIENTE', 'ANULA
 DEFAULT 'REGISTRADO';
 
 -- Nuevo campo codigo
-ALTER TABLE tb_cronograma ADD COLUMN codigo VARCHAR(20) NULL;
+ALTER TABLE tb_cronograma ADD COLUMN codigo INT;
 
 -- Campo serie en tipo_servicio
 ALTER TABLE tb_tipo_servicio 

@@ -107,34 +107,25 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $conexion->beginTransaction();
 
-      $sql = "SELECT ts.serie
-                FROM tb_servicio s
-                JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio
-                WHERE s.id_servicio = ?";
-      $stmt = $conexion->prepare($sql);
-      $stmt->execute([$id_servicio]);
-      $serie = $stmt->fetchColumn();
+      $sql = "SELECT id_tipo_servicio FROM tb_servicio WHERE id_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_servicio]);
+        $id_tipo_servicio = $stmt->fetchColumn();
 
-      if (!$serie) {
-        throw new Exception("No se encontró la serie para el servicio proporcionado.");
+        if (!$id_tipo_servicio) {
+          throw new Exception("No se encontró el tipo de servicio para el ID de servicio proporcionado.");
       }
 
-      $sql = "SELECT codigo 
-              FROM tb_cronograma 
-              WHERE codigo LIKE :prefijo 
-              ORDER BY id_cronograma DESC 
-              LIMIT 1";
-      $stmt = $conexion->prepare($sql);
-      $stmt->execute([':prefijo' => $serie . '%']);
-      $ultimoCodigo = $stmt->fetchColumn();
+      $sql = "SELECT MAX(codigo) 
+                FROM tb_cronograma c
+                JOIN tb_servicio s ON c.id_servicio = s.id_servicio
+                WHERE s.id_tipo_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_tipo_servicio]);
+        $ultimoCodigo = $stmt->fetchColumn();
 
-      // Generar el código
-      if ($ultimoCodigo) {
-        $numeroSecuencial = (int) substr($ultimoCodigo, strlen($serie) + 1) + 1;
-      } else {
-        $numeroSecuencial = 1;
-      }
-      $nuevoCodigo = $serie . str_pad($numeroSecuencial, 5, '0', STR_PAD_LEFT);
+
+        $nuevoCodigo = $ultimoCodigo ? $ultimoCodigo + 1 : 1;
 
       $sql = "INSERT INTO tb_cronograma (
             codigo, id_servicio, fecha_ingreso, fecha_salida, lugar, cantidad, 
@@ -540,7 +531,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $sql = "SELECT 
                   c.id_cronograma,
-                  c.codigo,
+                  CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo,
                 f.nombre AS nombre_fundo,
                 CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
                 s.name_servicio AS nombre_servicio,
