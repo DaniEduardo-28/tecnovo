@@ -107,13 +107,48 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $conexion->beginTransaction();
 
+      $sql = "SELECT id_tipo_servicio FROM tb_servicio WHERE id_servicio = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_servicio]);
+      $id_tipo_servicio = $stmt->fetchColumn();
+
+      if (!$id_tipo_servicio) {
+          throw new Exception("No se encontró el tipo de servicio para el ID de servicio proporcionado.");
+      }
+
+      $prefijo = "";
+      if ($id_tipo_servicio == 5) { // Para tractor
+          $prefijo = "SE-TRA";
+      } elseif ($id_tipo_servicio == 4) {  // Para cosechadora
+          $prefijo = "SE-COS";
+      }
+
+      $sql = "SELECT codigo 
+              FROM tb_cronograma 
+              WHERE codigo LIKE :prefijo 
+              ORDER BY id_cronograma DESC 
+              LIMIT 1";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([':prefijo' => $prefijo . '%']);
+      $ultimoCodigo = $stmt->fetchColumn();
+
+      // Generar el nuevo código secuencial
+      if ($ultimoCodigo) {
+          $numeroSecuencial = (int) substr($ultimoCodigo, 7) + 1;
+      } else {
+          $numeroSecuencial = 1;
+      }
+      $nuevoCodigo = $prefijo . str_pad($numeroSecuencial, 5, '0', STR_PAD_LEFT);
+
+
       $sql = "INSERT INTO tb_cronograma (
-            id_servicio, fecha_ingreso, fecha_salida, lugar, cantidad, 
+            codigo, id_servicio, fecha_ingreso, fecha_salida, lugar, cantidad, 
             monto_unitario, descuento, adelanto, monto_total, saldo_por_pagar, 
             estado_pago, estado_trabajo, id_fundo, id_cliente
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([
+        $nuevoCodigo,
         $id_servicio,
         $fecha_1,
         $fecha_2,
@@ -496,7 +531,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
     return $VD;
   }
-  public function showreporte($estado, $cliente, $fundo, $maquinaria, $operador)
+  public function showreporte($estado, $cliente, $fundo, $maquinaria, $operador, $unidadNegocio)
   {
 
     $conexionClass = new Conexion();
@@ -509,6 +544,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $sql = "SELECT 
                   c.id_cronograma,
+                  c.codigo,
                 f.nombre AS nombre_fundo,
                 CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
                 s.name_servicio AS nombre_servicio,
@@ -540,7 +576,8 @@ AND c.estado_trabajo != 'ANULADO' ";
                 ) AS ganancia
               FROM tb_cronograma c 
               LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
-              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio
+              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+              LEFT JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio 
               LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
               LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
               LEFT JOIN tb_cronograma_maquinaria cm ON c.id_cronograma = cm.id_cronograma
@@ -572,6 +609,10 @@ AND c.estado_trabajo != 'ANULADO' ";
         $sql .= " AND t.id_trabajador = :operador";
         $parametros[":operador"] = $operador;
       }
+      if ($unidadNegocio != "all") {
+        $sql .= " AND s.id_tipo_servicio = :unidadNegocio";
+        $parametros[":unidadNegocio"] = $unidadNegocio;
+      }
 
       $sql .= " GROUP BY 
                   c.id_cronograma, 
@@ -582,7 +623,8 @@ AND c.estado_trabajo != 'ANULADO' ";
                   c.fecha_ingreso,
                   c.fecha_salida,
                   c.estado_trabajo,
-                  c.monto_total
+                  c.monto_total,
+                  c.codigo
       
       ORDER BY c.fecha_ingreso DESC";
 

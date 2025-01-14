@@ -3,8 +3,9 @@ var table = $('#example').DataTable({
     destroy: true,
     data: [],
     columns: [
-      { 'data': 'opciones'},
       { 'data': 'num' },
+      { 'data': 'opciones'},
+      { 'data': 'codigo' },
       { 'data': 'total' },
       { 'data': 'gastos' },
       { 'data': 'ganancia' },
@@ -20,7 +21,7 @@ var table = $('#example').DataTable({
     ],
     columnDefs: [
       {
-        "targets": [5],
+        "targets": [6],
         "visible": false,
         "searchable": true
       }
@@ -49,6 +50,7 @@ var table = $('#example').DataTable({
     $("#cboFundoBuscar").change(showLista);      
     $("#cboMaquinariaBuscar").change(showLista); 
     $("#cboMedicoBuscar").change(showLista);
+    $("#cboUnidadBuscar").change(showLista);
 
     $("#btnNuevoOperador").click(function () {
       $("#nuevoOperadorContainer").show();
@@ -191,6 +193,7 @@ $(document).on('click', '.btnEliminarCronograma', function () {
     const fundo = $("#cboFundoBuscar").val();
     const maquinaria = $("#cboMaquinariaBuscar").val();
     const operador = $("#cboMedicoBuscar").val();
+    const unidadNegocio = $("#cboUnidadBuscar").val();
   
     $.ajax({
         data: {
@@ -199,7 +202,8 @@ $(document).on('click', '.btnEliminarCronograma', function () {
             id_cliente: cliente,
             id_fundo: fundo,
             id_maquinaria: maquinaria,
-            id_trabajador: operador
+            id_trabajador: operador,
+            id_tipo_servicio: unidadNegocio
         },
         type: "POST",
         url: "ajax.php?accion=showOrdenServicio"
@@ -212,8 +216,9 @@ $(document).on('click', '.btnEliminarCronograma', function () {
                 const registros = data1["data"];
                 registros.forEach(function (item) {
                     table.row.add({
-                        opciones: item.options,
                         num: item.num,
+                        opciones: item.options,
+                        codigo: item.codigo,
                         total: item.total,
                         gastos: item.gastos,
                         ganancia: item.ganancia,
@@ -281,6 +286,7 @@ $(document).on('click', '.btnEliminarCronograma', function () {
     var fundo = $("#cboFundoBuscar").val();
     var maquinaria = $("#cboMaquinariaBuscar").val();
     var operador = $("#cboMedicoBuscar").val();
+    var unidadNegocio = $("#cboUnidadBuscar").val();
     $("#divPaginador").addClass("d-none");
   
     $.ajax({
@@ -292,7 +298,8 @@ $(document).on('click', '.btnEliminarCronograma', function () {
         cliente: cliente,
         fundo: fundo,
         maquinaria: maquinaria,
-        operador: operador
+        operador: operador,
+        unidadNegocio: unidadNegocio
       },
       type: "POST",
       url: 'ajax.php?accion=showOrdenServicio'
@@ -303,8 +310,9 @@ $(document).on('click', '.btnEliminarCronograma', function () {
           var o = data1["data"];
           o.forEach(function (item) {
             table.row.add({
-              "opciones": item.options,
               "num": item.num,
+              "opciones": item.options,
+              "codigo": item.codigo,
               "total": item.total,
               "gastos": item.gastos,
               "ganancia": item.ganancia,

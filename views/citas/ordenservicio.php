@@ -159,6 +159,25 @@ if (!isset($_SESSION['id_trabajador'])) {
                       ?>
                     </select>
                   </div>
+
+                  <div class="form-group col-sm-6 col-md-3">
+                    <label for="cboUnidadBuscar">Unidad de Negocio</label>
+                    <select class="form-control" id="cboUnidadBuscar" name="cboUnidadBuscar">
+                      <option value="all">Todos</option>
+                      <?php
+                      include("core/models/ClassTipoServicio.php");
+                      $dataUnidad = $OBJ_TIPO_SERVICIO->show("activo");
+                      if ($dataUnidad["error"] == "NO") {
+                        foreach ($dataUnidad["data"] as $key) {
+                      ?>
+                          <option value="<?= $key['id_tipo_servicio']; ?>"><?= $key['name_tipo'] ?></option>
+                      <?php
+                        }
+                      }
+                      ?>
+                    </select>
+                  </div>
+
                 </div>
 
                 <!-- <div id="calendario" class="col-md-12"></div> -->
@@ -174,8 +193,9 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <table id="example" class="table table-bordered">
                   <thead>
                     <tr>
+                      <th>#</th>
                       <th>Acciones</th>
-                      <th>Num</th>
+                      <th>Código</th>
                       <th>Total</th>
                       <th>Gastos</th>
                       <th>Ganancia</th>
