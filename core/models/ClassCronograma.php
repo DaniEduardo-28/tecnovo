@@ -834,14 +834,14 @@ AND c.estado_trabajo != 'ANULADO' ";
     try {
       $conexion->beginTransaction();
 
-      $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
-      $pago_petroleo = $consumo_petroleo * $precio_petroleo;
-
+      $consumo_petroleo = ($petroleo_entrada !== null && $petroleo_salida !== null) ? $petroleo_entrada - $petroleo_salida : null;
+      $pago_petroleo = ($consumo_petroleo !== null && $precio_petroleo !== null) ? $consumo_petroleo * $precio_petroleo : null;
+      
       $sql = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria, petroleo_entrada, petroleo_salida, consumo_petroleo, precio_petroleo, pago_petroleo) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+              VALUES (?, ?, ?, ?, ?, ?, ?)";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([$id_cronograma, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo]);
-
+      
       if ($stmt->rowCount() == 0) {
         throw new Exception("Ocurrió un error al registrar la maquinaria.");
       }

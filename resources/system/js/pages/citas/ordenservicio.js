@@ -137,7 +137,7 @@ $('#btnReporteExcel').click(function () {
 
         // Generar link para el reporte Excel
         const link = "?view=reporteordenservicioexcel&cliente=" + cliente + "&fundo=" + fundo + "&maquinaria=" + maquinaria + "&operador=" + operador + "&unidadNegocio=" + unidadNegocio;
-        window.open(link);
+        window.open(link, '_blank');
     } catch (e) {
         console.error("Error al generar el reporte Excel:", e);
     }
@@ -381,8 +381,18 @@ $(document).on('click', '.btnEliminarCronograma', function () {
 /******************************************* */
 
 function showModalOperador(id_cronograma) {
+  if (!id_cronograma || id_cronograma === 0) {
+    runAlert("Error", "El ID del cronograma es inválido.", "warning");
+    return;
+  }
   $("#id_cronograma").val(id_cronograma);
   cargarOperadoresExistentes(id_cronograma);
+
+  $("#nombre_operador").prop("selectedIndex", 0); 
+  $("#horas_trabajadas").val(0);
+  $("#pago_por_hora").val(0);
+  $("#total_pago").val(0);
+  
   $("#modalOperador").modal("show");
 }
 
@@ -772,16 +782,19 @@ function saveMaquinariaC() {
       console.log("ID Cronograma antes de enviar:", idCronograma); // Log para depuración
       formData.append("id_cronograma", idCronograma);
 
-      const petroleoEntrada = parseFloat($("#petroleo_entrada").val()) || 0;
-      const petroleoSalida = parseFloat($("#petroleo_salida").val()) || 0;
-      const precioPetroleo = parseFloat($("#precio_petroleo").val()) || 0;
-
-      const consumoPetroleo = petroleoEntrada - petroleoSalida;
-      const pagoPetroleo = consumoPetroleo * precioPetroleo;
-
-      formData.append("consumo_petroleo", consumoPetroleo.toFixed(2));
-      formData.append("pago_petroleo", pagoPetroleo.toFixed(2));
-
+      const petroleoEntrada = $("#petroleo_entrada").val() === "" ? null : parseFloat($("#petroleo_entrada").val());
+      const petroleoSalida = $("#petroleo_salida").val() === "" ? null : parseFloat($("#petroleo_salida").val());
+      const precioPetroleo = $("#precio_petroleo").val() === "" ? null : parseFloat($("#precio_petroleo").val());
+      
+      const consumoPetroleo = petroleoEntrada !== null && petroleoSalida !== null ? petroleoEntrada - petroleoSalida : null;
+      const pagoPetroleo = consumoPetroleo !== null && precioPetroleo !== null ? consumoPetroleo * precioPetroleo : null;
+      
+      formData.append("petroleo_entrada", petroleoEntrada !== null ? petroleoEntrada.toFixed(2) : "");
+      formData.append("petroleo_salida", petroleoSalida !== null ? petroleoSalida.toFixed(2) : "");
+      formData.append("precio_petroleo", precioPetroleo !== null ? precioPetroleo.toFixed(2) : "");
+      formData.append("consumo_petroleo", consumoPetroleo !== null ? consumoPetroleo.toFixed(2) : "");
+      formData.append("pago_petroleo", pagoPetroleo !== null ? pagoPetroleo.toFixed(2) : "");
+      
       for (var pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
@@ -793,7 +806,10 @@ function saveMaquinariaC() {
       if (idEdicion) {
         formData.append("id_cronograma_maquinaria", idEdicion); // Agregar el ID para la edición
       }
-
+      console.log("Datos enviados al servidor:");
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
 
       $.ajax({
         type: "POST",
@@ -805,6 +821,7 @@ function saveMaquinariaC() {
         success: function (data) {
           try {
             const response = JSON.parse(data);
+            console.log("Respuesta del servidor:", response);
             if (response["error"] == "SI") {
               runAlert("Oh No...!!!", response["message"], "warning");
             } else {
@@ -818,6 +835,7 @@ function saveMaquinariaC() {
             // Limpiar estado de edición
             form.removeData("editing");
           } catch (e) {
+            console.error("Error al procesar la respuesta:", e);
             runAlert("Oh No...!!!", e, "error");
           }
         },
