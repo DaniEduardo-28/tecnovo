@@ -48,21 +48,21 @@ try {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    $sheet->mergeCells('A1:M1');
+    $sheet->mergeCells('A1:H1');
     $sheet->setCellValue('A1', 'Fecha del Reporte: ' . $fecha_reporte);
     $sheet->getStyle('A1')->getFont()->setSize(11);
-    $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
-    $sheet->mergeCells('A2:M2');
+    $sheet->mergeCells('A2:L2');
     $sheet->setCellValue('A2', 'SysCos - Reporte de Órdenes de Servicio');
     $sheet->getStyle('A2')->getFont()->setSize(16)->setBold(true);
     $sheet->getStyle('A2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
     $startRow = 4;
     $headers = [
-        'NUM', 'CÓDIGO', 'CLIENTE', 'FUNDO', 'SERVICIO', 
+        'CÓDIGO','TOTAL', 'GASTOS', 'GANANCIA', 'CLIENTE', 'FUNDO', 'SERVICIO', 
         'OPERADOR', 'MAQUINARIA', 'FECHA INGRESO', 
-        'FECHA SALIDA', 'ESTADO', 'TOTAL', 'GASTOS', 'GANANCIA'
+        'FECHA SALIDA', 'ESTADO'
     ];
     $sheet->fromArray($headers, null, 'A' . $startRow);
 
@@ -72,37 +72,39 @@ try {
         'fill' => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFCCCCCC']],
         'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
     ];
-    $sheet->getStyle('A' . $startRow . ':M' . $startRow)->applyFromArray($headerStyle);
+    $sheet->getStyle('A' . $startRow . ':L' . $startRow)->applyFromArray($headerStyle);
 
     $rowNum = $startRow + 1;
-    $x = 1;
     foreach ($arrayresultado as $key) {
-        $sheet->fromArray([
-            $x,
-            $key['codigo'],
-            $key['nombre_cliente'],
-            $key['nombre_fundo'],
-            $key['nombre_servicio'],
-            $key['nombre_operador'],
-            $key['nombre_maquinaria'],
-            $key['fecha_ingreso'],
-            $key['fecha_salida'],
-            $key['estado_trabajo'],
-            $key['total'],
-            $key['gastos'],
-            $key['ganancia']
-        ], null, 'A' . $rowNum);
+        $operadores = str_replace(", ", "\n", $key['nombre_operador']);
+        $maquinarias = str_replace(", ", "\n", $key['nombre_maquinaria']);
+
+        $sheet->setCellValue('A' . $rowNum, $key['codigo']);
+        $sheet->setCellValue('B' . $rowNum, $key['total']);
+        $sheet->setCellValue('C' . $rowNum, $key['gastos']);
+        $sheet->setCellValue('D' . $rowNum, $key['ganancia']);
+        $sheet->setCellValue('E' . $rowNum, $key['nombre_cliente']);
+        $sheet->setCellValue('F' . $rowNum, $key['nombre_fundo']);
+        $sheet->setCellValue('G' . $rowNum, $key['nombre_servicio']);
+        $sheet->setCellValue('H' . $rowNum, $operadores);
+        $sheet->setCellValue('I' . $rowNum, $maquinarias);
+        $sheet->setCellValue('J' . $rowNum, $key['fecha_ingreso']);
+        $sheet->setCellValue('K' . $rowNum, $key['fecha_salida']);
+        $sheet->setCellValue('L' . $rowNum, $key['estado_trabajo']);
+
+        $sheet->getStyle('H' . $rowNum)->getAlignment()->setWrapText(true);
+        $sheet->getStyle('I' . $rowNum)->getAlignment()->setWrapText(true);
+
+        $sheet->getStyle('A' . $rowNum . ':L' . $rowNum)->applyFromArray([
+            'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
+        ]);
+
         $rowNum++;
-        $x++;
     }
 
-    foreach (range('A', 'M') as $columnID) {
+    foreach (range('A', 'L') as $columnID) {
         $sheet->getColumnDimension($columnID)->setAutoSize(true);
     }
-
-    $sheet->getStyle('A' . $startRow . ':M' . ($rowNum - 1))->applyFromArray([
-        'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN]],
-    ]);
 
     $filename = 'reporte_orden_servicio.xlsx';
 
