@@ -15,7 +15,7 @@ try {
     $nuevo_estado = $data['estado'];
 
     // Verificar que el estado sea válido
-    $estados_validos = ['PENDIENTE', 'EN PROCESO', 'TERMINADO', 'ANULADO', 'REGISTRADO', 'APROBADO'];
+    $estados_validos = ['EN PROCESO', 'TERMINADO', 'ANULADO', 'REGISTRADO', 'APROBADO'];
     if (!in_array($nuevo_estado, $estados_validos)) {
         throw new Exception("Estado inválido.");
     }

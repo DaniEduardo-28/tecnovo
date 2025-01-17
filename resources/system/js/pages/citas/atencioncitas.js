@@ -17,7 +17,7 @@ $(document).ready(function () {
   $("#btnAnularCronograma").click(function () {
     cambiarEstadoCronograma('ANULADO');
   });
-  
+
   // Botón aprobar cronograma en el modal de vista
   $("#btnAprobarCronograma").click(function () {
     cambiarEstadoCronograma('APROBADO');
@@ -162,11 +162,11 @@ function crearCalendario() {
           maquinaria: maquinaria,
           operador: operador,
           cliente: cliente,
-          tipo_vista: "aprobacion" 
+          tipo_vista: "aprobacion"
         },
         success: function (events) {
           console.log(events);
-          events.forEach(function (event){
+          events.forEach(function (event) {
             event.estado_trabajo = event.estado_trabajo;
           });
         },
@@ -465,15 +465,18 @@ function cambiarEstadoCronograma(nuevoEstado) {
     case "ANULADO":
       mensajeConfirmacion = "¿Está seguro de anular este cronograma?";
       break;
-    case "PENDIENTE":
-      mensajeConfirmacion = "¿Pasar este cronograma a estado pendiente?";
-      break;
     case "EN PROCESO":
       mensajeConfirmacion = "¿Iniciar el trabajo de este cronograma?";
       break;
     case "TERMINADO":
       mensajeConfirmacion = "¿Finalizar el trabajo de este cronograma?";
       break;
+    case "APROBADO":
+      mensajeConfirmacion = "¿Aprobar este cronograma?";
+      break;
+    default:
+      console.error("Estado no válido");
+      return;
   }
 
   Swal.fire({
@@ -528,37 +531,11 @@ function mostrarOpcionesAprobacion(info) {
     // Botón para Anular el cronograma
     $("#accionesAprobacion").append(`
       <button type="button" class="btn btn-danger" id="btnAnularCronograma">Anular Cronograma</button>
-    `);
-
-    // Botón para Pasar a Pendiente
-    $("#accionesAprobacion").append(`
-      <button type="button" class="btn btn-warning" id="btnPendienteCronograma">Pasar a Pendiente</button>
-    `);
-
-    // Evento para Anular el cronograma
-    $("#btnAnularCronograma").click(function () {
-      cambiarEstadoCronograma("ANULADO");
-    });
-
-    // Evento para Pasar a Pendiente el cronograma
-    $("#btnPendienteCronograma").click(function () {
-      cambiarEstadoCronograma("PENDIENTE");
-    });
-  }
-
-  if (info.estado_trabajo === "PENDIENTE") {
-    // Botón para Anular el cronograma
-    $("#accionesAprobacion").append(`
-      <button type="button" class="btn btn-danger" id="btnAnularPendiente">Anular Registro</button>
-    `);
-
-    // Botón para Iniciar Trabajo
-    $("#accionesAprobacion").append(`
       <button type="button" class="btn btn-success" id="btnIniciarTrabajo">Iniciar Trabajo</button>
     `);
 
     // Evento para Anular el cronograma
-    $("#btnAnularPendiente").click(function () {
+    $("#btnAnularCronograma").click(function () {
       cambiarEstadoCronograma("ANULADO");
     });
 
