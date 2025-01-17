@@ -10,6 +10,10 @@ $(document).ready(function () {
     crearCalendario();
   });
 
+  $("#btnAddCronograma").on("click", function() {
+    abrirFormularioRegistroManual();
+  });
+
   $("#frmCronograma").submit(function (e) {
     e.preventDefault();
     registrarCronograma();
@@ -238,6 +242,18 @@ function crearCalendario() {
       }
     },
   });
+}
+
+function abrirFormularioRegistroManual(){
+  $("#frmCronograma")[0].reset();
+
+  const fechaActual = moment().format("YYYY-MM-DD");
+  $("fecha_ingreso").val(fechaActual);
+  $("fecha_salida").val(fechaActual);
+  $("#hora_ingreso").val("00:00");
+  $("#hora_salida").val("00:00");
+
+  $("#modal-calendario").modal("show");
 }
 
 function registrarCronograma() {

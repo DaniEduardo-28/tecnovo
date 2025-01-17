@@ -51,6 +51,13 @@ if (!isset($_SESSION['id_trabajador'])) {
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-primary" id="btnAddCronograma">
+                  <i class="fa fa-plus"></i> Nuevo
+                </button>
+              </div>
+            </div>
 
             <!-- Filtros -->
             <div class="row">
