@@ -37,31 +37,38 @@ try {
 
     $estado = $elemento['estado_trabajo'];
     $color = "#757571";
-    $editable = ($estado === 'REGISTRADO');;
+    $editable = ($estado === 'REGISTRADO' || $estado === 'APROBADO'); 
+    $durationEditable = $editable;
     switch ($estado) {
       case 'EN PROCESO':
         $color = '#ffd500';
         $editable = false;
+        $durationEditable = true;
         break;
       case 'PENDIENTE':
         $color = '#757571';
         $editable = true;
+        $durationEditable = true;
         break;
       case 'REGISTRADO':
         $color = '#000000';
-        $editable = false;
+        $editable = true;
+        $durationEditable = true;
         break;
       case 'ANULADO':
         $color = '#f62f41';
         $editable = false;
+        $durationEditable = false;
         break;
       case 'TERMINADO':
         $color = '#2ee009';
         $editable = false;
+        $durationEditable = false;
         break;
       case 'APROBADO':
         $color = '#757571';
-        $editable = false;
+        $editable = true;
+        $durationEditable = true;
         break;
       default:
         $color = '#757571';

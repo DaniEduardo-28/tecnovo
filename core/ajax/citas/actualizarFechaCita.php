@@ -21,10 +21,11 @@ try {
     throw new Exception("Campo obligatorio : Id de Cronograma");
   }
 
+  require_once "core/models/ClassCronograma.php";
+
   $fecha_1 = date('Y-m-d H:i', strtotime("$fecha_inicio $hora_inicio"));
   $fecha_2 = date('Y-m-d H:i', strtotime("$fecha_fin $hora_fin"));
 
-  require_once "core/models/ClassCronograma.php";
   $VD = $OBJ_CRONOGRAMA->actualizarFechaCita($id_cronograma, $fecha_1, $fecha_2);
 
   if ($VD != "OK") {

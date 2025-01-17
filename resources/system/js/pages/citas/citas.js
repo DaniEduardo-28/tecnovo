@@ -193,9 +193,11 @@ function crearCalendario() {
       getCronograma(event.id);
     },
     eventDrop: function (event, delta, revertFunc) {
+      console.log("Evento movido:", event);
       actualizarFechaCronograma(event, revertFunc);
     },
     eventResize: function (event, delta, revertFunc) {
+      console.log("Evento redimensionado:", event);
       actualizarFechaCronograma(event, revertFunc);
     },
     eventSources: [
@@ -403,6 +405,7 @@ function anularCronograma() {
 }
 
 function actualizarFechaCronograma(event, revertFunc) {
+  console.log("Estado del evento:", event.estado_trabajo);
   if (event.estado_trabajo === "EN PROCESO") {
     Swal.fire("Advertencia", "No se puede mover un cronograma en estado 'EN PROCESO'.", "warning");
     revertFunc();
@@ -466,6 +469,7 @@ function actualizarFechaCronograma(event, revertFunc) {
     }
   });
 }
+
 
 function recalcularMontos() {
   var precio = parseFloat($("#precio_hectarea").val()) || 0;
