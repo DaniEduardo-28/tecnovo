@@ -72,9 +72,30 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <a href="?view=home"><i class="ti ti-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">Cronograma</li>
-                        <li class="breadcrumb-item active text-primary" aria-current="page">Gestionar</li>
+                        <li class="breadcrumb-item active text-primary" aria-current="page">Orden de Servicios</li>
                       </ol>
                     </nav>
+                  </div>
+                  <div class="ml-auto align-items-center secondary-menu text-center" id="panelOptions"
+                    name="panelOptions">
+                    <?php
+                    $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("vistareportecita"));
+                    if ($access_options[0]['error'] == "NO") {
+
+                      if ($access_options[0]['flag_descargar']) {
+                        ?>
+                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
+                          data-original-title="Descargar reporte en pdf" id="btnReportePdf">
+                          <i class="fa fa-file-pdf-o btn btn-icon text-danger"></i>
+                        </a>
+                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
+                          data-original-title="Descargar reporte en excel" id="btnReporteExcel">
+                          <i class="fa fa-file-excel-o btn btn-icon text-success"></i>
+                        </a>
+                        <?php
+                      }
+                    }
+                    ?>
                   </div>
                 </div>
               </div>

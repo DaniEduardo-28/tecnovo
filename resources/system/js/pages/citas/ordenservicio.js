@@ -107,6 +107,42 @@ var table = $('#example').DataTable({
     showLista();
   });
   
+  $('#btnReportePdf').click(function () {
+    try {
+        // Obtener los filtros seleccionados
+        const cliente = $("#cboClienteBuscar").val();
+        const fundo = $("#cboFundoBuscar").val();
+        const maquinaria = $("#cboMaquinariaBuscar").val();
+        const operador = $("#cboMedicoBuscar").val();
+        const unidadNegocio = $("#cboUnidadBuscar").val();
+
+        // Generar link para el reporte PDF
+        const link = "?view=reporteordenserviciopdf&cliente=" + cliente + "&fundo=" + fundo + "&maquinaria=" + maquinaria + "&operador=" + operador + "&unidadNegocio=" + unidadNegocio;
+        window.open(link);
+    } catch (e) {
+        console.error("Error al generar el reporte PDF:", e);
+    }
+});
+
+$('#btnReporteExcel').click(function () {
+    try {
+        // Obtener los filtros seleccionados
+        const fecha_inicio = $("#txtFechaInicio").val();
+        const fecha_fin = $("#txtFechaFin").val();
+        const cliente = $("#cboClienteBuscar").val();
+        const fundo = $("#cboFundoBuscar").val();
+        const maquinaria = $("#cboMaquinariaBuscar").val();
+        const operador = $("#cboMedicoBuscar").val();
+        const unidadNegocio = $("#cboUnidadBuscar").val();
+
+        // Generar link para el reporte Excel
+        const link = "?view=reporteordenservicioexcel&cliente=" + cliente + "&fundo=" + fundo + "&maquinaria=" + maquinaria + "&operador=" + operador + "&unidadNegocio=" + unidadNegocio;
+        window.open(link);
+    } catch (e) {
+        console.error("Error al generar el reporte Excel:", e);
+    }
+});
+
   
   // Función para configurar las fechas predeterminadas
   function setDefaultDates() {
