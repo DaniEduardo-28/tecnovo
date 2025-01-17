@@ -6,6 +6,7 @@ var table = $('#example').DataTable({
         { 'data': 'id_maquinaria' },
         { 'data': 'descripcion' },
         { 'data': 'observaciones' },
+        { 'data': 'name_tipo'},
         { 'data': 'nombre_operador' },
         { 'data': 'estado' },
         { 'data': 'options' }
@@ -72,6 +73,7 @@ function resetForm() {
     $("#descripcion").val("");
     $("#observaciones").val("");
     $("#id_trabajador").val("");
+    $("#id_tipo_servicio").val("");
     $("#estado").prop('checked', false);
 }
 
@@ -171,6 +173,7 @@ function editData(id_maquinaria) {
                     $("#observaciones").val(o.observaciones);
                     // Manejar id_trabajador como opcional
                     $("#id_trabajador").val(o.id_trabajador ? o.id_trabajador : ""); 
+                    $("#id_tipo_servicio").val(o.id_tipo_servicio ? o.id_tipo_servicio : ""); 
                     $("#estado").prop('checked', o.estado === "activo");
                     $("#accion").val("edit");
                     addClassDiv();

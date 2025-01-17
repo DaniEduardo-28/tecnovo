@@ -5,6 +5,7 @@ $estado = isset($_POST["estado"]) ? 1 : 0;
 $descripcion = isset($_POST["descripcion"]) ? $_POST["descripcion"] : "";
 $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
 $id_trabajador = isset($_POST["id_trabajador"]) && $_POST["id_trabajador"] != "" ? $_POST["id_trabajador"] : null; // Permitir NULL si no se selecciona operador
+$id_tipo_servicio = isset($_POST["id_tipo_servicio"]) && $_POST["id_tipo_servicio"] != "" ? $_POST["id_tipo_servicio"] : null; // Permitir NULL si no se selecciona operador
 $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 
 try {
@@ -43,7 +44,7 @@ try {
     switch ($accion) {
         case 'add':
             error_log("Creando nuevo registro"); // Log temporal para agregar
-            $VD = $OBJ_MAQUINARIA->insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador); // Cambiado argumento
+            $VD = $OBJ_MAQUINARIA->insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador, $id_tipo_servicio); // Cambiado argumento
             break;
         case 'edit':
             // Validar que se esté recibiendo un id_maquinaria válido para editar
@@ -51,7 +52,7 @@ try {
                 throw new Exception("ID de maquinaria no recibido para la edición.");
             }
             error_log("Actualizando registro con ID: $id_maquinaria"); // Log temporal para editar
-            $VD = $OBJ_MAQUINARIA->update($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador); // Cambiado argumento
+            $VD = $OBJ_MAQUINARIA->update($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador, $id_tipo_servicio); // Cambiado argumento
             break;
         default:
             throw new Exception("Operación no válida.");

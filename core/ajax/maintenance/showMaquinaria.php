@@ -6,6 +6,8 @@ try {
 
     $valor = isset($_POST["valor"]) ? $_POST["valor"] : "";
     $id_trabajador = isset($_POST["id_trabajador"]) && $_POST["id_trabajador"] != "" ? $_POST["id_trabajador"] : null;
+    $id_tipo_servicio = isset($_POST["id_tipo_servicio"]) && $_POST["id_tipo_servicio"] != "" ? $_POST["id_tipo_servicio"] : null;
+
 
     // Verificación de permisos
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("maquinaria"));
@@ -49,6 +51,7 @@ try {
                     "descripcion" => $key['descripcion'],
                     "observaciones" => $key['observaciones'],
                     "nombre_operador" => isset($key['nombre_operador']) && $key['nombre_operador'] != "" ? $key['nombre_operador'] : "Ninguno",
+                    "name_tipo" => isset($key['name_tipo']) && $key['name_tipo'] != "" ? $key['name_tipo'] : "Ninguno",
                     "estado" => $estado,
                     "options" => "$options"
                 );

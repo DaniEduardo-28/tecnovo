@@ -2,6 +2,8 @@ var fundosData = [];
 
 $(document).ready(function () {
 
+  $("#id_maquinaria").empty().append('<option value="">Seleccione una unidad primero...</option>');
+
   crearCalendario();
 
   $("#cboFundoBuscar, #cboMaquinariaBuscar, #cboMedicoBuscar, #cboClienteBuscar").change(function () {
@@ -102,6 +104,45 @@ $(document).ready(function () {
       $("#id_servicio").append(`<option value="${service.id_servicio}">${service.name_servicio} (${service.precio} x ${service.unidad})</option>`);
     });
   });
+
+  $("#id_unidad").on("change", function () {
+    var id_tipo_servicio = $(this).val();
+
+    if (id_tipo_servicio === "") {
+        $("#id_maquinaria").empty().append('<option value="">Seleccione una unidad primero...</option>');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=getMaquinariasPorUnidad", 
+        data: { id_tipo_servicio: id_tipo_servicio },
+        beforeSend: function () {
+            $("#id_maquinaria").empty().append('<option value="">Cargando...</option>');
+        },
+        success: function (response) {
+            try {
+                var data = JSON.parse(response);
+                if (data.error === "NO") {
+                    $("#id_maquinaria").empty().append('<option value="">Seleccione una maquinaria...</option>');
+                    data.data.forEach(function (maquinaria) {
+                        $("#id_maquinaria").append(
+                            `<option value="${maquinaria.id_maquinaria}">${maquinaria.descripcion}</option>`
+                        );
+                    });
+                } else {
+                    $("#id_maquinaria").empty().append('<option value="">No se encontraron maquinarias...</option>');
+                }
+            } catch (e) {
+                console.error("Error procesando la respuesta del servidor:", e);
+                $("#id_maquinaria").empty().append('<option value="">Error cargando maquinarias...</option>');
+            }
+        },
+        error: function () {
+            $("#id_maquinaria").empty().append('<option value="">Error de conexión...</option>');
+        },
+    });
+});
 
   $("#cboClienteBuscar").select2({
     placeholder: "Seleccione un cliente",

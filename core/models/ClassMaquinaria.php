@@ -105,8 +105,10 @@ class ClassMaquinaria extends Conexion {
             $valor = "%$valor%";
         $parametros = [$valor, $valor];
         $sql = "SELECT m.*, 
-                       CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
+                       CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador,
+                       ts.name_tipo
                 FROM tb_maquinaria m
+                LEFT JOIN tb_tipo_servicio ts ON ts.id_tipo_servicio = m.id_tipo_servicio
                 LEFT JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
                 LEFT JOIN tb_persona p ON t.id_persona = p.id_persona
                 WHERE (m.descripcion LIKE ? OR m.observaciones LIKE ?)";
@@ -198,8 +200,10 @@ class ClassMaquinaria extends Conexion {
         $VD = "";
 
         try {
-            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
+            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador,
+                        ts.name_tipo
                     FROM tb_maquinaria m
+                    LEFT JOIN tb_tipo_servicio ts ON ts.id_tipo_servicio = m.id_tipo_servicio
                     LEFT JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
                     LEFT JOIN tb_persona p ON t.id_persona = p.id_persona
                     WHERE m.id_maquinaria = ?";
@@ -231,7 +235,7 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
-    public function insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador) {
+    public function insert($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador, $id_tipo_servicio = null) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
         $VD = "";
@@ -239,10 +243,10 @@ class ClassMaquinaria extends Conexion {
         try {
             $conexion->beginTransaction();
 
-            $sql = "INSERT INTO tb_maquinaria (`id_maquinaria`, `descripcion`, `observaciones`, `estado`, `id_trabajador`) VALUES
-                    ((SELECT CASE COUNT(m.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(m.id_maquinaria) + 1) END FROM `tb_maquinaria` m), ?, ?, ?, ?)";
+            $sql = "INSERT INTO tb_maquinaria (`id_maquinaria`, `descripcion`, `observaciones`, `estado`, `id_trabajador`, `id_tipo_servicio`) VALUES
+                    ((SELECT CASE COUNT(m.id_maquinaria) WHEN 0 THEN 1 ELSE (MAX(m.id_maquinaria) + 1) END FROM `tb_maquinaria` m), ?, ?, ?, ?, ?)";
             $stmt = $conexion->prepare($sql);
-            $stmt->execute([$descripcion, $observaciones, $estado, $id_trabajador]);
+            $stmt->execute([$descripcion, $observaciones, $estado, $id_trabajador, $id_tipo_servicio]);
 
             if ($stmt->rowCount() == 0) {
                 throw new Exception("Ocurrió un error al insertar el registro.");
@@ -264,7 +268,7 @@ class ClassMaquinaria extends Conexion {
         return $VD;
     }
 
-    public function update($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador) {
+    public function update($id_maquinaria, $descripcion, $observaciones, $estado, $id_trabajador, $id_tipo_servicio = null) {
         $conexionClass = new Conexion();
         $conexion = $conexionClass->Open();
         $VD = "";
@@ -280,9 +284,10 @@ class ClassMaquinaria extends Conexion {
                 throw new Exception("No se encontró el registro de maquinaria a editar.");
             }
 
-            $sql = "UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ?, id_trabajador = ? WHERE id_maquinaria = ?";
+            $sql = "UPDATE tb_maquinaria SET descripcion = ?, observaciones = ?, estado = ?, id_trabajador = ?, id_tipo_servicio = ?
+             WHERE id_maquinaria = ?";
             $stmt = $conexion->prepare($sql);
-            $stmt->execute([$descripcion, $observaciones, $estado, $id_trabajador, $id_maquinaria]);
+            $stmt->execute([$descripcion, $observaciones, $estado, $id_trabajador, $id_tipo_servicio, $id_maquinaria]);
 
             if ($stmt->rowCount() == 0) {
                 throw new Exception("Error al actualizar los datos.");
@@ -342,8 +347,10 @@ class ClassMaquinaria extends Conexion {
         $VD = "";
 
         try {
-            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador
+            $sql = "SELECT m.*, CONCAT(p.nombres, ' ', p.apellidos) AS nombre_operador,
+                        ts.name_tipo
                     FROM `tb_maquinaria` m
+                    LEFT JOIN tb_tipo_servicio ts ON ts.id_tipo_servicio = m.id_tipo_servicio
                     INNER JOIN tb_trabajador t ON t.id_trabajador = m.id_trabajador
                     INNER JOIN tb_persona p ON t.id_persona = p.id_persona
                     WHERE t.flag_medico = 1";
@@ -414,6 +421,23 @@ class ClassMaquinaria extends Conexion {
     
         return $VD;
     }
+
+    public function getMaquinariasPorUnidad($id_tipo_servicio) {
+        $conexionClass = new Conexion();
+        $conexion = $conexionClass->Open();
+        try {
+            $sql = "SELECT id_maquinaria, descripcion 
+                    FROM tb_maquinaria 
+                    WHERE id_tipo_servicio = :id_tipo_servicio AND estado = 'activo'";
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(':id_tipo_servicio', $id_tipo_servicio, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
+    
     
 
     

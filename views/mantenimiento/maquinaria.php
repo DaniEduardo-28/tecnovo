@@ -142,7 +142,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <input id="observaciones" type="text" name="observaciones" class="form-control"
                                   autocomplete="off" required data-msg="Campo obligatorio...">
                               </div>
-                              <div class="form-group col-md-12 col-sm-12">
+                              <div class="form-group col-md-6 col-sm-6">
                                 <label for="id_trabajador" class="label-control">Operador Seleccionado</label>
                                 <select name="id_trabajador" id="id_trabajador" class="form-control">
                                   <option value="">Seleccione...</option>
@@ -155,6 +155,24 @@ if (!isset($_SESSION['id_trabajador'])) {
                                     }
                                   } else {
                                     echo '<option value="">Sin operadores disponibles</option>'; // Mostrar mensaje si no hay operadores
+                                  }
+                                  ?>
+                                </select>
+                              </div>
+
+                              <div class="form-group col-md-6 col-sm-6">
+                                <label for="id_tipo_servicio" class="label-control">Unidad de Negocio</label>
+                                <select name="id_tipo_servicio" id="id_tipo_servicio" class="form-control">
+                                  <option value="">Seleccione...</option>
+                                  <?php
+                                  include("core/models/ClassTipoServicio.php");
+                                  $dataTIPO = $OBJ_TIPO_SERVICIO->show("activo"); // Llama solo a trabajadores activos
+                                  if ($dataTIPO["error"] == "NO" && !empty($dataTIPO["data"])) {
+                                    foreach ($dataTIPO["data"] as $key) {
+                                      echo '<option value="' . $key['id_tipo_servicio'] . '">' . $key['name_tipo'] . '</option>';
+                                    }
+                                  } else {
+                                    echo '<option value="">Sin unidad establecida</option>'; // Mostrar mensaje si no hay operadores
                                   }
                                   ?>
                                 </select>
@@ -190,6 +208,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <th>Id</th>
                                   <th>Descripción</th>
                                   <th>Observaciones</th>
+                                  <th>Tipo de Negocio</th>
                                   <th>Operador</th>
                                   <th style="width:30px; text-align: center;">Estado</th>
                                   <th style="width:90px;">Opciones</th>
