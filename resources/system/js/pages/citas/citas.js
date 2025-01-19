@@ -225,7 +225,6 @@ function crearCalendario() {
       },
     ],
     eventRender: function (event, element) {
-      console.log(event);
       let description = `
           <br/>${event.description}
           <br/>Servicio: ${event.nombre_servicio}

@@ -61,10 +61,8 @@ if (!isset($_SESSION['id_trabajador'])) {
 
             <!-- Filtros -->
             <div class="row">
-              <div class="container">
-                <div class="row">
 
-                  <div class="form-group col-sm-6 col-md-3">
+                  <div class="form-group col-12 col-sm-6 col-md-3">
                     <label for="cboMaquinariaBuscar">Maquinaria</label>
                     <select class="form-control" id="cboMaquinariaBuscar" name="cboMaquinariaBuscar">
                       <option value="all">Todas</option>
@@ -135,11 +133,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                       ?>
                     </select>
                   </div>
-
-                </div>
-
                 <div id="calendario" class="col-md-12"></div>
-              </div>
             </div>
 
           </div>

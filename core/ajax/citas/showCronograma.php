@@ -81,7 +81,6 @@ try {
       "end" => date('Y-m-d H:i', strtotime($elemento['fecha_salida'])),
       "color" => $color,
       "id" => $elemento['id_cronograma'],
-      "description" => $elemento['id_cronograma'],
       "durationEditable" => $editable,
       "editable" => $editable,
       "estado" => $estado,
