@@ -72,6 +72,8 @@ try {
         break;
       default:
         $color = '#757571';
+        $editable = false;
+        $durationEditable = false;
         break;
     }
 
@@ -81,7 +83,7 @@ try {
       "end" => date('Y-m-d H:i', strtotime($elemento['fecha_salida'])),
       "color" => $color,
       "id" => $elemento['id_cronograma'],
-      "durationEditable" => $editable,
+      "durationEditable" => $durationEditable,
       "editable" => $editable,
       "estado" => $estado,
       "id_fundo" => $elemento['id_fundo'],
