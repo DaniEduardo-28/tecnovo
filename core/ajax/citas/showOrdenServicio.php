@@ -21,15 +21,17 @@ try {
       // Inicializar la variable $options en cada iteración
       $options = '';
 
-      if ($key['estado_trabajo'] === 'TERMINADO' || $key['estado_trabajo'] === 'ANULADO') {
-        $options = ''; // No mostrar ningún botón en estos estados
-      } else {
+      if ($key['estado_trabajo'] !== 'TERMINADO' && $key['estado_trabajo'] !== 'ANULADO') {
         $options .= '&nbsp;<a href="javascript:showModalOperadorMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-warning btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-user"></i></a>';
       }
+        $options .= '&nbsp;<a href="javascript:generarResumenCompras(' . $key['id_cronograma'] . ')"  class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-export"></i></a>'; 
+
+        $options .= '&nbsp;<a href="javascript:generarInformeCliente(' . $key['id_cronograma'] . ')"  class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0"><i class="fa fa-file-pdf-o"></i></a>'; 
+
       $retorno_array[] = array(
-        "num" => "$count", 
+        "num" => "$count",
         "options" => "$options",
-        "codigo" => $key['codigo'], 
+        "codigo" => $key['codigo'],
         "total" => number_format(floatval($key['total']), 2),
         "gastos" => number_format(floatval($key['gastos']), 2),
         "ganancia" => number_format(floatval($key['ganancia']), 2),

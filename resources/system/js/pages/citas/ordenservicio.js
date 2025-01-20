@@ -159,6 +159,34 @@ $('#btnReporteExcel').click(function () {
   }
 });
 
+function generarResumenCompras(id_cronograma) {
+  try {
+    if (!id_cronograma) {
+      console.error("El ID del cronograma es requerido para generar el resumen de compras.");
+      return;
+    }
+
+    const link = "?view=resumencomprasserviciopdf&id_cronograma=" + id_cronograma;
+    window.open(link, "_blank"); 
+  } catch (e) {
+    console.error("Error al generar el resumen de compras en PDF:", e);
+  }
+}
+
+function generarInformeCliente(id_cronograma) {
+  try {
+    if (!id_cronograma) {
+      console.error("El ID del cronograma es requerido para generar el informe al cliente.");
+      return;
+    }
+
+    const link = "?view=informeclienteserviciopdf&id_cronograma=" + id_cronograma;
+    window.open(link, "_blank"); 
+  } catch (e) {
+    console.error("Error al generar el informe al cliente en PDF:", e);
+  }
+}
+
 
 // Función para configurar las fechas predeterminadas
 function setDefaultDates() {
@@ -203,35 +231,6 @@ $(document).on('click', '.btnEliminarCronograma', function () {
   deleteCronograma(idCronograma); // Llamar a la función de eliminación
 });
 
-$('#btnReporteExcel').click(function () {
-  try {
-    const fecha_inicio = $("#txtFechaInicio").val();
-    const fecha_fin = $("#txtFechaFin").val();
-    const filterUser = $("#filterUser").val();
-    const filterTable = $("#filterTable").val();
-
-    // Generar link con parámetros
-    const link = `?view=ordenservicio&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&filterUser=${filterUser}&filterTable=${filterTable}`;
-    window.open(link, '_blank');
-  } catch (e) {
-    console.error("Error al generar el reporte Excel:", e);
-  }
-});
-
-$('#btnReportePdf').click(function () {
-  try {
-    const fecha_inicio = $("#txtFechaInicio").val();
-    const fecha_fin = $("#txtFechaFin").val();
-    const filterUser = $("#filterUser").val();
-    const filterTable = $("#filterTable").val();
-
-    // Generar link con parámetros
-    const link = `?view=ordenservicio&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&filterUser=${filterUser}&filterTable=${filterTable}`;
-    window.open(link, '_blank');
-  } catch (e) {
-    console.error("Error al generar el reporte PDF:", e);
-  }
-});
 
 // Función para mostrar la lista
 function showLista() {
