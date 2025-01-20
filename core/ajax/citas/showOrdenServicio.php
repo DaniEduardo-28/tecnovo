@@ -24,8 +24,7 @@ try {
       if ($key['estado_trabajo'] === 'TERMINADO' || $key['estado_trabajo'] === 'ANULADO') {
         $options = ''; // No mostrar ningún botón en estos estados
       } else {
-        $options .= '&nbsp;<a href="javascript:showModalOperador(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-user"></i></a>';
-        $options .= '&nbsp;<a href="javascript:showModalMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-harddrives"></i></a>';
+        $options .= '&nbsp;<a href="javascript:showModalOperadorMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-warning btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-user"></i></a>';
       }
       $retorno_array[] = array(
         "num" => "$count", 

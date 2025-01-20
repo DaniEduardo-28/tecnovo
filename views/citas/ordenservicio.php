@@ -235,16 +235,16 @@ if (!isset($_SESSION['id_trabajador'])) {
                 </table>
               </div>
             </div>
+                           <!-- Modal combinado -->
 
-            <!-- Modal Operadores -->
-            <div class="modal fade" id="modalOperador" tabindex="-1" role="dialog" aria-labelledby="modalOperadorLabel"
+            <div class="modal fade" id="modalOperadorMaquinaria" tabindex="-1" role="dialog" aria-labelledby="modalOperadorMaquinariaLabel"
               aria-hidden="true">
               <div class="modal-dialog modal-lg-custom" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="modalOperadorLabel">Operadores</h5>
+                    <h5 class="modal-title" id="modalOperadorMaquinariaLabel">Registrar Operador y Maquinaria</h5>
                     <div class="col text-right">
-                      <button id="btnNuevoOperador" class="btn btn-success">+ Nuevo</button>
+                      <button id="btnNuevoOperadorMaquinaria" class="btn btn-success">+ Nuevo</button>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                       <span aria-hidden="true">&times;</span>
@@ -252,8 +252,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                   </div>
                   <div class="modal-body">
 
-                    <div id="nuevoOperadorContainer" class="mt-3" style="display: none;">
-                      <form id="frmOperador" name="frmOperador" enctype="multipart/form-data">
+                    <div id="nuevoOperadorMaquinariaContainer" class="mt-3" style="display: none;">
+                      <form id="frmOperadorMaquinaria" name="frmOperadorMaquinaria" enctype="multipart/form-data">
                         <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
                         <div class="row">
                           <div class="col-md-1 d-none">
@@ -281,73 +281,20 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-2">
                             <label>Horas trabajadas</label>
                             <input type="number" id="horas_trabajadas" name="horas_trabajadas" class="form-control" min="0"
-                              step="1.00">
+                              step="any" value="0">
                           </div>
                           <div class="col-md-2">
                             <label>Pago / Hora</label>
                             <input type="number" id="pago_por_hora" name="pago_por_hora" class="form-control" min="0"
-                              step="1.00">
+                              step="any" value="0">
                           </div>
                           <div class="col-md-2">
                             <label>Pago total</label>
                             <input type="number" id="total_pago" name="total_pago" class="form-control" min="0"
                               step="1.00">
                           </div>
-                          <div class="col-md-1 text-center mt-4">
-                            <button type="submit" class="btn btn-success btn-sm btnGuardarOper"><i
-                                class="fa fa-check"></i></button>
-                            <button type="reset" class="btn btn-danger btn-sm btnCancelarOper"><i
-                                class="fa fa-trash"></i></button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                    <!-- Tablas de operadores -->
-                    <div class="table-responsive">
-                      <table class="table table-bordered" id="tablaOperador">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Nombre Operador</th>
-                            <th>Horas trabajadas</th>
-                            <th>Pago / H.</th>
-                            <th>Total</th>
-                            <th>Acción</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-            <!-- Modal Maquinarias -->
-            <div class="modal fade" id="modalMaquinaria" tabindex="-1" role="dialog"
-              aria-labelledby="modalMaquinariaLabel" aria-hidden="true">
-              <div class="modal-dialog modal-lg-custom" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="modalMaquinariaLabel">Maquinarias</h5>
-                    <div class="col text-right">
-                      <button id="btnNuevaMaquina" class="btn btn-success">+ Nuevo</button>
-                    </div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-
-                    <div id="nuevaMaquinariaContainer" class="mt-3" style="display: none;">
-                      <form id="frmMaquinaria" name="frmMaquinaria" enctype="multipart/form-data">
-                        <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
-                        <div class="row">
-                          <div class="col-md-1 d-none">
-                            <label>#</label>
-                            <input type="text" class="form-control" readonly value="AUTO">
-                          </div>
+                          
                           <div class="col-md-3">
                             <label>Nombre Maquinaria</label>
                             <select id="nombre_maquinaria" name="nombre_maquinaria" class="form-control">
@@ -367,12 +314,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-2">
                             <label>Ingreso de Petroleo (L)</label>
                             <input type="number" id="petroleo_entrada" name="petroleo_entrada" class="form-control" min="0"
-                              step="0.01">
+                              step="any" value="0">
                           </div>
                           <div class="col-md-2">
                             <label>Salida de Petroleo (L)</label>
                             <input type="number" id="petroleo_salida" name="petroleo_salida" class="form-control" min="0"
-                              step="0.01">
+                              step="any" value="0">
                           </div>
                           <div class="col-md-2">
                             <label>Consumo Petroleo</label>
@@ -382,7 +329,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-2">
                             <label>Precio Petroleo</label>
                             <input type="number" id="precio_petroleo" name="precio_petroleo" class="form-control" min="0"
-                              step="0.01">
+                              step="any" value="0">
                           </div>
                           <div class="col-md-2">
                             <label>Pago Petroleo</label>
@@ -390,21 +337,24 @@ if (!isset($_SESSION['id_trabajador'])) {
                               step="0.01">
                           </div>
                           <div class="col-md-1 text-center mt-4">
-                            <button type="submit" class="btn btn-success btn-sm btnGuardarMaqui"><i
+                            <button type="submit" class="btn btn-success btn-sm btnGuardarOperadorMaquinaria"><i
                                 class="fa fa-check"></i></button>
-                            <button type="reset" class="btn btn-danger btn-sm btnCancelarMaqui" onclick="cancelarFormMaquinaria()">
-                              <i class="fa fa-trash"></i>
-                            </button>
+                            <button type="reset" class="btn btn-danger btn-sm btnCancelarOperadorMaquinaria"><i
+                                class="fa fa-trash"></i></button>
                           </div>
                         </div>
                       </form>
                     </div>
-                    <!-- Tablas de maquinarias -->
+                    <!-- Tablas de operadores -->
                     <div class="table-responsive">
-                      <table class="table table-bordered" id="tablaMaquinaria">
+                      <table class="table table-bordered" id="tablaOperadorMaquinaria">
                         <thead>
                           <tr>
                             <th>#</th>
+                            <th>Nombre Operador</th>
+                            <th>Horas trabajadas</th>
+                            <th>Pago / H.</th>
+                            <th>Total</th>
                             <th>Maquinaria</th>
                             <th>Ing. Petroleo</th>
                             <th>Sal. Petroleo</th>

@@ -535,25 +535,25 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/showOrdenServicio.php");
         break;
-      case 'getOperadoresByCronograma':
+      case 'getOperadoresMaquinariasByCronograma':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/citas/getOperadoresByCronograma.php");
+        require("core/ajax/citas/getOperadoresMaquinariasByCronograma.php");
         break;
-      case 'actualizarOperadorCronograma':
+      case 'actualizarOperadorMaquinariaCronograma':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/citas/actualizarOperadorCronograma.php");
+        require("core/ajax/citas/actualizarOperadorMaquinariaCronograma.php");
         break;
-      case 'goOperadorCronograma':
+      case 'goOperadorMaquinariaCronograma':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/citas/goOperadorCronograma.php");
+        require("core/ajax/citas/goOperadorMaquinariaCronograma.php");
         break;
-      case 'deleteOperadorCronograma':
+      case 'deleteOperadorMaquinariaCronograma':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/citas/deleteOperadorCronograma.php");
+        require("core/ajax/citas/deleteOperadorMaquinariaCronograma.php");
         break;
-      case 'getOperadorById':
+      case 'getOperadorMaquinariaById':
         require("core/models/ClassAccesoOpcion.php");
-        require("core/ajax/citas/getOperadorById.php");
+        require("core/ajax/citas/getOperadorMaquinariaById.php");
         break;
       case 'getMaquinariasByCronograma':
         require("core/models/ClassAccesoOpcion.php");
