@@ -555,6 +555,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getOperadorMaquinariaById.php");
         break;
+      case 'getUnidadMedida':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/getUnidadMedida.php");
+        break;
       case 'getMaquinariasByCronograma':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getMaquinariasByCronograma.php");

@@ -372,7 +372,7 @@ function showModalOperadorMaquinaria(id_cronograma) {
   $("#id_cronograma").val(id_cronograma);
 
   $("#nombre_operador").prop("selectedIndex", 0);
-  $("#horas_trabajadas").val(0);
+  $("#horas_trabajadas").on("input", recalcularPagoTotal);
   $("#pago_por_hora").val(0);
   $("#total_pago").val(0);
 
@@ -383,6 +383,8 @@ function showModalOperadorMaquinaria(id_cronograma) {
   $("#precio_petroleo").val("");
   $("#pago_petroleo").val("");
 
+  limpiarCamposNuevoOperadorMaquinaria();
+  obtenerUnidadMedida(id_cronograma);
   cargarOperadoresMaquinariasExistentes(id_cronograma);
 
   $("#modalOperadorMaquinaria").modal("show");
@@ -390,19 +392,21 @@ function showModalOperadorMaquinaria(id_cronograma) {
 }
 
 function cargarOperadoresMaquinariasExistentes(id_cronograma) {
+  console.log("ID Cronograma recibido:", id_cronograma);
   $.ajax({
     type: "POST",
     url: "ajax.php?accion=getOperadoresMaquinariasByCronograma",
     data: { id_cronograma: id_cronograma },
     success: function (response) {
+      console.log("Respuesta del backend (sin procesar):", response);
       try {
         const data = JSON.parse(response);
+        console.log("Respuesta del backend (procesada):", data);
         if (data.error === "NO") {
+          const unidadMedida = data.data.unidad_medida.id_unidad_medida;
+          console.log("Unidad de Medida obtenida:", unidadMedida); // Depuración
+          actualizarColumnas(unidadMedida);
           llenarTablaOperadoresMaquinarias(data.data);
-
-          if (data.data.cantidad) {
-            $("#horas_trabajadas").val(data.data.cantidad);
-          }
         } else {
           console.error(data.message);
           $("#tablaOperadorMaquinaria tbody").empty(); // Limpiar tabla si no hay datos
@@ -423,6 +427,8 @@ function llenarTablaOperadoresMaquinarias(datos) {
 
   const operadores = datos.operadores || [];
   const maquinarias = datos.maquinarias || [];
+  console.log("Operadores recibidos:", operadores);
+  console.log("Maquinarias recibidas:", maquinarias);
 
   const maxLength = Math.max(operadores.length, maquinarias.length);
   for (let i = 0; i < maxLength; i++) {
@@ -532,7 +538,7 @@ function deleteRegistroOperadorMaquinaria(id_operador, id_maquinaria) {
 
 function calcularValoresFormulario() {
   const horas_trabajadas = parseFloat($("#horas_trabajadas").val()) || 0;
-  const pago_por_hora = parseFloat($("#pago_por_hora").val()) || 0;
+  const pago_por_hora = parseFloat($("#precio_por_unidad").val()) || 0;
   const petroleoEntrada = parseFloat($("#petroleo_entrada").val()) || 0;
   const petroleoSalida = parseFloat($("#petroleo_salida").val()) || 0;
   const precioPetroleo = parseFloat($("#precio_petroleo").val()) || 0;
@@ -542,7 +548,7 @@ function calcularValoresFormulario() {
   const pagoPetroleo = consumoPetroleo * precioPetroleo;
 
   // Asigna valores predeterminados
-  $("#total_pago").val(total);
+  $("#total_pago").val(total.toFixed(2));
   $("#consumo_petroleo").val(consumoPetroleo);
   $("#pago_petroleo").val(pagoPetroleo);
 }
@@ -666,4 +672,75 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
     },
   });
 }
+
+function actualizarColumnas(id_unidad_medida) {
+  console.log("ID Unidad Medida recibido:", id_unidad_medida);
+  if (id_unidad_medida == 5) { // HECTÁREAS
+      console.log("Modificando a Cantidad Hectáreas y Pago / Hectárea");
+      $("#colCantidad").text("Cantidad Hectáreas");
+      $("#colPrecio").text("Pago / Hectárea");
+
+      $("#labelCantidad").text("Cantidad de Hectáreas");
+      $("#labelPrecio").text("Pago / Hectárea");
+
+  } else if (id_unidad_medida == 4) { // HORAS
+      console.log("Modificando a Cantidad Horas y Pago / Hora");
+      $("#colCantidad").text("Cantidad Horas");
+      $("#colPrecio").text("Pago / Hora");
+
+      $("#labelCantidad").text("Cantidad de Horas");
+      $("#labelPrecio").text("Pago / Hora");
+
+  } else {
+      console.log("Restaurando valores predeterminados");
+      $("#colCantidad").text("Cantidad");
+      $("#colPrecio").text("Pago / Unidad");
+
+      $("#labelCantidad").text("Cantidad");
+      $("#labelPrecio").text("Pago / Unidad");
+  }
+}
+
+
+function obtenerUnidadMedida(id_cronograma) {
+  $.ajax({
+      type: "POST",
+      url: "ajax.php?accion=getUnidadMedida",
+      data: { id_cronograma: id_cronograma },
+      success: function (response) {
+          try {
+              const data = JSON.parse(response);
+              console.log("Respuesta del backend:", data); // Depuración
+              if (data.error === "NO") {
+                const { id_unidad_medida, precio } = data.data;
+                console.log("Unidad de Medida:", id_unidad_medida, "Precio:", precio);
+                actualizarColumnas(id_unidad_medida);
+
+                $("#pago_por_hora").val(precio.toFixed(2));
+
+                $("#precio_por_unidad").val(precio);
+                recalcularPagoTotal();
+              } else {
+                  console.error("Error al obtener la unidad de medida:", data.message);
+              }
+          } catch (e) {
+              console.error("Error al procesar la respuesta:", e);
+          }
+      },
+      error: function () {
+          console.error("No se pudo conectar con el servidor para obtener la unidad de medida.");
+      },
+  });
+}
+
+function recalcularPagoTotal() {
+  const cantidad = parseFloat($("#horas_trabajadas").val()) || 0;
+  const precioPorUnidad = parseFloat($("#precio_por_unidad").val()) || 0;
+
+  // Calcula el total y actualiza el campo
+  const total = cantidad * precioPorUnidad;
+  $("#total_pago").val(total.toFixed(2));
+}
+
+
 

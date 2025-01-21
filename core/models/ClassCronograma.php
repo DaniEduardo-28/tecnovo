@@ -731,6 +731,16 @@ AND c.estado_trabajo != 'ANULADO' ";
     $conexion = $conexionClass->Open();
 
     try {
+
+      $sql = "SELECT s.id_unidad_medida
+                FROM tb_cronograma c
+                INNER JOIN tb_servicio s ON c.id_servicio = s.id_servicio
+                WHERE c.id_cronograma = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_cronograma]);
+        $unidad_medida = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
       $sqlOperadores = "SELECT 
                             o.id_cronograma_operador, 
                             CONCAT(p.apellidos, ' ', p.nombres) AS nombre_operador,
@@ -765,15 +775,16 @@ AND c.estado_trabajo != 'ANULADO' ";
       $maquinarias = $stmtMaquinarias->fetchAll(PDO::FETCH_ASSOC);
 
       $sqlCantidad = "SELECT cantidad FROM tb_cronograma WHERE id_cronograma = :id_cronograma";
-        $stmtCantidad = $conexion->prepare($sqlCantidad);
-        $stmtCantidad->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
-        $stmtCantidad->execute();
-        $cantidad = $stmtCantidad->fetchColumn();
+      $stmtCantidad = $conexion->prepare($sqlCantidad);
+      $stmtCantidad->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
+      $stmtCantidad->execute();
+      $cantidad = $stmtCantidad->fetchColumn();
 
       $data = [
+        "unidad_medida" => $unidad_medida,
         "operadores" => $operadores,
         "maquinarias" => $maquinarias,
-        "cantidad" => $cantidad !== false ? $cantidad : 0 
+        "cantidad" => $cantidad !== false ? $cantidad : 0
       ];
 
       if (!empty($data['operadores']) || !empty($data['maquinarias'])) {
@@ -787,67 +798,66 @@ AND c.estado_trabajo != 'ANULADO' ";
   }
 
 
-public function updateOperadorMaquinaria(
-  $id_cronograma_operador,
-  $id_trabajador,
-  $horas_trabajadas,
-  $pago_por_hora,
-  $total_pago,
-  $id_cronograma_maquinaria,
-  $id_maquinaria,
-  $petroleo_entrada,
-  $petroleo_salida,
-  $precio_petroleo
-) {
+  public function updateOperadorMaquinaria(
+    $id_cronograma_operador,
+    $id_trabajador,
+    $horas_trabajadas,
+    $pago_por_hora,
+    $total_pago,
+    $id_cronograma_maquinaria,
+    $id_maquinaria,
+    $petroleo_entrada,
+    $petroleo_salida,
+    $precio_petroleo
+  ) {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = "";
 
     try {
-        $conexion->beginTransaction();
+      $conexion->beginTransaction();
 
-        $sqlOperador = "UPDATE tb_cronograma_operadores 
+      $sqlOperador = "UPDATE tb_cronograma_operadores 
                         SET id_trabajador = ?, horas_trabajadas = ?, pago_por_hora = ?, total_pago = ? 
                         WHERE id_cronograma_operador = ?";
-        $stmtOperador = $conexion->prepare($sqlOperador);
-        $stmtOperador->execute([$id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago, $id_cronograma_operador]);
+      $stmtOperador = $conexion->prepare($sqlOperador);
+      $stmtOperador->execute([$id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago, $id_cronograma_operador]);
 
-        if ($stmtOperador->rowCount() === 0) {
-          $VD = "No se realizaron cambios en el operador.";
+      if ($stmtOperador->rowCount() === 0) {
+        $VD = "No se realizaron cambios en el operador.";
       }
 
-        $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
-        $pago_petroleo = $consumo_petroleo * $precio_petroleo;
+      $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
+      $pago_petroleo = $consumo_petroleo * $precio_petroleo;
 
-        $sqlMaquinaria = "UPDATE tb_cronograma_maquinaria 
+      $sqlMaquinaria = "UPDATE tb_cronograma_maquinaria 
                           SET id_maquinaria = ?, petroleo_entrada = ?, petroleo_salida = ?, 
                               consumo_petroleo = ?, precio_petroleo = ?, pago_petroleo = ? 
                           WHERE id_cronograma_maquinaria = ?";
-        $stmtMaquinaria = $conexion->prepare($sqlMaquinaria);
-        $stmtMaquinaria->execute([$id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo, $id_cronograma_maquinaria]);
+      $stmtMaquinaria = $conexion->prepare($sqlMaquinaria);
+      $stmtMaquinaria->execute([$id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo, $id_cronograma_maquinaria]);
 
-        if ($stmtMaquinaria->rowCount() === 0) {
-          $VD .= " No se realizaron cambios en la maquinaria.";
+      if ($stmtMaquinaria->rowCount() === 0) {
+        $VD .= " No se realizaron cambios en la maquinaria.";
       }
 
       if ($stmtOperador->rowCount() === 0 && $stmtMaquinaria->rowCount() === 0) {
         throw new Exception("No se realizaron cambios en el operador ni en la maquinaria.");
-    }
-    $VD = "OK";
-        $conexion->commit();
-        
+      }
+      $VD = "OK";
+      $conexion->commit();
     } catch (PDOException $e) {
-        $conexion->rollBack();
-        $VD = "Error en la base de datos: " . $e->getMessage();
+      $conexion->rollBack();
+      $VD = "Error en la base de datos: " . $e->getMessage();
     } catch (Exception $exception) {
-        $conexion->rollBack();
-        $VD = $exception->getMessage();
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
 
     return $VD;
-}
+  }
 
 
   public function deleteOperadorMaquinaria($id_cronograma_operador, $id_cronograma_maquinaria)
@@ -885,43 +895,6 @@ public function updateOperadorMaquinaria(
 
     return $VD;
   }
-
-  public function getMaquinariaById($id_cronograma_maquinaria)
-  {
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
-
-    try {
-      $sql = "SELECT * FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?";
-      $stmt = $conexion->prepare($sql);
-      $stmt->execute([$id_cronograma_maquinaria]);
-
-      return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-      return false;
-    } finally {
-      $conexionClass->Close();
-    }
-  }
-
-  public function getOperadorById($id_cronograma_operador)
-  {
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
-
-    try {
-      $sql = "SELECT * FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?";
-      $stmt = $conexion->prepare($sql);
-      $stmt->execute([$id_cronograma_operador]);
-
-      return $stmt->fetch(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-      return false;
-    } finally {
-      $conexionClass->Close();
-    }
-  }
-
 
   public function getOperadorYMaquinariaById($id_cronograma_operador, $id_cronograma_maquinaria)
   {
@@ -1064,6 +1037,38 @@ WHERE m.id_cronograma = :id_cronograma
     }
 
     return $response;
+  }
+
+  public function getUnidadMedidaByServicio($id_cronograma)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = null;
+
+    try {
+      $sql = "SELECT s.id_unidad_medida, s.precio
+              FROM tb_cronograma c 
+              INNER JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+              WHERE c.id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if ($result) {
+        $VD = ["error" => "NO", "data" => $result];
+        error_log("Resultado exitoso: " . json_encode($result));
+      } else {
+        error_log("No se encontró unidad de medida para ID de cronograma: " . $id_cronograma);
+        $VD = ["error" => "SI", "message" => "No se encontró la unidad de medida para este servicio."];
+      }
+    } catch (PDOException $e) {
+      error_log("Error en la consulta: " . $e->getMessage());
+      $VD = ["error" => "SI", "message" => $e->getMessage()];
+    } finally {
+      $conexionClass->Close();
+    }
+
+    return $VD;
   }
 }
 

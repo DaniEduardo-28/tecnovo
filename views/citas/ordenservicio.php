@@ -44,6 +44,28 @@ if (!isset($_SESSION['id_trabajador'])) {
     .pagination li:hover:not(.active) {
       background-color: #ddd;
     }
+
+    #nuevoOperadorMaquinariaContainer .row {
+      margin-bottom: 15px;
+    }
+
+    #nuevoOperadorMaquinariaContainer .col-md-2,
+    #nuevoOperadorMaquinariaContainer .col-md-3 {
+      min-width: 150px;
+    }
+
+    #nuevoOperadorMaquinariaContainer .btnGuardarOperadorMaquinaria,
+    #nuevoOperadorMaquinariaContainer .btnCancelarOperadorMaquinaria {
+      margin: 0 5px;
+    }
+
+    #tablaOperadorMaquinaria tbody td {
+      padding: 10px 15px;
+    }
+
+    .d-flex.justify-content-around {
+      justify-content: space-around;
+    }
   </style>
 </head>
 
@@ -83,7 +105,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                     if ($access_options[0]['error'] == "NO") {
 
                       if ($access_options[0]['flag_descargar']) {
-                        ?>
+                    ?>
                         <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
                           data-original-title="Descargar reporte en pdf" id="btnReportePdf">
                           <i class="fa fa-file-pdf-o btn btn-icon text-danger"></i>
@@ -92,7 +114,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           data-original-title="Descargar reporte en excel" id="btnReporteExcel">
                           <i class="fa fa-file-excel-o btn btn-icon text-success"></i>
                         </a>
-                        <?php
+                    <?php
                       }
                     }
                     ?>
@@ -235,7 +257,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                 </table>
               </div>
             </div>
-                           <!-- Modal combinado -->
+            <!-- Modal combinado -->
 
             <div class="modal fade" id="modalOperadorMaquinaria" tabindex="-1" role="dialog" aria-labelledby="modalOperadorMaquinariaLabel"
               aria-hidden="true">
@@ -257,6 +279,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                         <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
                         <input type="hidden" id="id_cronograma_operador" name="id_cronograma_operador" value="">
                         <input type="hidden" id="id_cronograma_maquinaria" name="id_cronograma_maquinaria" value="">
+                        
                         <div class="row">
                           <div class="col-md-1 d-none">
                             <label>#</label>
@@ -281,12 +304,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                           </div>
 
                           <div class="col-md-2">
-                            <label>Cantidad de Hectareas</label>
+                            <label id="labelCantidad">Cantidad de Hectareas</label>
                             <input type="number" id="horas_trabajadas" name="horas_trabajadas" class="form-control" min="0"
                               step="any">
                           </div>
                           <div class="col-md-2">
-                            <label>Pago / Hectarea</label>
+                            <label id="labelPrecio">Pago / Hectarea</label>
                             <input type="number" id="pago_por_hora" name="pago_por_hora" class="form-control" min="0"
                               step="any">
                           </div>
@@ -295,8 +318,10 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <input type="number" id="total_pago" name="total_pago" class="form-control" min="0"
                               step="any">
                           </div>
+                          <input type="hidden" id="precio_por_unidad" name="precio_por_unidad" value="0">
 
-                          
+
+
                           <div class="col-md-3">
                             <label>Nombre Maquinaria</label>
                             <select id="nombre_maquinaria" name="nombre_maquinaria" class="form-control">
@@ -338,7 +363,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <input type="number" id="pago_petroleo" name="pago_petroleo" class="form-control" min="0"
                               step="any">
                           </div>
-                          <div class="col-md-1 text-center mt-4">
+                          <div class="col-md-1 text-center mt-4 d-flex justify-content-around">
                             <button type="submit" class="btn btn-success btn-sm btnGuardarOperadorMaquinaria"><i
                                 class="fa fa-check"></i></button>
                             <button type="reset" class="btn btn-danger btn-sm btnCancelarOperadorMaquinaria"><i
@@ -354,8 +379,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <tr>
                             <th>#</th>
                             <th>Nombre Operador</th>
-                            <th>Hc. Trabajadas</th>
-                            <th>Pago / Hectarea</th>
+                            <th id="colCantidad">Cantidad</th>
+                            <th id="colPrecio">Pago</th>
                             <th>Total</th>
                             <th>Maquinaria</th>
                             <th>Ing. Petroleo</th>
