@@ -52,47 +52,16 @@ $(document).ready(function () {
   $("#cboMedicoBuscar").change(showLista);
   $("#cboUnidadBuscar").change(showLista);
 
-  $("#btnNuevoOperador").click(function () {
-    $("#nuevoOperadorContainer").show();
-    $("#btnNuevoOperador").hide();
-  });
-
-  $("#btnNuevaMaquina").click(function () {
-    $("#nuevaMaquinariaContainer").show();
-    $("#btnNuevaMaquina").hide();
-  });
-
+ 
   $("#btnNuevoOperadorMaquinaria").click(function () {
     $("#nuevoOperadorMaquinariaContainer").show();
     $("#btnNuevoOperadorMaquinaria").hide();
-  });
-
-  $("#nuevoOperadorContainer .btn-danger").click(function () {
-    $("#nuevoOperadorContainer").hide();
-    $("#btnNuevoOperador").show();
-    limpiarCamposNuevoOperador();
-  });
-
-  $("#nuevaMaquinariaContainer .btn-danger").click(function () {
-    $("#nuevaMaquinariaContainer").hide();
-    $("#btnNuevaMaquina").show();
-    limpiarCamposNuevaMaquinaria();
   });
 
   $("#nuevoOperadorMaquinariaContainer .btn-danger").click(function () {
     $("#nuevoOperadorMaquinariaContainer").hide();
     $("#btnNuevoOperadorMaquinaria").show();
     limpiarCamposNuevoOperadorMaquinaria();
-  });
-
-  $("#frmOperador").submit(function (e) {
-    e.preventDefault();
-    saveOperadorC();
-  });
-
-  $("#frmMaquinaria").submit(function (e) {
-    e.preventDefault();
-    saveMaquinariaC();
   });
 
   $("#frmOperadorMaquinaria").submit(function (e) {
@@ -444,17 +413,15 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
 
 function llenarTablaOperadoresMaquinarias(datos) {
   const tabla = $("#tablaOperadorMaquinaria tbody");
-  tabla.empty(); // Limpiar la tabla antes de llenarla
+  tabla.empty(); 
 
-  // Validar que haya datos de operadores y maquinarias
   const operadores = datos.operadores || [];
   const maquinarias = datos.maquinarias || [];
 
-  // Iterar sobre ambos arreglos para combinarlos en una sola fila
-  const maxLength = Math.max(operadores.length, maquinarias.length); // Determina el tamaño mayor
+  const maxLength = Math.max(operadores.length, maquinarias.length);
   for (let i = 0; i < maxLength; i++) {
-      const operador = operadores[i] || {}; // Si no hay más operadores, usa un objeto vacío
-      const maquinaria = maquinarias[i] || {}; // Si no hay más maquinarias, usa un objeto vacío
+      const operador = operadores[i] || {}; 
+      const maquinaria = maquinarias[i] || {}; 
 
       const horasTrabajadas = parseFloat(operador.horas_trabajadas) || 0;
       const pagoPorHora = parseFloat(operador.pago_por_hora) || 0;
@@ -510,35 +477,54 @@ function llenarTablaOperadoresMaquinarias(datos) {
 
 
 function deleteRegistroOperadorMaquinaria(id_operador, id_maquinaria) {
+  try {
+    var parametros = {
+      id_cronograma_operador: id_operador,
+      id_cronograma_maquinaria: id_maquinaria,
+    };
   Swal.fire({
     title: "¿Seguro de eliminar este registro?",
     text: "No podrás revertir esta operación.",
-    icon: "warning",
+    type: "warning",
     showCancelButton: true,
     confirmButtonColor: "#22c63b",
     cancelButtonColor: "#d33",
     confirmButtonText: "Sí, eliminar",
-  }).then((result) => {
-    if (result.isConfirmed) {
+  }).then(function (result) {
+    if (result.value) {
       $.ajax({
         type: "POST",
         url: "ajax.php?accion=deleteOperadorMaquinariaCronograma",
-        data: { id_operador, id_maquinaria },
-        success: function (response) {
-          const data = JSON.parse(response);
-          if (data.error === "NO") {
-            cargarOperadoresMaquinariasExistentes($("#id_cronograma").val());
-            runAlert("Éxito", data.message, "success");
-          } else {
-            runAlert("Error", data.message, "error");
+        datatype: "json",
+        data: parametros,
+        success: function (data) {
+          try {
+            var response = JSON.parse(data);
+            if (response["error"] == "SI") {
+              runAlert("Oh No...!!!", response["message"], "warning");
+            } else {
+              cargarOperadoresMaquinariasExistentes($("#id_cronograma").val());
+              runAlert("Bien hecho...!!!", response["message"], "success");
+            }
+          } catch (e) {
+            console.log(e);
           }
         },
-        error: function () {
-          runAlert("Error", "No se pudo conectar con el servidor", "error");
+        error: function (data) {
+          runAlert("Oh No...!!!", data, "error");
+        },
+        beforeSend: function (xhr) {
+          showHideLoader("block");
+        },
+        complete: function (jqXHR, textStatus) {
+          showHideLoader("none");
         },
       });
     }
   });
+} catch (e) {
+  runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
+}
 }
 
 
@@ -571,7 +557,7 @@ function saveOperadorMaquinariaC() {
   Swal.fire({
     title: "¿Seguro de guardar los cambios?",
     text: "No podrás revertir esta operación.",
-    icon: "warning",
+    type: "warning",
     showCancelButton: true,
     confirmButtonColor: "#22c63b",
     cancelButtonColor: "#d33",

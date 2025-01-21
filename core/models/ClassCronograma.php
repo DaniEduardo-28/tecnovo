@@ -680,7 +680,6 @@ AND c.estado_trabajo != 'ANULADO' ";
     try {
       $conexion->beginTransaction();
 
-      // Validar si ya existe el operador
       $sqlCheckOperador = "SELECT COUNT(*) as count FROM tb_cronograma_operadores 
                              WHERE id_cronograma = ? AND id_trabajador = ?";
       $stmtCheckOperador = $conexion->prepare($sqlCheckOperador);
@@ -691,7 +690,6 @@ AND c.estado_trabajo != 'ANULADO' ";
         throw new Exception("El operador ya está registrado para este cronograma.");
       }
 
-      // Validar si ya existe la maquinaria
       $sqlCheckMaquinaria = "SELECT COUNT(*) as count FROM tb_cronograma_maquinaria 
                                WHERE id_cronograma = ? AND id_maquinaria = ?";
       $stmtCheckMaquinaria = $conexion->prepare($sqlCheckMaquinaria);
@@ -702,14 +700,12 @@ AND c.estado_trabajo != 'ANULADO' ";
         throw new Exception("La maquinaria ya está registrada para este cronograma.");
       }
 
-      // Inserción del operador
       $sql1 = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora, total_pago) 
                  VALUES (?, ?, ?, ?, ?)";
       $total_pago = $horas_trabajadas * $pago_por_hora;
       $stmt1 = $conexion->prepare($sql1);
       $stmt1->execute([$id_cronograma, $id_trabajador, $horas_trabajadas, $pago_por_hora, $total_pago]);
 
-      // Registro de la maquinaria
       $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
       $pago_petroleo = $consumo_petroleo * $precio_petroleo;
 
@@ -739,7 +735,6 @@ AND c.estado_trabajo != 'ANULADO' ";
     $conexion = $conexionClass->Open();
 
     try {
-      // Obtener operadores del cronograma
       $sqlOperadores = "SELECT 
                             o.id_cronograma_operador, 
                             CONCAT(p.apellidos, ' ', p.nombres) AS nombre_operador,
@@ -756,7 +751,6 @@ AND c.estado_trabajo != 'ANULADO' ";
       $stmtOperadores->execute();
       $operadores = $stmtOperadores->fetchAll(PDO::FETCH_ASSOC);
 
-      // Obtener maquinarias del cronograma
       $sqlMaquinarias = "SELECT 
                             m.id_cronograma_maquinaria, 
                             maq.descripcion AS nombre_maquinaria, 
@@ -774,7 +768,6 @@ AND c.estado_trabajo != 'ANULADO' ";
       $stmtMaquinarias->execute();
       $maquinarias = $stmtMaquinarias->fetchAll(PDO::FETCH_ASSOC);
 
-      // Combinar operadores y maquinarias en un solo array organizado
       $data = [
         "operadores" => $operadores,
         "maquinarias" => $maquinarias
@@ -854,7 +847,7 @@ AND c.estado_trabajo != 'ANULADO' ";
   }
 
 
-  public function deleteOperadorMaquinaria($id, $tipo)
+  public function deleteOperadorMaquinaria($id_cronograma_operador, $id_cronograma_maquinaria)
   {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
@@ -863,20 +856,17 @@ AND c.estado_trabajo != 'ANULADO' ";
     try {
       $conexion->beginTransaction();
 
-      if ($tipo === "operador") {
-        $sql = "DELETE FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?";
-      } else if ($tipo === "maquinaria") {
-        $sql = "DELETE FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?";
-      } else {
-        throw new Exception("Tipo inválido para la eliminación.");
-      }
+      $stmt1 = $conexion->prepare("DELETE FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?");
+			$stmt1->execute([$id_cronograma_operador]);
+      if ($stmt1->rowCount() == 0) {
+				throw new Exception("Ocurrió un error al eliminar el registro.");
+			}
 
-      $stmt = $conexion->prepare($sql);
-      $stmt->execute([$id]);
-
-      if ($stmt->rowCount() == 0) {
-        throw new Exception("No se pudo eliminar el registro.");
-      }
+      $stmt2 = $conexion->prepare("DELETE FROM tb_cronograma_maquinaria WHERE id_cronograma_maquinaria = ?");
+			$stmt2->execute([$id_cronograma_maquinaria]);
+      if ($stmt2->rowCount() == 0) {
+				throw new Exception("Ocurrió un error al eliminar el registro.");
+			}
 
       $VD = "OK";
       $conexion->commit();
@@ -905,7 +895,6 @@ AND c.estado_trabajo != 'ANULADO' ";
     ];
 
     try {
-      // Obtener operador por ID de cronograma
       $sqlOperador = "SELECT 
                             co.id_cronograma_operador,
                             co.id_trabajador,
@@ -931,7 +920,6 @@ AND c.estado_trabajo != 'ANULADO' ";
         ];
       }
 
-      // Obtener maquinaria por ID de cronograma
       $sqlMaquinaria = "SELECT 
                             cm.id_cronograma_maquinaria,
                             cm.id_maquinaria,
@@ -960,7 +948,6 @@ AND c.estado_trabajo != 'ANULADO' ";
         ];
       }
 
-      // Agregar los datos al response
       $response['operador'] = $operador;
       $response['maquinaria'] = $maquinaria;
     } catch (PDOException $e) {
