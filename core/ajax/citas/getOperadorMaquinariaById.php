@@ -1,27 +1,29 @@
 <?php
 
-$id_cronograma = $_POST['id_cronograma'] ?? 0;
+$id_cronograma_operador = $_POST['id_cronograma_operador'] ?? 0;
+$id_cronograma_maquinaria = $_POST['id_cronograma_maquinaria'] ?? 0;
 
 try {
-    if (empty($id_cronograma)) {
-        throw new Exception("El ID del cronograma es obligatorio.");
+    if (!$id_cronograma_operador && !$id_cronograma_maquinaria) {
+        throw new Exception("Se necesitan los IDs del operador y maquinaria.");
     }
 
     require_once "core/models/ClassCronograma.php";
 
-    $result = $OBJ_CRONOGRAMA->getOperadorYMaquinariaById($id_cronograma);
+    $result = $OBJ_CRONOGRAMA->getOperadorYMaquinariaById($id_cronograma_operador, $id_cronograma_maquinaria);
 
-    if ($result['error'] === "SI") {
-        throw new Exception($result['message']);
+    if (!$result) {
+        throw new Exception("No se encontró el registro.");
+    }
+
+    if (empty($result['operador']) && empty($result['maquinaria'])) {
+        throw new Exception("No se encontraron datos para el operador ni la maquinaria.");
     }
 
     $data = [
         "error" => "NO",
-        "message" => "Datos encontrados correctamente.",
-        "data" => [
-            "operador" => $result['operador'],
-            "maquinaria" => $result['maquinaria']
-        ]
+        "message" => "Registro encontrado.",
+        "data" => $result
     ];
     echo json_encode($data);
 } catch (Exception $e) {
@@ -32,3 +34,5 @@ try {
     ];
     echo json_encode($data);
 }
+
+?>

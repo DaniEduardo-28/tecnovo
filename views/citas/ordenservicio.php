@@ -255,6 +255,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                     <div id="nuevoOperadorMaquinariaContainer" class="mt-3" style="display: none;">
                       <form id="frmOperadorMaquinaria" name="frmOperadorMaquinaria" enctype="multipart/form-data">
                         <input type="hidden" name="id_cronograma" id="id_cronograma" value="0">
+                        <input type="hidden" id="id_cronograma_operador" name="id_cronograma_operador" value="">
+                        <input type="hidden" id="id_cronograma_maquinaria" name="id_cronograma_maquinaria" value="">
                         <div class="row">
                           <div class="col-md-1 d-none">
                             <label>#</label>
