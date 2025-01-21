@@ -372,7 +372,7 @@ function showModalOperadorMaquinaria(id_cronograma) {
   $("#id_cronograma").val(id_cronograma);
 
   $("#nombre_operador").prop("selectedIndex", 0);
-  $("#horas_trabajadas").on("input", recalcularPagoTotal);
+  $("#horas_trabajadas").val(0);
   $("#pago_por_hora").val(0);
   $("#total_pago").val(0);
 
@@ -383,8 +383,6 @@ function showModalOperadorMaquinaria(id_cronograma) {
   $("#precio_petroleo").val("");
   $("#pago_petroleo").val("");
 
-  limpiarCamposNuevoOperadorMaquinaria();
-  obtenerUnidadMedida(id_cronograma);
   cargarOperadoresMaquinariasExistentes(id_cronograma);
 
   $("#modalOperadorMaquinaria").modal("show");
