@@ -281,19 +281,19 @@ if (!isset($_SESSION['id_trabajador'])) {
                           </div>
 
                           <div class="col-md-2">
-                            <label>Horas trabajadas</label>
+                            <label>Cantidad de Hectareas</label>
                             <input type="number" id="horas_trabajadas" name="horas_trabajadas" class="form-control" min="0"
-                              step="any" value="0">
+                              step="any">
                           </div>
                           <div class="col-md-2">
-                            <label>Pago / Hora</label>
+                            <label>Pago / Hectarea</label>
                             <input type="number" id="pago_por_hora" name="pago_por_hora" class="form-control" min="0"
-                              step="any" value="0">
+                              step="any">
                           </div>
                           <div class="col-md-2">
                             <label>Pago total</label>
                             <input type="number" id="total_pago" name="total_pago" class="form-control" min="0"
-                              step="1.00">
+                              step="any">
                           </div>
 
                           
@@ -316,27 +316,27 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-2">
                             <label>Ingreso de Petroleo (L)</label>
                             <input type="number" id="petroleo_entrada" name="petroleo_entrada" class="form-control" min="0"
-                              step="any" value="0">
+                              step="any">
                           </div>
                           <div class="col-md-2">
                             <label>Salida de Petroleo (L)</label>
                             <input type="number" id="petroleo_salida" name="petroleo_salida" class="form-control" min="0"
-                              step="any" value="0">
+                              step="any">
                           </div>
                           <div class="col-md-2">
                             <label>Consumo Petroleo</label>
                             <input type="number" id="consumo_petroleo" name="consumo_petroleo" class="form-control" min="0"
-                              step="0.01">
+                              step="any">
                           </div>
                           <div class="col-md-2">
                             <label>Precio Petroleo</label>
                             <input type="number" id="precio_petroleo" name="precio_petroleo" class="form-control" min="0"
-                              step="any" value="0">
+                              step="any">
                           </div>
                           <div class="col-md-2">
                             <label>Pago Petroleo</label>
                             <input type="number" id="pago_petroleo" name="pago_petroleo" class="form-control" min="0"
-                              step="0.01">
+                              step="any">
                           </div>
                           <div class="col-md-1 text-center mt-4">
                             <button type="submit" class="btn btn-success btn-sm btnGuardarOperadorMaquinaria"><i
@@ -354,8 +354,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <tr>
                             <th>#</th>
                             <th>Nombre Operador</th>
-                            <th>Horas trabajadas</th>
-                            <th>Pago / H.</th>
+                            <th>Hc. Trabajadas</th>
+                            <th>Pago / Hectarea</th>
                             <th>Total</th>
                             <th>Maquinaria</th>
                             <th>Ing. Petroleo</th>

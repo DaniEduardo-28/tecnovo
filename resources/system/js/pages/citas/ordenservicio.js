@@ -370,7 +370,6 @@ function showModalOperadorMaquinaria(id_cronograma) {
     return;
   }
   $("#id_cronograma").val(id_cronograma);
-  cargarOperadoresMaquinariasExistentes(id_cronograma);
 
   $("#nombre_operador").prop("selectedIndex", 0);
   $("#horas_trabajadas").val(0);
@@ -384,7 +383,10 @@ function showModalOperadorMaquinaria(id_cronograma) {
   $("#precio_petroleo").val("");
   $("#pago_petroleo").val("");
 
+  cargarOperadoresMaquinariasExistentes(id_cronograma);
+
   $("#modalOperadorMaquinaria").modal("show");
+
 }
 
 function cargarOperadoresMaquinariasExistentes(id_cronograma) {
@@ -396,7 +398,11 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
       try {
         const data = JSON.parse(response);
         if (data.error === "NO") {
-          llenarTablaOperadoresMaquinarias(data.data); // Pasar directamente el array 'data'
+          llenarTablaOperadoresMaquinarias(data.data);
+
+          if (data.data.cantidad) {
+            $("#horas_trabajadas").val(data.data.cantidad);
+          }
         } else {
           console.error(data.message);
           $("#tablaOperadorMaquinaria tbody").empty(); // Limpiar tabla si no hay datos
@@ -529,26 +535,20 @@ function deleteRegistroOperadorMaquinaria(id_operador, id_maquinaria) {
 
 
 function calcularValoresFormulario() {
-  const horasTrabajadas = parseFloat($("#horas_trabajadas").val()) || 0;
-  const pagoPorHora = parseFloat($("#pago_por_hora").val()) || 0;
-  const totalPago = horasTrabajadas * pagoPorHora;
-
+  const horas_trabajadas = parseFloat($("#horas_trabajadas").val()) || 0;
+  const pago_por_hora = parseFloat($("#pago_por_hora").val()) || 0;
   const petroleoEntrada = parseFloat($("#petroleo_entrada").val()) || 0;
   const petroleoSalida = parseFloat($("#petroleo_salida").val()) || 0;
-  const consumoPetroleo = petroleoEntrada - petroleoSalida;
-
   const precioPetroleo = parseFloat($("#precio_petroleo").val()) || 0;
+
+  const total = horas_trabajadas * pago_por_hora;
+  const consumoPetroleo = petroleoEntrada - petroleoSalida;
   const pagoPetroleo = consumoPetroleo * precioPetroleo;
 
   // Asigna valores predeterminados
-  $("#horas_trabajadas").val(horasTrabajadas.toFixed(2));
-  $("#pago_por_hora").val(pagoPorHora.toFixed(2));
-  $("#total_pago").val(totalPago.toFixed(2));
-  $("#petroleo_entrada").val(petroleoEntrada.toFixed(2));
-  $("#petroleo_salida").val(petroleoSalida.toFixed(2));
-  $("#consumo_petroleo").val(consumoPetroleo.toFixed(2));
-  $("#precio_petroleo").val(precioPetroleo.toFixed(2));
-  $("#pago_petroleo").val(pagoPetroleo.toFixed(2));
+  $("#total_pago").val(total);
+  $("#consumo_petroleo").val(consumoPetroleo);
+  $("#pago_petroleo").val(pagoPetroleo);
 }
 
 $("#horas_trabajadas, #pago_por_hora, #petroleo_entrada, #petroleo_salida, #precio_petroleo").on("input", calcularValoresFormulario);
@@ -674,73 +674,4 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
     },
   });
 }
-
-function editarOperador(id_cronograma_operador) {
-  $.ajax({
-    type: "POST",
-    url: "ajax.php?accion=getOperadorById",
-    data: { id_cronograma_operador: id_cronograma_operador },
-    success: function (response) {
-      try {
-        const data = JSON.parse(response);
-        if (data.error === "NO") {
-          const operador = data.data;
-          $("#nombre_operador").val(operador.id_trabajador);
-          $("#horas_trabajadas").val(operador.horas_trabajadas);
-          $("#pago_por_hora").val(operador.pago_por_hora);
-          $("#total_pago").val((operador.horas_trabajadas * operador.pago_por_hora).toFixed(2));
-
-          // Cambiar el texto del botón de guardar y mostrar el contenedor de edición
-          $("#btnNuevoOperador").hide();
-          $("#nuevoOperadorContainer").show();
-          $("#frmOperador").data("editing", id_cronograma_operador); // Guardar el ID para la edición
-        } else {
-          runAlert("Error", data.message, "error");
-        }
-      } catch (e) {
-        console.error("Error al procesar la respuesta:", e);
-        runAlert("Error", "No se pudo procesar la respuesta del servidor", "error");
-      }
-    },
-    error: function () {
-      runAlert("Error", "No se pudo conectar con el servidor", "error");
-    }
-  });
-}
-
-function editarMaquinaria(id_cronograma_maquinaria) {
-  $.ajax({
-    type: "POST",
-    url: "ajax.php?accion=getMaquinariaById",
-    data: { id_cronograma_maquinaria: id_cronograma_maquinaria },
-    success: function (response) {
-      try {
-        const data = JSON.parse(response);
-        if (data.error === "NO") {
-          const maquinaria = data.data;
-          $("#nombre_maquinaria").val(maquinaria.id_maquinaria);
-          $("#petroleo_entrada").val(maquinaria.petroleo_entrada);
-          $("#petroleo_salida").val(maquinaria.petroleo_salida);
-          $("#consumo_petroleo").val(parseFloat(maquinaria.consumo_petroleo).toFixed(2));
-          $("#precio_petroleo").val(parseFloat(maquinaria.precio_petroleo).toFixed(2));
-          $("#pago_petroleo").val(parseFloat(maquinaria.pago_petroleo).toFixed(2));
-          // Cambiar el texto del botón de guardar y mostrar el contenedor de edición
-          $("#btnNuevaMaquina").hide();
-          $("#nuevaMaquinariaContainer").show();
-          $("#frmMaquinaria").data("editing", id_cronograma_maquinaria); // Guardar el ID para la edición
-        } else {
-          runAlert("Error", data.message, "error");
-        }
-      } catch (e) {
-        console.error("Error al procesar la respuesta:", e);
-        runAlert("Error", "No se pudo procesar la respuesta del servidor", "error");
-      }
-    },
-    error: function () {
-      runAlert("Error", "No se pudo conectar con el servidor", "error");
-    }
-  });
-}
-
-
 

@@ -12,7 +12,8 @@ try {
         if ($resultado['error'] === 'NO' && !empty($resultado['data'])) {
             echo json_encode([
                 'error' => 'NO',
-                'data' => $resultado['data']
+                'data' => $resultado['data'],
+                'cantidad' => $resultado['data']['cantidad']
             ]);
         } else {
             echo json_encode([
