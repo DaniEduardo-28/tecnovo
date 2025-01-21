@@ -464,7 +464,6 @@ function llenarTablaOperadoresMaquinarias(datos) {
     tabla.append(fila);
   }
 
-  // Agregar eventos a los botones de edición y eliminación
   $(".btnEditarOperadorMaquinaria").click(function () {
     const idOperador = $(this).data("id-operador");
     const idMaquinaria = $(this).data("id-maquinaria");
@@ -479,8 +478,6 @@ function llenarTablaOperadoresMaquinarias(datos) {
     }
   });
 }
-
-
 
 function deleteRegistroOperadorMaquinaria(id_operador, id_maquinaria) {
   try {
@@ -532,7 +529,6 @@ function deleteRegistroOperadorMaquinaria(id_operador, id_maquinaria) {
     runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
   }
 }
-
 
 function calcularValoresFormulario() {
   const horas_trabajadas = parseFloat($("#horas_trabajadas").val()) || 0;
@@ -610,8 +606,6 @@ function saveOperadorMaquinariaC() {
   });
 }
 
-
-
 function cancelarFormOperadorMaquinaria() { }
 
 function limpiarCamposNuevoOperadorMaquinaria() {
@@ -627,7 +621,6 @@ function limpiarCamposNuevoOperadorMaquinaria() {
   $("#pago_petroleo").val("0");
   $("#frmOperadorMaquinaria").removeData("editing");
 }
-
 
 function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinaria) {
   $("#id_cronograma_operador").val(id_cronograma_operador || "");
@@ -655,7 +648,6 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
           $("#consumo_petroleo").val(parseFloat(maquinaria.consumo_petroleo || 0).toFixed(2));
           $("#precio_petroleo").val(parseFloat(maquinaria.precio_petroleo || 0).toFixed(2));
           $("#pago_petroleo").val(parseFloat(maquinaria.pago_petroleo || 0).toFixed(2));
-
 
           $("#btnNuevoOperadorMaquinaria").hide();
           $("#nuevoOperadorMaquinariaContainer").show();

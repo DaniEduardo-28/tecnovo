@@ -694,11 +694,7 @@ AND c.estado_trabajo != 'ANULADO' ";
                                WHERE id_cronograma = ? AND id_maquinaria = ?";
       $stmtCheckMaquinaria = $conexion->prepare($sqlCheckMaquinaria);
       $stmtCheckMaquinaria->execute([$id_cronograma, $id_maquinaria]);
-      $existeMaquinaria = $stmtCheckMaquinaria->fetch(PDO::FETCH_ASSOC)['count'] > 0;
 
-      if ($existeMaquinaria) {
-        throw new Exception("La maquinaria ya está registrada para este cronograma.");
-      }
 
       $sql1 = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora, total_pago) 
                  VALUES (?, ?, ?, ?, ?)";
