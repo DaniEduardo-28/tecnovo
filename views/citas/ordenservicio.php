@@ -395,6 +395,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                         </tbody>
                       </table>
                     </div>
+                    <div id="labelHectareasDisponibles" class="text-right font-weight-bold"></div>
                   </div>
                 </div>
               </div>

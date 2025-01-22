@@ -47,31 +47,51 @@ try {
     $pdf->AddPage();
 
     $pdf->Image($empresa[0]['src_logo'], 10, 10, 30);
-    $pdf->SetFont('Arial', '', 9);
-    $pdf->SetY(15);
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->SetY(10);
     $pdf->SetX(45);
-    $pdf->Cell(100, 8, utf8_decode($empresa[0]['razon_social']), 0, 1, 'L', 0);
+    $pdf->Cell(100, 6, utf8_decode(strtoupper($empresa[0]['razon_social'])), 0, 1, 'L', 0);
+
+    $pdf->SetFont('Arial', 'B', 8);
+    $pdf->SetX(45);
+    $pdf->Cell(100, 3, utf8_decode('DIRECCIÓN: ' . $empresa[0]['direccion']), 0, 1, 'L', 0);
+
+    $pdf->SetX(45);
+    $pdf->Cell(100, 6, utf8_decode(strtoupper($empresa[0]['name_documento_empresa'] . ' ' . $empresa[0]['num_documento'])), 0, 0, 'L', 0);
 
     $fecha_reporte = date('Y-m-d H:i:s');
-    $pdf->SetFont('Arial', '', 10);
+    $pdf->SetFont('Arial', '', 9);
     $pdf->SetY(10);
     $pdf->SetX(-60);
     $pdf->Cell(50, 5, "Fecha: $fecha_reporte", 0, 0, 'R');
 
-    $pdf->Ln(25);
-    $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, utf8_decode("COMPRAS Y GASTOS DEL SERVICIO N° {$datos_cronograma['codigo']}"), 0, 1, 'C');
+    $pdf->Ln(20);
+    $pdf->SetFont('Arial', 'U', 18);
+    $pdf->Cell(0, 8, utf8_decode("ORDEN DE SERVICIO"), 0, 1, 'C');
+    $pdf->SetFont('Arial', '', 18);
+    $pdf->Cell(0, 8, utf8_decode("N° " . $datos_cronograma['codigo']), 0, 1, 'C');
 
+    $pdf->Ln(5);
+    $pdf->Cell(0, 0, '', 'T');
     // Datos principales
-    $pdf->Ln(10);
+    $pdf->Ln(3);
     $pdf->SetFont('Arial', '', 10);
 
+    $pdf->Cell(40, 8, utf8_decode("Cliente:  "), 0, 0, 'L');
+    $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_cliente'] . '  -  ' . $datos_cronograma['documento_identidad']), 0, 1, 'L');
+    $pdf->Cell(40, 8, utf8_decode("Fundo:  "), 0, 0, 'L');
+    $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_fundo']), 0, 1, 'L');
+    $pdf->Cell(40, 8, utf8_decode("Servicio:  "), 0, 0, 'L');
+    $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_servicio']), 0, 1, 'L');
+    $pdf->Ln(4);
+    $pdf->Cell(0, 0, '', 'T');
+    $pdf->Ln(4);
     $pdf->Cell(40, 8, utf8_decode("Fecha de Ingreso:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_ingreso']), 0, 0, 'L');
     $pdf->Cell(40, 8, utf8_decode("Fecha de Salida:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_salida']), 0, 1, 'L');
 
-    $pdf->Cell(40, 8, utf8_decode("Cantidad de Hectáreas:"), 0, 0, 'L');
+    $pdf->Cell(40, 8, utf8_decode("Hectáreas:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['cantidad'] . " Hc"), 0, 0, 'L');
     $pdf->Cell(40, 8, utf8_decode("Monto Unitario:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode("S/." . $datos_cronograma['monto_unitario']), 0, 1, 'L');
@@ -92,38 +112,26 @@ try {
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['estado_trabajo']), 0, 1, 'L');
 
     $pdf->Ln(5);
-
-    $pdf->Cell(40, 8, utf8_decode("Nombre Servicio:"), 0, 0, 'L');
-    $pdf->Cell(80, 8, utf8_decode($datos_cronograma['nombre_servicio']), 0, 1, 'L');
-    $pdf->Cell(40, 8, utf8_decode("Nombre Fundo:"), 0, 0, 'L');
-    $pdf->Cell(80, 8, utf8_decode($datos_cronograma['nombre_fundo']), 0, 1, 'L');
-    $pdf->Cell(40, 8, utf8_decode("Nombre Cliente:"), 0, 0, 'L');
-    $pdf->Cell(80, 8, utf8_decode($datos_cronograma['nombre_cliente']), 0, 1, 'L');
-
-
+    $pdf->Cell(0, 0, '', 'T');
+    $pdf->Ln(3);
     // Datos de operadores
     $pdf->Ln(10);
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(0, 10, utf8_decode('Operadores'), 0, 1, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    foreach ($operadores as $operador) {
-        $pdf->Cell(80, 8, utf8_decode($operador['nombre_operador'] . ":"), 0, 0, 'L');
-        $pdf->Cell(20, 8, utf8_decode("S/." . $operador['total_pago']), 0, 1, 'R');
+    
+    // Títulos de las columnas
+    $pdf->Cell(95, 10, utf8_decode('OPERADORES'), 1, 0, 'C');
+    $pdf->Cell(95, 10, utf8_decode('MAQUINARIAS'), 1, 1, 'C');
+    
+    // Contenido de la tabla
+    $pdf->SetFont('Arial', '', 8);
+    $maxRows = max(count($operadores), count($maquinarias));
+    for ($i = 0; $i < $maxRows; $i++) {
+        $operador = isset($operadores[$i]) ? utf8_decode($operadores[$i]['nombre_operador']) : '';
+        $maquinaria = isset($maquinarias[$i]) ? utf8_decode($maquinarias[$i]['nombre_maquinaria']) : '';
+    
+        $pdf->Cell(95, 8, $operador, 1, 0, 'L');
+        $pdf->Cell(95, 8, $maquinaria, 1, 1, 'L');
     }
-    $pdf->Cell(80, 8, utf8_decode('Total Pago Operadores:'), 0, 0, 'L');
-    $pdf->Cell(20, 8, utf8_decode("S/." . $totales['total_pago_operadores']), 0, 1, 'R');
-
-    $pdf->Ln(10);
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(0, 10, utf8_decode('Maquinarias'), 0, 1, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    foreach ($maquinarias as $maquinaria) {
-        $pdf->Cell(80, 8, utf8_decode($maquinaria['nombre_maquinaria'] . ":"), 0, 0, 'L');
-        $pdf->Cell(20, 8, utf8_decode("S/." . $maquinaria['pago_petroleo']), 0, 1, 'R');
-    }
-    $pdf->Cell(80, 8, utf8_decode('Total Pago Maquinarias:'), 0, 0, 'L');
-    $pdf->Cell(20, 8, utf8_decode("S/." . $totales['total_pago_maquinarias']), 0, 1, 'R');
-
     $pdf->Output();
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();

@@ -970,7 +970,8 @@ AND c.estado_trabajo != 'ANULADO' ";
       $sqlCronograma = "
       SELECT 
           c.*,
-          CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo,
+          CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo, 
+          CONCAT(d.name_documento, ': ', p.num_documento) AS documento_identidad,
           s.name_servicio AS nombre_servicio,
           f.nombre AS nombre_fundo,
           CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente
@@ -980,6 +981,7 @@ AND c.estado_trabajo != 'ANULADO' ";
       INNER JOIN tb_fundo f ON c.id_fundo = f.id_fundo
       INNER JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente 
       INNER JOIN tb_persona p ON cl.id_persona = p.id_persona 
+      INNER JOIN tb_documento_identidad d ON d.id_documento = p.id_documento 
       WHERE c.id_cronograma = :id_cronograma
   ";
       $stmtCronograma = $conexion->prepare($sqlCronograma);
