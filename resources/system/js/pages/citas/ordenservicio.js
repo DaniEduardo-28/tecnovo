@@ -64,6 +64,27 @@ $(document).ready(function () {
     limpiarCamposNuevoOperadorMaquinaria();
   });
 
+  $(".btnCancelarOperadorMaquinaria").click(function () {
+    const idCronograma = $("#id_cronograma").val();
+  
+    if (!idCronograma || idCronograma === "0") {
+      console.error("ID de cronograma no válido al cancelar.");
+      return; 
+    }
+
+    $("#nuevoOperadorMaquinariaContainer").hide();
+    $("#btnNuevoOperadorMaquinaria").show();
+  
+    cargarOperadoresMaquinariasExistentes(idCronograma)
+      .then(() => {
+        console.log("Datos recargados correctamente tras cancelar.");
+      })
+      .catch((error) => {
+        console.error("Error al recargar los datos tras cancelar:", error);
+      });
+  });
+  
+
   $("#frmOperadorMaquinaria").submit(function (e) {
     e.preventDefault();
     saveOperadorMaquinariaC();
@@ -376,22 +397,14 @@ function showModalOperadorMaquinaria(id_cronograma) {
 
   $("#id_cronograma").val(id_cronograma);
 
-  $("#nombre_operador").prop("selectedIndex", 0);
-  $("#horas_trabajadas").val(0);
-  $("#pago_por_hora").val(0);
-  $("#total_pago").val(0);
-
-  $("#nombre_maquinaria").prop("selectedIndex", 0);
-  $("#petroleo_entrada").val("");
-  $("#petroleo_salida").val("");
-  $("#consumo_petroleo").val("");
-  $("#precio_petroleo").val("");
-  $("#pago_petroleo").val("");
-
-  cargarOperadoresMaquinariasExistentes(id_cronograma);
-
-  $("#modalOperadorMaquinaria").modal("show");
-
+  cargarOperadoresMaquinariasExistentes(id_cronograma)
+    .then(() => {
+    $("#modalOperadorMaquinaria").modal("show");
+  })
+  .catch((error) => {
+    console.error("Error al cargar datos de operadores y maquinarias:", error);
+    runAlert("Error", "No se pudieron cargar los datos del cronograma.", "error");
+  });
 }
 
 $("#modalOperadorMaquinaria").on("hidden.bs.modal", function () {
@@ -401,40 +414,48 @@ $("#modalOperadorMaquinaria").on("hidden.bs.modal", function () {
 });
 
 function cargarOperadoresMaquinariasExistentes(id_cronograma) {
-  console.log("ID Cronograma recibido:", id_cronograma);
-  $.ajax({
-    type: "POST",
-    url: "ajax.php?accion=getOperadoresMaquinariasByCronograma",
-    data: { id_cronograma: id_cronograma },
-    success: function (response) {
-      try {
-        const data = JSON.parse(response);
-        if (data.error === "NO") {
-          const unidadMedida = data.data.unidad_medida;
-          const pagoOperador = parseFloat(data.data.pago_operador) || 0;
+  return new Promise((resolve, reject) => {
+    console.log("ID Cronograma recibido:", id_cronograma);
 
-          console.log("Unidad de Medida obtenida:", unidadMedida);
-          console.log("Pago Operador obtenido:", pagoOperador);
+    $.ajax({
+      type: "POST",
+      url: "ajax.php?accion=getOperadoresMaquinariasByCronograma",
+      data: { id_cronograma: id_cronograma },
+      success: function (response) {
+        try {
+          const data = JSON.parse(response);
+          if (data.error === "NO") {
+            const unidadMedida = data.data.unidad_medida;
+            const pagoOperador = parseFloat(data.data.pago_operador) || 0;
 
-          actualizarColumnas(unidadMedida);
+            console.log("Unidad de Medida obtenida:", unidadMedida);
+            console.log("Pago Operador obtenido:", pagoOperador);
 
-          $("#pago_por_hora").val(pagoOperador.toFixed(2));
-          recalcularPagoTotal();
+            // Actualiza etiquetas y campos del formulario
+            actualizarColumnas(unidadMedida);
+            $("#pago_por_hora").val(pagoOperador.toFixed(2));
 
-          llenarTablaOperadoresMaquinarias(data.data);
-        } else {
-          console.error(data.message);
-          $("#tablaOperadorMaquinaria tbody").empty(); // Limpiar tabla si no hay datos
+            // Llena la tabla con los datos existentes
+            llenarTablaOperadoresMaquinarias(data.data);
+            resolve();
+          } else {
+            console.error(data.message);
+            $("#tablaOperadorMaquinaria tbody").empty(); // Limpia la tabla si no hay datos
+            resolve(); // Aún así resuelve para evitar bloquear
+          }
+        } catch (err) {
+          console.error("Error al procesar la respuesta:", err);
+          reject(err);
         }
-      } catch (err) {
-        console.error("Error al procesar la respuesta:", err);
-      }
-    },
-    error: function () {
-      runAlert("Error", "No se pudo conectar con el servidor para cargar los operadores.", "error");
-    },
+      },
+      error: function () {
+        runAlert("Error", "No se pudo conectar con el servidor para cargar los operadores.", "error");
+        reject();
+      },
+    });
   });
 }
+
 
 function llenarTablaOperadoresMaquinarias(datos) {
   const tabla = $("#tablaOperadorMaquinaria tbody");
@@ -634,10 +655,10 @@ function saveOperadorMaquinariaC() {
 
 function cancelarFormOperadorMaquinaria() { }
 
-function limpiarCamposNuevoOperadorMaquinaria() {
+function limpiarCamposNuevoOperadorMaquinaria(pagoOperador = "0") {
   $("#nombre_operador").prop("selectedIndex", 0);
   $("#horas_trabajadas").val("0");
-  $("#pago_por_hora").val("0");
+  $("#pago_por_hora").val(pagoOperador); // Aquí se asigna el valor del pagoOperador
   $("#total_pago").val("0");
   $("#nombre_maquinaria").prop("selectedIndex", 0);
   $("#petroleo_entrada").val("0");
@@ -647,6 +668,7 @@ function limpiarCamposNuevoOperadorMaquinaria() {
   $("#pago_petroleo").val("0");
   $("#frmOperadorMaquinaria").removeData("editing");
 }
+
 
 function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinaria) {
   $("#id_cronograma_operador").val(id_cronograma_operador || "");

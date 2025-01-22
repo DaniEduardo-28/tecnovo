@@ -366,7 +366,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           <div class="col-md-1 text-center mt-4 d-flex justify-content-around">
                             <button type="submit" class="btn btn-success btn-sm btnGuardarOperadorMaquinaria"><i
                                 class="fa fa-check"></i></button>
-                            <button type="reset" class="btn btn-danger btn-sm btnCancelarOperadorMaquinaria"><i
+                            <button type="button" class="btn btn-danger btn-sm btnCancelarOperadorMaquinaria"><i
                                 class="fa fa-trash"></i></button>
                           </div>
                         </div>
