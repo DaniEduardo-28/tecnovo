@@ -1,0 +1,19 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'updateFechasHoras') {
+    include_once "core/models/ClassCronograma.php";
+
+    $id_cronograma = $_POST['id_cronograma'];
+    $fecha_ingreso = $_POST['fecha_ingreso'];
+    $hora_ingreso = $_POST['hora_ingreso'];
+    $fecha_salida = $_POST['fecha_salida'];
+    $hora_salida = $_POST['hora_salida'];
+
+    $response = $OBJ_CRONOGRAMA->updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida);
+
+    if ($response === "OK") {
+        echo json_encode(["success" => true, "message" => "Fechas actualizadas correctamente."]);
+    } else {
+        echo json_encode(["success" => false, "message" => $response]);
+    }
+    exit();
+}

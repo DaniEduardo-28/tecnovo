@@ -1,20 +1,43 @@
 <?php
-  if (!isset($_SESSION['id_trabajador'])) {
-    header('location: ?view=logout');
-    exit();
-  }
- ?>
+if (!isset($_SESSION['id_trabajador'])) {
+  header('location: ?view=logout');
+  exit();
+}
+?>
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <?php include("views/overall/header.php"); ?>
-    <title>Aprobación de Cronograma | <?=APP_TITLE;?> </title>
-    <link rel="stylesheet" href="resources/fullcalendar/fullcalendar.css">
+<head>
+  <?php include("views/overall/header.php"); ?>
+  <title>Aprobación de Cronograma | <?= APP_TITLE; ?> </title>
+  <link rel="stylesheet" href="resources/fullcalendar/fullcalendar.css">
+  <style>
+    .form-group-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
 
-  </head>
+    .form-group-row>div {
+      flex: 1;
+    }
 
-  <body>
+    .form-group-row label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      height: calc(1.5em + 0.75rem + 2px);
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
 
   <div class="app">
     <div class="app-wrap">
@@ -172,7 +195,7 @@
               <input type="text" id="maquinaria_show" class="form-control" readonly>
             </div>
 
-            <div class="form-group col-sm-6">
+            <!-- <div class="form-group col-sm-6">
               <label for="fecha_ingreso_show">Fecha Ingreso</label>
               <input type="text" id="fecha_ingreso_show" class="form-control" readonly>
             </div>
@@ -180,6 +203,28 @@
             <div class="form-group col-sm-6">
               <label for="fecha_salida_show">Fecha Salida</label>
               <input type="text" id="fecha_salida_show" class="form-control" readonly>
+            </div> -->
+
+            <div class="form-group-row">
+              <div>
+                <label for="fecha_ingreso_edit">Fecha Ingreso</label>
+                <input type="date" id="fecha_ingreso_edit" name="fecha_ingreso" class="form-control">
+              </div>
+              <div>
+                <label for="hora_ingreso_edit">Hora Ingreso</label>
+                <input type="time" id="hora_ingreso_edit" name="hora_ingreso" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group-row">
+              <div>
+                <label for="fecha_salida_edit">Fecha Salida</label>
+                <input type="date" id="fecha_salida_edit" name="fecha_salida" class="form-control">
+              </div>
+              <div>
+                <label for="hora_salida_edit">Hora Salida</label>
+                <input type="time" id="hora_salida_edit" name="hora_salida" class="form-control">
+              </div>
             </div>
 
             <div class="form-group col-sm-12">
@@ -190,9 +235,10 @@
           </div>
 
           <div class="modal-footer">
-                    <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-                    <div id="accionesAprobacion"></div>
-                </div>
+            <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
+            <button type="button" id="btnGuardarCambios" class="btn btn-success">Guardar Cambios</button>
+            <div id="accionesAprobacion"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -208,6 +254,6 @@
     $("#menucitas").addClass('active');
     $("#submenuatencioncitas").addClass('active');
   </script>
-  </body>
+</body>
 
 </html>

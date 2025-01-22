@@ -749,6 +749,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         include("core/ajax/citas/cambiarEstadoCronograma.php");
         break;
+      case 'actualizarFechasHoras':
+        require("core/models/ClassAccesoOpcion.php");
+        include("core/ajax/citas/actualizarFechasHoras.php");
+        break;
       default:
         $data["error"] = "SI";
         $data["message"] = "No se encontró el ajax especificado.";

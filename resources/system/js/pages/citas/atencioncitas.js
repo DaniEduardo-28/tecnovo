@@ -115,6 +115,46 @@ $(document).ready(function () {
   });
 });
 
+
+$(document).on('click', '#btnGuardarCambios', function () {
+  const idCronograma = $('#id_cronograma').val();
+  const fechaIngreso = $('#fecha_ingreso_edit').val();
+  const horaIngreso = $('#hora_ingreso_edit').val();
+  const fechaSalida = $('#fecha_salida_edit').val();
+  const horaSalida = $('#hora_salida_edit').val();
+
+  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida) {
+    Swal.fire('Error', 'Todos los campos de fecha y hora son obligatorios.', 'error');
+    return;
+  }
+
+  $.ajax({
+    url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
+    type: 'POST',
+    data: {
+      action: 'updateFechasHoras',
+      id_cronograma: idCronograma,
+      fecha_ingreso: fechaIngreso,
+      hora_ingreso: horaIngreso,
+      fecha_salida: fechaSalida,
+      hora_salida: horaSalida
+    },
+    success: function (response) {
+      const res = JSON.parse(response);
+      if (res.success) {
+        Swal.fire('Éxito', res.message, 'success');
+        $('#modal-calendario-show').modal('hide'); // Cierra el modal
+        crearCalendario(); // Recargar calendario
+      } else {
+        Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
+      }
+    },
+    error: function () {
+      Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+    }
+  });
+});
+
 function crearCalendario() {
   $("#calendario").fullCalendar("destroy");
   var fundo = $("#cboFundoBuscar").val();
@@ -264,14 +304,22 @@ function getCronograma(id_cronograma) {
         var data = typeof response === "string" ? JSON.parse(response) : response;
         if (data.error === "NO") {
           var info = data.data;
+          console.log("Datos del cronograma:", info);
 
           $("#id_cronograma").val(info.id_cronograma);
           $("#fundo_show").val(info.nombre_fundo);
           $("#cliente_show").val(info.nombre_cliente);
           $("#operador_show").val(info.nombre_operador);
           $("#maquinaria_show").val(info.nombre_maquinaria);
-          $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("DD/MM/YYYY HH:mm"));
-          $("#fecha_salida_show").val(moment(info.fecha_salida).format("DD/MM/YYYY HH:mm"));
+          const fechaIngreso = moment(info.fecha_ingreso).format("YYYY-MM-DD");
+          const horaIngreso = moment(info.fecha_ingreso).format("HH:mm");
+          const fechaSalida = moment(info.fecha_salida).format("YYYY-MM-DD");
+          const horaSalida = moment(info.fecha_salida).format("HH:mm");
+          
+          $("#fecha_ingreso_edit").val(fechaIngreso);
+          $("#hora_ingreso_edit").val(horaIngreso);
+          $("#fecha_salida_edit").val(fechaSalida);
+          $("#hora_salida_edit").val(horaSalida);
           $("#estado_trabajo_show").val(info.estado_trabajo);
 
 

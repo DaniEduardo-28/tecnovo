@@ -669,6 +669,46 @@ AND c.estado_trabajo != 'ANULADO' ";
     }
   }
 
+  public function updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida) {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = null;
+
+    try {
+        $conexion->beginTransaction();
+
+        // Validar el ID
+        if (empty($id_cronograma) || !is_numeric($id_cronograma)) {
+            throw new Exception("ID de cronograma inválido.");
+        }
+
+        $datetime_ingreso = $fecha_ingreso . " " . $hora_ingreso;
+        $datetime_salida = $fecha_salida . " " . $hora_salida;
+
+        $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ? WHERE id_cronograma = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$datetime_ingreso, $datetime_salida, $id_cronograma]);
+
+        if ($stmt->rowCount() == 0) {
+            throw new Exception("No se realizaron cambios en el cronograma.");
+        }
+
+        $VD = "OK";
+        $conexion->commit();
+    } catch (PDOException $e) {
+        $conexion->rollBack();
+        $VD = $e->getMessage();
+    } catch (Exception $exception) {
+        $conexion->rollBack();
+        $VD = $exception->getMessage();
+    } finally {
+        $conexionClass->Close();
+    }
+
+    return $VD;
+}
+
+
   public function addOperadorMaquinaria(
     $id_cronograma,
     $id_trabajador,

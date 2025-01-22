@@ -17,6 +17,30 @@ if (!isset($_SESSION['id_trabajador'])) {
   <link href="resources/select2/css/select2.min.css" rel="stylesheet" />
   <!-- SweetAlert2 CSS -->
   <link rel="stylesheet" href="resources/sweetalert2/sweetalert2.min.css">
+  <style>
+    .form-group-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .form-group-row>div {
+      flex: 1;
+    }
+
+    .form-group-row label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+      height: calc(1.5em + 0.75rem + 2px);
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
@@ -62,78 +86,78 @@ if (!isset($_SESSION['id_trabajador'])) {
             <!-- Filtros -->
             <div class="row">
 
-                  <div class="form-group col-12 col-sm-6 col-md-3">
-                    <label for="cboMaquinariaBuscar">Maquinaria</label>
-                    <select class="form-control" id="cboMaquinariaBuscar" name="cboMaquinariaBuscar">
-                      <option value="all">Todas</option>
-                      <?php
-                      include("core/models/ClassMaquinaria.php");
-                      $dataMaquinaria = $OBJ_MAQUINARIA->showActivos();
-                      if ($dataMaquinaria["error"] == "NO") {
-                        foreach ($dataMaquinaria["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
-                      <?php
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
+              <div class="form-group col-12 col-sm-6 col-md-3">
+                <label for="cboMaquinariaBuscar">Maquinaria</label>
+                <select class="form-control" id="cboMaquinariaBuscar" name="cboMaquinariaBuscar">
+                  <option value="all">Todas</option>
+                  <?php
+                  include("core/models/ClassMaquinaria.php");
+                  $dataMaquinaria = $OBJ_MAQUINARIA->showActivos();
+                  if ($dataMaquinaria["error"] == "NO") {
+                    foreach ($dataMaquinaria["data"] as $key) {
+                  ?>
+                      <option value="<?= $key['id_maquinaria']; ?>"><?= $key['descripcion'] ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
 
-                  <div class="form-group col-sm-6 col-md-3">
-                    <label for="cboMedicoBuscar">Operador</label>
-                    <select class="form-control" id="cboMedicoBuscar" name="cboMedicoBuscar">
-                      <option value="all">Todos</option>
-                      <?php
-                      include("core/models/ClassAccesoSucursal.php");
-                      $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
-                      if ($dataOperador["error"] == "NO") {
-                        foreach ($dataOperador["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_trabajador']; ?>"><?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?></option>
-                      <?php
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="cboMedicoBuscar">Operador</label>
+                <select class="form-control" id="cboMedicoBuscar" name="cboMedicoBuscar">
+                  <option value="all">Todos</option>
+                  <?php
+                  include("core/models/ClassAccesoSucursal.php");
+                  $dataOperador = $OBJ_ACCESO_SUCURSAL->getAccesoTrabajadorSucursal($_SESSION['id_sucursal']);
+                  if ($dataOperador["error"] == "NO") {
+                    foreach ($dataOperador["data"] as $key) {
+                  ?>
+                      <option value="<?= $key['id_trabajador']; ?>"><?= $key['apellidos_trabajador'] . ' ' . $key['nombres_trabajador'] ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
 
-                  <div class="form-group col-sm-6 col-md-3">
-                    <label for="cboClienteBuscar">Cliente</label>
-                    <select class="form-control" id="cboClienteBuscar" name="cboClienteBuscar">
-                      <option value="all">Todos</option>
-                      <?php
-                      include("core/models/ClassCliente.php");
-                      $dataCliente = $OBJ_CLIENTE->listarClientes();
-                      if ($dataCliente["error"] == "NO") {
-                        foreach ($dataCliente["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')' ?></option>
-                      <?php
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="cboClienteBuscar">Cliente</label>
+                <select class="form-control" id="cboClienteBuscar" name="cboClienteBuscar">
+                  <option value="all">Todos</option>
+                  <?php
+                  include("core/models/ClassCliente.php");
+                  $dataCliente = $OBJ_CLIENTE->listarClientes();
+                  if ($dataCliente["error"] == "NO") {
+                    foreach ($dataCliente["data"] as $key) {
+                  ?>
+                      <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')' ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
 
-                  <div class="form-group col-sm-6 col-md-3">
-                    <label for="cboFundoBuscar">Fundo</label>
-                    <select class="form-control" id="cboFundoBuscar" name="cboFundoBuscar">
-                      <option value="all">Todos</option>
-                      <?php
-                      include("core/models/ClassFundo.php");
-                      $dataFundo = $OBJ_FUNDO->show(1, '1');
-                      if ($dataFundo["error"] == "NO") {
-                        foreach ($dataFundo["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre'] ?></option>
-                      <?php
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
-                <div id="calendario" class="col-md-12"></div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="cboFundoBuscar">Fundo</label>
+                <select class="form-control" id="cboFundoBuscar" name="cboFundoBuscar">
+                  <option value="all">Todos</option>
+                  <?php
+                  include("core/models/ClassFundo.php");
+                  $dataFundo = $OBJ_FUNDO->show(1, '1');
+                  if ($dataFundo["error"] == "NO") {
+                    foreach ($dataFundo["data"] as $key) {
+                  ?>
+                      <option value="<?= $key['id_fundo']; ?>"><?= $key['nombre'] ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
+              <div id="calendario" class="col-md-12"></div>
             </div>
 
           </div>
@@ -397,7 +421,7 @@ if (!isset($_SESSION['id_trabajador'])) {
               <input type="text" id="maquinaria_show" class="form-control" readonly>
             </div>
 
-            <div class="form-group col-sm-6">
+            <!-- <div class="form-group col-sm-6">
               <label for="fecha_ingreso_show">Fecha Ingreso</label>
               <input type="text" id="fecha_ingreso_show" class="form-control" readonly>
             </div>
@@ -405,7 +429,30 @@ if (!isset($_SESSION['id_trabajador'])) {
             <div class="form-group col-sm-6">
               <label for="fecha_salida_show">Fecha Salida</label>
               <input type="text" id="fecha_salida_show" class="form-control" readonly>
+            </div> -->
+
+            <div class="form-group-row">
+              <div>
+                <label for="fecha_ingreso_edit">Fecha Ingreso</label>
+                <input type="date" id="fecha_ingreso_edit" name="fecha_ingreso" class="form-control">
+              </div>
+              <div>
+                <label for="hora_ingreso_edit">Hora Ingreso</label>
+                <input type="time" id="hora_ingreso_edit" name="hora_ingreso" class="form-control">
+              </div>
             </div>
+
+            <div class="form-group-row">
+              <div>
+                <label for="fecha_salida_edit">Fecha Salida</label>
+                <input type="date" id="fecha_salida_edit" name="fecha_salida" class="form-control">
+              </div>
+              <div>
+                <label for="hora_salida_edit">Hora Salida</label>
+                <input type="time" id="hora_salida_edit" name="hora_salida" class="form-control">
+              </div>
+            </div>
+
 
             <div class="form-group col-sm-12">
               <label for="estado_trabajo_show">Estado del Trabajo</label>
@@ -418,6 +465,7 @@ if (!isset($_SESSION['id_trabajador'])) {
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
             <button type="button" id="btnAnularCronograma" class="btn btn-warning">Anular Cronograma</button>
             <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;">Aprobar Cronograma</button>
+            <button type="button" id="btnGuardarCambios" class="btn btn-success">Guardar Cambios</button>
           </div>
         </div>
       </div>

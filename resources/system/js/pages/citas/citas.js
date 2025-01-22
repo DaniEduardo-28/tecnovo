@@ -10,7 +10,7 @@ $(document).ready(function () {
     crearCalendario();
   });
 
-  $("#btnAddCronograma").on("click", function() {
+  $("#btnAddCronograma").on("click", function () {
     abrirFormularioRegistroManual();
   });
 
@@ -23,7 +23,7 @@ $(document).ready(function () {
   $("#btnAnularCronograma").click(function () {
     cambiarEstadoCronograma('ANULADO');
   });
-  
+
   // Botón aprobar cronograma en el modal de vista
   $("#btnAprobarCronograma").click(function () {
     cambiarEstadoCronograma('APROBADO');
@@ -113,40 +113,40 @@ $(document).ready(function () {
     var id_tipo_servicio = $(this).val();
 
     if (id_tipo_servicio === "") {
-        $("#id_maquinaria").empty().append('<option value="">Seleccione una unidad primero...</option>');
-        return;
+      $("#id_maquinaria").empty().append('<option value="">Seleccione una unidad primero...</option>');
+      return;
     }
 
     $.ajax({
-        type: "POST",
-        url: "ajax.php?accion=getMaquinariasPorUnidad", 
-        data: { id_tipo_servicio: id_tipo_servicio },
-        beforeSend: function () {
-            $("#id_maquinaria").empty().append('<option value="">Cargando...</option>');
-        },
-        success: function (response) {
-            try {
-                var data = JSON.parse(response);
-                if (data.error === "NO") {
-                    $("#id_maquinaria").empty().append('<option value="">Seleccione una maquinaria...</option>');
-                    data.data.forEach(function (maquinaria) {
-                        $("#id_maquinaria").append(
-                            `<option value="${maquinaria.id_maquinaria}">${maquinaria.descripcion}</option>`
-                        );
-                    });
-                } else {
-                    $("#id_maquinaria").empty().append('<option value="">No se encontraron maquinarias...</option>');
-                }
-            } catch (e) {
-                console.error("Error procesando la respuesta del servidor:", e);
-                $("#id_maquinaria").empty().append('<option value="">Error cargando maquinarias...</option>');
-            }
-        },
-        error: function () {
-            $("#id_maquinaria").empty().append('<option value="">Error de conexión...</option>');
-        },
+      type: "POST",
+      url: "ajax.php?accion=getMaquinariasPorUnidad",
+      data: { id_tipo_servicio: id_tipo_servicio },
+      beforeSend: function () {
+        $("#id_maquinaria").empty().append('<option value="">Cargando...</option>');
+      },
+      success: function (response) {
+        try {
+          var data = JSON.parse(response);
+          if (data.error === "NO") {
+            $("#id_maquinaria").empty().append('<option value="">Seleccione una maquinaria...</option>');
+            data.data.forEach(function (maquinaria) {
+              $("#id_maquinaria").append(
+                `<option value="${maquinaria.id_maquinaria}">${maquinaria.descripcion}</option>`
+              );
+            });
+          } else {
+            $("#id_maquinaria").empty().append('<option value="">No se encontraron maquinarias...</option>');
+          }
+        } catch (e) {
+          console.error("Error procesando la respuesta del servidor:", e);
+          $("#id_maquinaria").empty().append('<option value="">Error cargando maquinarias...</option>');
+        }
+      },
+      error: function () {
+        $("#id_maquinaria").empty().append('<option value="">Error de conexión...</option>');
+      },
     });
-});
+  });
 
   $("#cboClienteBuscar").select2({
     placeholder: "Seleccione un cliente",
@@ -159,6 +159,46 @@ $(document).ready(function () {
     dropdownParent: $("#modal-calendario"),
   });
 });
+
+$(document).on('click', '#btnGuardarCambios', function () {
+  const idCronograma = $('#id_cronograma').val();
+  const fechaIngreso = $('#fecha_ingreso_edit').val();
+  const horaIngreso = $('#hora_ingreso_edit').val();
+  const fechaSalida = $('#fecha_salida_edit').val();
+  const horaSalida = $('#hora_salida_edit').val();
+
+  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida) {
+    Swal.fire('Error', 'Todos los campos de fecha y hora son obligatorios.', 'error');
+    return;
+  }
+
+  $.ajax({
+    url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
+    type: 'POST',
+    data: {
+      action: 'updateFechasHoras',
+      id_cronograma: idCronograma,
+      fecha_ingreso: fechaIngreso,
+      hora_ingreso: horaIngreso,
+      fecha_salida: fechaSalida,
+      hora_salida: horaSalida
+    },
+    success: function (response) {
+      const res = JSON.parse(response);
+      if (res.success) {
+        Swal.fire('Éxito', res.message, 'success');
+        $('#modal-calendario-show').modal('hide'); // Cierra el modal
+        crearCalendario(); // Recargar calendario
+      } else {
+        Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
+      }
+    },
+    error: function () {
+      Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+    }
+  });
+});
+
 
 function crearCalendario() {
   $("#calendario").fullCalendar("destroy");
@@ -212,7 +252,7 @@ function crearCalendario() {
         },
         success: function (events) {
           console.log(events);
-          events.forEach(function (event){
+          events.forEach(function (event) {
             event.estado_trabajo = event.estado_trabajo;
           });
         },
@@ -245,7 +285,7 @@ function crearCalendario() {
   });
 }
 
-function abrirFormularioRegistroManual(){
+function abrirFormularioRegistroManual() {
   $("#frmCronograma")[0].reset();
 
   const fechaActual = moment().format("YYYY-MM-DD");
@@ -327,8 +367,17 @@ function getCronograma(id_cronograma) {
           $("#cliente_show").val(info.nombre_cliente);
           $("#operador_show").val(info.nombre_operador);
           $("#maquinaria_show").val(info.nombre_maquinaria);
-          $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("DD/MM/YYYY HH:mm"));
-          $("#fecha_salida_show").val(moment(info.fecha_salida).format("DD/MM/YYYY HH:mm"));
+
+          const fechaIngreso = moment(info.fecha_ingreso).format("YYYY-MM-DD");
+          const horaIngreso = moment(info.fecha_ingreso).format("HH:mm");
+          const fechaSalida = moment(info.fecha_salida).format("YYYY-MM-DD");
+          const horaSalida = moment(info.fecha_salida).format("HH:mm");
+
+          $("#fecha_ingreso_edit").val(fechaIngreso);
+          $("#hora_ingreso_edit").val(horaIngreso);
+          $("#fecha_salida_edit").val(fechaSalida);
+          $("#hora_salida_edit").val(horaSalida);
+
           $("#estado_trabajo_show").val(info.estado_trabajo);
 
 
@@ -546,7 +595,7 @@ function cambiarEstadoCronograma(nuevoEstado) {
           showHideLoader("block");
         },
         success: function (response) {
-          console.log("Respuesta del servidor:", response); 
+          console.log("Respuesta del servidor:", response);
           try {
             var data = typeof response === "object" ? response : JSON.parse(response);
             if (data.error == "NO") {
