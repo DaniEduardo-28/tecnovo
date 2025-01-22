@@ -732,13 +732,16 @@ AND c.estado_trabajo != 'ANULADO' ";
 
     try {
 
-      $sql = "SELECT s.id_unidad_medida
+      $sql = "SELECT s.id_unidad_medida, s.pago_operador
                 FROM tb_cronograma c
                 INNER JOIN tb_servicio s ON c.id_servicio = s.id_servicio
                 WHERE c.id_cronograma = ?";
         $stmt = $conexion->prepare($sql);
         $stmt->execute([$id_cronograma]);
-        $unidad_medida = $stmt->fetch(PDO::FETCH_ASSOC);
+        $unidad_medida_y_pago = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $unidad_medida = $unidad_medida_y_pago['id_unidad_medida'] ?? null;
+        $pago_operador = $unidad_medida_y_pago['pago_operador'] ?? 0;
 
 
       $sqlOperadores = "SELECT 
@@ -782,6 +785,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $data = [
         "unidad_medida" => $unidad_medida,
+        "pago_operador" => $pago_operador,
         "operadores" => $operadores,
         "maquinarias" => $maquinarias,
         "cantidad" => $cantidad !== false ? $cantidad : 0
@@ -1046,7 +1050,7 @@ WHERE m.id_cronograma = :id_cronograma
     $VD = null;
 
     try {
-      $sql = "SELECT s.id_unidad_medida, s.precio
+      $sql = "SELECT s.id_unidad_medida, s.pago_operador
               FROM tb_cronograma c 
               INNER JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
               WHERE c.id_cronograma = ?";

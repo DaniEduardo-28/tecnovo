@@ -396,14 +396,20 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
     url: "ajax.php?accion=getOperadoresMaquinariasByCronograma",
     data: { id_cronograma: id_cronograma },
     success: function (response) {
-      console.log("Respuesta del backend (sin procesar):", response);
       try {
         const data = JSON.parse(response);
-        console.log("Respuesta del backend (procesada):", data);
         if (data.error === "NO") {
-          const unidadMedida = data.data.unidad_medida.id_unidad_medida;
-          console.log("Unidad de Medida obtenida:", unidadMedida); // Depuración
+          const unidadMedida = data.data.unidad_medida;
+          const pagoOperador = parseFloat(data.data.pago_operador) || 0;
+
+          console.log("Unidad de Medida obtenida:", unidadMedida);
+          console.log("Pago Operador obtenido:", pagoOperador);
+
           actualizarColumnas(unidadMedida);
+
+          $("#pago_por_hora").val(pagoOperador.toFixed(2));
+          recalcularPagoTotal();
+
           llenarTablaOperadoresMaquinarias(data.data);
         } else {
           console.error(data.message);
@@ -739,6 +745,10 @@ function recalcularPagoTotal() {
   const total = cantidad * precioPorUnidad;
   $("#total_pago").val(total.toFixed(2));
 }
+
+$("#horas_trabajadas, #pago_por_hora").on("input", function () {
+  recalcularPagoTotal();
+});
 
 
 
