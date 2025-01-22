@@ -24,9 +24,9 @@ try {
       if ($key['estado_trabajo'] !== 'TERMINADO' && $key['estado_trabajo'] !== 'ANULADO') {
         $options .= '&nbsp;<a href="javascript:showModalOperadorMaquinaria(' . $key['id_cronograma'] . ')" class="btn btn-icon btn-outline-warning btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-user"></i></a>';
       }
-        $options .= '&nbsp;<a href="javascript:generarResumenCompras(' . $key['id_cronograma'] . ')"  class="btn btn-icon btn-outline-info btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-export"></i></a>'; 
+        $options .= '&nbsp;<a href="javascript:generarResumenCompras(' . $key['id_cronograma'] . ')"  class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0"><i class="fa fa-file-pdf-o"></i></a>'; 
 
-        $options .= '&nbsp;<a href="javascript:generarInformeCliente(' . $key['id_cronograma'] . ')"  class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0"><i class="fa fa-file-pdf-o"></i></a>'; 
+        //$options .= '&nbsp;<a href="javascript:generarInformeCliente(' . $key['id_cronograma'] . ')"  class="btn btn-icon btn-outline-danger btn-round mr-0 mb-1 mb-sm-0"><i class="fa fa-file-pdf-o"></i></a>'; 
 
       $retorno_array[] = array(
         "num" => "$count",

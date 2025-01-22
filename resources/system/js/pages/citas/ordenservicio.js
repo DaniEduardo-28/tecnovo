@@ -369,6 +369,11 @@ function showModalOperadorMaquinaria(id_cronograma) {
     runAlert("Error", "El ID del cronograma es inválido.", "warning");
     return;
   }
+
+  limpiarCamposNuevoOperadorMaquinaria();
+  $("#nuevoOperadorMaquinariaContainer").hide();
+  $("#btnNuevoOperadorMaquinaria").show();
+
   $("#id_cronograma").val(id_cronograma);
 
   $("#nombre_operador").prop("selectedIndex", 0);
@@ -388,6 +393,12 @@ function showModalOperadorMaquinaria(id_cronograma) {
   $("#modalOperadorMaquinaria").modal("show");
 
 }
+
+$("#modalOperadorMaquinaria").on("hidden.bs.modal", function () {
+  limpiarCamposNuevoOperadorMaquinaria();
+  $("#nuevoOperadorMaquinariaContainer").hide();
+  $("#btnNuevoOperadorMaquinaria").show();
+});
 
 function cargarOperadoresMaquinariasExistentes(id_cronograma) {
   console.log("ID Cronograma recibido:", id_cronograma);
@@ -574,10 +585,15 @@ function saveOperadorMaquinariaC() {
       console.log("id_cronograma_operador:", formData.get("id_cronograma_operador"));
       console.log("id_cronograma_maquinaria:", formData.get("id_cronograma_maquinaria"));
 
-      if (!formData.get("id_cronograma_operador") || !formData.get("id_cronograma_maquinaria")) {
-        console.error("Faltan IDs para operar.");
+      const idCronograma = $("#id_cronograma").val();
+
+      if (!idCronograma) {
+        console.error("ID de cronograma faltante.");
+        runAlert("Error", "ID de cronograma es requerido.", "error");
         return;
     }
+
+    formData.append("id_cronograma", idCronograma);
       // Rellenar valores vacíos con 0 para evitar errores en el backend
       ["horas_trabajadas", "pago_por_hora", "petroleo_entrada", "petroleo_salida", "precio_petroleo"].forEach((campo) => {
         if (!formData.get(campo) || isNaN(formData.get(campo))) {

@@ -164,9 +164,18 @@ AND c.estado_trabajo != 'ANULADO' ";
         throw new Exception("Error al registrar la maquinaria en la base de datos.");
       }
 
-      $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas) VALUES (?, ?, 0.0)";
+      $sql = "SELECT pago_operador FROM tb_servicio WHERE id_servicio = ?";
       $stmt = $conexion->prepare($sql);
-      $stmt->execute([$id_cronograma, $id_operador]);
+      $stmt->execute([$id_servicio]);
+      $pago_operador = $stmt->fetchColumn();
+
+      if (!$pago_operador) {
+          throw new Exception("No se encontró el pago del operador para el servicio proporcionado.");
+      }
+
+      $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora) VALUES (?, ?, 0.0, ?)";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma, $id_operador, $pago_operador]);
 
       if ($stmt->rowCount() == 0) {
         throw new Exception("Error al registrar el operador en la base de datos.");
