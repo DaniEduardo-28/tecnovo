@@ -6,4 +6,7 @@ ALTER TABLE `tb_maquinaria` CHANGE `id_tipo_servicio` `id_tipo_servicio` BIGINT(
 ALTER TABLE `tb_maquinaria` ADD CONSTRAINT `fk_maquinaria_tipo_servicio` FOREIGN KEY (`id_tipo_servicio`)
  REFERENCES `tb_tipo_servicio`(`id_tipo_servicio`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- añadir el campo de pago_operador
+ ALTER TABLE tb_servicio ADD COLUMN pago_operador DECIMAL(8,2) NULL DEFAULT 0.00 AFTER precio;
+
  

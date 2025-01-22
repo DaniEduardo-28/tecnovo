@@ -9,6 +9,7 @@
   $descripcion_larga = isset($_POST["descripcion_larga"]) ? $_POST["descripcion_larga"] : "";
   $id_moneda = isset($_POST["id_moneda"]) ? $_POST["id_moneda"] : "";
   $precio = isset($_POST["precio"]) ? $_POST["precio"] : 0.00;
+  $pago_operador = isset($_POST["pago_operador"]) ? $_POST["pago_operador"] : 0.00;
   $estado = isset($_POST["estado"]) ? 1 : 0;
   $flag_igv = isset($_POST["flag_igv"]) ? 1 : 0;
   $flag_imagen = isset($_POST["flag_imagen"]) ? $_POST["flag_imagen"] : "";
@@ -93,10 +94,10 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_SERVICIO->insert($id_servicio,$id_tipo_servicio,$id_maquinaria,$id_unidad_medida,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv);
+        $VD = $OBJ_SERVICIO->insert($id_servicio,$id_tipo_servicio,$id_maquinaria,$id_unidad_medida,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$pago_operador,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv);
         break;
       case 'edit':
-        $VD = $OBJ_SERVICIO->update($id_servicio,$id_tipo_servicio,$id_maquinaria,$id_unidad_medida,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv);
+        $VD = $OBJ_SERVICIO->update($id_servicio,$id_tipo_servicio,$id_maquinaria,$id_unidad_medida,$name_servicio,$descripcion_breve,$descripcion_larga,$precio,$pago_operador,$estado,$flag_imagen,$src_imagen,$id_moneda,$flag_igv);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

@@ -250,6 +250,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                               </div>
 
                               <div class="form-group col-md-3 col-sm-4">
+                                <label for="pago_operador" class="label-control">Pago Unit. al Operador</label>
+                                <input id="pago_operador" type="number" name="pago_operador" class="form-control" autocomplete="off"
+                                  value="0.00" required min="0.00" pattern="^\d*(\.\d{0,2})?$" step="0.10">
+                              </div>
+
+                              <div class="form-group col-md-3 col-sm-4">
                                 <label for="">&nbsp;</label>
                                 <div class="form-check">
                                   <input id="estado" name="estado" type="checkbox" class="form-check-input" checked="">

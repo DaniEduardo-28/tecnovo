@@ -39,6 +39,11 @@ $(document).ready(function () {
     var element = $("#precio");
     element.val(dosDecimales(element));
   });
+
+  $("#pago_operador").change(function () {
+    var element = $("#pago_operador");
+    element.val(dosDecimales(element));
+  });
 });
 
 function showData() {
@@ -57,6 +62,7 @@ innerdivHtml1 += '<th scope="col">Unidad de Negocio</th>';
 innerdivHtml1 += '<th scope="col">Maquinaria</th>';
 innerdivHtml1 += '<th scope="col">Medida</th>';
 innerdivHtml1 += '<th scope="col">Precio</th>';
+innerdivHtml1 += '<th scope="col">Pago al Operador</th>';
 innerdivHtml1 += '<th scope="col">Estado</th>';
 innerdivHtml1 += '<th scope="col">Editar &amp; Eliminar</th>';
 innerdivHtml1 += '</tr>';
@@ -111,6 +117,7 @@ function get_data_callback() {
         innerdivHtml += '<th scope="col">Maquinaria</th>';
         innerdivHtml += '<th scope="col">Medida</th>';
         innerdivHtml += '<th scope="col">Precio</th>';
+        innerdivHtml += '<th scope="col">Pago al Operador</th>';
         innerdivHtml += '<th scope="col">Estado</th>';
         innerdivHtml += '<th scope="col">Editar &amp; Eliminar</th>';
         innerdivHtml += '</tr>';
@@ -132,6 +139,7 @@ function get_data_callback() {
           innerdivHtml += '<td>' + o[i].maquinaria_descripcion + '</td>'; // Cambio aplicado
           innerdivHtml += '<td>' + o[i].unidad + '</td>'; // Cambio aplicado
           innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].precio + '</td>';
+          innerdivHtml += '<td>' + o[i].signo_moneda + ' ' + o[i].pago_operador + '</td>';
           innerdivHtml += o[i].estado;
           innerdivHtml += '    <td>';
           innerdivHtml += o[i].flag_editar;
@@ -267,6 +275,7 @@ function getDataEdit(id_servicio){
           $("#descripcion_breve").val(o[0].descripcion_breve);
           $("#descripcion_larga").val(o[0].descripcion_larga);
           $("#precio").val(o[0].precio);
+          $("#pago_operador").val(o[0].pago_operador);
           $("#id_moneda").val(o[0].id_moneda);
           var estado = o[0].estado;
           var flag_igv = o[0].flag_igv;

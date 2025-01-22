@@ -228,7 +228,7 @@ class ClassServicio extends Conexion
 		return $VD;
 	}
 
-	public function insert($id_servicio, $id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $precio, $estado, $flag_imagen, $src_imagen, $id_moneda, $flag_igv)
+	public function insert($id_servicio, $id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $precio, $pago_operador, $estado, $flag_imagen, $src_imagen, $id_moneda, $flag_igv)
 	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -237,13 +237,13 @@ class ClassServicio extends Conexion
 
 			$conexion->beginTransaction();
 
-			$sql = "INSERT INTO tb_servicio (`id_servicio`, `id_tipo_servicio`, `id_maquinaria`,`id_unidad_medida`, `name_servicio`, `descripcion_breve`, `descripcion_larga`, `precio`, `src_imagen`, `estado`, `id_moneda`, `flag_igv`, `signo_moneda`) VALUES ";
+			$sql = "INSERT INTO tb_servicio (`id_servicio`, `id_tipo_servicio`, `id_maquinaria`,`id_unidad_medida`, `name_servicio`, `descripcion_breve`, `descripcion_larga`, `precio`, `pago_operador`, `src_imagen`, `estado`, `id_moneda`, `flag_igv`, `signo_moneda`) VALUES ";
 			$sql .= "(";
 			$sql .= "(SELECT CASE COUNT(s.id_servicio) WHEN 0 THEN 1 ELSE (MAX(s.id_servicio) + 1) end FROM `tb_servicio` s),";
-			$sql .= "?,?,?,?,?,?,?,?,?,?,?,(SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?)";
+			$sql .= "?,?,?,?,?,?,?,?,?,?,?,?,(SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?)";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $precio, $src_imagen, $estado, $id_moneda, $flag_igv, $id_moneda]);
+			$stmt->execute([$id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $precio, $pago_operador, $src_imagen, $estado, $id_moneda, $flag_igv, $id_moneda]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al registrar el producto en la base de datos.");
 			}
@@ -262,7 +262,7 @@ class ClassServicio extends Conexion
 		return $VD;
 	}
 
-	public function update($id_servicio, $id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $precio, $estado, $flag_imagen, $src_imagen, $id_moneda, $flag_igv)
+	public function update($id_servicio, $id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $precio, $pago_operador, $estado, $flag_imagen, $src_imagen, $id_moneda, $flag_igv)
 	{
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
@@ -290,10 +290,11 @@ class ClassServicio extends Conexion
 			$sql .= " flag_igv = ?, ";
 			$sql .= " id_moneda = ?, ";
 			$sql .= " signo_moneda = (SELECT M.signo FROM tb_moneda M WHERE M.id_moneda = ?), ";
-			$sql .= " precio = ? ";
+			$sql .= " precio = ?, ";
+			$sql .= " pago_operador = ? ";
 			$sql .= " WHERE id_servicio = ? ";
 			$stmt = $conexion->prepare($sql);
-			if ($stmt->execute([$id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $estado, $flag_igv, $id_moneda, $id_moneda, $precio, $id_servicio]) == false) {
+			if ($stmt->execute([$id_tipo_servicio, $id_maquinaria, $id_unidad_medida, $name_servicio, $descripcion_breve, $descripcion_larga, $estado, $flag_igv, $id_moneda, $id_moneda, $precio, $pago_operador, $id_servicio]) == false) {
 				throw new Exception("1. Error al actualizar los datos del producto.");
 			}
 

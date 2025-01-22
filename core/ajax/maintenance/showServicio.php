@@ -48,6 +48,7 @@
           "maquinaria_descripcion" => $key['maquinaria_descripcion'],
           "unidad" => $key['unidad'],
           "precio" => $key['precio'],
+          "pago_operador" => $key['pago_operador'],
           "signo_moneda" => $key['signo_moneda'],
           "src_imagen" => $key['src_imagen'],
           "estado" => $estado,

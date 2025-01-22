@@ -35,6 +35,7 @@
           "name_tipo" => $key['name_tipo'],
           "maquinaria_descripcion" => $key['maquinaria_descripcion'],
           "precio" => $key['precio'],
+          "pago_operador" => $key['pago_operador'],
           "id_moneda" => $key['id_moneda'],
           "estado" => $key['estado'],
           "flag_igv" => $key['flag_igv'],
