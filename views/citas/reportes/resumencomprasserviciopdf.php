@@ -59,24 +59,28 @@ try {
     $pdf->SetX(45);
     $pdf->Cell(100, 6, utf8_decode(strtoupper($empresa[0]['name_documento_empresa'] . ' ' . $empresa[0]['num_documento'])), 0, 0, 'L', 0);
 
-    $fecha_reporte = date('Y-m-d H:i:s');
+    $fecha_reporte = date('Y/m/d H:i:s');
     $pdf->SetFont('Arial', '', 9);
     $pdf->SetY(10);
     $pdf->SetX(-60);
-    $pdf->Cell(50, 5, "Fecha: $fecha_reporte", 0, 0, 'R');
+    $pdf->Cell(50, 5, "Fecha de Reporte: $fecha_reporte", 0, 0, 'R');
 
     $pdf->Ln(30);
-    $pdf->SetFont('Arial', 'U', 18);
+    $pdf->SetFont('Arial', 'B', 20);
     $pdf->Cell(0, 8, utf8_decode("ORDEN DE SERVICIO"), 0, 1, 'C');
-    $pdf->SetFont('Arial', '', 18);
+    $pdf->SetFont('Arial', 'B', 18);
     $pdf->Cell(0, 8, utf8_decode("N° " . $datos_cronograma['codigo']), 0, 1, 'C');
 
-    $pdf->Ln(5);
-    $pdf->Cell(0, 0, '', 'T');
-    // Datos principales
-    $pdf->Ln(3);
+    $pdf->Ln(7);
+    //$pdf->Cell(0, 0, '', 'T');
     $pdf->SetFont('Arial', 'B', 11);
-
+    $pdf->SetFillColor(5, 79, 5);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0, 6, utf8_decode("DATOS GENERALES"), 0, 1, 'L', true);
+    // Datos principales
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Ln(5);
+    $pdf->SetFont('Arial', 'B', 11);
     $pdf->Cell(40, 8, utf8_decode("Cliente:  "), 0, 0, 'L');
     $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_cliente'] . '  -  ' . $datos_cronograma['documento_identidad']), 0, 1, 'L');
@@ -89,15 +93,25 @@ try {
     $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_servicio']), 0, 1, 'L');
     $pdf->Ln(4);
-    $pdf->Cell(0, 0, '', 'T');
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->SetFillColor(5, 79, 5);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0, 6, utf8_decode("DATOS DEL SERVICIO"), 0, 1, 'L', true);
+    // COSTOS DEL SERVICIO
+
+    $fecha_ingreso = date('Y/m/d H:i', strtotime($datos_cronograma['fecha_ingreso']));
+    $fecha_salida = date('Y/m/d H:i', strtotime($datos_cronograma['fecha_salida']));
+    $fecha_pago = date('Y/m/d H:i', strtotime($datos_cronograma['fecha_pago']));
+    $pdf->SetTextColor(0, 0, 0);
     $pdf->Ln(4);
+    $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(40, 8, utf8_decode("Fecha de Ingreso:"), 0, 0, 'L');
-    $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_ingreso']), 0, 0, 'L');
+    $pdf->Cell(60, 8, utf8_decode($fecha_ingreso), 0, 0, 'L');
     $pdf->Cell(40, 8, utf8_decode("Fecha de Salida:"), 0, 0, 'L');
-    $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_salida']), 0, 1, 'L');
+    $pdf->Cell(60, 8, utf8_decode($fecha_salida), 0, 1, 'L');
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->Cell(40, 8, utf8_decode("Fecha de Pago:"), 0, 0, 'L');
-    $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_pago']), 0, 1, 'L');
+    $pdf->Cell(60, 8, utf8_decode($fecha_pago), 0, 1, 'L');
     $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(40, 8, utf8_decode("Hectáreas:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['cantidad'] . " Hc"), 0, 0, 'L');
@@ -120,23 +134,26 @@ try {
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['estado_trabajo']), 0, 1, 'L');
 
     $pdf->Ln(5);
-    $pdf->Cell(0, 0, '', 'T');
-    $pdf->Ln(3);
-    // Datos de operadores
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->SetFillColor(5, 79, 5);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(0, 6, utf8_decode("OPERADORES Y MAQUINARIAS"), 0, 1, 'L', true);
+    // COSTOS DEL SERVICIO
+    $pdf->SetTextColor(0, 0, 0);
     $pdf->Ln(10);
     $pdf->SetFont('Arial', 'B', 10);
-    
+
     // Títulos de las columnas
     $pdf->Cell(95, 10, utf8_decode('OPERADORES'), 1, 0, 'C');
     $pdf->Cell(95, 10, utf8_decode('MAQUINARIAS'), 1, 1, 'C');
-    
+
     // Contenido de la tabla
     $pdf->SetFont('Arial', '', 8);
     $maxRows = max(count($operadores), count($maquinarias));
     for ($i = 0; $i < $maxRows; $i++) {
         $operador = isset($operadores[$i]) ? utf8_decode($operadores[$i]['nombre_operador']) : '';
         $maquinaria = isset($maquinarias[$i]) ? utf8_decode($maquinarias[$i]['nombre_maquinaria']) : '';
-    
+
         $pdf->Cell(95, 8, $operador, 1, 0, 'L');
         $pdf->Cell(95, 8, $maquinaria, 1, 1, 'L');
     }
