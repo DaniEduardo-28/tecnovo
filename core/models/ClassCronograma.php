@@ -460,6 +460,20 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $conexion->beginTransaction();
 
+      $sqlMaquinarias = "SELECT id_maquinaria FROM tb_cronograma_maquinaria WHERE id_cronograma = ?";
+        $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
+        $stmtMaquinarias->execute([$id_cronograma]);
+        $maquinarias = $stmtMaquinarias->fetchAll(PDO::FETCH_COLUMN);
+
+        if ($maquinarias) {
+            foreach ($maquinarias as $id_maquinaria) {
+                $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $fecha_1, $fecha_2, $id_cronograma);
+                if ($validacion['error'] === "SI") {
+                    throw new Exception($validacion['mensaje']);
+                }
+            }
+        }
+
       $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ? WHERE id_cronograma = ?";
       $stmt = $conexion->prepare($sql);
       if ($stmt->execute([$fecha_1, $fecha_2, $id_cronograma]) == false) {
