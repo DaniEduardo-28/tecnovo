@@ -108,7 +108,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $fecha_1, $fecha_2);
       if ($validacion['error'] === "SI") {
-        throw new Exception($validacion['message']);
+        throw new Exception($validacion['mensaje']);
       }
 
       $conexion->beginTransaction();
@@ -194,10 +194,14 @@ AND c.estado_trabajo != 'ANULADO' ";
       $VD = "OK";
       $conexion->commit();
     } catch (PDOException $e) {
-      $conexion->rollBack();
+      if ($conexion->inTransaction()) {
+        $conexion->rollBack();
+      }
       $VD = "Error de base de datos: " . $e->getMessage();
     } catch (Exception $exception) {
-      $conexion->rollBack();
+      if ($conexion->inTransaction()) {
+        $conexion->rollBack();
+      }
       $VD = $exception->getMessage();
     } finally {
       $conexionClass->Close();
@@ -698,8 +702,21 @@ AND c.estado_trabajo != 'ANULADO' ";
       $datetime_ingreso = $fecha_ingreso . " " . $hora_ingreso;
       $datetime_salida = $fecha_salida . " " . $hora_salida;
       $fecha_pago_calculada = date('Y-m-d H:i:s', strtotime($fecha_salida . ' +10 days'));
-
       $datetime_pago = empty($fecha_pago) ? $fecha_pago_calculada : $fecha_pago . " " . $hora_pago;
+
+      $sqlMaquinarias = "SELECT id_maquinaria FROM tb_cronograma_maquinaria WHERE id_cronograma = ?";
+      $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
+      $stmtMaquinarias->execute([$id_cronograma]);
+      $maquinarias = $stmtMaquinarias->fetchAll(PDO::FETCH_COLUMN);
+
+      if ($maquinarias) {
+        foreach ($maquinarias as $id_maquinaria) {
+          $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $datetime_ingreso, $datetime_salida, $id_cronograma);
+          if ($validacion['error'] === "SI") {
+            throw new Exception($validacion['mensaje']);
+          }
+        }
+      }
 
       $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ?, fecha_pago = ? WHERE id_cronograma = ?";
       $stmt = $conexion->prepare($sql);
@@ -1179,16 +1196,16 @@ WHERE m.id_cronograma = :id_cronograma
       if ($stmt->rowCount() > 0) {
         return [
           "error" => "SI",
-          "message" => "La maquinaria no está disponible entre $fecha_ingreso y $fecha_salida."
+          "mensaje" => "La maquinaria se encontrará ocupada en estas fechas"
         ];
       }
 
       return [
         "error" => "NO",
-        "message" => "La maquinaria está disponible."
+        "mensaje" => "La maquinaria está disponible."
       ];
     } catch (PDOException $e) {
-      return ["error" => "SI", "message" => "Error en la consulta: " . $e->getMessage()];
+      return ["error" => "SI", "mensaje" => "Error en la consulta: " . $e->getMessage()];
     } finally {
       $conexionClass->Close();
     }

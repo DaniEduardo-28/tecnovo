@@ -191,7 +191,6 @@ $(document).on('click', '#btnGuardarCambios', function () {
     confirmButtonText: 'Sí, actualizar ahora',
   }).then((result) => {
     if (result.value) {
-
       $.ajax({
         url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
         type: 'POST',
@@ -212,7 +211,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
             $('#modal-calendario-show').modal('hide'); // Cierra el modal
             crearCalendario(); // Recargar calendario
           } else {
-            Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
+            Swal.fire('Error', res.message,'error');
           }
         },
         error: function () {
@@ -331,7 +330,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
     Swal.fire({
       title: "¿Desea guardar este cronograma?",
       text: "Esta acción no se puede deshacer.",
-      icon: "warning",
+      type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#22c63b",
       cancelButtonColor: "#d33",
