@@ -545,6 +545,12 @@ $(document).on('click', '#btnGuardarCambios', function () {
     var hora_ingreso = moment(event.start).format("HH:mm");
     var hora_salida = event.end ? moment(event.end).format("HH:mm") : hora_ingreso;
 
+    if (moment(fecha_salida).isBefore(moment(fecha_ingreso))) {
+      Swal.fire("Error", "La fecha de salida no puede ser menor que la fecha de ingreso.", "error");
+      revertFunc(); 
+      return;
+  }
+
     Swal.fire({
       title: "¿Actualizar fechas del cronograma?",
       text: "Esta acción no se puede deshacer.",

@@ -443,13 +443,18 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
             const hectareasAsignadas = operadores.reduce((sum, op) => sum + parseFloat(op.horas_trabajadas || 0), 0);
             const hectareasDisponibles = totalHectareas - hectareasAsignadas;
 
-            $("#labelHectareasDisponibles").text(`Hectáreas disponibles: ${hectareasDisponibles}`);
 
             const unidadMedida = data.data.unidad_medida;
             const pagoOperador = parseFloat(data.data.pago_operador) || 0;
 
             console.log("Unidad de Medida obtenida:", unidadMedida);
             console.log("Pago Operador obtenido:", pagoOperador);
+
+            if (unidadMedida !== 4){
+              $("#labelHectareasDisponibles").text(`Hectáreas disponibles: ${hectareasDisponibles}`);
+            } else {
+              $("#labelHectareasDisponibles").text("");
+            }
 
             actualizarColumnas(unidadMedida);
             $("#pago_por_hora").val(pagoOperador.toFixed(2));
@@ -482,6 +487,7 @@ function llenarTablaOperadoresMaquinarias(datos) {
 
   const operadores = datos.operadores || [];
   const maquinarias = datos.maquinarias || [];
+  const unidadMedida = datos.unidad_medida;
 
   console.log("Operadores recibidos:", operadores);
   console.log("Maquinarias recibidas:", maquinarias);
@@ -530,11 +536,15 @@ function llenarTablaOperadoresMaquinarias(datos) {
           </tr>`;
     tabla.append(fila);
   }
-  const hectareasDisponibles = totalHectareas - hectareasAsignadas;
-
-  $("#labelHectareasDisponibles")
+  if (unidadMedida !== 4) {
+    const hectareasDisponibles = totalHectareas - hectareasAsignadas;
+    $("#labelHectareasDisponibles")
     .text(`Hectáreas disponibles: ${hectareasDisponibles}`)
     .data("total", totalHectareas);
+  } else {
+    $("#labelHectareasDisponibles").text("");
+  }
+
 
   $(".btnEditarOperadorMaquinaria").click(function () {
     const idOperador = $(this).data("id-operador");
@@ -824,6 +834,11 @@ function validateCantidadHectareas(inputCantidad) {
   const totalRegistrado = calcularTotalHectareasRegistradas();
   const idEdicion = $("#frmOperadorMaquinaria").data("editing");
   let cantidadEdicionAnterior = 0;
+
+  const unidadMedida = $("#id_cronograma").data("unidad_medida");
+  if (unidadMedida === 4){
+    return true;
+  }
 
   if (idEdicion) {
     cantidadEdicionAnterior = obtenerCantidadActualEnEdicion(idEdicion);

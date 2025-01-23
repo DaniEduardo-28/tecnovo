@@ -460,6 +460,10 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $conexion->beginTransaction();
 
+      if (strtotime($fecha_2) < strtotime($fecha_1)) {
+        throw new Exception("La fecha de salida no puede ser menor que la fecha de ingreso.");
+    }
+
       $sqlMaquinarias = "SELECT id_maquinaria FROM tb_cronograma_maquinaria WHERE id_cronograma = ?";
         $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
         $stmtMaquinarias->execute([$id_cronograma]);
@@ -718,6 +722,9 @@ AND c.estado_trabajo != 'ANULADO' ";
       $fecha_pago_calculada = date('Y-m-d H:i:s', strtotime($fecha_salida . ' +10 days'));
       $datetime_pago = empty($fecha_pago) ? $fecha_pago_calculada : $fecha_pago . " " . $hora_pago;
 
+      if (strtotime($fecha_salida) < strtotime($fecha_ingreso)) {
+        throw new Exception("La fecha de salida no puede ser menor que la fecha de ingreso.");
+    }
       $sqlMaquinarias = "SELECT id_maquinaria FROM tb_cronograma_maquinaria WHERE id_cronograma = ?";
       $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
       $stmtMaquinarias->execute([$id_cronograma]);
