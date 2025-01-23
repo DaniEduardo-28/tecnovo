@@ -8,5 +8,6 @@ ALTER TABLE `tb_maquinaria` ADD CONSTRAINT `fk_maquinaria_tipo_servicio` FOREIGN
 
 -- añadir el campo de pago_operador
  ALTER TABLE tb_servicio ADD COLUMN pago_operador DECIMAL(8,2) NULL DEFAULT 0.00 AFTER precio;
-
  
+ -- añadir el campo de fecha de pago en tb_cronograma
+ ALTER TABLE `tb_cronograma` ADD `fecha_pago` DATETIME(2) NULL AFTER `fecha_salida`;

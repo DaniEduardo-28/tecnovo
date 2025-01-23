@@ -160,112 +160,140 @@ $(document).ready(function () {
   });
 });
 
+$('#fecha_salida_edit').on('change', function () {
+  const fechaSalida = $(this).val();
+  if (fechaSalida) {
+    const fechaPago = moment(fechaSalida).add(10, 'days').format('YYYY-MM-DD');
+    $('#fecha_pago_edit').val(fechaPago);
+  }
+});
+
 $(document).on('click', '#btnGuardarCambios', function () {
   const idCronograma = $('#id_cronograma').val();
   const fechaIngreso = $('#fecha_ingreso_edit').val();
   const horaIngreso = $('#hora_ingreso_edit').val();
   const fechaSalida = $('#fecha_salida_edit').val();
   const horaSalida = $('#hora_salida_edit').val();
+  const fechaPago = $('#fecha_pago_edit').val();
+  const horaPago = $('#hora_pago_edit').val();
 
-  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida) {
+  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida || !fechaPago || !horaPago) {
     Swal.fire('Error', 'Todos los campos de fecha y hora son obligatorios.', 'error');
     return;
   }
+  Swal.fire({
+    title: '¿Actualizar fechas del cronograma?',
+    text: 'Esta acción no se puede deshacer.',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#22c63b',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, actualizar ahora',
+  }).then((result) => {
+    if (result.value) {
 
-  $.ajax({
-    url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
-    type: 'POST',
-    data: {
-      action: 'updateFechasHoras',
-      id_cronograma: idCronograma,
-      fecha_ingreso: fechaIngreso,
-      hora_ingreso: horaIngreso,
-      fecha_salida: fechaSalida,
-      hora_salida: horaSalida
-    },
-    success: function (response) {
-      const res = JSON.parse(response);
-      if (res.success) {
-        Swal.fire('Éxito', res.message, 'success');
-        $('#modal-calendario-show').modal('hide'); // Cierra el modal
-        crearCalendario(); // Recargar calendario
-      } else {
-        Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
-      }
-    },
-    error: function () {
-      Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+      $.ajax({
+        url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
+        type: 'POST',
+        data: {
+          action: 'updateFechasHoras',
+          id_cronograma: idCronograma,
+          fecha_ingreso: fechaIngreso,
+          hora_ingreso: horaIngreso,
+          fecha_salida: fechaSalida,
+          hora_salida: horaSalida,
+          fecha_pago: fechaPago,
+          hora_pago: horaPago
+        },
+        success: function (response) {
+          const res = JSON.parse(response);
+          if (res.success) {
+            Swal.fire('Éxito', res.message, 'success');
+            $('#modal-calendario-show').modal('hide'); // Cierra el modal
+            crearCalendario(); // Recargar calendario
+          } else {
+            Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
+          }
+        },
+        error: function () {
+          Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+        }
+      });
     }
-  });
+    });
 });
 
 
-function crearCalendario() {
-  $("#calendario").fullCalendar("destroy");
-  var fundo = $("#cboFundoBuscar").val();
-  var maquinaria = $("#cboMaquinariaBuscar").val();
-  var operador = $("#cboMedicoBuscar").val();
-  var cliente = $("#cboClienteBuscar").val();
+  function crearCalendario() {
+    $("#calendario").fullCalendar("destroy");
+    var fundo = $("#cboFundoBuscar").val();
+    var maquinaria = $("#cboMaquinariaBuscar").val();
+    var operador = $("#cboMedicoBuscar").val();
+    var cliente = $("#cboClienteBuscar").val();
 
-  $("#calendario").fullCalendar({
-    defaultView: "month",
-    editable: true,
-    selectable: true,
-    locale: "es",
-    header: {
-      left: "prev,next today",
-      center: "title",
-      right: "month,agendaWeek,agendaDay",
-    },
-    select: function (start, end) {
-      var fecha_ingreso = moment(start).format("YYYY-MM-DD");
-      var hora_ingreso = moment(start).format("HH:mm");
-      var fecha_salida = moment(end).format("YYYY-MM-DD");
-      var hora_salida = moment(end).format("HH:mm");
-      $("#fecha_ingreso").val(fecha_ingreso);
-      $("#hora_ingreso").val(hora_ingreso);
-      $("#fecha_salida").val(fecha_salida);
-      $("#hora_salida").val(hora_salida);
-
-      $("#modal-calendario").modal("show");
-    },
-    eventClick: function (event) {
-      getCronograma(event.id);
-    },
-    eventDrop: function (event, delta, revertFunc) {
-      console.log("Evento movido:", event);
-      actualizarFechaCronograma(event, revertFunc);
-    },
-    eventResize: function (event, delta, revertFunc) {
-      console.log("Evento redimensionado:", event);
-      actualizarFechaCronograma(event, revertFunc);
-    },
-    eventSources: [
-      {
-        url: "ajax.php?accion=showCronograma",
-        type: "POST",
-        data: {
-          fundo: fundo,
-          maquinaria: maquinaria,
-          operador: operador,
-          cliente: cliente,
-        },
-        success: function (events) {
-          console.log(events);
-          events.forEach(function (event) {
-            event.estado_trabajo = event.estado_trabajo;
-          });
-        },
-
-        error: function (e) {
-          console.log(e.responseText);
-        },
-        color: "yellow",
-        textColor: "black",
+    $("#calendario").fullCalendar({
+      defaultView: "month",
+      editable: true,
+      selectable: true,
+      locale: "es",
+      header: {
+        left: "prev,next today",
+        center: "title",
+        right: "month,agendaWeek,agendaDay",
       },
-    ],
-    eventRender: function (event, element) {
-      let description = `
+      select: function (start, end) {
+        var fecha_ingreso = moment(start).format("YYYY-MM-DD");
+        var hora_ingreso = moment(start).format("HH:mm");
+        var fecha_salida = moment(end).format("YYYY-MM-DD");
+        var hora_salida = moment(end).format("HH:mm");
+        var fecha_pago = moment(end).add(10, 'days').format("YYYY-MM-DD");
+
+        $("#fecha_ingreso").val(fecha_ingreso);
+        $("#hora_ingreso").val(hora_ingreso);
+        $("#fecha_salida").val(fecha_salida);
+        $("#hora_salida").val(hora_salida);
+        $("#fecha_pago").val(fecha_pago);
+        $("#hora_pago").val("00:00");
+
+        $("#modal-calendario").modal("show");
+      },
+      eventClick: function (event) {
+        getCronograma(event.id);
+      },
+      eventDrop: function (event, delta, revertFunc) {
+        console.log("Evento movido:", event);
+        actualizarFechaCronograma(event, revertFunc);
+      },
+      eventResize: function (event, delta, revertFunc) {
+        console.log("Evento redimensionado:", event);
+        actualizarFechaCronograma(event, revertFunc);
+      },
+      eventSources: [
+        {
+          url: "ajax.php?accion=showCronograma",
+          type: "POST",
+          data: {
+            fundo: fundo,
+            maquinaria: maquinaria,
+            operador: operador,
+            cliente: cliente,
+          },
+          success: function (events) {
+            console.log(events);
+            events.forEach(function (event) {
+              event.estado_trabajo = event.estado_trabajo;
+            });
+          },
+
+          error: function (e) {
+            console.log(e.responseText);
+          },
+          color: "yellow",
+          textColor: "black",
+        },
+      ],
+      eventRender: function (event, element) {
+        let description = `
           <br/>${event.description}
           <br/>Servicio: ${event.nombre_servicio}
           <br/>Cliente: ${event.nombre_cliente}
@@ -273,361 +301,413 @@ function crearCalendario() {
           <br/>Maquinaria: ${event.nombre_maquinaria}
           <br/>Fundo: ${event.nombre_fundo}
       `;
-      element.find(".fc-title").append(description);
-    },
-    loading: function (isLoading, view) {
-      if (isLoading) {
-        showHideLoader("block");
-      } else {
-        showHideLoader("none");
-      }
-    },
-  });
-}
-
-function abrirFormularioRegistroManual() {
-  $("#frmCronograma")[0].reset();
-
-  const fechaActual = moment().format("YYYY-MM-DD");
-  $("fecha_ingreso").val(fechaActual);
-  $("fecha_salida").val(fechaActual);
-  $("#hora_ingreso").val("00:00");
-  $("#hora_salida").val("00:00");
-
-  $("#modal-calendario").modal("show");
-}
-
-function registrarCronograma() {
-  Swal.fire({
-    title: "¿Desea guardar este cronograma?",
-    text: "Esta acción no se puede deshacer.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#22c63b",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, guardar",
-  }).then(function (result) {
-    if (result.value) {
-      var form = $("#frmCronograma")[0];
-      var formData = new FormData(form);
-
-      $.ajax({
-        type: "POST",
-        url: "ajax.php?accion=registrarCronograma",
-        contentType: false,
-        processData: false,
-        data: formData,
-        beforeSend: function () {
+        element.find(".fc-title").append(description);
+      },
+      loading: function (isLoading, view) {
+        if (isLoading) {
           showHideLoader("block");
-        },
-        success: function (response) {
-          try {
-            console.log(response);
-            var data = JSON.parse(response);
-            if (data.error == "NO") {
-              Swal.fire("Éxito", data.message, "success");
-              $("#frmCronograma")[0].reset();
-              $("#modal-calendario").modal("hide");
-              crearCalendario();
-            } else {
-              Swal.fire("Error", data.message, "error");
-            }
-          } catch (e) {
-            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
-          }
-        },
-        error: function (xhr) {
-          Swal.fire("Error", xhr.responseText, "error");
-        },
-        complete: function () {
-          showHideLoader("none");
-        },
-      });
-    }
-  });
-}
-
-function getCronograma(id_cronograma) {
-  $.ajax({
-    type: "POST",
-    url: "ajax.php?accion=getCronograma",
-    data: { id_cronograma: id_cronograma },
-    beforeSend: function () {
-      showHideLoader("block");
-    },
-    success: function (response) {
-      console.log(response);
-      try {
-        var data = typeof response === "string" ? JSON.parse(response) : response;
-        if (data.error === "NO") {
-          var info = data.data;
-
-          $("#id_cronograma").val(info.id_cronograma);
-          $("#fundo_show").val(info.nombre_fundo);
-          $("#cliente_show").val(info.nombre_cliente);
-          $("#operador_show").val(info.nombre_operador);
-          $("#maquinaria_show").val(info.nombre_maquinaria);
-
-          const fechaIngreso = moment(info.fecha_ingreso).format("YYYY-MM-DD");
-          const horaIngreso = moment(info.fecha_ingreso).format("HH:mm");
-          const fechaSalida = moment(info.fecha_salida).format("YYYY-MM-DD");
-          const horaSalida = moment(info.fecha_salida).format("HH:mm");
-
-          $("#fecha_ingreso_edit").val(fechaIngreso);
-          $("#hora_ingreso_edit").val(horaIngreso);
-          $("#fecha_salida_edit").val(fechaSalida);
-          $("#hora_salida_edit").val(horaSalida);
-
-          $("#estado_trabajo_show").val(info.estado_trabajo);
-
-
-          //Ocultar el botón Anular
-          $("#btnAnularCronograma").hide();
-
-
-          if (info.estado_trabajo === "REGISTRADO") {
-            $("#btnAprobarCronograma").show();
-          } else {
-            $("#btnAprobarCronograma").hide();
-          }
-
-          $("#modal-calendario-show").modal("show");
         } else {
-          Swal.fire("Error", data.message, "error");
-        }
-      } catch (e) {
-        Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
-      }
-    },
-    error: function (xhr) {
-      Swal.fire("Error", xhr.responseText, "error");
-    },
-    complete: function () {
-      showHideLoader("none");
-    },
-  });
-}
-
-function anularCronograma() {
-  var id_cronograma = $("#id_cronograma").val();
-  Swal.fire({
-    title: "¿Seguro de anular este cronograma?",
-    text: "No podrás revertir esta acción.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#22c63b",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, anular ahora",
-  }).then(function (result) {
-    if (result.value) {
-      $.ajax({
-        type: "POST",
-        url: "ajax.php?accion=eliminarCronograma",
-        data: { id_cronograma: id_cronograma },
-        beforeSend: function () {
-          showHideLoader("block");
-        },
-        success: function (response) {
-          try {
-            var data = JSON.parse(response);
-            if (data.error == "NO") {
-              Swal.fire("Éxito", data.message, "success");
-              $("#modal-calendario-show").modal("hide");
-              crearCalendario();
-            } else {
-              Swal.fire("Error", data.message, "error");
-            }
-          } catch (e) {
-            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
-          }
-        },
-        error: function (xhr) {
-          Swal.fire("Error", xhr.responseText, "error");
-        },
-        complete: function () {
           showHideLoader("none");
-        },
-      });
-    }
-  });
-}
-
-function actualizarFechaCronograma(event, revertFunc) {
-  console.log("Estado del evento:", event.estado_trabajo);
-  if (event.estado_trabajo === "EN PROCESO") {
-    Swal.fire("Advertencia", "No se puede mover un cronograma en estado 'EN PROCESO'.", "warning");
-    revertFunc();
-    return;
+        }
+      },
+    });
   }
 
-  var id_cronograma = event.id;
-  var fecha_ingreso = moment(event.start).format("YYYY-MM-DD");
-  var fecha_salida = event.end ? moment(event.end).format("YYYY-MM-DD") : fecha_ingreso;
-  var hora_ingreso = moment(event.start).format("HH:mm");
-  var hora_salida = event.end ? moment(event.end).format("HH:mm") : hora_ingreso;
+  function abrirFormularioRegistroManual() {
+    $("#frmCronograma")[0].reset();
 
-  Swal.fire({
-    title: "¿Actualizar fechas del cronograma?",
-    text: "Esta acción no se puede deshacer.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#22c63b",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Sí, actualizar ahora",
-  }).then(function (result) {
-    if (result.value) {
-      $.ajax({
-        type: "POST",
-        url: "ajax.php?accion=actualizarFechaCita",
-        data: {
-          id_cronograma: id_cronograma,
-          fecha_ingreso: fecha_ingreso,
-          hora_ingreso: hora_ingreso,
-          fecha_salida: fecha_salida,
-          hora_salida: hora_salida,
-        },
-        beforeSend: function () {
-          showHideLoader("block");
-        },
-        success: function (response) {
-          try {
-            var data = JSON.parse(response);
-            if (data.error == "NO") {
-              Swal.fire("Éxito", data.message, "success");
-              crearCalendario();
+    const fechaActual = moment().format("YYYY-MM-DD");
+    $("fecha_ingreso").val(fechaActual);
+    $("fecha_salida").val(fechaActual);
+    $("fecha_pago").val(fechaActual);
+    $("#hora_ingreso").val("00:00");
+    $("#hora_salida").val("00:00");
+    $("#hora_pago").val("00:00");
+
+    $("#modal-calendario").modal("show");
+  }
+
+  function registrarCronograma() {
+    Swal.fire({
+      title: "¿Desea guardar este cronograma?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, guardar",
+    }).then(function (result) {
+      if (result.value) {
+        var form = $("#frmCronograma")[0];
+        var formData = new FormData(form);
+
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=registrarCronograma",
+          contentType: false,
+          processData: false,
+          data: formData,
+          beforeSend: function () {
+            showHideLoader("block");
+          },
+          success: function (response) {
+            try {
+              console.log(response);
+              var data = JSON.parse(response);
+              if (data.error == "NO") {
+                Swal.fire("Éxito", data.message, "success");
+                $("#frmCronograma")[0].reset();
+                $("#modal-calendario").modal("hide");
+                crearCalendario();
+              } else {
+                Swal.fire("Error", data.message, "error");
+              }
+            } catch (e) {
+              Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+            }
+          },
+          error: function (xhr) {
+            Swal.fire("Error", xhr.responseText, "error");
+          },
+          complete: function () {
+            showHideLoader("none");
+          },
+        });
+      }
+    });
+  }
+
+  function actualizarVistaFechas(estadoTrabajo) {
+    if (estadoTrabajo === "TERMINADO") {
+      // Mostrar campos 'show' y ocultar campos 'edit'
+      $('#fecha_ingreso_show').closest('.form-group').show();
+      $('#fecha_salida_show').closest('.form-group').show();
+      $('#fecha_pago_show').closest('.form-group').show();
+  
+      $('#fecha_ingreso_edit').closest('.form-group').hide();
+      $('#hora_ingreso_edit').closest('.form-group').hide();
+      $('#fecha_salida_edit').closest('.form-group').hide();
+      $('#hora_salida_edit').closest('.form-group').hide();
+      $('#fecha_pago_edit').closest('.form-group').hide();
+      $('#hora_pago_edit').closest('.form-group').hide();
+
+      $("#btnGuardarCambios").hide();
+    } else {
+      // Ocultar campos 'show' y mostrar campos 'edit'
+      $('#fecha_ingreso_show').closest('.form-group').hide();
+      $('#fecha_salida_show').closest('.form-group').hide();
+      $('#fecha_pago_show').closest('.form-group').hide();
+  
+      $('#fecha_ingreso_edit').closest('.form-group').show();
+      $('#hora_ingreso_edit').closest('.form-group').show();
+      $('#fecha_salida_edit').closest('.form-group').show();
+      $('#hora_salida_edit').closest('.form-group').show();
+      $('#fecha_pago_edit').closest('.form-group').show();
+      $('#hora_pago_edit').closest('.form-group').show();
+
+      $("#btnGuardarCambios").show();
+    }
+  }
+
+  function cargarDatosCronograma(info) {
+    // Llenar los campos con los datos del cronograma
+    $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("YYYY-MM-DD HH:mm"));
+    $("#fecha_salida_show").val(moment(info.fecha_salida).format("YYYY-MM-DD HH:mm"));
+    $("#fecha_pago_show").val(
+      info.fecha_pago
+        ? moment(info.fecha_pago).format("YYYY-MM-DD HH:mm")
+        : moment(info.fecha_salida).add(10, "days").format("YYYY-MM-DD HH:mm")
+    ).closest(".form-group").show();
+
+    $("#fecha_ingreso_edit").val(moment(info.fecha_ingreso).format("YYYY-MM-DD"));
+    $("#hora_ingreso_edit").val(moment(info.fecha_ingreso).format("HH:mm"));
+    $("#fecha_salida_edit").val(moment(info.fecha_salida).format("YYYY-MM-DD"));
+    $("#hora_salida_edit").val(moment(info.fecha_salida).format("HH:mm"));
+    $("#fecha_pago_edit").val(
+      info.fecha_pago
+        ? moment(info.fecha_pago).format("YYYY-MM-DD")
+        : moment(info.fecha_salida).add(10, "days").format("YYYY-MM-DD")
+    );
+    $("#hora_pago_edit").val(
+      info.fecha_pago
+        ? moment(info.fecha_pago).format("HH:mm")
+        : "00:00"
+    );
+    actualizarVistaFechas(info.estado_trabajo);
+  }
+
+  function getCronograma(id_cronograma) {
+    $.ajax({
+      type: "POST",
+      url: "ajax.php?accion=getCronograma",
+      data: { id_cronograma: id_cronograma },
+      beforeSend: function () {
+        showHideLoader("block");
+      },
+      success: function (response) {
+        console.log(response);
+        try {
+          var data = typeof response === "string" ? JSON.parse(response) : response;
+          if (data.error === "NO") {
+            var info = data.data;
+
+            $("#id_cronograma").val(info.id_cronograma);
+            $("#fundo_show").val(info.nombre_fundo);
+            $("#cliente_show").val(info.nombre_cliente);
+            $("#operador_show").val(info.nombre_operador);
+            $("#maquinaria_show").val(info.nombre_maquinaria);
+            $("#estado_trabajo_show").val(info.estado_trabajo);
+
+            cargarDatosCronograma(info);
+
+            if (info.estado_trabajo === "REGISTRADO") {
+              $("#btnAprobarCronograma").show();
+              $("#btnAnularCronograma").hide();
+            } else if (info.estado_trabajo === "TERMINADO") {
+              $("#btnAprobarCronograma").hide();
+              $("#btnAnularCronograma").hide();
             } else {
-              Swal.fire("Error", data.message, "error");
+              $("#btnAprobarCronograma").hide();
+              $("#btnAnularCronograma").show();
+            }
+
+            $("#modal-calendario-show").modal("show");
+          } else {
+            Swal.fire("Error", data.message, "error");
+          }
+        } catch (e) {
+          Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+        }
+      },
+      error: function (xhr) {
+        Swal.fire("Error", xhr.responseText, "error");
+      },
+      complete: function () {
+        showHideLoader("none");
+      },
+    });
+  }
+
+  function anularCronograma() {
+    var id_cronograma = $("#id_cronograma").val();
+    Swal.fire({
+      title: "¿Seguro de anular este cronograma?",
+      text: "No podrás revertir esta acción.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, anular ahora",
+    }).then(function (result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=eliminarCronograma",
+          data: { id_cronograma: id_cronograma },
+          beforeSend: function () {
+            showHideLoader("block");
+          },
+          success: function (response) {
+            try {
+              var data = JSON.parse(response);
+              if (data.error == "NO") {
+                Swal.fire("Éxito", data.message, "success");
+                $("#modal-calendario-show").modal("hide");
+                crearCalendario();
+              } else {
+                Swal.fire("Error", data.message, "error");
+              }
+            } catch (e) {
+              Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+            }
+          },
+          error: function (xhr) {
+            Swal.fire("Error", xhr.responseText, "error");
+          },
+          complete: function () {
+            showHideLoader("none");
+          },
+        });
+      }
+    });
+  }
+
+  function actualizarFechaCronograma(event, revertFunc) {
+    console.log("Estado del evento:", event.estado_trabajo);
+    if (event.estado_trabajo === "EN PROCESO") {
+      Swal.fire("Advertencia", "No se puede mover un cronograma en estado 'EN PROCESO'.", "warning");
+      revertFunc();
+      return;
+    }
+
+    var id_cronograma = event.id;
+    var fecha_ingreso = moment(event.start).format("YYYY-MM-DD");
+    var fecha_salida = event.end ? moment(event.end).format("YYYY-MM-DD") : fecha_ingreso;
+    var hora_ingreso = moment(event.start).format("HH:mm");
+    var hora_salida = event.end ? moment(event.end).format("HH:mm") : hora_ingreso;
+
+    Swal.fire({
+      title: "¿Actualizar fechas del cronograma?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, actualizar ahora",
+    }).then(function (result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=actualizarFechaCita",
+          data: {
+            id_cronograma: id_cronograma,
+            fecha_ingreso: fecha_ingreso,
+            hora_ingreso: hora_ingreso,
+            fecha_salida: fecha_salida,
+            hora_salida: hora_salida,
+          },
+          beforeSend: function () {
+            showHideLoader("block");
+          },
+          success: function (response) {
+            try {
+              var data = JSON.parse(response);
+              if (data.error == "NO") {
+                Swal.fire("Éxito", data.message, "success");
+                crearCalendario();
+              } else {
+                Swal.fire("Error", data.message, "error");
+                revertFunc();
+              }
+            } catch (e) {
+              Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
               revertFunc();
             }
-          } catch (e) {
-            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+          },
+          error: function (xhr) {
+            Swal.fire("Error", xhr.responseText, "error");
             revertFunc();
-          }
-        },
-        error: function (xhr) {
-          Swal.fire("Error", xhr.responseText, "error");
-          revertFunc();
-        },
-        complete: function () {
-          showHideLoader("none");
-        },
-      });
-    } else {
-      revertFunc();
-    }
-  });
-}
-
-
-function recalcularMontos() {
-  var precio = parseFloat($("#precio_hectarea").val()) || 0;
-  var hectareas = parseFloat($("#total_hectareas").val()) || 0;
-  var descuento = parseFloat($("#descuento").val()) || 0;
-  var adelanto = parseFloat($("#adelanto").val()) || 0;
-
-  var subtotal = precio * hectareas;
-  var monto_total = subtotal - descuento;
-  var saldo_por_pagar = monto_total - adelanto;
-
-  $("#monto_total").val(monto_total.toFixed(2));
-  $("#saldo_por_pagar").val(saldo_por_pagar.toFixed(2));
-}
-
-function cargarFundosPorCliente(id_cliente) {
-  if (id_cliente == "all") {
-    $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
-    return;
+          },
+          complete: function () {
+            showHideLoader("none");
+          },
+        });
+      } else {
+        revertFunc();
+      }
+    });
   }
 
-  $.ajax({
-    type: "POST",
-    url: "ajax.php?accion=showFundoCliente",
-    data: { id_cliente: id_cliente },
-    beforeSend: function () {
-      showHideLoader("block");
-    },
-    success: function (response) {
-      try {
-        var data = JSON.parse(response);
-        $("#id_fundo").empty();
-        if (data.error == "NO") {
-          fundosData = data.data;
-          $("#id_fundo").append('<option value="all">Seleccione...</option>');
-          data.data.forEach(function (fundo) {
-            $("#id_fundo").append('<option value="' + fundo.id_fundo + '">' + fundo.nombre_fundo + " (" + fundo.cantidad_hc + " ha)</option>");
-          });
-        } else {
-          fundosData = [];
-          $("#id_fundo").append('<option value="all">' + data.message + "</option>");
-        }
-      } catch (e) {
-        Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
-      }
-    },
-    error: function (xhr) {
-      Swal.fire("Error", xhr.responseText, "error");
-    },
-    complete: function () {
-      showHideLoader("none");
-    },
-  });
-}
 
-function cambiarEstadoCronograma(nuevoEstado) {
-  var id_cronograma = $("#id_cronograma").val();
+  function recalcularMontos() {
+    var precio = parseFloat($("#precio_hectarea").val()) || 0;
+    var hectareas = parseFloat($("#total_hectareas").val()) || 0;
+    var descuento = parseFloat($("#descuento").val()) || 0;
+    var adelanto = parseFloat($("#adelanto").val()) || 0;
 
-  Swal.fire({
-    title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} este cronograma?`,
-    text: "Esta acción no se puede deshacer.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#22c63b",
-    cancelButtonColor: "#d33",
-    confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} ahora`,
-  }).then(function (result) {
-    if (result.value) {
-      $.ajax({
-        type: "POST",
-        url: "ajax.php?accion=cambiarEstadoCronograma",
-        data: JSON.stringify({ id_cronograma: id_cronograma, estado: nuevoEstado }),
-        contentType: "application/json",
-        beforeSend: function () {
-          showHideLoader("block");
-        },
-        success: function (response) {
-          console.log("Respuesta del servidor:", response);
-          try {
-            var data = typeof response === "object" ? response : JSON.parse(response);
-            if (data.error == "NO") {
-              Swal.fire("Éxito", data.message, "success");
+    var subtotal = precio * hectareas;
+    var monto_total = subtotal - descuento;
+    var saldo_por_pagar = monto_total - adelanto;
 
-              $("#estado_trabajo_show").val(nuevoEstado);
+    $("#monto_total").val(monto_total.toFixed(2));
+    $("#saldo_por_pagar").val(saldo_por_pagar.toFixed(2));
+  }
 
-              if (nuevoEstado === "ANULADO") {
-                $("#btnAnularCronograma").hide();
-                $("#btnAprobarCronograma").hide();
-              } else if (nuevoEstado === "APROBADO") {
-                $("#btnAprobarCronograma").hide();
-                $("#btnAnularCronograma").hide();
-              }
-              $("#modal-calendario-show").modal("hide");
-              crearCalendario();
-              console.log("Calendario actualizado.");
-            } else {
-              Swal.fire("Error", data.message, "error");
-            }
-          } catch (e) {
-            Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
-          }
-        },
-        error: function (xhr) {
-          Swal.fire("Error", xhr.responseText, "error");
-        },
-        complete: function () {
-          showHideLoader("none");
-        },
-      });
+  function cargarFundosPorCliente(id_cliente) {
+    if (id_cliente == "all") {
+      $("#id_fundo").html('<option value="all">Seleccione un cliente primero</option>');
+      return;
     }
-  });
-}
+
+    $.ajax({
+      type: "POST",
+      url: "ajax.php?accion=showFundoCliente",
+      data: { id_cliente: id_cliente },
+      beforeSend: function () {
+        showHideLoader("block");
+      },
+      success: function (response) {
+        try {
+          var data = JSON.parse(response);
+          $("#id_fundo").empty();
+          if (data.error == "NO") {
+            fundosData = data.data;
+            $("#id_fundo").append('<option value="all">Seleccione...</option>');
+            data.data.forEach(function (fundo) {
+              $("#id_fundo").append('<option value="' + fundo.id_fundo + '">' + fundo.nombre_fundo + " (" + fundo.cantidad_hc + " ha)</option>");
+            });
+          } else {
+            fundosData = [];
+            $("#id_fundo").append('<option value="all">' + data.message + "</option>");
+          }
+        } catch (e) {
+          Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+        }
+      },
+      error: function (xhr) {
+        Swal.fire("Error", xhr.responseText, "error");
+      },
+      complete: function () {
+        showHideLoader("none");
+      },
+    });
+  }
+
+  function cambiarEstadoCronograma(nuevoEstado) {
+    var id_cronograma = $("#id_cronograma").val();
+
+    Swal.fire({
+      title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} este cronograma?`,
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} ahora`,
+    }).then(function (result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=cambiarEstadoCronograma",
+          data: JSON.stringify({ id_cronograma: id_cronograma, estado: nuevoEstado }),
+          contentType: "application/json",
+          beforeSend: function () {
+            showHideLoader("block");
+          },
+          success: function (response) {
+            console.log("Respuesta del servidor:", response);
+            try {
+              var data = typeof response === "object" ? response : JSON.parse(response);
+              if (data.error == "NO") {
+                Swal.fire("Éxito", data.message, "success");
+
+                $("#estado_trabajo_show").val(nuevoEstado);
+
+                if (nuevoEstado === "ANULADO") {
+                  $("#btnAnularCronograma").hide();
+                  $("#btnAprobarCronograma").hide();
+                } else if (nuevoEstado === "APROBADO") {
+                  $("#btnAprobarCronograma").hide();
+                  $("#btnAnularCronograma").hide();
+                }
+                $("#modal-calendario-show").modal("hide");
+                crearCalendario();
+                console.log("Calendario actualizado.");
+              } else {
+                Swal.fire("Error", data.message, "error");
+              }
+            } catch (e) {
+              Swal.fire("Error", "Error en la respuesta del servidor: " + e, "error");
+            }
+          },
+          error: function (xhr) {
+            Swal.fire("Error", xhr.responseText, "error");
+          },
+          complete: function () {
+            showHideLoader("none");
+          },
+        });
+      }
+    });
+  }
 

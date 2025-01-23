@@ -17,30 +17,6 @@ if (!isset($_SESSION['id_trabajador'])) {
   <link href="resources/select2/css/select2.min.css" rel="stylesheet" />
   <!-- SweetAlert2 CSS -->
   <link rel="stylesheet" href="resources/sweetalert2/sweetalert2.min.css">
-  <style>
-    .form-group-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .form-group-row>div {
-      flex: 1;
-    }
-
-    .form-group-row label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 5px;
-      display: block;
-    }
-
-    input[type="date"],
-    input[type="time"] {
-      height: calc(1.5em + 0.75rem + 2px);
-      font-size: 14px;
-    }
-  </style>
 </head>
 
 <body>
@@ -323,6 +299,16 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <input type="time" id="hora_salida" name="hora_salida" class="form-control" required>
                 </div>
 
+                <div class="form-group col-sm-6">
+                  <label for="fecha_pago">Fecha de Pago</label>
+                  <input type="date" id="fecha_pago" name="fecha_pago" class="form-control" required>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="hora_pago">Hora de Pago</label>
+                  <input type="time" id="hora_pago" name="hora_pago" class="form-control" required>
+                </div>
+
                 <div class="form-group col-sm-12">
                   <label for="estado_trabajo">Estado Trabajo</label>
                   <input type="text" id="estado_trabajo" name="estado_trabajo" value="REGISTRADO" class="form-control" readonly>
@@ -399,73 +385,91 @@ if (!isset($_SESSION['id_trabajador'])) {
             </button>
           </div>
           <div class="modal-body">
+            <div class="col-md-12">
 
-            <input type="hidden" id="id_cronograma" name="id_cronograma" value="">
-            <div class="form-group col-sm-12">
-              <label for="fundo_show">Fundo</label>
-              <input type="text" id="fundo_show" class="form-control" readonly>
-            </div>
+              <div class="row">
 
-            <div class="form-group col-sm-12">
-              <label for="cliente_show">Cliente</label>
-              <input type="text" id="cliente_show" class="form-control" readonly>
-            </div>
+                <input type="hidden" id="id_cronograma" name="id_cronograma" value="">
+                <div class="form-group col-sm-12">
+                  <label for="fundo_show">Fundo</label>
+                  <input type="text" id="fundo_show" class="form-control" readonly>
+                </div>
 
-            <div class="form-group col-sm-12">
-              <label for="operador_show">Operador</label>
-              <input type="text" id="operador_show" class="form-control" readonly>
-            </div>
+                <div class="form-group col-sm-12">
+                  <label for="cliente_show">Cliente</label>
+                  <input type="text" id="cliente_show" class="form-control" readonly>
+                </div>
 
-            <div class="form-group col-sm-12">
-              <label for="maquinaria_show">Maquinaria</label>
-              <input type="text" id="maquinaria_show" class="form-control" readonly>
-            </div>
+                <div class="form-group col-sm-12">
+                  <label for="operador_show">Operador</label>
+                  <input type="text" id="operador_show" class="form-control" readonly>
+                </div>
 
-            <!-- <div class="form-group col-sm-6">
-              <label for="fecha_ingreso_show">Fecha Ingreso</label>
-              <input type="text" id="fecha_ingreso_show" class="form-control" readonly>
-            </div>
+                <div class="form-group col-sm-12">
+                  <label for="maquinaria_show">Maquinaria</label>
+                  <input type="text" id="maquinaria_show" class="form-control" readonly>
+                </div>
 
-            <div class="form-group col-sm-6">
-              <label for="fecha_salida_show">Fecha Salida</label>
-              <input type="text" id="fecha_salida_show" class="form-control" readonly>
-            </div> -->
+                <div class="form-group col-sm-12">
+                  <label for="fecha_ingreso_show">Fecha Ingreso</label>
+                  <input type="text" id="fecha_ingreso_show" class="form-control" readonly>
+                </div>
 
-            <div class="form-group-row">
-              <div>
-                <label for="fecha_ingreso_edit">Fecha Ingreso</label>
-                <input type="date" id="fecha_ingreso_edit" name="fecha_ingreso" class="form-control">
+                <div class="form-group col-sm-12">
+                  <label for="fecha_salida_show">Fecha Salida</label>
+                  <input type="text" id="fecha_salida_show" class="form-control" readonly>
+                </div>
+
+                <div class="form-group col-sm-12">
+                  <label for="fecha_pago_show">Fecha Pago</label>
+                  <input type="text" id="fecha_pago_show" class="form-control" readonly>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="fecha_ingreso_edit">Fecha Ingreso</label>
+                  <input type="date" id="fecha_ingreso_edit" name="fecha_ingreso" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="hora_ingreso_edit">Hora Ingreso</label>
+                  <input type="time" id="hora_ingreso_edit" name="hora_ingreso" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="fecha_salida_edit">Fecha Salida</label>
+                  <input type="date" id="fecha_salida_edit" name="fecha_salida" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="hora_salida_edit">Hora Salida</label>
+                  <input type="time" id="hora_salida_edit" name="hora_salida" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="fecha_pago_edit">Fecha de Pago</label>
+                  <input type="date" id="fecha_pago_edit" name="fecha_pago" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="hora_pago_edit">Hora de Pago</label>
+                  <input type="time" id="hora_pago_edit" name="hora_pago" class="form-control">
+                </div>
+
+
+                <div class="form-group col-sm-12">
+                  <label for="estado_trabajo_show">Estado del Trabajo</label>
+                  <input type="text" id="estado_trabajo_show" class="form-control" readonly>
+                </div>
+
               </div>
-              <div>
-                <label for="hora_ingreso_edit">Hora Ingreso</label>
-                <input type="time" id="hora_ingreso_edit" name="hora_ingreso" class="form-control">
-              </div>
             </div>
-
-            <div class="form-group-row">
-              <div>
-                <label for="fecha_salida_edit">Fecha Salida</label>
-                <input type="date" id="fecha_salida_edit" name="fecha_salida" class="form-control">
-              </div>
-              <div>
-                <label for="hora_salida_edit">Hora Salida</label>
-                <input type="time" id="hora_salida_edit" name="hora_salida" class="form-control">
-              </div>
-            </div>
-
-
-            <div class="form-group col-sm-12">
-              <label for="estado_trabajo_show">Estado del Trabajo</label>
-              <input type="text" id="estado_trabajo_show" class="form-control" readonly>
-            </div>
-
           </div>
 
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
             <button type="button" id="btnAnularCronograma" class="btn btn-warning">Anular Cronograma</button>
             <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;">Aprobar Cronograma</button>
-            <button type="button" id="btnGuardarCambios" class="btn btn-success">Guardar Cambios</button>
+            <button type="button" id="btnGuardarCambios" class="btn btn-success">Actualizar</button>
           </div>
         </div>
       </div>

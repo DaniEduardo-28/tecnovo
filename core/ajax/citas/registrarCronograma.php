@@ -10,8 +10,11 @@ try {
     $hora_inicio = isset($_POST["hora_ingreso"]) ? $_POST["hora_ingreso"] : 0;
     $fecha_fin = isset($_POST["fecha_salida"]) ? $_POST["fecha_salida"] : 0;
     $hora_fin = isset($_POST["hora_salida"]) ? $_POST["hora_salida"] : 0;
+    $fecha_pago = isset($_POST["fecha_pago"]) ? $_POST["fecha_pago"] : 0;
+    $hora_pago = isset($_POST["hora_pago"]) ? $_POST["hora_pago"] : 0;
     $fecha_1 = date('Y-m-d H:i', strtotime("$fecha_inicio $hora_inicio"));
     $fecha_2 = date('Y-m-d H:i', strtotime("$fecha_fin $hora_fin"));
+    $fecha_3 = date('Y-m-d H:i', strtotime("$fecha_pago $hora_pago"));
 
     $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("citas"));
     if ($access_options[0]['error'] == "NO" && !$access_options[0]['flag_agregar']) {
@@ -22,6 +25,7 @@ try {
         $_POST['id_servicio'],
         $fecha_1,
         $fecha_2,
+        $fecha_3,
         $_POST['id_fundo'],
         $_POST['total_hectareas'],
         $_POST['precio_hectarea'],

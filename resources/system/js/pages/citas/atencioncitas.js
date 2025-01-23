@@ -115,6 +115,13 @@ $(document).ready(function () {
   });
 });
 
+$('#fecha_salida_edit').on('change', function () {
+  const fechaSalida = $(this).val();
+  if (fechaSalida) {
+    const fechaPago = moment(fechaSalida).add(10, 'days').format('YYYY-MM-DD');
+    $('#fecha_pago_edit').val(fechaPago);
+  }
+});
 
 $(document).on('click', '#btnGuardarCambios', function () {
   const idCronograma = $('#id_cronograma').val();
@@ -122,37 +129,54 @@ $(document).on('click', '#btnGuardarCambios', function () {
   const horaIngreso = $('#hora_ingreso_edit').val();
   const fechaSalida = $('#fecha_salida_edit').val();
   const horaSalida = $('#hora_salida_edit').val();
+  const fechaPago = $('#fecha_pago_edit').val();
+  const horaPago = $('#hora_pago_edit').val();
 
-  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida) {
+  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida || !fechaPago || !horaPago) {
     Swal.fire('Error', 'Todos los campos de fecha y hora son obligatorios.', 'error');
     return;
   }
 
-  $.ajax({
-    url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
-    type: 'POST',
-    data: {
-      action: 'updateFechasHoras',
-      id_cronograma: idCronograma,
-      fecha_ingreso: fechaIngreso,
-      hora_ingreso: horaIngreso,
-      fecha_salida: fechaSalida,
-      hora_salida: horaSalida
-    },
-    success: function (response) {
-      const res = JSON.parse(response);
-      if (res.success) {
-        Swal.fire('Éxito', res.message, 'success');
-        $('#modal-calendario-show').modal('hide'); // Cierra el modal
-        crearCalendario(); // Recargar calendario
-      } else {
-        Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
-      }
-    },
-    error: function () {
-      Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+  Swal.fire({
+    title: '¿Actualizar fechas del cronograma?',
+    text: 'Esta acción no se puede deshacer.',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#22c63b',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, actualizar ahora',
+  }).then((result) => {
+    if (result.value) {
+
+      $.ajax({
+        url: "ajax.php?accion=actualizarFechasHoras", // Ruta al archivo PHP de backend
+        type: 'POST',
+        data: {
+          action: 'updateFechasHoras',
+          id_cronograma: idCronograma,
+          fecha_ingreso: fechaIngreso,
+          hora_ingreso: horaIngreso,
+          fecha_salida: fechaSalida,
+          hora_salida: horaSalida,
+          fecha_pago: fechaPago,
+          hora_pago: horaPago
+        },
+        success: function (response) {
+          const res = JSON.parse(response);
+          if (res.success) {
+            Swal.fire('Éxito', res.message, 'success');
+            $('#modal-calendario-show').modal('hide'); // Cierra el modal
+            crearCalendario(); // Recargar calendario
+          } else {
+            Swal.fire('Error', res.message || 'No se pudo actualizar las fechas.', 'error');
+          }
+        },
+        error: function () {
+          Swal.fire('Error', 'No se pudo conectar con el servidor.', 'error');
+        }
+      });
     }
-  });
+    });
 });
 
 function crearCalendario() {
@@ -177,10 +201,14 @@ function crearCalendario() {
       var hora_ingreso = moment(start).format("HH:mm");
       var fecha_salida = moment(end).format("YYYY-MM-DD");
       var hora_salida = moment(end).format("HH:mm");
+      var fecha_pago = moment(end).add(10, 'days').format("YYYY-MM-DD");
+
       $("#fecha_ingreso").val(fecha_ingreso);
       $("#hora_ingreso").val(hora_ingreso);
       $("#fecha_salida").val(fecha_salida);
       $("#hora_salida").val(hora_salida);
+      $("#fecha_pago").val(fecha_pago);
+      $("#hora_pago").val("00:00");
 
       $("#modal-calendario").modal("show");
     },
@@ -290,6 +318,65 @@ function registrarCronograma() {
   });
 }
 
+function actualizarVistaFechas(estadoTrabajo) {
+  if (estadoTrabajo === "TERMINADO") {
+    // Mostrar campos 'show' y ocultar campos 'edit'
+    $('#fecha_ingreso_show').closest('.form-group').show();
+    $('#fecha_salida_show').closest('.form-group').show();
+    $('#fecha_pago_show').closest('.form-group').show();
+
+    $('#fecha_ingreso_edit').closest('.form-group').hide();
+    $('#hora_ingreso_edit').closest('.form-group').hide();
+    $('#fecha_salida_edit').closest('.form-group').hide();
+    $('#hora_salida_edit').closest('.form-group').hide();
+    $('#fecha_pago_edit').closest('.form-group').hide();
+    $('#hora_pago_edit').closest('.form-group').hide();
+
+    $("#btnGuardarCambios").hide();
+  } else {
+    // Ocultar campos 'show' y mostrar campos 'edit'
+    $('#fecha_ingreso_show').closest('.form-group').hide();
+    $('#fecha_salida_show').closest('.form-group').hide();
+    $('#fecha_pago_show').closest('.form-group').hide();
+
+    $('#fecha_ingreso_edit').closest('.form-group').show();
+    $('#hora_ingreso_edit').closest('.form-group').show();
+    $('#fecha_salida_edit').closest('.form-group').show();
+    $('#hora_salida_edit').closest('.form-group').show();
+    $('#fecha_pago_edit').closest('.form-group').show();
+    $('#hora_pago_edit').closest('.form-group').show();
+
+    $("#btnGuardarCambios").show();
+  }
+}
+
+function cargarDatosCronograma(info) {
+  // Llenar los campos con los datos del cronograma
+  $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("YYYY-MM-DD HH:mm"));
+  $("#fecha_salida_show").val(moment(info.fecha_salida).format("YYYY-MM-DD HH:mm"));
+  $("#fecha_pago_show").val(
+    info.fecha_pago
+      ? moment(info.fecha_pago).format("YYYY-MM-DD HH:mm")
+      : moment(info.fecha_salida).add(10, "days").format("YYYY-MM-DD HH:mm")
+  ).closest(".form-group").show();
+
+  $("#fecha_ingreso_edit").val(moment(info.fecha_ingreso).format("YYYY-MM-DD"));
+  $("#hora_ingreso_edit").val(moment(info.fecha_ingreso).format("HH:mm"));
+  $("#fecha_salida_edit").val(moment(info.fecha_salida).format("YYYY-MM-DD"));
+  $("#hora_salida_edit").val(moment(info.fecha_salida).format("HH:mm"));
+  $("#fecha_pago_edit").val(
+    info.fecha_pago
+      ? moment(info.fecha_pago).format("YYYY-MM-DD")
+      : moment(info.fecha_salida).add(10, "days").format("YYYY-MM-DD")
+  );
+  $("#hora_pago_edit").val(
+    info.fecha_pago
+      ? moment(info.fecha_pago).format("HH:mm")
+      : "00:00"
+  );
+  actualizarVistaFechas(info.estado_trabajo);
+}
+
 function getCronograma(id_cronograma) {
   $.ajax({
     type: "POST",
@@ -311,16 +398,20 @@ function getCronograma(id_cronograma) {
           $("#cliente_show").val(info.nombre_cliente);
           $("#operador_show").val(info.nombre_operador);
           $("#maquinaria_show").val(info.nombre_maquinaria);
-          const fechaIngreso = moment(info.fecha_ingreso).format("YYYY-MM-DD");
-          const horaIngreso = moment(info.fecha_ingreso).format("HH:mm");
-          const fechaSalida = moment(info.fecha_salida).format("YYYY-MM-DD");
-          const horaSalida = moment(info.fecha_salida).format("HH:mm");
-          
-          $("#fecha_ingreso_edit").val(fechaIngreso);
-          $("#hora_ingreso_edit").val(horaIngreso);
-          $("#fecha_salida_edit").val(fechaSalida);
-          $("#hora_salida_edit").val(horaSalida);
           $("#estado_trabajo_show").val(info.estado_trabajo);
+
+          cargarDatosCronograma(info);
+
+          if (info.estado_trabajo === "REGISTRADO") {
+            $("#btnAprobarCronograma").show();
+            $("#btnAnularCronograma").hide();
+          } else if (info.estado_trabajo === "TERMINADO") {
+            $("#btnAprobarCronograma").hide();
+            $("#btnAnularCronograma").hide();
+          } else {
+            $("#btnAprobarCronograma").hide();
+            $("#btnAnularCronograma").show();
+          }
 
 
           mostrarOpcionesAprobacion(info);
@@ -572,22 +663,18 @@ function cambiarEstadoCronograma(nuevoEstado) {
 
 
 function mostrarOpcionesAprobacion(info) {
-  // Limpiar el contenedor de botones antes de agregar las nuevas opciones
   $("#accionesAprobacion").empty();
 
   if (info.estado_trabajo === "APROBADO") {
-    // Botón para Anular el cronograma
     $("#accionesAprobacion").append(`
-      <button type="button" class="btn btn-danger" id="btnAnularCronograma">Anular Cronograma</button>
+      <button type="button" class="btn btn-danger" id="btnAnularCronograma">Anular</button>
       <button type="button" class="btn btn-success" id="btnIniciarTrabajo">Iniciar Trabajo</button>
     `);
 
-    // Evento para Anular el cronograma
     $("#btnAnularCronograma").click(function () {
       cambiarEstadoCronograma("ANULADO");
     });
 
-    // Evento para Iniciar Trabajo
     $("#btnIniciarTrabajo").click(function () {
       cambiarEstadoCronograma("EN PROCESO");
     });

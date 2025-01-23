@@ -19,6 +19,7 @@ class ClassCronograma extends Conexion
     c.id_cronograma,
     c.fecha_ingreso AS start,
     c.fecha_salida AS end,
+    c.fecha_pago,
     CONCAT(pec.nombres, ' ', pec.apellidos, ' (', pec.apodo, ')') AS nombre_cliente,
     f.nombre AS nombre_fundo,
     ser.name_servicio AS nombre_servicio,
@@ -96,7 +97,7 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
-  public function registrarCronograma($id_servicio, $fecha_1, $fecha_2, $id_fundo, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $estado_pago, $estado_trabajo, $id_cliente, $id_maquinaria, $id_operador)
+  public function registrarCronograma($id_servicio, $fecha_1, $fecha_2, $fecha_3, $id_fundo, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $estado_pago, $estado_trabajo, $id_cliente, $id_maquinaria, $id_operador)
   {
 
     $conexionClass = new Conexion();
@@ -128,16 +129,20 @@ AND c.estado_trabajo != 'ANULADO' ";
       $nuevoCodigo = $ultimoCodigo ? $ultimoCodigo + 1 : 1;
 
       $sql = "INSERT INTO tb_cronograma (
-            codigo, id_servicio, fecha_ingreso, fecha_salida, lugar, cantidad, 
+            codigo, id_servicio, fecha_ingreso, fecha_salida, fecha_pago, lugar, cantidad, 
             monto_unitario, descuento, adelanto, monto_total, saldo_por_pagar, 
             estado_pago, estado_trabajo, id_fundo, id_cliente
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = $conexion->prepare($sql);
+      $fecha_pago_calculada = date('Y-m-d H:i:s', strtotime($fecha_2 . ' +10 days'));
+      $fecha_pago_final = empty($fecha_3) ? $fecha_pago_calculada : $fecha_3;
+      
       $stmt->execute([
         $nuevoCodigo,
         $id_servicio,
         $fecha_1,
         $fecha_2,
+        $fecha_pago_final,
         '',
         $cantidad,
         $monto_unitario,
@@ -170,7 +175,7 @@ AND c.estado_trabajo != 'ANULADO' ";
       $pago_operador = $stmt->fetchColumn();
 
       if (!$pago_operador) {
-          throw new Exception("No se encontró el pago del operador para el servicio proporcionado.");
+        throw new Exception("No se encontró el pago del operador para el servicio proporcionado.");
       }
 
       $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora) VALUES (?, ?, 0.0, ?)";
@@ -240,6 +245,7 @@ AND c.estado_trabajo != 'ANULADO' ";
                   c.id_servicio,
                   c.fecha_ingreso,
                   c.fecha_salida,
+                  c.fecha_pago,
                   c.cantidad,
                   c.monto_unitario,
                   c.descuento,
@@ -272,6 +278,7 @@ AND c.estado_trabajo != 'ANULADO' ";
                     c.id_servicio,
                     c.fecha_ingreso,
                     c.fecha_salida,
+                    c.fecha_pago,
                     c.cantidad,
                     c.monto_unitario,
                     c.descuento,
@@ -669,44 +676,44 @@ AND c.estado_trabajo != 'ANULADO' ";
     }
   }
 
-  public function updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida) {
+  public function updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida, $fecha_pago, $hora_pago)
+  {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     $VD = null;
 
     try {
-        $conexion->beginTransaction();
+      $conexion->beginTransaction();
 
-        // Validar el ID
-        if (empty($id_cronograma) || !is_numeric($id_cronograma)) {
-            throw new Exception("ID de cronograma inválido.");
-        }
+      // Validar el ID
+      if (empty($id_cronograma) || !is_numeric($id_cronograma)) {
+        throw new Exception("ID de cronograma inválido.");
+      }
 
-        $datetime_ingreso = $fecha_ingreso . " " . $hora_ingreso;
-        $datetime_salida = $fecha_salida . " " . $hora_salida;
+      $datetime_ingreso = $fecha_ingreso . " " . $hora_ingreso;
+      $datetime_salida = $fecha_salida . " " . $hora_salida;
+      $fecha_pago_calculada = date('Y-m-d H:i:s', strtotime($fecha_salida . ' +10 days'));
 
-        $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ? WHERE id_cronograma = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$datetime_ingreso, $datetime_salida, $id_cronograma]);
+      $datetime_pago = empty($fecha_pago) ? $fecha_pago_calculada : $fecha_pago . " " . $hora_pago;
 
-        if ($stmt->rowCount() == 0) {
-            throw new Exception("No se realizaron cambios en el cronograma.");
-        }
+      $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ?, fecha_pago = ? WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$datetime_ingreso, $datetime_salida, $datetime_pago, $id_cronograma]);
 
-        $VD = "OK";
-        $conexion->commit();
+      $VD = "OK";
+      $conexion->commit();
     } catch (PDOException $e) {
-        $conexion->rollBack();
-        $VD = $e->getMessage();
+      $conexion->rollBack();
+      $VD = $e->getMessage();
     } catch (Exception $exception) {
-        $conexion->rollBack();
-        $VD = $exception->getMessage();
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
     } finally {
-        $conexionClass->Close();
+      $conexionClass->Close();
     }
 
     return $VD;
-}
+  }
 
 
   public function addOperadorMaquinaria(
@@ -785,12 +792,12 @@ AND c.estado_trabajo != 'ANULADO' ";
                 FROM tb_cronograma c
                 INNER JOIN tb_servicio s ON c.id_servicio = s.id_servicio
                 WHERE c.id_cronograma = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_cronograma]);
-        $unidad_medida_y_pago = $stmt->fetch(PDO::FETCH_ASSOC);
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $unidad_medida_y_pago = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $unidad_medida = $unidad_medida_y_pago['id_unidad_medida'] ?? null;
-        $pago_operador = $unidad_medida_y_pago['pago_operador'] ?? 0;
+      $unidad_medida = $unidad_medida_y_pago['id_unidad_medida'] ?? null;
+      $pago_operador = $unidad_medida_y_pago['pago_operador'] ?? 0;
 
 
       $sqlOperadores = "SELECT 

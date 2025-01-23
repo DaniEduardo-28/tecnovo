@@ -89,6 +89,7 @@ try {
       "id_fundo" => $elemento['id_fundo'],
       "fecha_inicio" => date('d/m/Y H:i', strtotime($elemento['fecha_ingreso'])),
       "fecha_fin" => date('d/m/Y H:i', strtotime($elemento['fecha_salida'])),
+      "fecha_pago" => date('d/m/Y H:i', strtotime($elemento['fecha_pago'])),
       "description" => 'Estado : ' . $elemento['estado_trabajo'],
       "nombre_maquinaria" => $elemento['nombre_maquinaria'],
       "nombre_operador" => $elemento['nombre_operador'],
