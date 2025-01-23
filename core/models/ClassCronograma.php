@@ -106,6 +106,11 @@ AND c.estado_trabajo != 'ANULADO' ";
 
     try {
 
+      $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $fecha_1, $fecha_2);
+      if ($validacion['error'] === "SI") {
+        throw new Exception($validacion['message']);
+      }
+
       $conexion->beginTransaction();
 
       $sql = "SELECT id_tipo_servicio FROM tb_servicio WHERE id_servicio = ?";
@@ -132,11 +137,11 @@ AND c.estado_trabajo != 'ANULADO' ";
             codigo, id_servicio, fecha_ingreso, fecha_salida, fecha_pago, lugar, cantidad, 
             monto_unitario, descuento, adelanto, monto_total, saldo_por_pagar, 
             estado_pago, estado_trabajo, id_fundo, id_cliente
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = $conexion->prepare($sql);
       $fecha_pago_calculada = date('Y-m-d H:i:s', strtotime($fecha_2 . ' +10 days'));
       $fecha_pago_final = empty($fecha_3) ? $fecha_pago_calculada : $fecha_3;
-      
+
       $stmt->execute([
         $nuevoCodigo,
         $id_servicio,
@@ -190,7 +195,7 @@ AND c.estado_trabajo != 'ANULADO' ";
       $conexion->commit();
     } catch (PDOException $e) {
       $conexion->rollBack();
-      $VD = $e->getMessage();
+      $VD = "Error de base de datos: " . $e->getMessage();
     } catch (Exception $exception) {
       $conexion->rollBack();
       $VD = $exception->getMessage();
@@ -1132,6 +1137,63 @@ WHERE m.id_cronograma = :id_cronograma
 
     return $VD;
   }
+
+  public function validarDisponibilidadMaquinaria($id_maquinaria, $fecha_ingreso, $fecha_salida, $id_cronograma = null)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = null;
+
+    try {
+      $sql = "SELECT 
+                    cm.id_maquinaria
+                FROM 
+                    tb_cronograma_maquinaria cm
+                JOIN 
+                    tb_cronograma c ON cm.id_cronograma = c.id_cronograma
+                WHERE 
+                    cm.id_maquinaria = :id_maquinaria
+                    AND (
+                        (:fecha_ingreso BETWEEN c.fecha_ingreso AND c.fecha_salida)
+                        OR 
+                        (:fecha_salida BETWEEN c.fecha_ingreso AND c.fecha_salida)
+                        OR 
+                        (c.fecha_ingreso BETWEEN :fecha_ingreso AND :fecha_salida)
+                    )";
+
+      if (!empty($id_cronograma)) {
+        $sql .= " AND c.id_cronograma != :id_cronograma";
+      }
+
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(':id_maquinaria', $id_maquinaria, PDO::PARAM_INT);
+      $stmt->bindParam(':fecha_ingreso', $fecha_ingreso, PDO::PARAM_STR);
+      $stmt->bindParam(':fecha_salida', $fecha_salida, PDO::PARAM_STR);
+
+      if (!empty($id_cronograma)) {
+        $stmt->bindParam(':id_cronograma', $id_cronograma, PDO::PARAM_INT);
+      }
+
+      $stmt->execute();
+
+      if ($stmt->rowCount() > 0) {
+        return [
+          "error" => "SI",
+          "message" => "La maquinaria no está disponible entre $fecha_ingreso y $fecha_salida."
+        ];
+      }
+
+      return [
+        "error" => "NO",
+        "message" => "La maquinaria está disponible."
+      ];
+    } catch (PDOException $e) {
+      return ["error" => "SI", "message" => "Error en la consulta: " . $e->getMessage()];
+    } finally {
+      $conexionClass->Close();
+    }
+  }
 }
+
 
 $OBJ_CRONOGRAMA = new ClassCronograma();
