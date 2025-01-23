@@ -48,7 +48,7 @@ try {
 
     $pdf->Image($empresa[0]['src_logo'], 10, 10, 30);
     $pdf->SetFont('Arial', 'B', 8);
-    $pdf->SetY(10);
+    $pdf->SetY(15);
     $pdf->SetX(45);
     $pdf->Cell(100, 6, utf8_decode(strtoupper($empresa[0]['razon_social'])), 0, 1, 'L', 0);
 
@@ -65,7 +65,7 @@ try {
     $pdf->SetX(-60);
     $pdf->Cell(50, 5, "Fecha: $fecha_reporte", 0, 0, 'R');
 
-    $pdf->Ln(20);
+    $pdf->Ln(30);
     $pdf->SetFont('Arial', 'U', 18);
     $pdf->Cell(0, 8, utf8_decode("ORDEN DE SERVICIO"), 0, 1, 'C');
     $pdf->SetFont('Arial', '', 18);
@@ -75,13 +75,18 @@ try {
     $pdf->Cell(0, 0, '', 'T');
     // Datos principales
     $pdf->Ln(3);
-    $pdf->SetFont('Arial', '', 10);
+    $pdf->SetFont('Arial', 'B', 11);
 
     $pdf->Cell(40, 8, utf8_decode("Cliente:  "), 0, 0, 'L');
+    $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_cliente'] . '  -  ' . $datos_cronograma['documento_identidad']), 0, 1, 'L');
+    $pdf->SetFont('Arial', 'B', 11);
     $pdf->Cell(40, 8, utf8_decode("Fundo:  "), 0, 0, 'L');
+    $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_fundo']), 0, 1, 'L');
+    $pdf->SetFont('Arial', 'B', 11);
     $pdf->Cell(40, 8, utf8_decode("Servicio:  "), 0, 0, 'L');
+    $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_servicio']), 0, 1, 'L');
     $pdf->Ln(4);
     $pdf->Cell(0, 0, '', 'T');
@@ -90,7 +95,10 @@ try {
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_ingreso']), 0, 0, 'L');
     $pdf->Cell(40, 8, utf8_decode("Fecha de Salida:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_salida']), 0, 1, 'L');
-
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(40, 8, utf8_decode("Fecha de Pago:"), 0, 0, 'L');
+    $pdf->Cell(60, 8, utf8_decode($datos_cronograma['fecha_pago']), 0, 1, 'L');
+    $pdf->SetFont('Arial', '', 10);
     $pdf->Cell(40, 8, utf8_decode("Hectáreas:"), 0, 0, 'L');
     $pdf->Cell(60, 8, utf8_decode($datos_cronograma['cantidad'] . " Hc"), 0, 0, 'L');
     $pdf->Cell(40, 8, utf8_decode("Monto Unitario:"), 0, 0, 'L');
