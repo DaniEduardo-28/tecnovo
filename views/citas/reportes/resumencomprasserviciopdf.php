@@ -99,9 +99,9 @@ try {
     $pdf->Cell(0, 6, utf8_decode("DATOS DEL SERVICIO"), 0, 1, 'L', true);
     // COSTOS DEL SERVICIO
 
-    $fecha_ingreso = date('Y/m/d H:i', strtotime($datos_cronograma['fecha_ingreso']));
-    $fecha_salida = date('Y/m/d H:i', strtotime($datos_cronograma['fecha_salida']));
-    $fecha_pago = date('Y/m/d H:i', strtotime($datos_cronograma['fecha_pago']));
+    $fecha_ingreso = date('Y-m-d | H:i', strtotime($datos_cronograma['fecha_ingreso']));
+    $fecha_salida = date('Y-m-d | H:i', strtotime($datos_cronograma['fecha_salida']));
+    $fecha_pago = date('Y-m-d | H:i', strtotime($datos_cronograma['fecha_pago']));
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Ln(4);
     $pdf->SetFont('Arial', '', 10);

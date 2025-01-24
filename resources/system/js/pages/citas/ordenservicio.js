@@ -93,7 +93,7 @@ $(document).ready(function () {
       saveOperadorMaquinariaC();
       return;
     }
-    
+
     const nuevasHectareas = parseFloat($("#horas_trabajadas").val()) || 0;
 
     if (!validateCantidadHectareas(nuevasHectareas)) {
@@ -438,23 +438,16 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
         try {
           const data = JSON.parse(response);
           if (data.error === "NO") {
-            const totalHectareas = parseFloat(data.data.cantidad) || 0;
+            const totalDisponibles = parseFloat(data.data.cantidad) || 0;
             const operadores = data.data.operadores || [];
-            const hectareasAsignadas = operadores.reduce((sum, op) => sum + parseFloat(op.horas_trabajadas || 0), 0);
-            const hectareasDisponibles = totalHectareas - hectareasAsignadas;
-
-
             const unidadMedida = data.data.unidad_medida;
+
+            const asignadas = operadores.reduce((sum, op) => sum + parseFloat(op.horas_trabajadas || 0), 0);
+            const disponibles = totalDisponibles - asignadas;
             const pagoOperador = parseFloat(data.data.pago_operador) || 0;
 
             console.log("Unidad de Medida obtenida:", unidadMedida);
             console.log("Pago Operador obtenido:", pagoOperador);
-
-            if (unidadMedida !== 4){
-              $("#labelHectareasDisponibles").text(`Hectáreas disponibles: ${hectareasDisponibles}`);
-            } else {
-              $("#labelHectareasDisponibles").text("");
-            }
 
             actualizarColumnas(unidadMedida);
             $("#pago_por_hora").val(pagoOperador.toFixed(2));
@@ -489,6 +482,7 @@ function llenarTablaOperadoresMaquinarias(datos) {
   const maquinarias = datos.maquinarias || [];
   const unidadMedida = datos.unidad_medida;
 
+  console.log("Unidad recibida:", unidadMedida);
   console.log("Operadores recibidos:", operadores);
   console.log("Maquinarias recibidas:", maquinarias);
 
@@ -536,14 +530,24 @@ function llenarTablaOperadoresMaquinarias(datos) {
           </tr>`;
     tabla.append(fila);
   }
-  if (unidadMedida !== 4) {
-    const hectareasDisponibles = totalHectareas - hectareasAsignadas;
-    $("#labelHectareasDisponibles")
-    .text(`Hectáreas disponibles: ${hectareasDisponibles}`)
-    .data("total", totalHectareas);
+
+  const hectareasDisponibles = totalHectareas - hectareasAsignadas;
+  let labelText = "";
+  if (unidadMedida === "4") {
+    labelText = "Horas disponibles:";
+  } else if (unidadMedida === "5") {
+    labelText = "Hectáreas disponibles:";
   } else {
-    $("#labelHectareasDisponibles").text("");
+    labelText = "Unidades disponibles:";
   }
+
+  console.log("Unidad recibida:", unidadMedida);
+  console.log("Label seleccionado:", labelText);
+
+  $("#labelHectareasDisponibles")
+    .text(`${labelText} ${hectareasDisponibles.toFixed(2)}`)
+    .data("total", totalHectareas);
+
 
 
   $(".btnEditarOperadorMaquinaria").click(function () {
@@ -836,7 +840,7 @@ function validateCantidadHectareas(inputCantidad) {
   let cantidadEdicionAnterior = 0;
 
   const unidadMedida = $("#id_cronograma").data("unidad_medida");
-  if (unidadMedida === 4){
+  if (unidadMedida === 4) {
     return true;
   }
 
