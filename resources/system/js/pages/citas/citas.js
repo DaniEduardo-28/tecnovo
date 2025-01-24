@@ -327,6 +327,13 @@ $(document).on('click', '#btnGuardarCambios', function () {
   }
 
   function registrarCronograma() {
+    const fechaSalida = $('#fecha_salida').val();
+    const fechaPago = $('#fecha_pago').val();
+
+    if (!fechaPago || moment(fechaPago).diff(moment(fechaSalida), 'days') !== 10) {
+      const fechaPagoCalculada = moment(fechaSalida).add(10, 'days').format('YYYY-MM-DD');
+      $('#fecha_pago').val(fechaPagoCalculada);
+  }
     Swal.fire({
       title: "¿Desea guardar este cronograma?",
       text: "Esta acción no se puede deshacer.",
