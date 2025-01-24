@@ -231,7 +231,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-            <button type="button" id="btnGuardarCambios" class="btn btn-success">Actualizar</button>
+            <button type="button" id="btnGuardarCambios" class="btn btn-info"><i class="fa fa-calendar"></i>  Actualizar</button>
             <div id="accionesAprobacion"></div>
           </div>
         </div>

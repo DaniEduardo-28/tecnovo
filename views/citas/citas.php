@@ -469,7 +469,7 @@ if (!isset($_SESSION['id_trabajador'])) {
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
             <button type="button" id="btnAnularCronograma" class="btn btn-warning">Anular Cronograma</button>
             <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;">Aprobar Cronograma</button>
-            <button type="button" id="btnGuardarCambios" class="btn btn-success">Actualizar</button>
+            <button type="button" id="btnGuardarCambios" class="btn btn-info"><i class="fa fa-calendar"></i>  Actualizar</button>
           </div>
         </div>
       </div>

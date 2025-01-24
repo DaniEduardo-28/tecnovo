@@ -667,7 +667,7 @@ function mostrarOpcionesAprobacion(info) {
 
   if (info.estado_trabajo === "APROBADO") {
     $("#accionesAprobacion").append(`
-      <button type="button" class="btn btn-danger" id="btnAnularCronograma">Anular</button>
+      <button type="button" class="btn btn-warning" id="btnAnularCronograma">Anular</button>
       <button type="button" class="btn btn-success" id="btnIniciarTrabajo">Iniciar Trabajo</button>
     `);
 
