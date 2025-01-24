@@ -168,6 +168,14 @@ $('#fecha_salida_edit').on('change', function () {
   }
 });
 
+$("#fecha_salida").on("change", function () {
+  const fechaSalida = $(this).val();
+  if (fechaSalida) {
+    const fechaPago = moment(fechaSalida).add(10, "days").format("YYYY-MM-DD");
+    $("#fecha_pago").val(fechaPago);
+  }
+});
+
 $(document).on('click', '#btnGuardarCambios', function () {
   const idCronograma = $('#id_cronograma').val();
   const fechaIngreso = $('#fecha_ingreso_edit').val();
