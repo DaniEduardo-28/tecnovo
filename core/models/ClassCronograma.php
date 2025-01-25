@@ -1193,7 +1193,8 @@ WHERE m.id_cronograma = :id_cronograma
                 JOIN 
                     tb_cronograma c ON cm.id_cronograma = c.id_cronograma
                 WHERE 
-                    cm.id_maquinaria = :id_maquinaria
+                    cm.id_maquinaria = :id_maquinaria 
+                    AND c.estado_trabajo != 'ANULADO' 
                     AND (
                         (:fecha_ingreso BETWEEN c.fecha_ingreso AND c.fecha_salida)
                         OR 
