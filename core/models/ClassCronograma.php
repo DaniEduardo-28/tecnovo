@@ -706,7 +706,7 @@ AND c.estado_trabajo != 'ANULADO' ";
     }
   }
 
-  public function updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida, $fecha_pago, $hora_pago)
+  public function updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida, $fecha_pago, $hora_pago, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar)
   {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
@@ -742,9 +742,30 @@ AND c.estado_trabajo != 'ANULADO' ";
         }
       }
 
-      $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ?, fecha_pago = ? WHERE id_cronograma = ?";
+      if ($cantidad <= 0) {
+        throw new Exception("La cantidad debe ser mayor a cero.");
+    }
+    if ($monto_unitario < 0) {
+        throw new Exception("El monto unitario no puede ser negativo.");
+    }
+    if ($descuento < 0 || $adelanto < 0) {
+        throw new Exception("El descuento y el adelanto no pueden ser negativos.");
+    }
+    if ($monto_total < 0 || $saldo_por_pagar < 0) {
+        throw new Exception("El monto total y el saldo por pagar no pueden ser negativos.");
+    }
+
+      $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, 
+                                        fecha_salida = ?, 
+                                        fecha_pago = ?, 
+                                        cantidad = ?, 
+                                        monto_unitario = ?, 
+                                        descuento = ?, 
+                                        adelanto = ?, 
+                                        monto_total = ?, 
+                                        saldo_por_pagar = ? WHERE id_cronograma = ?";
       $stmt = $conexion->prepare($sql);
-      $stmt->execute([$datetime_ingreso, $datetime_salida, $datetime_pago, $id_cronograma]);
+      $stmt->execute([$datetime_ingreso, $datetime_salida, $datetime_pago, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $id_cronograma]);
 
       $VD = "OK";
       $conexion->commit();
