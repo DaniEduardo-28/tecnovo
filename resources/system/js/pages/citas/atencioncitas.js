@@ -123,6 +123,10 @@ $('#fecha_salida_edit').on('change', function () {
   }
 });
 
+$("#monto_unitario_edit, #cantidad_edit, #descuento_edit, #adelanto_edit").on("input", function () {
+  recalcularMontos();
+});
+
 $(document).on('click', '#btnGuardarCambios', function () {
   const idCronograma = $('#id_cronograma').val();
   const fechaIngreso = $('#fecha_ingreso_edit').val();
@@ -132,8 +136,16 @@ $(document).on('click', '#btnGuardarCambios', function () {
   const fechaPago = $('#fecha_pago_edit').val();
   const horaPago = $('#hora_pago_edit').val();
 
-  if (!fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida || !fechaPago || !horaPago) {
-    Swal.fire('Error', 'Todos los campos de fecha y hora son obligatorios.', 'error');
+  const cantidad = $('#cantidad_edit').val();
+  const montoUnitario = $('#monto_unitario_edit').val();
+  const descuento = $('#descuento_edit').val();
+  const adelanto = $('#adelanto_edit').val();
+  const montoTotal = $('#monto_total_edit').val();
+  const saldoPorPagar = $('#saldo_por_pagar_edit').val();
+
+  if (!idCronograma || !fechaIngreso || !horaIngreso || !fechaSalida || !horaSalida || !fechaPago || !horaPago ||
+    !cantidad || !montoUnitario || !montoTotal || !saldoPorPagar) {
+    Swal.fire('Error', 'Todos los campos son obligatorios.', 'error');
     return;
   }
 
@@ -159,7 +171,13 @@ $(document).on('click', '#btnGuardarCambios', function () {
           fecha_salida: fechaSalida,
           hora_salida: horaSalida,
           fecha_pago: fechaPago,
-          hora_pago: horaPago
+          hora_pago: horaPago,
+          cantidad: cantidad,
+          monto_unitario: montoUnitario,
+          descuento: descuento,
+          adelanto: adelanto,
+          monto_total: montoTotal,
+          saldo_por_pagar: saldoPorPagar,
         },
         success: function (response) {
           const res = JSON.parse(response);
@@ -332,6 +350,11 @@ function actualizarVistaFechas(estadoTrabajo) {
     $('#fecha_pago_edit').closest('.form-group').hide();
     $('#hora_pago_edit').closest('.form-group').hide();
 
+    $('#cantidad_edit').closest('.form-group').hide();
+    $('#monto_unitario_edit').closest('.form-group').hide();
+    $('#descuento_edit').closest('.form-group').hide();
+    $('#adelanto_edit').closest('.form-group').hide();
+
     $("#btnGuardarCambios").hide();
   } else {
     // Ocultar campos 'show' y mostrar campos 'edit'
@@ -374,6 +397,14 @@ function cargarDatosCronograma(info) {
       ? moment(info.fecha_pago).format("HH:mm")
       : "00:00"
   );
+
+  $("#cantidad_edit").val(info.cantidad);
+    $("#monto_unitario_edit").val(info.monto_unitario);
+    $("#descuento_edit").val(info.descuento);
+    $("#adelanto_edit").val(info.adelanto);
+    $("#monto_total_edit").val(info.monto_total);
+    $("#saldo_por_pagar_edit").val(info.saldo_por_pagar);
+
   actualizarVistaFechas(info.estado_trabajo);
 }
 
@@ -548,12 +579,24 @@ function recalcularMontos() {
   var descuento = parseFloat($("#descuento").val()) || 0;
   var adelanto = parseFloat($("#adelanto").val()) || 0;
 
+  const montoUnitario = parseFloat($("#monto_unitario_edit").val()) || 0;
+    const cantidadEdit = parseFloat($("#cantidad_edit").val()) || 0;
+    const descuentoEdit = parseFloat($("#descuento_edit").val()) || 0;
+    const adelantoEdit = parseFloat($("#adelanto_edit").val()) || 0;
+
+    const subTotal = montoUnitario * cantidadEdit;
+    const montoTotal = subTotal - descuentoEdit;
+    const saldoPorPagar = montoTotal - adelantoEdit;
+
   var subtotal = precio * hectareas;
   var monto_total = subtotal - descuento;
   var saldo_por_pagar = monto_total - adelanto;
 
   $("#monto_total").val(monto_total.toFixed(2));
   $("#saldo_por_pagar").val(saldo_por_pagar.toFixed(2));
+
+  $("#monto_total_edit").val(montoTotal.toFixed(2));
+    $("#saldo_por_pagar_edit").val(saldoPorPagar.toFixed(2));
 }
 
 function cargarFundosPorCliente(id_cliente) {

@@ -225,6 +225,37 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <input type="text" id="estado_trabajo_show" class="form-control" readonly>
                 </div>
 
+                
+                <div class="form-group col-sm-6">
+                  <label for="cantidad_edit">Cantidad</label>
+                  <input type="number" id="cantidad_edit" name="cantidad" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="monto_unitario_edit">Monto Unitario</label>
+                  <input type="number" id="monto_unitario_edit" name="monto_unitario" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="descuento_edit">Descuento</label>
+                  <input type="number" id="descuento_edit" name="descuento" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="adelanto_edit">Adelanto</label>
+                  <input type="number" id="adelanto_edit" name="adelanto" class="form-control">
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="monto_total_edit">Monto Total</label>
+                  <input type="number" id="monto_total_edit" name="monto_total" class="form-control" readonly>
+                </div>
+
+                <div class="form-group col-sm-6">
+                  <label for="saldo_por_pagar_edit">Saldo por Pagar</label>
+                  <input type="number" id="saldo_por_pagar_edit" name="saldo_por_pagar" class="form-control" readonly>
+                </div>
+
               </div>
             </div>
           </div>

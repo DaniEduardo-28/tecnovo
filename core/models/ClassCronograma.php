@@ -145,6 +145,9 @@ AND c.estado_trabajo != 'ANULADO' ";
       if (strtotime($fecha_2) < strtotime($fecha_1)) {
         throw new Exception("La fecha de salida no puede ser menor que la fecha de ingreso.");
     }
+    if (!$id_fundo) {
+      throw new Exception("Es obligatorio elegir un fundo al que se dirigirá el servicio.");
+    }
       $stmt->execute([
         $nuevoCodigo,
         $id_servicio,

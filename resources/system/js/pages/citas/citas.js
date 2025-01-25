@@ -428,6 +428,11 @@ $(document).on('click', '#btnGuardarCambios', function () {
       $('#fecha_pago_edit').closest('.form-group').hide();
       $('#hora_pago_edit').closest('.form-group').hide();
 
+      $('#cantidad_edit').closest('.form-group').hide();
+      $('#monto_unitario_edit').closest('.form-group').hide();
+      $('#descuento_edit').closest('.form-group').hide();
+      $('#adelanto_edit').closest('.form-group').hide();
+
       $("#btnGuardarCambios").hide();
     } else {
       // Ocultar campos 'show' y mostrar campos 'edit'
