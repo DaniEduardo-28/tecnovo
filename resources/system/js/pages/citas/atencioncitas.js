@@ -150,7 +150,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
   }
 
   Swal.fire({
-    title: '¿Actualizar fechas del cronograma?',
+    title: '¿Actualizar fechas y/o montos del cronograma?',
     text: 'Esta acción no se puede deshacer.',
     type: 'warning',
     showCancelButton: true,

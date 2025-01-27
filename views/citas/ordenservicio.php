@@ -246,6 +246,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                       <th>Fundo</th>
                       <th>Nombre Cliente</th>
                       <th>Servicio</th>
+                      <th>Cantidad</th>
                       <th>Nombre Operador</th>
                       <th>Maquinaria</th>
                       <th>Fecha Ingreso</th>

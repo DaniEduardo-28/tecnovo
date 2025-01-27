@@ -584,6 +584,7 @@ AND c.estado_trabajo != 'ANULADO' ";
                 f.nombre AS nombre_fundo,
                 CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
                 s.name_servicio AS nombre_servicio,
+                CONCAT(c.cantidad, ' ', um.cod_sunat) AS cant_medida,
                 GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
                 GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
                 c.fecha_ingreso,
@@ -613,6 +614,7 @@ AND c.estado_trabajo != 'ANULADO' ";
               FROM tb_cronograma c 
               LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
               LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+              LEFT JOIN tb_unidad_medida um ON um.id_unidad_medida = s.id_unidad_medida 
               LEFT JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio 
               LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
               LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
@@ -656,6 +658,8 @@ AND c.estado_trabajo != 'ANULADO' ";
                   s.name_servicio, 
                   p.nombres, 
                   p.apellidos,
+                  c.cantidad, 
+                  um.cod_sunat,
                   c.fecha_ingreso,
                   c.fecha_salida,
                   c.estado_trabajo,

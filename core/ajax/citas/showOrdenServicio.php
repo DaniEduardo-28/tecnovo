@@ -39,6 +39,7 @@ try {
         "nombre_fundo" => $key['nombre_fundo'],
         "nombre_cliente" => $key['nombre_cliente'],
         "nombre_servicio" => $key['nombre_servicio'],
+        "cant_medida" => $key['cant_medida'],
         "nombre_operador" => $key['nombre_operador'],
         "nombre_maquinaria" => $key['nombre_maquinaria'],
         "fecha_ingreso" => $key['fecha_ingreso'],
