@@ -366,7 +366,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-            <input type="submit" name="btnSave" id="btnSave" value="Guardar Cronograma" class="btn btn-success">
+            <button type="submit" name="btnSave" id="btnSave" class="btn btn-success"><i class="fa fa-check"></i> Guardar Cronograma</button>
           </div>
         </div>
       </div>
@@ -497,8 +497,8 @@ if (!isset($_SESSION['id_trabajador'])) {
 
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-            <button type="button" id="btnAnularCronograma" class="btn btn-warning">Anular Cronograma</button>
-            <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;">Aprobar Cronograma</button>
+            <button type="button" id="btnAnularCronograma" class="btn btn-warning"><i class="fa fa-ban"></i> Anular</button>
+            <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;"><i class="fa fa-check"></i> Aprobar Registro</button>
             <button type="button" id="btnGuardarCambios" class="btn btn-info"><i class="fa fa-calendar"></i> Actualizar</button>
           </div>
         </div>

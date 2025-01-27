@@ -710,8 +710,8 @@ function mostrarOpcionesAprobacion(info) {
 
   if (info.estado_trabajo === "APROBADO") {
     $("#accionesAprobacion").append(`
-      <button type="button" class="btn btn-warning" id="btnAnularCronograma">Anular</button>
-      <button type="button" class="btn btn-success" id="btnIniciarTrabajo">Iniciar Trabajo</button>
+      <button type="button" class="btn btn-warning" id="btnAnularCronograma"><i class="fa fa-ban"></i> Anular</button>
+      <button type="button" class="btn btn-success" id="btnIniciarTrabajo"><i class="fa fa-check"></i> Iniciar Trabajo</button>
     `);
 
     $("#btnAnularCronograma").click(function () {
@@ -725,8 +725,13 @@ function mostrarOpcionesAprobacion(info) {
 
   if (info.estado_trabajo === "EN PROCESO") {
     $("#accionesAprobacion").append(`
-      <button type="button" class="btn btn-primary" id="btnFinalizarTrabajo">Finalizar Trabajo</button>
+      <button type="button" class="btn btn-warning" id="btnAnularCronograma"><i class="fa fa-ban"></i> Anular</button>
+      <button type="button" class="btn btn-primary" id="btnFinalizarTrabajo"><i class="fa fa-check"></i> Finalizar Trabajo</button>
     `);
+
+    $("#btnAnularCronograma").click(function () {
+      cambiarEstadoCronograma("ANULADO");
+    });
 
     $("#btnFinalizarTrabajo").click(function () {
       cambiarEstadoCronograma("TERMINADO");

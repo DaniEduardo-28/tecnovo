@@ -512,7 +512,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
 
             if (info.estado_trabajo === "REGISTRADO") {
               $("#btnAprobarCronograma").show();
-              $("#btnAnularCronograma").hide();
+              $("#btnAnularCronograma").show();
             } else if (info.estado_trabajo === "TERMINADO") {
               $("#btnAprobarCronograma").hide();
               $("#btnAnularCronograma").hide();

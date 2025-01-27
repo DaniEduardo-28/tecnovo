@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $response = $OBJ_CRONOGRAMA->updateFechasHoras($id_cronograma, $fecha_ingreso, $hora_ingreso, $fecha_salida, $hora_salida, $fecha_pago, $hora_pago, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar);
 
     if ($response === "OK") {
-        echo json_encode(["success" => true, "message" => "Fechas actualizadas correctamente."]);
+        echo json_encode(["success" => true, "message" => "Campos actualizados correctamente."]);
     } else {
         echo json_encode(["success" => false, "message" => $response]);
     }
