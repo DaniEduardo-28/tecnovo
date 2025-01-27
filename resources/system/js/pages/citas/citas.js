@@ -452,6 +452,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
   }
 
   function cargarDatosCronograma(info) {
+    console.log(info.unidad_servicio);
     // Llenar los campos con los datos del cronograma
     $("#fecha_ingreso_show").val(moment(info.fecha_ingreso).format("YYYY-MM-DD HH:mm"));
     $("#fecha_salida_show").val(moment(info.fecha_salida).format("YYYY-MM-DD HH:mm"));
@@ -475,6 +476,10 @@ $(document).on('click', '#btnGuardarCambios', function () {
         ? moment(info.fecha_pago).format("HH:mm")
         : "00:00"
     );
+
+      $("#label_precio_vista").html("Precio por " + info.unidad_servicio);
+      $("#label_total_vista").html("Total de " + info.unidad_servicio);
+
 
     $("#cantidad_edit").val(info.cantidad);
     $("#monto_unitario_edit").val(info.monto_unitario);

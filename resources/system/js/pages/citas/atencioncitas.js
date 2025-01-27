@@ -398,6 +398,10 @@ function cargarDatosCronograma(info) {
       : "00:00"
   );
 
+  $("#label_precio_vista").html("Precio por " + info.unidad_servicio);
+  $("#label_total_vista").html("Total de " + info.unidad_servicio);
+
+
   $("#cantidad_edit").val(info.cantidad);
     $("#monto_unitario_edit").val(info.monto_unitario);
     $("#descuento_edit").val(info.descuento);

@@ -270,20 +270,22 @@ AND c.estado_trabajo != 'ANULADO' ";
                   c.estado_pago,
                   c.estado_trabajo,
                   c.id_fundo,
-                  c.id_cliente,
+                  c.id_cliente, 
+                  um.cod_sunat AS unidad_servicio, 
                   f.nombre AS nombre_fundo,
                   s.name_servicio AS nombre_servicio,
                   GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
                   GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
                   CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente
               FROM tb_cronograma c
-              LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
-              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio
-              LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
-              LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
-              LEFT JOIN tb_cronograma_maquinaria cm ON c.id_cronograma = cm.id_cronograma
-              LEFT JOIN tb_maquinaria m ON cm.id_maquinaria = m.id_maquinaria
-              LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+              LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo 
+              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+              LEFT JOIN tb_unidad_medida um ON um.id_unidad_medida = s.id_unidad_medida 
+              LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente 
+              LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona 
+              LEFT JOIN tb_cronograma_maquinaria cm ON c.id_cronograma = cm.id_cronograma 
+              LEFT JOIN tb_maquinaria m ON cm.id_maquinaria = m.id_maquinaria 
+              LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma 
               LEFT JOIN tb_trabajador t ON co.id_trabajador = t.id_trabajador
               LEFT JOIN tb_persona op ON t.id_persona = op.id_persona
               WHERE c.id_cronograma = :id_cronograma
@@ -306,6 +308,7 @@ AND c.estado_trabajo != 'ANULADO' ";
                     c.id_cliente,
                     f.nombre,
                     s.name_servicio,
+                    um.cod_sunat,
                     p.nombres,
                     p.apellidos";
 

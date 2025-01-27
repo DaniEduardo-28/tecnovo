@@ -227,12 +227,12 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                 
                 <div class="form-group col-sm-6">
-                  <label for="cantidad_edit">Cantidad</label>
+                  <label for="cantidad_edit" id="label_total_vista">Total de </label>
                   <input type="number" id="cantidad_edit" name="cantidad" class="form-control">
                 </div>
 
                 <div class="form-group col-sm-6">
-                  <label for="monto_unitario_edit">Monto Unitario</label>
+                  <label for="monto_unitario_edit" id="label_precio_vista">Precio por </label>
                   <input type="number" id="monto_unitario_edit" name="monto_unitario" class="form-control">
                 </div>
 
