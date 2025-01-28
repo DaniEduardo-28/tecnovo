@@ -449,8 +449,10 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
             const disponibles = totalDisponibles - asignadas;
             const pagoOperador = parseFloat(data.data.pago_operador) || 0;
 
-            console.log("Unidad de Medida obtenida:", unidadMedida);
-            console.log("Pago Operador obtenido:", pagoOperador);
+            console.log("Unidad de Medida obtenida y guardada en `data()`:", unidadMedida);
+            
+            $("#id_cronograma").data("unidad_medida", unidadMedida);
+            $("#id_cronograma").attr("data-unidad_medida", unidadMedida);
 
             actualizarColumnas(unidadMedida);
             $("#pago_por_hora").val(pagoOperador.toFixed(2));
@@ -536,9 +538,10 @@ function llenarTablaOperadoresMaquinarias(datos) {
 
   const hectareasDisponibles = totalHectareas - hectareasAsignadas;
   let labelText = "";
-  if (unidadMedida === "4") {
+
+  if (unidadMedida == "4") {
     labelText = "Horas disponibles:";
-  } else if (unidadMedida === "5") {
+  } else if (unidadMedida == "5") {
     labelText = "Hectáreas disponibles:";
   } else {
     labelText = "Unidades disponibles:";
@@ -549,7 +552,7 @@ function llenarTablaOperadoresMaquinarias(datos) {
 
   $("#labelHectareasDisponibles")
     .text(`${labelText} ${hectareasDisponibles.toFixed(2)}`)
-    .data("total", totalHectareas);
+    .data("total", hectareasDisponibles);
 
 
 
@@ -670,6 +673,27 @@ function saveOperadorMaquinariaC() {
       });
 
       const idEdicion = $("#frmOperadorMaquinaria").data("editing");
+      let cantidadNueva = parseFloat($("#horas_trabajadas").val()) || 0;
+      let totalDisponible = parseFloat($("#labelHectareasDisponibles").data("total")) || 0;
+      let cantidadAnterior = 0;
+
+      if (idEdicion) {
+        cantidadAnterior = obtenerCantidadActualEnEdicion(idEdicion);
+      }
+
+      let nuevaDisponibilidad = totalDisponible + cantidadAnterior - cantidadNueva;
+
+      if (nuevaDisponibilidad < 0) {
+        Swal.fire("Error", "La cantidad ingresada supera el límite disponible.", "error");
+        return;
+      }
+
+      let unidadMedida = $("#id_cronograma").data("unidad_medida");
+      let labelTexto = unidadMedida === '5' ? "Hectáreas disponibles:" : "Horas disponibles:";
+
+      $("#labelHectareasDisponibles").data("total", nuevaDisponibilidad.toFixed(2));
+      $("#labelHectareasDisponibles").text(`${labelTexto} ${nuevaDisponibilidad.toFixed(2)}`);
+
       const accion = idEdicion ? "actualizarOperadorMaquinariaCronograma" : "goOperadorMaquinariaCronograma";
       if (idEdicion) {
         formData.append("id_cronograma", idEdicion);
@@ -721,6 +745,7 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
   $("#frmOperadorMaquinaria").data("editing", id_cronograma_operador);
   $("#id_cronograma_operador").val(id_cronograma_operador || "");
   $("#id_cronograma_maquinaria").val(id_cronograma_maquinaria || "");
+
   $.ajax({
     type: "POST",
     url: "ajax.php?accion=getOperadorMaquinariaById",
@@ -732,6 +757,20 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
         if (data.error === "NO") {
           const operador = data.data.operador || {};
           const maquinaria = data.data.maquinaria || {};
+
+          let cantidadRegistrada = parseFloat(operador.horas_trabajadas || 0);
+          let totalDisponible = parseFloat($("#labelHectareasDisponibles").data("total")) || 0;
+          let unidadMedida = $("#id_cronograma").data("unidad_medida") || 0;
+          console.log("Unidad de medida seleccionada en el edit: ", unidadMedida);
+
+          let labelTexto = unidadMedida === "5" ? "Hectáreas disponibles: " : "Horas disponibles: ";
+          let nuevaDisponibilidad = totalDisponible + cantidadRegistrada;
+
+          console.log(`Edición de registro - Nueva disponibilidad calculada: ${nuevaDisponibilidad}`);
+
+          $("#labelHectareasDisponibles")
+            .text(`${labelTexto} ${nuevaDisponibilidad.toFixed(2)}`)
+            .data("total", nuevaDisponibilidad);
 
           $("#nombre_operador").val(operador.id_trabajador || "");
           $("#horas_trabajadas").val(parseFloat(operador.horas_trabajadas || 0).toFixed(2));
@@ -850,12 +889,17 @@ function validateCantidadHectareas(inputCantidad) {
   if (idEdicion) {
     cantidadEdicionAnterior = obtenerCantidadActualEnEdicion(idEdicion);
   }
-  const hectareasDisponibles = cantidadTotalPermitida - (totalRegistrado - cantidadEdicionAnterior);
+  
+  const hectareasDisponibles = cantidadTotalPermitida + cantidadEdicionAnterior - inputCantidad;
 
-  if (inputCantidad > hectareasDisponibles) {
-    Swal.fire("Error", "La cantidad de hectáreas excede el límite disponible.", "error");
-    return false; // Detén el proceso
-  }
+  console.log(`Validando: Total permitido: ${cantidadTotalPermitida}, Total registrado: ${totalRegistrado}, 
+    Cantidad anterior: ${cantidadEdicionAnterior}, Nueva cantidad: ${inputCantidad}, 
+    Disponibles después de validación: ${hectareasDisponibles}`);
+
+    if (hectareasDisponibles < 0) {
+      Swal.fire("Error", "La cantidad de hectáreas excede el límite disponible.", "error");
+      return false;
+    }
   return true;
 }
 
