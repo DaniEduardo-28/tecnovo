@@ -13,7 +13,7 @@ var table = $('#example').DataTable({
     { 'data': 'nombre_fundo' },
     { 'data': 'nombre_cliente' },
     { 'data': 'nombre_servicio' },
-    { 'data': 'cant_medida'},
+    { 'data': 'cant_medida' },
     { 'data': 'nombre_operador' },
     { 'data': 'nombre_maquinaria' },
     { 'data': 'fecha_ingreso' },
@@ -450,7 +450,7 @@ function cargarOperadoresMaquinariasExistentes(id_cronograma) {
             const pagoOperador = parseFloat(data.data.pago_operador) || 0;
 
             console.log("Unidad de Medida obtenida y guardada en `data()`:", unidadMedida);
-            
+
             $("#id_cronograma").data("unidad_medida", unidadMedida);
             $("#id_cronograma").attr("data-unidad_medida", unidadMedida);
 
@@ -598,23 +598,26 @@ function deleteRegistroOperadorMaquinaria(id_operador, id_maquinaria) {
               if (response["error"] == "SI") {
                 runAlert("Oh No...!!!", response["message"], "warning");
               } else {
-                cargarOperadoresMaquinariasExistentes($("#id_cronograma").val());
+                let idCronograma = $("#id_cronograma").val();
+                cargarOperadoresMaquinariasExistentes(idCronograma).then(() => {
+                  actualizarCantidadRestante(idCronograma);
+                });
                 runAlert("Bien hecho...!!!", response["message"], "success");
               }
             } catch (e) {
-              console.log(e);
-            }
-          },
-          error: function (data) {
-            runAlert("Oh No...!!!", data, "error");
-          },
-          beforeSend: function (xhr) {
-            showHideLoader("block");
-          },
-          complete: function (jqXHR, textStatus) {
-            showHideLoader("none");
-          },
-        });
+                console.log(e);
+              }
+            },
+            error: function (data) {
+              runAlert("Oh No...!!!", data, "error");
+            },
+            beforeSend: function (xhr) {
+              showHideLoader("block");
+            },
+            complete: function (jqXHR, textStatus) {
+              showHideLoader("none");
+            },
+          });
       }
     });
   } catch (e) {
@@ -746,6 +749,16 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
   $("#id_cronograma_operador").val(id_cronograma_operador || "");
   $("#id_cronograma_maquinaria").val(id_cronograma_maquinaria || "");
 
+  let cantidadAnteriorEdicion = parseFloat($("#frmOperadorMaquinaria").data("cantidad_editando")) || 0;
+  let totalDisponible = parseFloat($("#labelHectareasDisponibles").data("total")) || 0;
+
+  if (cantidadAnteriorEdicion) {
+    console.log(`Restaurando disponibilidad antes de edición: +${cantidadAnteriorEdicion}`);
+    totalDisponible += cantidadAnteriorEdicion;
+    $("#frmOperadorMaquinaria").data("cantidad_editando", 0);
+  }
+  console.log(`✅ Total disponible restaurado antes de editar: ${totalDisponible}`);
+
   $.ajax({
     type: "POST",
     url: "ajax.php?accion=getOperadorMaquinariaById",
@@ -758,19 +771,22 @@ function editarOperadorMaquinaria(id_cronograma_operador, id_cronograma_maquinar
           const operador = data.data.operador || {};
           const maquinaria = data.data.maquinaria || {};
 
-          let cantidadRegistrada = parseFloat(operador.horas_trabajadas || 0);
-          let totalDisponible = parseFloat($("#labelHectareasDisponibles").data("total")) || 0;
+          let cantidadNueva = parseFloat(operador.horas_trabajadas || 0);
           let unidadMedida = $("#id_cronograma").data("unidad_medida") || 0;
-          console.log("Unidad de medida seleccionada en el edit: ", unidadMedida);
+
+          console.log(`Nueva cantidad a editar: ${cantidadNueva}`);
 
           let labelTexto = unidadMedida === "5" ? "Hectáreas disponibles: " : "Horas disponibles: ";
-          let nuevaDisponibilidad = totalDisponible + cantidadRegistrada;
+          let nuevaDisponibilidad = totalDisponible + cantidadNueva;
 
-          console.log(`Edición de registro - Nueva disponibilidad calculada: ${nuevaDisponibilidad}`);
+
+          console.log(`Nueva disponibilidad calculada: ${nuevaDisponibilidad}`);
 
           $("#labelHectareasDisponibles")
             .text(`${labelTexto} ${nuevaDisponibilidad.toFixed(2)}`)
             .data("total", nuevaDisponibilidad);
+
+          $("#frmOperadorMaquinaria").data("cantidad_editando", cantidadNueva);
 
           $("#nombre_operador").val(operador.id_trabajador || "");
           $("#horas_trabajadas").val(parseFloat(operador.horas_trabajadas || 0).toFixed(2));
@@ -889,17 +905,17 @@ function validateCantidadHectareas(inputCantidad) {
   if (idEdicion) {
     cantidadEdicionAnterior = obtenerCantidadActualEnEdicion(idEdicion);
   }
-  
+
   const hectareasDisponibles = cantidadTotalPermitida + cantidadEdicionAnterior - inputCantidad;
 
   console.log(`Validando: Total permitido: ${cantidadTotalPermitida}, Total registrado: ${totalRegistrado}, 
     Cantidad anterior: ${cantidadEdicionAnterior}, Nueva cantidad: ${inputCantidad}, 
     Disponibles después de validación: ${hectareasDisponibles}`);
 
-    if (hectareasDisponibles < 0) {
-      Swal.fire("Error", "La cantidad de hectáreas excede el límite disponible.", "error");
-      return false;
-    }
+  if (hectareasDisponibles < 0) {
+    Swal.fire("Error", "La cantidad de hectáreas excede el límite disponible.", "error");
+    return false;
+  }
   return true;
 }
 
@@ -923,4 +939,36 @@ function obtenerCantidadActualEnEdicion(idEdicion) {
   return cantidad;
 }
 
+function actualizarCantidadRestante(id_cronograma) {
+  let cantidadRestante = parseFloat($('#labelHectareasDisponibles').data("total")) || 0;
+
+  console.log("Actualizando cantidad restante:", cantidadRestante);
+
+  $.ajax({
+    url: "ajax.php?accion=getCantidadDisponible",
+    type: 'POST',
+    data: {
+      id_cronograma: id_cronograma,
+      cantidad_restante: cantidadRestante
+    },
+    success: function (response) {
+      let res = JSON.parse(response);
+      if (res.error === "NO") {
+        console.log("Cantidad restante actualizada correctamente:", res.message);
+      } else {
+        console.error("Error al actualizar cantidad restante:", res.message);
+      }
+    },
+    error: function () {
+      console.error("No se pudo conectar con el servidor para actualizar cantidad restante.");
+    }
+  });
+}
+
+$(document).on("DOMSubtreeModified", "#labelHectareasDisponibles", function () {
+  let idCronograma = $("#id_cronograma").val();
+  if (idCronograma) {
+    actualizarCantidadRestante(idCronograma);
+  }
+});
 

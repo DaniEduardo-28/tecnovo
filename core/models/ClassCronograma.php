@@ -144,10 +144,10 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       if (strtotime($fecha_2) < strtotime($fecha_1)) {
         throw new Exception("La fecha de salida no puede ser menor que la fecha de ingreso.");
-    }
-    if (empty($id_fundo) || !is_numeric($id_fundo) || $id_fundo <= 0) {
-      throw new Exception("Es obligatorio elegir un fundo válido para el servicio.");
-    }
+      }
+      if (empty($id_fundo) || !is_numeric($id_fundo) || $id_fundo <= 0) {
+        throw new Exception("Es obligatorio elegir un fundo válido para el servicio.");
+      }
       $stmt->execute([
         $nuevoCodigo,
         $id_servicio,
@@ -333,6 +333,7 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
+
   public function registrarCitaAdmin($id_mascota, $id_trabajador, $id_servicio, $fecha_1, $fecha_2, $sintomas, $id_sucursal)
   {
 
@@ -471,21 +472,21 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       if (strtotime($fecha_2) < strtotime($fecha_1)) {
         throw new Exception("La fecha de salida no puede ser menor que la fecha de ingreso.");
-    }
+      }
 
       $sqlMaquinarias = "SELECT id_maquinaria FROM tb_cronograma_maquinaria WHERE id_cronograma = ?";
-        $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
-        $stmtMaquinarias->execute([$id_cronograma]);
-        $maquinarias = $stmtMaquinarias->fetchAll(PDO::FETCH_COLUMN);
+      $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
+      $stmtMaquinarias->execute([$id_cronograma]);
+      $maquinarias = $stmtMaquinarias->fetchAll(PDO::FETCH_COLUMN);
 
-        if ($maquinarias) {
-            foreach ($maquinarias as $id_maquinaria) {
-                $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $fecha_1, $fecha_2, $id_cronograma);
-                if ($validacion['error'] === "SI") {
-                    throw new Exception($validacion['mensaje']);
-                }
-            }
+      if ($maquinarias) {
+        foreach ($maquinarias as $id_maquinaria) {
+          $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $fecha_1, $fecha_2, $id_cronograma);
+          if ($validacion['error'] === "SI") {
+            throw new Exception($validacion['mensaje']);
+          }
         }
+      }
 
       $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, fecha_salida = ? WHERE id_cronograma = ?";
       $stmt = $conexion->prepare($sql);
@@ -699,11 +700,62 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
-  public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado)
+  public function actualizarCantidadRestante($id_cronograma, $nueva_cantidad)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+
+    try {
+
+      $sqlVerificar = "SELECT cantidad_restante FROM tb_cronograma WHERE id_cronograma = :id";
+      $stmtVerificar = $conexion->prepare($sqlVerificar);
+      $stmtVerificar->bindParam(':id', $id_cronograma, PDO::PARAM_INT);
+      $stmtVerificar->execute();
+      $data = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
+
+      if (!$data) {
+        return ["error" => "SI", "message" => "Error: No se encontró el cronograma con el ID proporcionado."];
+      }
+
+      $sql = "UPDATE tb_cronograma SET cantidad_restante = :cantidad WHERE id_cronograma = :id";
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(':cantidad', $nueva_cantidad, PDO::PARAM_STR);
+      $stmt->bindParam(':id', $id_cronograma, PDO::PARAM_INT);
+      $stmt->execute();
+
+      return ["error" => "NO", "message" => "Cantidad restante actualizada correctamente."];
+    } catch (PDOException $e) {
+        return ["error" => "SI", "message" => "Error en la base de datos: " . $e->getMessage()];
+    } finally {
+        $conexionClass->Close();
+    }
+  }
+
+
+  public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado, $cantidad_restante_actualizada)
   {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     try {
+
+      $this->actualizarCantidadRestante($id_cronograma, $cantidad_restante_actualizada);
+
+
+      $sql = "SELECT cantidad_restante FROM tb_cronograma WHERE id_cronograma = :id";
+      $stmt = $conexion->prepare($sql);
+      $stmt->bindParam(':id', $id_cronograma, PDO::PARAM_INT);
+      $stmt->execute();
+      $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      if (!$data) {
+        return "Error: No se encontró el cronograma.";
+      }
+      $cantidad_restante = floatval($data["cantidad_restante"]);
+
+      if ($nuevo_estado === "TERMINADO" && $cantidad_restante > 0) {
+        return "Error: No se puede cambiar a TERMINADO porque aún hay cantidad disponible.";
+      }
+
       $sql = "UPDATE tb_cronograma SET estado_trabajo = :estado WHERE id_cronograma = :id";
       $stmt = $conexion->prepare($sql);
       $stmt->bindParam(':estado', $nuevo_estado, PDO::PARAM_STR);
@@ -737,7 +789,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       if (strtotime($fecha_salida) < strtotime($fecha_ingreso)) {
         throw new Exception("La fecha de salida no puede ser menor que la fecha de ingreso.");
-    }
+      }
       $sqlMaquinarias = "SELECT id_maquinaria FROM tb_cronograma_maquinaria WHERE id_cronograma = ?";
       $stmtMaquinarias = $conexion->prepare($sqlMaquinarias);
       $stmtMaquinarias->execute([$id_cronograma]);
@@ -754,16 +806,16 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       if ($cantidad <= 0) {
         throw new Exception("La cantidad debe ser mayor a cero.");
-    }
-    if ($monto_unitario < 0) {
+      }
+      if ($monto_unitario < 0) {
         throw new Exception("El monto unitario no puede ser negativo.");
-    }
-    if ($descuento < 0 || $adelanto < 0) {
+      }
+      if ($descuento < 0 || $adelanto < 0) {
         throw new Exception("El descuento y el adelanto no pueden ser negativos.");
-    }
-    if ($monto_total < 0 || $saldo_por_pagar < 0) {
+      }
+      if ($monto_total < 0 || $saldo_por_pagar < 0) {
         throw new Exception("El monto total y el saldo por pagar no pueden ser negativos.");
-    }
+      }
 
       $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, 
                                         fecha_salida = ?, 

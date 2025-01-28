@@ -575,6 +575,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/deleteMaquinariaCronograma.php");
         break;
+        case 'getCantidadDisponible':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/citas/getCantidadDisponible.php");
+          break;
       case 'getMaquinariaById':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getMaquinariaById.php");

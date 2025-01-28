@@ -11,8 +11,9 @@ $OBJ_CRONOGRAMA = new ClassCronograma();
 try {
     // Obtener los datos enviados
     $data = json_decode(file_get_contents("php://input"), true);
-    $id_cronograma = $data['id_cronograma'];
-    $nuevo_estado = $data['estado'];
+    $id_cronograma = isset($data['id_cronograma']) ? $data['id_cronograma'] : null;
+    $nuevo_estado = isset($data['estado']) ? $data['estado'] : null;
+    $cantidad_restante_actualizada = isset($data['cantidad_restante']) ? $data['cantidad_restante'] : null; // Nuevo parámetro
 
     // Verificar que el estado sea válido
     $estados_validos = ['EN PROCESO', 'TERMINADO', 'ANULADO', 'REGISTRADO', 'APROBADO'];
@@ -21,9 +22,9 @@ try {
     }
 
     // Actualizar el estado en la base de datos
-    $resultado = $OBJ_CRONOGRAMA->actualizarEstadoCronograma($id_cronograma, $nuevo_estado);
+    $resultado = $OBJ_CRONOGRAMA->actualizarEstadoCronograma($id_cronograma, $nuevo_estado, $cantidad_restante_actualizada);
 
-    if ($resultado != "OK") {
+    if ($resultado !== "OK") {
         throw new Exception($resultado);
     }
 

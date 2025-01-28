@@ -435,6 +435,8 @@ function getCronograma(id_cronograma) {
           $("#maquinaria_show").val(info.nombre_maquinaria);
           $("#estado_trabajo_show").val(info.estado_trabajo);
 
+          obtenerCantidadDisponible(info.id_cronograma);
+
           cargarDatosCronograma(info);
 
           if (info.estado_trabajo === "REGISTRADO") {
@@ -467,6 +469,36 @@ function getCronograma(id_cronograma) {
     },
   });
 }
+
+function obtenerCantidadDisponible(id_cronograma) {
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=getCantidadDisponible",
+    data: { id_cronograma: id_cronograma },
+    success: function (response) {
+      try {
+        const data = JSON.parse(response);
+        if (data.error === "NO") {
+          let cantidadDisponible = parseFloat(data.cantidad);
+          if (isNaN(cantidadDisponible)) {
+            cantidadDisponible = 0;
+          }
+          console.log(`Cantidad disponible del cronograma (${id_cronograma}):`, cantidadDisponible);
+
+          $("#id_cronograma").data("cantidad_disponible", cantidadDisponible);
+        } else {
+          console.error("Error al obtener la cantidad disponible:", data.message);
+        }
+      } catch (e) {
+        console.error("Error al procesar la respuesta de cantidad disponible:", e);
+      }
+    },
+    error: function () {
+      console.error("No se pudo conectar con el servidor para obtener la cantidad disponible.");
+    },
+  });
+}
+
 
 function anularCronograma() {
   var id_cronograma = $("#id_cronograma").val();
@@ -663,6 +695,16 @@ function cambiarEstadoCronograma(nuevoEstado) {
     default:
       console.error("Estado no válido");
       return;
+  }
+
+  if (nuevoEstado === "TERMINADO") {
+    let cantidadDisponible = parseFloat($("#id_cronograma").data("cantidad_disponible"));
+    console.log(`Verificando cantidad disponible antes de terminar: ${cantidadDisponible}`);
+
+    if (cantidadDisponible > 0) {
+      Swal.fire("Error", "No se puede marcar como TERMINADO si aún hay cantidad disponible.", "error");
+      return;
+    }
   }
 
   Swal.fire({
