@@ -82,8 +82,12 @@ try {
     $pdf->Ln(5);
     $pdf->SetFont('Arial', 'B', 11);
     $pdf->Cell(40, 8, utf8_decode("Cliente:  "), 0, 0, 'L');
+    $pdf->SetFont('Arial', '', 9.5);
+    $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_cliente']), 0, 1, 'L');
+    $pdf->SetFont('Arial', 'B', 11);
+    $pdf->Cell(40, 8, utf8_decode("Doc. Identidad: "), 0, 0, 'L');
     $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(100, 8, utf8_decode($datos_cronograma['nombre_cliente'] . '  -  ' . $datos_cronograma['documento_identidad']), 0, 1, 'L');
+    $pdf->Cell(100, 8, utf8_decode($datos_cronograma['documento_identidad']), 0, 1, 'L');
     $pdf->SetFont('Arial', 'B', 11);
     $pdf->Cell(40, 8, utf8_decode("Fundo:  "), 0, 0, 'L');
     $pdf->SetFont('Arial', '', 10);
