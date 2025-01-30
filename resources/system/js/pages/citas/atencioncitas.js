@@ -679,12 +679,18 @@ function cambiarEstadoCronograma(nuevoEstado) {
   var id_cronograma = $("#id_cronograma").val();
   var mensajeConfirmacion = "";
 
+  if (nuevoEstado === "EN PROCESO"){
+    var estadoActual = $("#estado_trabajo").val();
+
+    if (estadoActual === "TERMINADO"){
+      mensajeConfirmacion = "¿Está seguro de revertir el estado de TERMINADO a EN PROCESO?";
+    } else {
+      mensajeConfirmacion = "¿Iniciar el trabajo de este cronograma?";
+    }
+  } else {
   switch (nuevoEstado) {
     case "ANULADO":
       mensajeConfirmacion = "¿Está seguro de anular este cronograma?";
-      break;
-    case "EN PROCESO":
-      mensajeConfirmacion = "¿Iniciar el trabajo de este cronograma?";
       break;
     case "TERMINADO":
       mensajeConfirmacion = "¿Finalizar el trabajo de este cronograma?";
@@ -696,16 +702,7 @@ function cambiarEstadoCronograma(nuevoEstado) {
       console.error("Estado no válido");
       return;
   }
-
-  if (nuevoEstado === "TERMINADO") {
-    let cantidadDisponible = parseFloat($("#id_cronograma").data("cantidad_disponible"));
-    console.log(`Verificando cantidad disponible antes de terminar: ${cantidadDisponible}`);
-
-    if (cantidadDisponible > 0) {
-      Swal.fire("Error", "No se puede marcar como TERMINADO si aún hay cantidad disponible.", "error");
-      return;
-    }
-  }
+}
 
   Swal.fire({
     title: mensajeConfirmacion,
@@ -782,6 +779,18 @@ function mostrarOpcionesAprobacion(info) {
     $("#btnFinalizarTrabajo").click(function () {
       cambiarEstadoCronograma("TERMINADO");
     });
+    
+  }
+
+  if (info.estado_trabajo === "TERMINADO") {
+    $("#accionesAprobacion").append(`
+      <button type="button" class="btn btn-primary" id="btnRevertirProceso"><i class="fa fa-refresh"></i> Revertir Proceso</button>
+    `);
+
+    $("#btnRevertirProceso").click(function () {
+      cambiarEstadoCronograma("EN PROCESO");
+    });
+    
   }
 
 }
