@@ -133,11 +133,24 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $nuevoCodigo = $ultimoCodigo ? $ultimoCodigo + 1 : 1;
 
+      $sql = "SELECT (c.cantidad - COALESCE(SUM(o.horas_trabajadas), 0)) AS cantidad_restante
+        FROM tb_cronograma c
+        LEFT JOIN tb_cronograma_operadores o ON c.id_cronograma = o.id_cronograma
+        WHERE c.id_cronograma = ?
+        GROUP BY c.id_cronograma, c.cantidad";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_servicio]);
+      $cantidad_restante = $stmt->fetchColumn();
+
+      if ($cantidad_restante === false) {
+        $cantidad_restante = $cantidad;
+      }
+
       $sql = "INSERT INTO tb_cronograma (
             codigo, id_servicio, fecha_ingreso, fecha_salida, fecha_pago, lugar, cantidad, 
             monto_unitario, descuento, adelanto, monto_total, saldo_por_pagar, 
-            estado_pago, estado_trabajo, id_fundo, id_cliente
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            estado_pago, estado_trabajo, id_fundo, id_cliente, cantidad_restante 
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = $conexion->prepare($sql);
       $fecha_pago_calculada = date('Y-m-d H:i:s', strtotime($fecha_2 . ' +10 days'));
       $fecha_pago_final = empty($fecha_3) ? $fecha_pago_calculada : $fecha_3;
@@ -164,7 +177,8 @@ AND c.estado_trabajo != 'ANULADO' ";
         $estado_pago,
         $estado_trabajo,
         $id_fundo,
-        $id_cliente
+        $id_cliente,
+        $cantidad_restante
       ]);
       if ($stmt->rowCount() == 0) {
         throw new Exception("Error al realizar el registro en la base de datos.");
@@ -700,45 +714,14 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
-  public function actualizarCantidadRestante($id_cronograma, $nueva_cantidad)
-  {
-    $conexionClass = new Conexion();
-    $conexion = $conexionClass->Open();
 
-    try {
-
-      $sqlVerificar = "SELECT cantidad_restante FROM tb_cronograma WHERE id_cronograma = :id";
-      $stmtVerificar = $conexion->prepare($sqlVerificar);
-      $stmtVerificar->bindParam(':id', $id_cronograma, PDO::PARAM_INT);
-      $stmtVerificar->execute();
-      $data = $stmtVerificar->fetch(PDO::FETCH_ASSOC);
-
-      if (!$data) {
-        return ["error" => "SI", "message" => "Error: No se encontró el cronograma con el ID proporcionado."];
-      }
-
-      $sql = "UPDATE tb_cronograma SET cantidad_restante = :cantidad WHERE id_cronograma = :id";
-      $stmt = $conexion->prepare($sql);
-      $stmt->bindParam(':cantidad', $nueva_cantidad, PDO::PARAM_STR);
-      $stmt->bindParam(':id', $id_cronograma, PDO::PARAM_INT);
-      $stmt->execute();
-
-      return ["error" => "NO", "message" => "Cantidad restante actualizada correctamente."];
-    } catch (PDOException $e) {
-        return ["error" => "SI", "message" => "Error en la base de datos: " . $e->getMessage()];
-    } finally {
-        $conexionClass->Close();
-    }
-  }
-
-
-  public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado, $cantidad_restante_actualizada)
+  public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado)
   {
     $conexionClass = new Conexion();
     $conexion = $conexionClass->Open();
     try {
 
-      $this->actualizarCantidadRestante($id_cronograma, $cantidad_restante_actualizada);
+      //$this->actualizarCantidadRestante($id_cronograma);
 
 
       $sql = "SELECT cantidad_restante FROM tb_cronograma WHERE id_cronograma = :id";
@@ -817,6 +800,19 @@ AND c.estado_trabajo != 'ANULADO' ";
         throw new Exception("El monto total y el saldo por pagar no pueden ser negativos.");
       }
 
+      $sql = "SELECT (c.cantidad - COALESCE(SUM(o.horas_trabajadas), 0)) AS cantidad_restante
+                FROM tb_cronograma c
+                LEFT JOIN tb_cronograma_operadores o ON c.id_cronograma = o.id_cronograma
+                WHERE c.id_cronograma = ?
+                GROUP BY c.id_cronograma, c.cantidad";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $cantidad_restante = $stmt->fetchColumn();
+
+      if ($cantidad_restante === false) {
+        $cantidad_restante = $cantidad;
+      }
+
       $sql = "UPDATE tb_cronograma SET fecha_ingreso = ?, 
                                         fecha_salida = ?, 
                                         fecha_pago = ?, 
@@ -829,6 +825,9 @@ AND c.estado_trabajo != 'ANULADO' ";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([$datetime_ingreso, $datetime_salida, $datetime_pago, $cantidad, $monto_unitario, $descuento, $adelanto, $monto_total, $saldo_por_pagar, $id_cronograma]);
 
+      $sqlUpdateCantidadRestante = "UPDATE tb_cronograma SET cantidad_restante = (cantidad - COALESCE((SELECT SUM(horas_trabajadas) FROM tb_cronograma_operadores WHERE id_cronograma = ?), 0)) WHERE id_cronograma = ?";
+      $stmtUpdate = $conexion->prepare($sqlUpdateCantidadRestante);
+      $stmtUpdate->execute([$id_cronograma, $id_cronograma]);
       $VD = "OK";
       $conexion->commit();
     } catch (PDOException $e) {
@@ -889,6 +888,23 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
       $pago_petroleo = $consumo_petroleo * $precio_petroleo;
+
+      $sqlCantidadRestante = "SELECT (c.cantidad - COALESCE(SUM(o.horas_trabajadas), 0)) AS cantidad_restante
+                                FROM tb_cronograma c
+                                LEFT JOIN tb_cronograma_operadores o ON c.id_cronograma = o.id_cronograma
+                                WHERE c.id_cronograma = ?
+                                GROUP BY c.id_cronograma, c.cantidad";
+      $stmtCantidadRestante = $conexion->prepare($sqlCantidadRestante);
+      $stmtCantidadRestante->execute([$id_cronograma]);
+      $cantidad_restante = $stmtCantidadRestante->fetchColumn();
+
+      if ($cantidad_restante === false) {
+        $cantidad_restante = 0;
+      }
+
+      $sqlUpdateCantidad = "UPDATE tb_cronograma SET cantidad_restante = ? WHERE id_cronograma = ?";
+      $stmtUpdateCantidad = $conexion->prepare($sqlUpdateCantidad);
+      $stmtUpdateCantidad->execute([$cantidad_restante, $id_cronograma]);
 
       $sql2 = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria, petroleo_entrada, petroleo_salida, consumo_petroleo, precio_petroleo, pago_petroleo) 
                  VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -1006,6 +1022,11 @@ AND c.estado_trabajo != 'ANULADO' ";
     try {
       $conexion->beginTransaction();
 
+      $sqlGetCronograma = "SELECT id_cronograma FROM tb_cronograma_operadores WHERE id_cronograma_operador = ?";
+      $stmtGetCronograma = $conexion->prepare($sqlGetCronograma);
+      $stmtGetCronograma->execute([$id_cronograma_operador]);
+      $id_cronograma = $stmtGetCronograma->fetchColumn();
+
       $sqlOperador = "UPDATE tb_cronograma_operadores 
                         SET id_trabajador = ?, horas_trabajadas = ?, pago_por_hora = ?, total_pago = ? 
                         WHERE id_cronograma_operador = ?";
@@ -1018,6 +1039,23 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $consumo_petroleo = $petroleo_entrada - $petroleo_salida;
       $pago_petroleo = $consumo_petroleo * $precio_petroleo;
+
+      $sqlCantidadRestante = "SELECT (c.cantidad - COALESCE(SUM(o.horas_trabajadas), 0)) AS cantidad_restante
+                                FROM tb_cronograma c
+                                LEFT JOIN tb_cronograma_operadores o ON c.id_cronograma = o.id_cronograma
+                                WHERE c.id_cronograma = ?
+                                GROUP BY c.id_cronograma, c.cantidad";
+      $stmtCantidadRestante = $conexion->prepare($sqlCantidadRestante);
+      $stmtCantidadRestante->execute([$id_cronograma]);
+      $cantidad_restante = $stmtCantidadRestante->fetchColumn();
+
+      if ($cantidad_restante === false) {
+        $cantidad_restante = 0;
+      }
+
+      $sqlUpdateCantidad = "UPDATE tb_cronograma SET cantidad_restante = ? WHERE id_cronograma = ?";
+      $stmtUpdateCantidad = $conexion->prepare($sqlUpdateCantidad);
+      $stmtUpdateCantidad->execute([$cantidad_restante, $id_cronograma]);
 
       $sqlMaquinaria = "UPDATE tb_cronograma_maquinaria 
                           SET id_maquinaria = ?, petroleo_entrada = ?, petroleo_salida = ?, 
