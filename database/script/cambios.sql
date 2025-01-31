@@ -12,4 +12,8 @@ ALTER TABLE `tb_maquinaria` ADD CONSTRAINT `fk_maquinaria_tipo_servicio` FOREIGN
  -- añadir el campo de fecha de pago en tb_cronograma
  ALTER TABLE `tb_cronograma` ADD `fecha_pago` DATETIME(2) NULL AFTER `fecha_salida`;
 
+-- campo de cantidad_restante para llamarlo en funcion de estoao
  ALTER TABLE tb_cronograma ADD COLUMN cantidad_restante DECIMAL(10,2) NULL DEFAULT NULL;
+
+-- cambiarlo para llamar a la tb_forma_pago
+ ALTER TABLE `tb_pagos_clientes` CHANGE `metodo_pago` `metodo_pago` INT NULL DEFAULT NULL;

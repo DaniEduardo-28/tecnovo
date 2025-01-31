@@ -65,6 +65,17 @@ $(document).ready(function () {
     limpiarCamposNuevoOperadorMaquinaria();
   });
 
+  $("#btnNuevoPago").click(function () {
+    $("#nuevoPagoContainer").show();
+    $("#btnNuevoPago").hide();
+  });
+
+  $("#nuevoPagoContainer .btn-danger").click(function () {
+    $("#nuevoPagoContainer").hide();
+    $("#btnNuevoPago").show();
+    limpiarCamposNuevoPago();
+  });
+
   $(".btnCancelarOperadorMaquinaria").click(function () {
     const idCronograma = $("#id_cronograma").val();
 
@@ -102,6 +113,11 @@ $(document).ready(function () {
     }
 
     saveOperadorMaquinariaC(); // Proceder con el guardado
+  });
+
+  $("#frmPago").submit(function (e) {
+    e.preventDefault();
+    savePago();
   });
 
   $("#horas_trabajadas, #pago_por_hora").on("input", function () {
@@ -713,6 +729,9 @@ function saveOperadorMaquinariaC() {
           if (data.error === "NO") {
             runAlert("Éxito", data.message, "success");
             console.log(data);
+
+            $("#nuevoOperadorMaquinariaContainer").hide();
+            $("#btnNuevoOperadorMaquinaria").show();
             limpiarCamposNuevoOperadorMaquinaria();
             cargarOperadoresMaquinariasExistentes($("#id_cronograma").val());
           } else {
@@ -972,3 +991,193 @@ $(document).on("DOMSubtreeModified", "#labelHectareasDisponibles", function () {
   }
 });
 
+
+function cancelarFormPago() {}
+
+function limpiarCamposNuevoPago() {
+  const today = new Date().toISOString().split("T")[0];
+  $("#fecha_pago").val(today);
+  $("#metodo_pago").prop("selectedIndex", 0);
+  $("#monto").val("");
+}
+
+function savePago() {
+  console.log($("#total_pendiente").val());
+  console.log($("#monto").val());
+  if (parseFloat($("#total_pendiente").val()) < parseFloat($("#monto").val())) {
+    runAlert("Oh No...!!!", "El monto a pagar no puede ser mayor al pendiente.", "warning");
+    return;
+  }
+
+  Swal.fire({
+    title: "¿Seguro de registrar el pago?",
+    text: "No podrás revertir esta operación.",
+    type: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#22c63b",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Realizar ahora!",
+  }).then(function (result) {
+    if (result.value) {
+      const form = $("#frmPago");
+      const formData = new FormData(form[0]);
+      $.ajax({
+        type: "POST",
+        url: "ajax.php?accion=goPagoCliente",
+        datatype: "json",
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (data) {
+          try {
+            const response = JSON.parse(data);
+            if (response["error"] == "SI") {
+              runAlert("Oh No...!!!", response["message"], "warning");
+            } else {
+              $("#nuevoPagoContainer").hide();
+              $("#btnNuevoPago").show();
+              limpiarCamposNuevoPago();
+              cargarPagosExistentes($("#id_cronograma_pago").val());
+              runAlert("Bien hecho...!!!", response["message"], "success");
+              showLista();
+            }
+          } catch (e) {
+            runAlert("Oh No...!!!", e, "error");
+          }
+        },
+        error: function (data) {
+          runAlert("Oh No...!!!", data, "error");
+        },
+        beforeSend: function (xhr) {
+          showHideLoader("block");
+        },
+        complete: function (jqXHR, textStatus) {
+          showHideLoader("none");
+        },
+      });
+    }
+  });
+}
+
+
+function showModalPagos(id_cronograma_pago, monto_total, signo) {
+  if (!monto_total || isNaN(monto_total)) {
+    console.warn("monto_total es inválido, buscando en el input oculto...");
+    monto_total = parseFloat($("#total_ingreso").val()) || 0;
+}
+
+  $("#id_cronograma_pago").val(id_cronograma_pago);
+  $("#total_ingreso").val(monto_total);
+  $("#moneda_ingreso").val(signo);
+  $("#lblTotalPagar").html(`<strong>Total a Pagar:</strong> ${signo} ${monto_total.toFixed(2)}`);
+  cargarPagosExistentes(id_cronograma_pago);
+  $("#modalPagos").modal("show");
+}
+
+
+function deleteRegistro(id_cronograma_pago) {
+  try {
+    var parametros = {
+      id_cronograma_pago: id_cronograma_pago,
+    };
+
+    Swal.fire({
+      title: "¿Seguro de anular el pago seleccionado?",
+      text: "No podrás revertir esta operación.",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#22c63b",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Anular ahora!",
+    }).then(function (result) {
+      if (result.value) {
+        $.ajax({
+          type: "POST",
+          url: "ajax.php?accion=deletePagoCliente",
+          datatype: "json",
+          data: parametros,
+          success: function (data) {
+            try {
+              var response = JSON.parse(data);
+              if (response["error"] == "SI") {
+                runAlert("Oh No...!!!", response["message"], "warning");
+              } else {
+                cargarPagosExistentes($("#id_cronograma_pago").val());
+                runAlert("Bien hecho...!!!", response["message"], "success");
+              }
+            } catch (e) {
+              console.log(e);
+            }
+          },
+          error: function (data) {
+            runAlert("Oh No...!!!", data, "error");
+          },
+          beforeSend: function (xhr) {
+            showHideLoader("block");
+          },
+          complete: function (jqXHR, textStatus) {
+            showHideLoader("none");
+          },
+        });
+      }
+    });
+  } catch (e) {
+    runAlert("Oh No...!!!", "Error en TryCatch: " + e, "error");
+  }
+}
+
+function cargarPagosExistentes(id_cronograma_pago) {
+  $.ajax({
+    type: "POST",
+    url: "ajax.php?accion=showPagoCliente",
+    data: { id_cronograma_pago: id_cronograma_pago },
+    success: function (response) {
+      try {
+        var data1 = JSON.parse(response);
+        console.log(data1);
+        var o = data1["data"];
+        llenarTablaPagos(o);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    error: function () {
+      runAlert("Error", "No se pudo conectar con el servidor para cargar los pagos.", "error");
+    },
+  });
+}
+
+function llenarTablaPagos(pagos) {
+  const tablaPagos = $("#tablaPagos tbody");
+  tablaPagos.empty();
+  let total_pagado = 0;
+  let monto_total = parseFloat($("#total_ingreso").val());
+  let signo = $("#moneda_ingreso").val();
+  if (pagos && pagos.length > 0) {
+    pagos.forEach((pago) => {
+      const fila = `
+        <tr>
+          <td>${pago.num}</td>
+          <td>${pago.fecha_pago}</td>
+          <td>${pago.name_forma_pago}</td>
+          <td>${parseFloat(pago.monto).toFixed(2)}</td>
+          <td>
+            ${pago.flag_eliminar}
+          </td>
+        </tr>
+      `;
+      total_pagado += parseFloat(pago.monto);
+      tablaPagos.append(fila);
+    });
+  }
+  let pendiente = monto_total - total_pagado;
+  $("#lblTotalPagado").html(`<strong>Total Pagado:</strong> ${signo} ${total_pagado.toFixed(2)}`);
+  $("#lblPendientePago").html(`<strong>Pendiente de Pago:</strong> ${signo} ${pendiente.toFixed(2)}`);
+  $("#total_pendiente").val(pendiente);
+  if (pendiente <= 0) {
+    $("#nuevoPagoContainer").hide();
+    $("#btnNuevoPago").hide();
+  } else {
+    $("#btnNuevoPago").show();
+  }
+}

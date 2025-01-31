@@ -270,8 +270,6 @@ function crearCalendario() {
           <br/>${event.description}
           <br/>Servicio: ${event.nombre_servicio}
           <br/>Cliente: ${event.nombre_cliente}
-          <br/>Operador: ${event.nombre_operador}
-          <br/>Maquinaria: ${event.nombre_maquinaria}
           <br/>Fundo: ${event.nombre_fundo}
       `;
       element.find(".fc-title").append(description);

@@ -575,10 +575,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/deleteMaquinariaCronograma.php");
         break;
-        case 'getCantidadDisponible':
-          require("core/models/ClassAccesoOpcion.php");
-          require("core/ajax/citas/getCantidadDisponible.php");
-          break;
+      case 'getCantidadDisponible':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/getCantidadDisponible.php");
+        break;
       case 'getMaquinariaById':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/getMaquinariaById.php");
@@ -722,6 +722,18 @@ try {
       case 'goPago':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/goPago.php");
+        break;
+      case 'deletePagoCliente':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/deletePagoCliente.php");
+        break;
+      case 'showPagoCliente':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/showPagoCliente.php");
+        break;
+      case 'goPagoCliente':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/citas/goPagoCliente.php");
         break;
       case 'buscar-dni':
         require("core/ajax/utils/buscarDNI.php");

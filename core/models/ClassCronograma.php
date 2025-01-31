@@ -129,8 +129,6 @@ AND c.estado_trabajo != 'ANULADO' ";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([$id_tipo_servicio]);
       $ultimoCodigo = $stmt->fetchColumn();
-
-
       $nuevoCodigo = $ultimoCodigo ? $ultimoCodigo + 1 : 1;
 
       $sql = "SELECT (c.cantidad - COALESCE(SUM(o.horas_trabajadas), 0)) AS cantidad_restante
@@ -209,6 +207,17 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       if ($stmt->rowCount() == 0) {
         throw new Exception("Error al registrar el operador en la base de datos.");
+      }
+
+      if ($adelanto >= 0) {
+        $sql = "INSERT INTO tb_pagos_clientes (id_cronograma, fecha_pago, metodo_pago, monto) 
+                VALUES (?, NOW(), 1, ?)";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_cronograma, $adelanto]);
+
+        if ($stmt->rowCount() == 0) {
+          throw new Exception("Error al registrar el adelanto en los pagos del cliente.");
+        }
       }
 
       $VD = "OK";
@@ -606,6 +615,7 @@ AND c.estado_trabajo != 'ANULADO' ";
                 GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
                 GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
                 c.fecha_ingreso,
+                mo.signo,
                 c.fecha_salida,
                 c.estado_trabajo,
                 c.monto_total AS total,
@@ -632,6 +642,7 @@ AND c.estado_trabajo != 'ANULADO' ";
               FROM tb_cronograma c 
               LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
               LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+              LEFT JOIN tb_moneda mo ON mo.id_moneda = s.id_moneda 
               LEFT JOIN tb_unidad_medida um ON um.id_unidad_medida = s.id_unidad_medida 
               LEFT JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio 
               LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
@@ -682,7 +693,8 @@ AND c.estado_trabajo != 'ANULADO' ";
                   c.fecha_salida,
                   c.estado_trabajo,
                   c.monto_total,
-                  c.codigo
+                  c.codigo,
+                  mo.signo 
       
       ORDER BY c.fecha_ingreso DESC";
 
@@ -828,6 +840,26 @@ AND c.estado_trabajo != 'ANULADO' ";
       $sqlUpdateCantidadRestante = "UPDATE tb_cronograma SET cantidad_restante = (cantidad - COALESCE((SELECT SUM(horas_trabajadas) FROM tb_cronograma_operadores WHERE id_cronograma = ?), 0)) WHERE id_cronograma = ?";
       $stmtUpdate = $conexion->prepare($sqlUpdateCantidadRestante);
       $stmtUpdate->execute([$id_cronograma, $id_cronograma]);
+
+      if ($adelanto > 0) {
+        $sqlCheck = "SELECT id_pago_cliente FROM tb_pagos_clientes 
+                     WHERE id_cronograma = ? AND metodo_pago = 1 
+                     ORDER BY fecha_pago ASC LIMIT 1";
+        $stmtCheck = $conexion->prepare($sqlCheck);
+        $stmtCheck->execute([$id_cronograma]);
+        $id_pago_cliente = $stmtCheck->fetchColumn();
+
+        if ($id_pago_cliente) {
+          $sqlUpdateAdelanto = "UPDATE tb_pagos_clientes SET monto = ?, fecha_pago = NOW() WHERE id_pago_cliente = ?";
+          $stmtUpdateAdelanto = $conexion->prepare($sqlUpdateAdelanto);
+          $stmtUpdateAdelanto->execute([$adelanto, $id_pago_cliente]);
+        } else {
+          $sqlInsertAdelanto = "INSERT INTO tb_pagos_clientes (id_cronograma, fecha_pago, metodo_pago, monto) 
+                                  VALUES (?, NOW(), 1, ?)";
+          $stmtInsertAdelanto = $conexion->prepare($sqlInsertAdelanto);
+          $stmtInsertAdelanto->execute([$id_cronograma, $adelanto]);
+        }
+      }
       $VD = "OK";
       $conexion->commit();
     } catch (PDOException $e) {
@@ -1355,6 +1387,168 @@ WHERE m.id_cronograma = :id_cronograma
     } finally {
       $conexionClass->Close();
     }
+  }
+
+
+  public function getCountPagos($id_cronograma)
+  {
+
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+
+      $parametros = null;
+      $sql = "SELECT COUNT(*) as cantidad 
+			FROM tb_pagos_clientes WHERE id_cronograma = ?";
+
+      $parametros[] = $id_cronograma;
+
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute($parametros);
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      if (count($result) == 0) {
+        throw new Exception("No se encontraron datos");
+      }
+
+      $VD1['error'] = "NO";
+      $VD1['message'] = "Success";
+      $VD1['data'] = $result;
+      $VD = $VD1;
+    } catch (PDOException $e) {
+
+      $VD1['error'] = "SI";
+      $VD1['message'] = $e->getMessage();
+      $VD = $VD1;
+    } catch (Exception $exception) {
+
+      $VD1['error'] = "SI";
+      $VD1['message'] = $exception->getMessage();
+      $VD = $VD1;
+    } finally {
+      $conexionClass->Close();
+    }
+
+    return $VD;
+  }
+
+  public function getPagos($id_cronograma)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+
+      $sql = "SELECT p.id_cronograma, c.monto_total, p.id_pago_cliente, p.fecha_pago, f.name_forma_pago, p.monto 
+                FROM tb_cronograma c
+                LEFT JOIN tb_pagos_clientes p ON c.id_cronograma = p.id_cronograma
+                LEFT JOIN tb_forma_pago f ON p.metodo_pago = f.id_forma_pago
+                WHERE c.id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      error_log("Datos obtenidos: " . print_r($result, true));
+
+      if (empty($result)) {
+        $stmt = $conexion->prepare("SELECT monto_total FROM tb_cronograma WHERE id_cronograma = ?");
+        $stmt->execute([$id_cronograma]);
+        $monto_total = $stmt->fetchColumn();
+
+        $result = [
+          [
+            "id_cronograma" => $id_cronograma,
+            "monto_total" => $monto_total,
+            "id_pago_cliente" => null,
+            "fecha_pago" => null,
+            "name_forma_pago" => null,
+            "monto" => 0
+          ]
+        ];
+      }
+
+      $VD1['error'] = "NO";
+      $VD1['message'] = "Success";
+      $VD1['data'] = $result;
+      $VD = $VD1;
+    } catch (PDOException $e) {
+      $VD1['error'] = "SI";
+      $VD1['message'] = $e->getMessage();
+      $VD = $VD1;
+    } catch (Exception $exception) {
+      $VD1['error'] = "SI";
+      $VD1['message'] = $exception->getMessage();
+      $VD = $VD1;
+    } finally {
+      $conexionClass->Close();
+    }
+
+    return $VD;
+  }
+
+
+  public function addPagos($id_cronograma, $metodo_pago, $fecha_pago, $monto)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+
+    try {
+
+      $conexion->beginTransaction();
+
+      $sql = "INSERT INTO tb_pagos_clientes (id_cronograma, metodo_pago, fecha_pago, monto) VALUES (?, ?, ?, ?)";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma, $metodo_pago, $fecha_pago, $monto]);
+
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Ocurrió un error al registrar pago.");
+      }
+
+      $VD = "OK";
+      $conexion->commit();
+    } catch (PDOException $e) {
+      $conexion->rollBack();
+      $VD = $e->getMessage();
+    } catch (Exception $exception) {
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
+    } finally {
+      $conexionClass->Close();
+    }
+    return $VD;
+  }
+
+  public function deletepago($id_pago_cliente)
+  {
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $VD = "";
+    try {
+
+      $conexion->beginTransaction();
+
+      $stmt = $conexion->prepare("DELETE FROM tb_pagos_clientes WHERE id_pago_cliente = ?");
+      $stmt->execute([$id_pago_cliente]);
+      if ($stmt->rowCount() == 0) {
+        throw new Exception("Ocurrió un error al eliminar el registro.");
+      }
+
+      $VD = "OK";
+      $conexion->commit();
+    } catch (PDOException $e) {
+      $conexion->rollBack();
+      $VD = $e->getMessage();
+    } catch (Exception $exception) {
+      $conexion->rollBack();
+      $VD = $exception->getMessage();
+    } finally {
+      $conexionClass->Close();
+    }
+    return $VD;
   }
 }
 
