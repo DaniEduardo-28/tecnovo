@@ -841,7 +841,7 @@ AND c.estado_trabajo != 'ANULADO' ";
       $stmtUpdate = $conexion->prepare($sqlUpdateCantidadRestante);
       $stmtUpdate->execute([$id_cronograma, $id_cronograma]);
 
-      if ($adelanto > 0) {
+      if ($adelanto >= 0) {
         $sqlCheck = "SELECT id_pago_cliente FROM tb_pagos_clientes 
                      WHERE id_cronograma = ? AND metodo_pago = 1 
                      ORDER BY fecha_pago ASC LIMIT 1";

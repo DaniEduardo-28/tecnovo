@@ -145,6 +145,11 @@ if (!isset($_SESSION['id_trabajador'])) {
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Datos del Cronograma</h5>
+            <div class="ml-auto">
+              <button type="button" class="btn btn-danger btn-sm" id="btnExportarPDF">
+                <i class="fa fa-file-pdf-o"></i> Exportar PDF
+              </button>
+            </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -209,7 +214,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <label for="hora_salida_edit">Hora Salida</label>
                   <input type="time" id="hora_salida_edit" name="hora_salida" class="form-control">
                 </div>
-                
+
                 <div class="form-group col-sm-6">
                   <label for="fecha_pago_edit">Fecha de Pago</label>
                   <input type="date" id="fecha_pago_edit" name="fecha_pago" class="form-control">
@@ -225,7 +230,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                   <input type="text" id="estado_trabajo_show" class="form-control" readonly>
                 </div>
 
-                
+
                 <div class="form-group col-sm-6">
                   <label for="cantidad_edit" id="label_total_vista">Total de </label>
                   <input type="number" id="cantidad_edit" name="cantidad" class="form-control">
@@ -262,7 +267,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
-            <button type="button" id="btnGuardarCambios" class="btn btn-info"><i class="fa fa-calendar"></i>  Actualizar</button>
+            <button type="button" id="btnGuardarCambios" class="btn btn-info"><i class="fa fa-calendar"></i> Actualizar</button>
             <div id="accionesAprobacion"></div>
           </div>
         </div>

@@ -380,6 +380,11 @@ if (!isset($_SESSION['id_trabajador'])) {
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Datos del Cronograma</h5>
+            <div class="ml-auto">
+              <button type="button" class="btn btn-danger btn-sm" id="btnExportarPDF">
+                <i class="fa fa-file-pdf-o"></i> Exportar PDF
+              </button>
+            </div>
             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
               <span aria-hidden="true">&times;</span>
             </button>

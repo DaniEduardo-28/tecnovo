@@ -176,6 +176,31 @@ $("#fecha_salida").on("change", function () {
   }
 });
 
+$(document).ready(function () {
+  $("#btnExportarPDF").on("click", function () {
+      var id_cronograma = $("#id_cronograma").val();
+      if (id_cronograma) {
+          generarResumenCompras(id_cronograma);
+      } else {
+          alert("No se encontró el ID del cronograma.");
+      }
+  });
+});
+
+function generarResumenCompras(id_cronograma) {
+  try {
+    if (!id_cronograma) {
+      console.error("El ID del cronograma es requerido para generar el resumen de compras.");
+      return;
+    }
+
+    const link = "?view=resumencomprasserviciopdf&id_cronograma=" + id_cronograma;
+    window.open(link, "_blank");
+  } catch (e) {
+    console.error("Error al generar el resumen de compras en PDF:", e);
+  }
+}
+
 $("#monto_unitario_edit, #cantidad_edit, #descuento_edit, #adelanto_edit").on("input", function () {
   recalcularMontos();
 });
