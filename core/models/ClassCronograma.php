@@ -1219,8 +1219,9 @@ AND c.estado_trabajo != 'ANULADO' ";
           CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo, 
           CONCAT(d.name_documento, ': ', p.num_documento) AS documento_identidad,
           s.name_servicio AS nombre_servicio,
-          f.nombre AS nombre_fundo,
-          CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente
+          f.nombre AS nombre_fundo, 
+          CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente, 
+          (c.saldo_por_pagar - COALESCE(SUM(pc.monto), 0) + c.adelanto) AS saldo_por_pagar
       FROM tb_cronograma c
       INNER JOIN tb_servicio s ON c.id_servicio = s.id_servicio
       INNER JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio 
@@ -1228,7 +1229,14 @@ AND c.estado_trabajo != 'ANULADO' ";
       INNER JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente 
       INNER JOIN tb_persona p ON cl.id_persona = p.id_persona 
       INNER JOIN tb_documento_identidad d ON d.id_documento = p.id_documento 
-      WHERE c.id_cronograma = :id_cronograma
+      LEFT JOIN tb_pagos_clientes pc ON c.id_cronograma = pc.id_cronograma 
+      WHERE c.id_cronograma = :id_cronograma 
+      GROUP BY 
+      c.id_cronograma, c.codigo, c.fecha_ingreso, c.fecha_salida, 
+    c.fecha_pago, c.cantidad, c.monto_unitario, c.descuento, 
+    c.adelanto, c.monto_total, c.estado_pago, c.estado_trabajo, 
+    c.saldo_por_pagar, ts.serie, d.name_documento, p.num_documento, 
+    s.name_servicio, f.nombre, p.nombres, p.apellidos 
   ";
       $stmtCronograma = $conexion->prepare($sqlCronograma);
       $stmtCronograma->bindParam(":id_cronograma", $id_cronograma, PDO::PARAM_INT);
@@ -1508,6 +1516,21 @@ WHERE m.id_cronograma = :id_cronograma
         throw new Exception("Ocurrió un error al registrar pago.");
       }
 
+      $sql = "SELECT SUM(monto) FROM tb_pagos_clientes WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $total_pagado = $stmt->fetchColumn();
+
+      $sql = "SELECT monto_total FROM tb_cronograma WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $monto_total = $stmt->fetchColumn();
+
+      $nuevo_estado = ($total_pagado >= $monto_total) ? "CANCELADO" : "PENDIENTE";
+      $sql = "UPDATE tb_cronograma SET estado_pago = ? WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$nuevo_estado, $id_cronograma]);
+
       $VD = "OK";
       $conexion->commit();
     } catch (PDOException $e) {
@@ -1531,11 +1554,32 @@ WHERE m.id_cronograma = :id_cronograma
 
       $conexion->beginTransaction();
 
+      $sql = "SELECT id_cronograma FROM tb_pagos_clientes WHERE id_pago_cliente = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_pago_cliente]);
+      $id_cronograma = $stmt->fetchColumn();
+
       $stmt = $conexion->prepare("DELETE FROM tb_pagos_clientes WHERE id_pago_cliente = ?");
       $stmt->execute([$id_pago_cliente]);
       if ($stmt->rowCount() == 0) {
         throw new Exception("Ocurrió un error al eliminar el registro.");
       }
+
+      $sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_clientes WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $total_pagado = $stmt->fetchColumn();
+
+      $sql = "SELECT monto_total FROM tb_cronograma WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$id_cronograma]);
+      $monto_total = $stmt->fetchColumn();
+
+      $nuevo_estado_pago = ($total_pagado >= $monto_total) ? "CANCELADO" : "PENDIENTE";
+
+      $sql = "UPDATE tb_cronograma SET estado_pago = ? WHERE id_cronograma = ?";
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute([$nuevo_estado_pago, $id_cronograma]);
 
       $VD = "OK";
       $conexion->commit();
