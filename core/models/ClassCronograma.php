@@ -20,11 +20,13 @@ class ClassCronograma extends Conexion
     c.fecha_ingreso AS start,
     c.fecha_salida AS end,
     c.fecha_pago,
-    CONCAT(pec.nombres, ' ', pec.apellidos, ' (', pec.apodo, ')') AS nombre_cliente,
+    CONCAT(pec.apodo, '-', 
+            SUBSTRING_INDEX(pec.nombres, ' ', 1), ' ', 
+            SUBSTRING_INDEX(pec.apellidos, ' ', 1)) AS nombre_cliente,
     f.nombre AS nombre_fundo,
     ser.name_servicio AS nombre_servicio,
     GROUP_CONCAT(DISTINCT mq.descripcion SEPARATOR ', ') AS nombre_maquinaria,
-    GROUP_CONCAT(DISTINCT CONCAT(pe.nombres) SEPARATOR ', ') AS nombre_operador
+    GROUP_CONCAT(DISTINCT CONCAT(pe.apodo) SEPARATOR ', ') AS nombre_operador
 FROM tb_cronograma c
 LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
 LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria

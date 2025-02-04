@@ -293,10 +293,11 @@ function crearCalendario() {
     eventRender: function (event, element) {
       console.log(event);
       let description = `
-          <br/>${event.description}
-          <br/>Servicio: ${event.nombre_servicio}
-          <br/>Cliente: ${event.nombre_cliente}
-          <br/>Fundo: ${event.nombre_fundo}
+      <br/>C: ${event.nombre_cliente}   
+      <br/>O: ${event.nombre_operador} 
+      <br/>S: ${event.nombre_servicio}
+      <br/>${event.description}
+      <br/>F: ${event.nombre_fundo}
       `;
       element.find(".fc-title").append(description);
     },
