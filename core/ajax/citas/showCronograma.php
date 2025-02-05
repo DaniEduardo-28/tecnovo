@@ -78,7 +78,7 @@ try {
     }
 
     $data[] = array(
-      "title" => 'SER-' . $elemento['id_cronograma'],
+      "title" => "", 
       "start" => date('Y-m-d H:i', strtotime($elemento['fecha_ingreso'])),
       "end" => date('Y-m-d H:i', strtotime($elemento['fecha_salida'])),
       "color" => $color,

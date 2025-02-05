@@ -238,7 +238,17 @@ function crearCalendario() {
     header: {
       left: "prev,next today",
       center: "title",
-      right: "month,agendaWeek,agendaDay",
+      right: "month,basicWeek,agendaDay",
+    },
+    views: {
+      month: {
+        displayEventTime: false,
+        tittleFormat: 'MMMM YYYY',
+      },
+      basicWeek: {
+        displayEventTime: false,
+        tittleFormat: '[Semana] W - YYYY',
+      },
     },
     select: function (start, end) {
       var fecha_ingreso = moment(start).format("YYYY-MM-DD");
@@ -291,7 +301,7 @@ function crearCalendario() {
       },
     ],
     eventRender: function (event, element) {
-      console.log(event);
+      console.log("mostrar eventos",event);
       let description = `
       <br/>C: ${event.nombre_cliente}   
       <br/>O: ${event.nombre_operador} 
