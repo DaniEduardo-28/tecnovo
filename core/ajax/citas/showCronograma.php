@@ -37,11 +37,15 @@ try {
 
     $estado = $elemento['estado_trabajo'];
     $color = "#757571";
+    $textColor = '#FFFFFF';
     $editable = ($estado === 'REGISTRADO' || $estado === 'APROBADO'); 
     $durationEditable = $editable;
+    $classNames = "";
     switch ($estado) {
       case 'EN PROCESO':
         $color = '#ffd500';
+        $textColor = '#000000';
+        $classNames = "evento-en-proceso";
         $editable = false;
         $durationEditable = true;
         break;
@@ -82,6 +86,8 @@ try {
       "start" => date('Y-m-d H:i', strtotime($elemento['fecha_ingreso'])),
       "end" => date('Y-m-d H:i', strtotime($elemento['fecha_salida'])),
       "color" => $color,
+      "textColor" => $textColor,
+      "classNames" => $classNames,
       "id" => $elemento['id_cronograma'],
       "durationEditable" => $durationEditable,
       "editable" => $editable,
@@ -95,7 +101,8 @@ try {
       "nombre_operador" => $elemento['nombre_operador'],
       "nombre_cliente" => $elemento['nombre_cliente'],
       "nombre_fundo" => $elemento['nombre_fundo'],
-      "nombre_servicio" => $elemento['nombre_servicio']
+      "nombre_servicio" => $elemento['nombre_servicio'],
+      "cantidad_hectarea" => $elemento['cantidad_hectarea']
     );
   }
 
@@ -104,7 +111,3 @@ try {
 
   echo json_encode($e->getMessage());
 }
-// "num_documento" => $elemento['num_documento'],
-//         "name_documento" => $elemento['name_documento'],
-//         "name_medico" => $elemento['apellidos_trabajador'] .' ' . $elemento['nombres_trabajador'],
-//         "id_servicio" => $elemento['name_servicio'],

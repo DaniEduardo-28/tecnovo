@@ -17,3 +17,5 @@ ALTER TABLE `tb_maquinaria` ADD CONSTRAINT `fk_maquinaria_tipo_servicio` FOREIGN
 
 -- cambiarlo para llamar a la tb_forma_pago
  ALTER TABLE `tb_pagos_clientes` CHANGE `metodo_pago` `metodo_pago` INT NULL DEFAULT NULL;
+
+ALTER TABLE `tb_cronograma_maquinaria` CHANGE `id_maquinaria` `id_maquinaria` BIGINT UNSIGNED NULL;

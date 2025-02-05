@@ -26,7 +26,7 @@ $(document).ready(function () {
 
   // Botón aprobar cronograma en el modal de vista
   $("#btnAprobarCronograma").click(function () {
-    cambiarEstadoCronograma('APROBADO');
+    cambiarEstadoCronograma('EN PROCESO');
   });
 
   // Recalcular montos al cambiar valores
@@ -344,7 +344,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
             cliente: cliente,
           },
           success: function (events) {
-            console.log(events);
+            console.log("mostrar eventos: ",events);
             events.forEach(function (event) {
               event.estado_trabajo = event.estado_trabajo;
             });
@@ -364,8 +364,17 @@ $(document).on('click', '#btnGuardarCambios', function () {
       <br/>S: ${event.nombre_servicio}
       <br/>${event.description}
       <br/>F: ${event.nombre_fundo}
+      <br/>H: ${event.cantidad_hectarea}
       `;
         element.find(".fc-title").append(description);
+
+        if (event.estado === "EN PROCESO") {
+          element.css("color", "black");
+          element.find(".fc-title").css("color", "black");
+          element.find(".fc-content").css("color", "black");
+          element.find(".fc-event").css("color", "black");
+          element.find(".fc-time").css("color", "black");
+      }
       },
       loading: function (isLoading, view) {
         if (isLoading) {
@@ -764,13 +773,13 @@ $(document).on('click', '#btnGuardarCambios', function () {
     var id_cronograma = $("#id_cronograma").val();
 
     Swal.fire({
-      title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} este cronograma?`,
+      title: `¿Está seguro de ${nuevoEstado === "ANULADO" ? "anular" : "iniciar"} este cronograma?`,
       text: "Esta acción no se puede deshacer.",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#22c63b",
       cancelButtonColor: "#d33",
-      confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "aprobar"} ahora`,
+      confirmButtonText: `Sí, ${nuevoEstado === "ANULADO" ? "anular" : "iniciar"} ahora`,
     }).then(function (result) {
       if (result.value) {
         $.ajax({
@@ -793,7 +802,7 @@ $(document).on('click', '#btnGuardarCambios', function () {
                 if (nuevoEstado === "ANULADO") {
                   $("#btnAnularCronograma").hide();
                   $("#btnAprobarCronograma").hide();
-                } else if (nuevoEstado === "APROBADO") {
+                } else if (nuevoEstado === "EN PROCESO") {
                   $("#btnAprobarCronograma").hide();
                   $("#btnAnularCronograma").hide();
                 }

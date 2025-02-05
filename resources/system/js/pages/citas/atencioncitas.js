@@ -310,6 +310,14 @@ function crearCalendario() {
       <br/>F: ${event.nombre_fundo}
       `;
       element.find(".fc-title").append(description);
+
+      if (event.estado === "EN PROCESO") {
+        element.css("color", "black");
+        element.find(".fc-title").css("color", "black");
+        element.find(".fc-content").css("color", "black");
+        element.find(".fc-event").css("color", "black");
+        element.find(".fc-time").css("color", "black");
+    }
     },
     loading: function (isLoading, view) {
       if (isLoading) {

@@ -24,7 +24,8 @@ class ClassCronograma extends Conexion
     f.nombre AS nombre_fundo,
     ser.name_servicio AS nombre_servicio,
     GROUP_CONCAT(DISTINCT mq.descripcion SEPARATOR ', ') AS nombre_maquinaria,
-    GROUP_CONCAT(DISTINCT CONCAT(pe.apodo) SEPARATOR ', ') AS nombre_operador
+    GROUP_CONCAT(DISTINCT CONCAT(pe.apodo) SEPARATOR ', ') AS nombre_operador, 
+    CONCAT(c.cantidad, ' ', um.cod_sunat) AS cantidad_hectarea 
 FROM tb_cronograma c
 LEFT JOIN tb_cronograma_maquinaria m ON c.id_cronograma = m.id_cronograma
 LEFT JOIN tb_maquinaria mq ON m.id_maquinaria = mq.id_maquinaria
@@ -34,7 +35,8 @@ LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
 LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medico = 1
 LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
 LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
-LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio
+LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio 
+LEFT JOIN tb_unidad_medida um ON um.id_unidad_medida = ser.id_unidad_medida 
 WHERE 1=1 
 AND c.estado_trabajo != 'ANULADO' ";
 
@@ -66,7 +68,9 @@ AND c.estado_trabajo != 'ANULADO' ";
                 pec.apellidos,
                 pec.apodo,
                 f.nombre,
-                ser.name_servicio ";
+                ser.name_servicio,
+                c.cantidad,
+                um.cod_sunat ";
 
       $stmt = $conexion->prepare($sql);
       $stmt->execute($parametros);
@@ -106,10 +110,12 @@ AND c.estado_trabajo != 'ANULADO' ";
 
     try {
 
+      if (!empty($id_maquinaria) && is_numeric($id_maquinaria)) {
       $validacion = $this->validarDisponibilidadMaquinaria($id_maquinaria, $fecha_1, $fecha_2);
       if ($validacion['error'] === "SI") {
         throw new Exception($validacion['mensaje']);
       }
+    }
 
       $conexion->beginTransaction();
 
@@ -184,6 +190,7 @@ AND c.estado_trabajo != 'ANULADO' ";
 
       $id_cronograma = $conexion->lastInsertId();
 
+      if (!empty($id_maquinaria) && is_numeric($id_maquinaria)) {
       $sql = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria) VALUES (?, ?)";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([$id_cronograma, $id_maquinaria]);
@@ -191,6 +198,7 @@ AND c.estado_trabajo != 'ANULADO' ";
       if ($stmt->rowCount() == 0) {
         throw new Exception("Error al registrar la maquinaria en la base de datos.");
       }
+    }
 
       $sql = "SELECT pago_operador FROM tb_servicio WHERE id_servicio = ?";
       $stmt = $conexion->prepare($sql);
@@ -1089,16 +1097,27 @@ AND c.estado_trabajo != 'ANULADO' ";
       $stmtUpdateCantidad = $conexion->prepare($sqlUpdateCantidad);
       $stmtUpdateCantidad->execute([$cantidad_restante, $id_cronograma]);
 
-      $sqlMaquinaria = "UPDATE tb_cronograma_maquinaria 
+      if (!empty($id_cronograma_maquinaria) && is_numeric($id_cronograma_maquinaria)) {
+        // Si ya existe, actualizar la maquinaria
+        $sqlMaquinaria = "UPDATE tb_cronograma_maquinaria 
                           SET id_maquinaria = ?, petroleo_entrada = ?, petroleo_salida = ?, 
                               consumo_petroleo = ?, precio_petroleo = ?, pago_petroleo = ? 
                           WHERE id_cronograma_maquinaria = ?";
-      $stmtMaquinaria = $conexion->prepare($sqlMaquinaria);
-      $stmtMaquinaria->execute([$id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo, $id_cronograma_maquinaria]);
-
-      if ($stmtMaquinaria->rowCount() === 0) {
+        $stmtMaquinaria = $conexion->prepare($sqlMaquinaria);
+        $stmtMaquinaria->execute([$id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo, $id_cronograma_maquinaria]);
+    } else {
+        // Si no existe, crear un nuevo registro en la tabla
+        $sqlMaquinaria = "INSERT INTO tb_cronograma_maquinaria (id_cronograma, id_maquinaria, petroleo_entrada, petroleo_salida, consumo_petroleo, precio_petroleo, pago_petroleo) 
+                          VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmtMaquinaria = $conexion->prepare($sqlMaquinaria);
+        $stmtMaquinaria->execute([$id_cronograma, $id_maquinaria, $petroleo_entrada, $petroleo_salida, $consumo_petroleo, $precio_petroleo, $pago_petroleo]);
+    
+        $id_cronograma_maquinaria = $conexion->lastInsertId(); // Guardar el nuevo ID
+    }
+    
+    if ($stmtMaquinaria->rowCount() === 0) {
         $VD .= " No se realizaron cambios en la maquinaria.";
-      }
+    }
 
       if ($stmtOperador->rowCount() === 0 && $stmtMaquinaria->rowCount() === 0) {
         throw new Exception("No se realizaron cambios en el operador ni en la maquinaria.");

@@ -17,6 +17,12 @@ if (!isset($_SESSION['id_trabajador'])) {
   <link href="resources/select2/css/select2.min.css" rel="stylesheet" />
   <!-- SweetAlert2 CSS -->
   <link rel="stylesheet" href="resources/sweetalert2/sweetalert2.min.css">
+  <style>
+    .evento-en-proceso {
+        color: black !important; /* Asegura que el texto sea negro */
+        font-weight: bold; /* Hace que el texto sea más visible */
+    }
+  </style>
 </head>
 
 <body>
@@ -503,7 +509,7 @@ if (!isset($_SESSION['id_trabajador'])) {
           <div class="modal-footer">
             <input type="reset" class="btn btn-danger" data-dismiss="modal" value="Cerrar">
             <button type="button" id="btnAnularCronograma" class="btn btn-warning"><i class="fa fa-ban"></i> Anular</button>
-            <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;"><i class="fa fa-check"></i> Aprobar Registro</button>
+            <button type="button" id="btnAprobarCronograma" class="btn btn-success" style="display: none;"><i class="fa fa-check"></i> Iniciar Trabajo</button>
             <button type="button" id="btnGuardarCambios" class="btn btn-info"><i class="fa fa-calendar"></i> Actualizar</button>
           </div>
         </div>

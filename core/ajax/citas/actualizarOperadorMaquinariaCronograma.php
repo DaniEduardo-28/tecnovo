@@ -12,12 +12,17 @@ $petroleo_entrada = $_POST['petroleo_entrada'] ?? 0;
 $petroleo_salida = $_POST['petroleo_salida'] ?? 0;
 $precio_petroleo = $_POST['precio_petroleo'] ?? 0;
 
-if (!$id_cronograma_operador || !$id_cronograma_maquinaria) {
+if (!$id_cronograma_operador) {
     echo json_encode([
         "error" => "SI",
-        "message" => "Faltan datos para actualizar el operador o la maquinaria.",
+        "message" => "Faltan datos para actualizar el operador.",
     ]);
     exit();
+}
+
+// Si no existe `id_cronograma_maquinaria`, se asigna `0` para crear un nuevo registro
+if (!$id_cronograma_maquinaria) {
+    $id_cronograma_maquinaria = 0;
 }
 
 try {
@@ -44,7 +49,6 @@ try {
         "data" => null
     ];
     echo json_encode($data);
-
 } catch (Exception $e) {
     $data = [
         "error" => "SI",
@@ -54,4 +58,3 @@ try {
     echo json_encode($data);
     exit();
 }
-
