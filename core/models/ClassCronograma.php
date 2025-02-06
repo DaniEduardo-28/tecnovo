@@ -208,7 +208,8 @@ AND c.estado_trabajo != 'ANULADO' ";
       if (!$pago_operador) {
         throw new Exception("No se encontró el pago del operador para el servicio proporcionado.");
       }
-
+      
+      if (!empty($id_maquinaria) && is_numeric($id_maquinaria)) {
       $sql = "INSERT INTO tb_cronograma_operadores (id_cronograma, id_trabajador, horas_trabajadas, pago_por_hora) VALUES (?, ?, 0.0, ?)";
       $stmt = $conexion->prepare($sql);
       $stmt->execute([$id_cronograma, $id_operador, $pago_operador]);
@@ -216,6 +217,7 @@ AND c.estado_trabajo != 'ANULADO' ";
       if ($stmt->rowCount() == 0) {
         throw new Exception("Error al registrar el operador en la base de datos.");
       }
+    }
 
       if ($adelanto >= 0) {
         $sql = "INSERT INTO tb_pagos_clientes (id_cronograma, fecha_pago, metodo_pago, monto) 

@@ -12,13 +12,6 @@ $petroleo_entrada = $_POST['petroleo_entrada'] ?? 0;
 $petroleo_salida = $_POST['petroleo_salida'] ?? 0;
 $precio_petroleo = $_POST['precio_petroleo'] ?? 0;
 
-if (!$id_cronograma_operador) {
-    echo json_encode([
-        "error" => "SI",
-        "message" => "Faltan datos para actualizar el operador.",
-    ]);
-    exit();
-}
 
 // Si no existe `id_cronograma_maquinaria`, se asigna `0` para crear un nuevo registro
 if (!$id_cronograma_maquinaria) {
