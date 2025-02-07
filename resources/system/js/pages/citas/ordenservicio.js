@@ -65,6 +65,16 @@ $(document).ready(function () {
     limpiarCamposNuevoOperadorMaquinaria();
   });
 
+  $("#cboClienteBuscar").on("change", function () {
+    const selectedValue = $(this).val();
+    $("#id_cliente").val(selectedValue);
+  });
+
+  $("#cboClienteBuscar").select2({
+    placeholder: "Seleccione un cliente",
+    allowClear: true,
+  });
+
   $("#btnNuevoPago").click(function () {
     $("#nuevoPagoContainer").show();
     $("#btnNuevoPago").hide();

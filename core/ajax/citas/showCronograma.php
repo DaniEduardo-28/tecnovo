@@ -82,7 +82,7 @@ try {
     }
 
     $data[] = array(
-      "title" => "", 
+      "title" => $elemento['codigo_servi'], 
       "start" => date('Y-m-d H:i', strtotime($elemento['fecha_ingreso'])),
       "end" => date('Y-m-d H:i', strtotime($elemento['fecha_salida'])),
       "color" => $color,
@@ -93,6 +93,7 @@ try {
       "editable" => $editable,
       "estado" => $estado,
       "id_fundo" => $elemento['id_fundo'],
+      "codigo_servi" => $elemento['codigo_servi'],
       "fecha_inicio" => date('d/m/Y H:i', strtotime($elemento['fecha_ingreso'])),
       "fecha_fin" => date('d/m/Y H:i', strtotime($elemento['fecha_salida'])),
       "fecha_pago" => date('d/m/Y H:i', strtotime($elemento['fecha_pago'])),

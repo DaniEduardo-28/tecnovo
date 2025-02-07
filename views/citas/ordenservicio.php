@@ -127,25 +127,23 @@ if (!isset($_SESSION['id_trabajador'])) {
             <div class="row">
               <div class="container">
                 <div class="row">
-                  <div class="form-group col-sm-6 col-md-3">
-                    <label for="cboClienteBuscar">Cliente</label>
-                    <select class="form-control" id="cboClienteBuscar" name="cboClienteBuscar">
-                      <option value="all">Todos</option>
-                      <?php
-                      include("core/models/ClassCliente.php");
-                      $dataCliente = $OBJ_CLIENTE->listarClientes();
-                      if ($dataCliente["error"] == "NO") {
-                        foreach ($dataCliente["data"] as $key) {
-                      ?>
-                          <option value="<?= $key['id_cliente']; ?>">
-                            <?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] ?>
-                          </option>
-                      <?php
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
+                <div class="form-group col-sm-6 col-md-3">
+                <label for="cboClienteBuscar">Cliente</label>
+                <select class="form-control" id="cboClienteBuscar" name="cboClienteBuscar">
+                  <option value="all">Todos</option>
+                  <?php
+                  include("core/models/ClassCliente.php");
+                  $dataCliente = $OBJ_CLIENTE->listarClientes();
+                  if ($dataCliente["error"] == "NO") {
+                    foreach ($dataCliente["data"] as $key) {
+                  ?>
+                      <option value="<?= $key['id_cliente']; ?>"><?= $key['nombres_cliente'] . ' ' . $key['apellidos_cliente'] . '(' . $key['apodo'] . ')' ?></option>
+                  <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
 
                   <div class="form-group col-sm-6 col-md-3">
                     <label for="cboFundoBuscar">Fundo</label>

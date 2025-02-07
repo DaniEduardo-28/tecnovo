@@ -3642,3 +3642,13 @@ ALTER TABLE `tb_maquinaria` ADD CONSTRAINT `fk_maquinaria_tipo_servicio` FOREIGN
 
 -- añadir el campo de pago_operador
  ALTER TABLE tb_servicio ADD COLUMN pago_operador DECIMAL(8,2) NULL DEFAULT 0.00 AFTER precio;
+
+ -- Nueva tabla tb_tipo_gasto
+CREATE TABLE tb_tipo_gasto (
+    id_tipo_gasto BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id_tipo_servicio BIGINT UNSIGNED NOT NULL,
+    desc_gasto VARCHAR(500) NULL,
+    estado ENUM('activo', 'inactivo') NOT NULL DEFAULT 'activo'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+--Llave foránea para id_tipo_servicio
+ALTER TABLE tb_tipo_gasto ADD CONSTRAINT fk_tipo_servicio FOREIGN KEY (id_tipo_servicio) REFERENCES tb_tipo_servicio(id_tipo_servicio) ON DELETE CASCADE;

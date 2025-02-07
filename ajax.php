@@ -119,6 +119,26 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/configuration/deleteTipoMedicamento.php");
         break;
+      case 'showTipoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/showTipoGasto.php");
+        break;
+      case 'goTipoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/goTipoGasto.php");
+        break;
+      case 'deleteTipoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/deleteTipoGasto.php");
+        break;
+      case 'getDataEditTipoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/getDataEditTipoGasto.php");
+        break;
+      case 'getTipoGastoPorUnidad':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/configuration/getTipoGastoPorUnidad.php");
+        break;
       case 'showCliente':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/maintenance/showCliente.php");

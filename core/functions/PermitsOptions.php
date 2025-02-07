@@ -52,6 +52,9 @@ function printCodeOption($controller)
       case 'tipocosecha':
         $VD = 115;
         break;
+      case 'tipogasto':
+        $VD = 116;
+        break;
       case 'cliente':
         $VD = 201;
         break;

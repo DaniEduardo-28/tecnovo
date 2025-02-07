@@ -17,6 +17,7 @@ class ClassCronograma extends Conexion
       $sql = "SELECT 
     c.*,
     c.id_cronograma,
+    CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo_servi,
     c.fecha_ingreso AS start,
     c.fecha_salida AS end,
     c.fecha_pago,
@@ -36,6 +37,7 @@ LEFT JOIN tb_trabajador u ON co.id_trabajador = u.id_trabajador AND u.flag_medic
 LEFT JOIN tb_persona pe ON u.id_persona = pe.id_persona
 LEFT JOIN tb_persona pec ON cl.id_persona = pec.id_persona
 LEFT JOIN tb_servicio ser ON ser.id_servicio = c.id_servicio 
+LEFT JOIN tb_tipo_servicio ts ON ser.id_tipo_servicio = ts.id_tipo_servicio 
 LEFT JOIN tb_unidad_medida um ON um.id_unidad_medida = ser.id_unidad_medida 
 WHERE 1=1 
 AND c.estado_trabajo != 'ANULADO' ";
@@ -70,7 +72,8 @@ AND c.estado_trabajo != 'ANULADO' ";
                 f.nombre,
                 ser.name_servicio,
                 c.cantidad,
-                um.cod_sunat ";
+                um.cod_sunat,
+                c.codigo ";
 
       $stmt = $conexion->prepare($sql);
       $stmt->execute($parametros);

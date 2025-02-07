@@ -33,7 +33,8 @@
       $flag_documentoventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("documentoventa"));
       $flag_unidadmedida = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("unidadmedida"));
       $flag_metodoenvio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("metodoenvio"));
-      if ($flag_mybusiness || $flag_sucursales || $flag_monedas || $flag_identitydocuments || $flag_especialidad || $flag_categoriaaccesorio || $flag_tiposervicio || $flag_tipomascota || $flag_tipomedicamento || $flag_formapago || $flag_tipocambio || $flag_tipocosecha || $flag_documentoventa || $flag_unidadmedida || $flag_metodoenvio) {
+      $flag_tipogasto = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipogasto"));
+      if ($flag_mybusiness || $flag_sucursales || $flag_monedas || $flag_identitydocuments || $flag_especialidad || $flag_categoriaaccesorio || $flag_tiposervicio || $flag_tipomascota || $flag_tipomedicamento || $flag_formapago || $flag_tipocambio || $flag_tipocosecha || $flag_documentoventa || $flag_unidadmedida || $flag_metodoenvio || $flag_tipogasto) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -84,6 +85,9 @@
             <?php endif; ?>
             <?php if ($flag_unidadmedida): ?>
               <li id="menuunidadmedida"> <a href="?view=unidadmedida">Unidades de Medida</a></li>
+            <?php endif; ?>
+            <?php if ($flag_tipogasto): ?>
+              <li id="menutipogasto"> <a href="?view=tipogasto">Tipos de Gastos</a></li>
             <?php endif; ?>
           </ul>
         </li>
