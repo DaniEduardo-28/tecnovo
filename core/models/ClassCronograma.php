@@ -739,6 +739,150 @@ AND c.estado_trabajo != 'ANULADO' ";
     return $VD;
   }
 
+  public function showreporteTable($estado, $cliente, $fundo, $maquinaria, $operador, $unidadNegocio)
+  {
+
+    $conexionClass = new Conexion();
+    $conexion = $conexionClass->Open();
+    $conexion->exec("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
+
+    $VD = "";
+
+    try {
+
+      $sql = "SELECT 
+                  c.id_cronograma,
+                  CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo,
+                f.nombre AS nombre_fundo,
+                CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente,
+                s.name_servicio AS nombre_servicio,
+                CONCAT(c.cantidad, ' ', um.cod_sunat) AS cant_medida,
+                GROUP_CONCAT(DISTINCT CONCAT(op.nombres, ' ', op.apellidos) SEPARATOR ', ') AS nombre_operador,
+                GROUP_CONCAT(DISTINCT m.descripcion SEPARATOR ', ') AS nombre_maquinaria,
+                c.fecha_ingreso,
+                mo.signo,
+                c.fecha_salida,
+                c.estado_trabajo,
+                c.monto_total AS total,
+                IFNULL((
+                    SELECT SUM(cm.pago_petroleo) 
+                    FROM tb_cronograma_maquinaria cm 
+                    WHERE cm.id_cronograma = c.id_cronograma
+                ), 0) + IFNULL((
+                    SELECT SUM(co.total_pago) 
+                    FROM tb_cronograma_operadores co 
+                    WHERE co.id_cronograma = c.id_cronograma
+                ), 0) AS gastos,
+                c.monto_total - (
+                    IFNULL((
+                        SELECT SUM(cm.pago_petroleo) 
+                        FROM tb_cronograma_maquinaria cm 
+                        WHERE cm.id_cronograma = c.id_cronograma
+                    ), 0) + IFNULL((
+                        SELECT SUM(co.total_pago) 
+                        FROM tb_cronograma_operadores co 
+                        WHERE co.id_cronograma = c.id_cronograma
+                    ), 0)
+                ) AS ganancia
+              FROM tb_cronograma c 
+              LEFT JOIN tb_fundo f ON c.id_fundo = f.id_fundo
+              LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+              LEFT JOIN tb_moneda mo ON mo.id_moneda = s.id_moneda 
+              LEFT JOIN tb_unidad_medida um ON um.id_unidad_medida = s.id_unidad_medida 
+              LEFT JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio 
+              LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente
+              LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona
+              LEFT JOIN tb_cronograma_maquinaria cm ON c.id_cronograma = cm.id_cronograma
+              LEFT JOIN tb_maquinaria m ON cm.id_maquinaria = m.id_maquinaria
+              LEFT JOIN tb_cronograma_operadores co ON c.id_cronograma = co.id_cronograma
+              LEFT JOIN tb_trabajador t ON co.id_trabajador = t.id_trabajador
+              LEFT JOIN tb_persona op ON t.id_persona = op.id_persona
+              WHERE 1=1 ";
+
+      //Aplicar filtros
+      $parametros = [];
+
+      if ($cliente != "all") {
+        $sql .= "AND c.id_cliente = :cliente";
+        $parametros[":cliente"] = $cliente;
+      }
+
+      if ($fundo != "all") {
+        $sql .= "AND c.id_fundo = :fundo";
+        $parametros[":fundo"] = $fundo;
+      }
+
+      if ($maquinaria != "all") {
+        $sql .= " AND m.id_maquinaria = :maquinaria";
+        $parametros[":maquinaria"] = $maquinaria;
+      }
+
+      if ($operador != "all") {
+        $sql .= " AND t.id_trabajador = :operador";
+        $parametros[":operador"] = $operador;
+      }
+      if ($unidadNegocio != "all") {
+        $sql .= " AND s.id_tipo_servicio = :unidadNegocio";
+        $parametros[":unidadNegocio"] = $unidadNegocio;
+      }
+
+      $sql .= " GROUP BY 
+                  c.id_cronograma, 
+                  f.nombre, 
+                  s.name_servicio, 
+                  p.nombres, 
+                  p.apellidos,
+                  c.cantidad, 
+                  um.cod_sunat,
+                  c.fecha_ingreso,
+                  c.fecha_salida,
+                  c.estado_trabajo,
+                  c.monto_total,
+                  c.codigo,
+                  mo.signo 
+      
+      ORDER BY c.fecha_ingreso DESC";
+
+      $stmt = $conexion->prepare($sql);
+      $stmt->execute($parametros);
+      $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      if (count($result) == 0) {
+        throw new Exception("No se encontraron datos.");
+      }
+
+      foreach ($result as &$row) {
+        if (!empty($row['nombre_operador'])) {
+            $operadores = explode(', ', $row['nombre_operador']);
+            $row['nombre_operador'] = "<ul><li>" . implode("</li><li>", $operadores) . "</li></ul>";
+        }
+
+        if (!empty($row['nombre_maquinaria'])) {
+            $maquinarias = explode(', ', $row['nombre_maquinaria']);
+            $row['nombre_maquinaria'] = "<ul><li>" . implode("</li><li>", $maquinarias) . "</li></ul>";
+        }
+    }
+
+      // Respuesta
+      $VD1['error'] = "NO";
+      $VD1['message'] = "Success";
+      $VD1['data'] = $result;
+      $VD = $VD1;
+    } catch (PDOException $e) {
+      $VD1['error'] = "SI";
+      $VD1['message'] = $e->getMessage();
+      $VD = $VD1;
+    } catch (Exception $exception) {
+      $VD1['error'] = "SI";
+      $VD1['message'] = $exception->getMessage();
+      $VD = $VD1;
+    } finally {
+      $conexionClass->Close();
+    }
+
+    return $VD;
+  }
+
 
   public function actualizarEstadoCronograma($id_cronograma, $nuevo_estado)
   {

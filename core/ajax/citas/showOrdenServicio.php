@@ -12,7 +12,7 @@ try {
   $unidadNegocio = isset($_POST["id_tipo_servicio"]) ? $_POST["id_tipo_servicio"] : "all";
 
   require_once "core/models/ClassCronograma.php";
-  $Resultado = $OBJ_CRONOGRAMA->showreporte($estado, $cliente, $fundo, $maquinaria, $operador, $unidadNegocio);
+  $Resultado = $OBJ_CRONOGRAMA->showreporteTable($estado, $cliente, $fundo, $maquinaria, $operador, $unidadNegocio);
 
   if ($Resultado["error"] == "NO") {
 
