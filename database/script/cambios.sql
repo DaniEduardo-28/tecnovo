@@ -34,3 +34,5 @@ INSERT INTO `tb_opcion` (`id_opcion`, `name_opcion`, `estado`, `url`, `order`, `
 
 INSERT INTO `tb_acceso_opcion` (`id`, `id_grupo`, `id_opcion`, `flag_agregar`, `flag_buscar`, `flag_editar`, `flag_eliminar`, `flag_anular`, `flag_ver`, `flag_descargar`) VALUES (NULL, '1', '116', '0', '0', '0', '0', '0', '0', '0');
 
+--Nueva opción
+UPDATE `tb_opcion` SET `name_opcion` = 'Gastos de Servicios', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 606;

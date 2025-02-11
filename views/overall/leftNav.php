@@ -246,7 +246,9 @@
       $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordencompra"));
       $flag_promocion = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("promocion"));
       $flag_ingreso = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ingreso"));
-      if ($flag_fichamascota || $flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso) {
+      $flag_gastoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("gastoservicio"));
+
+      if ($flag_fichamascota || $flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso || $flag_gastoservicio) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -270,6 +272,9 @@
             <?php endif; ?>
             <?php if ($flag_ordenventa): ?>
               <li id="submenuordenventa"><a href="?view=ordenventa">Salida de Productos</a></li>
+            <?php endif; ?>
+            <?php if ($flag_gastoservicio): ?>
+              <li id="submenugastoservicio"><a href="?view=gastoservicio">Gastos de Servicios</a></li>
             <?php endif; ?>
           </ul>
         </li>
