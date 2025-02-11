@@ -90,13 +90,14 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.desc_gasto,mon.signo as signo_moneda,
+				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.desc_gasto,dv.nombre,mon.signo as signo_moneda,
 								(SELECT SUM(dc.monto_gastado) FROM tb_detalle_gastoserv dc WHERE dc.id_gasto_servicio = o.id_gasto_servicio) AS total
 								FROM `tb_gasto_servicio` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-								INNER JOIN tb_tipo_gasto m ON m.id_tipo_gasto = o.id_tipo_gasto
+								INNER JOIN tb_tipo_gasto m ON m.id_tipo_gasto = o.id_tipo_gasto 
+                                INNER JOIN tb_documento_venta dv ON dv.id_documento_venta = o.id_documento_venta 
 								WHERE o.fecha_emision >= ? AND o.fecha_emision < ? AND o.id_sucursal = ? ";
 
 				$parametros[] = $fecha_inicio;
@@ -237,13 +238,14 @@
 
 				$valor = "%$valor%";
 				$parametros = null;
-				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.desc_gasto,mon.signo as signo_moneda,
+				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.desc_gasto,dv.nombre,mon.signo as signo_moneda,
 								(SELECT SUM(dc.monto_gastado) FROM tb_detalle_gastoserv dc WHERE dc.id_gasto_servicio = o.id_gasto_servicio) AS total
 								FROM `tb_gasto_servicio` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
 								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
 								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-								INNER JOIN tb_tipo_gasto m ON m.id_tipo_gasto = o.id_tipo_gasto
+								INNER JOIN tb_tipo_gasto m ON m.id_tipo_gasto = o.id_tipo_gasto 
+                                INNER JOIN tb_documento_venta dv ON dv.id_documento_venta = o.id_documento_venta
 								WHERE o.fecha_emision >= ? AND o.fecha_emision < ? AND o.estado in ('0','1')
 								AND o.id_sucursal = ? ";
 
@@ -383,7 +385,7 @@
 		}
 
 
-        public function insert($id_sucursal,$id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $fecha_emision, $serie, $correlativo, $detalle_gastoserv) {
+        public function insert($id_sucursal,$id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, $serie, $correlativo, $detalle_gastoserv) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -392,13 +394,13 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_gasto_servicio (`id_gasto_servicio`, `id_sucursal`, `id_tipo_gasto`, `id_proveedor`, `id_trabajador`, `fecha_emision`, `serie`, `correlativo`, `estado`, `id_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_gasto_servicio (`id_gasto_servicio`, `id_sucursal`, `id_tipo_gasto`, `id_proveedor`, `id_trabajador`, `fecha_emision`, `serie`, `correlativo`, `estado`, `id_moneda`, `id_documento_venta`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(o.id_gasto_servicio) WHEN 0 THEN 1 ELSE (MAX(o.id_gasto_servicio) + 1) end FROM `tb_gasto_servicio` o),";
 				$sql .= "?,?,?,?,NOW(),?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_sucursal,$id_tipo_gasto,$id_proveedor,$id_trabajador,$fecha_emision,$serie,$correlativo,'0',$codigo_moneda]);
+				$stmt->execute([$id_sucursal,$id_tipo_gasto,$id_proveedor,$id_trabajador,$fecha_emision,$serie,$correlativo,'0',$codigo_moneda,$id_documento_venta]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Error al registrar la orden en la base de datos.");
 				}
@@ -433,7 +435,7 @@
 			return $VD;
 		}
 
-		public function update($id_sucursal,$id_gasto_servicio,$id_proveedor,$id_trabajador,$id_tipo_gasto,$codigo_moneda,$fecha_emision,$serie,$correlativo,$detalle_gastoserv) {
+		public function update($id_sucursal,$id_gasto_servicio,$id_proveedor,$id_trabajador,$id_tipo_gasto,$codigo_moneda,$id_documento_venta,$fecha_emision,$serie,$correlativo,$detalle_gastoserv) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD="";
@@ -456,10 +458,11 @@
 				$sql .=" fecha_emision = ?, ";
                 $sql .=" serie = ?, ";
                 $sql .=" correlativo = ?, ";
-				$sql .=" id_moneda = ? ";
+				$sql .=" id_moneda = ?, ";
+                $sql .=" id_documento_venta = ? ";
 				$sql .=" WHERE id_gasto_servicio = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_tipo_gasto,$id_proveedor,$id_trabajador,$fecha_emision,$codigo_moneda,$serie,$correlativo,$id_gasto_servicio])==false) {
+				if ($stmt->execute([$id_tipo_gasto,$id_proveedor,$id_trabajador,$fecha_emision,$codigo_moneda,$id_documento_venta,$serie,$correlativo,$id_gasto_servicio])==false) {
 					throw new Exception("1. Error al actualizar los datos de la orden.");
 				}
 

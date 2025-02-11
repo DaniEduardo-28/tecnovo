@@ -139,7 +139,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                             </div>
 
                             <input type="hidden" name="id_proveedor" id="id_proveedor" value="0">
-                            <input type="hidden" name="id_orden_compra" id="id_orden_compra" value="0">
+                            <input type="hidden" name="id_gasto_servicio" id="id_gasto_servicio" value="0">
                             <input type="hidden" name="accion" id="accion">
 
                             <div class="col-md-6 col-sm-8">
@@ -154,122 +154,119 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 Seleccionar&nbsp;<span class="fa fa-ellipsis-h"></span>
                               </button>
                             </div>
-                            <div class="form-group col-md-3 col-sm-4 d-none">
-                              <label for="" class="label-control">Forma de Envío</label>
-                              <select class="form-control" name="cboFormaEnvioForm"
-                                id="cboFormaEnvioForm">
-                                <?php
-                                $resultMetodo = $OBJ_METODO_ENVIO->show("1");
-                                if ($resultMetodo['error'] == "NO") {
-                                  foreach ($resultMetodo['data'] as $key) {
-                                ?>
-                                    <option value="<?= $key['id_metodo_envio']; ?>"><?= $key['name_metodo']; ?></option>
-                                <?php
-                                  }
-                                }
-                                ?>
-                              </select>
-                            </div>
+
                             <div class="form-group col-md-3 col-sm-4">
-                              <label for="codigo_moneda">Moneda(*)</label>
-                              <select class="form-control" name="codigo_moneda"
-                                id="codigo_moneda" required>
-                                <option value="">Seleccione</option>
+                              <label for="id_documento_venta" class="label-control">Tipo de Comprobante</label>
+                              <select class="form-control" id="id_documento_venta" name="id_documento_venta">
                                 <?php
-                                include('core/models/ClassMoneda.php');
-                                $dataMoneda = $OBJ_MONEDA->show("1");
-                                if ($dataMoneda["error"] == "NO") {
-                                  foreach ($dataMoneda["data"] as $key) {
-                                    if ($key['flag_principal']) {
-                                      echo '<option value="' . $key['id_moneda'] . '" selected>' . $key['name_moneda'] . '</option>';
-                                    } else {
-                                      echo '<option value="' . $key['id_moneda'] . '">' . $key['name_moneda'] . '</option>';
+                                include("core/models/ClassDocumentoVenta.php");
+                                $resultTipoDocu = $OBJ_DOCUMENTO_VENTA->show($_SESSION['id_sucursal'], 1);
+                                if ($resultTipoDocu['error'] == "NO") {
+                                  foreach ($resultTipoDocu['data'] as $key) {
+                                    if ($key['flag_ingreso']) {
+                                ?>
+                                      <option value="<?= $key['id_documento_venta']; ?>"><?= $key['nombre_corto']; ?></option>
+                                <?php
                                     }
                                   }
                                 }
                                 ?>
                               </select>
                             </div>
+
                             <div class="form-group col-md-3 col-sm-4">
-                              <label for="txtFechaOrdenForm" class="label-control">Fecha Orden</label>
-                              <input type="date" name="txtFechaOrdenForm" id="txtFechaOrdenForm"
-                                class="form-control" readonly value="<?= date("Y-m-d"); ?>">
+                              <label for="codigo_moneda">Moneda(*)</label>
+                              <select class="form-control" name="codigo_moneda" id="codigo_moneda" required>
+                                <option value="">Seleccione</option>
+                                <?php
+                                include('core/models/ClassMoneda.php');
+                                $dataMoneda = $OBJ_MONEDA->show("1");
+                                if ($dataMoneda["error"] == "NO") {
+                                  foreach ($dataMoneda["data"] as $key) {
+                                    echo '<option value="' . $key['id_moneda'] . '"' . ($key['flag_principal'] ? ' selected' : '') . '>' . $key['name_moneda'] . '</option>';
+                                  }
+                                }
+                                ?>
+                              </select>
                             </div>
+
+                            <div class="form-group col-md-2 col-sm-4">
+                              <label for="txtFechaOrdenForm" class="label-control">Fecha de Emisión</label>
+                              <input type="date" name="txtFechaOrdenForm" id="txtFechaOrdenForm" class="form-control" value="<?= date("Y-m-d"); ?>">
+                            </div>
+
+                            <div class="form-group col-md-2 col-sm-4">
+                              <label for="txtSerieForm" class="label-control">Serie</label>
+                              <input type="text" name="txtSerieForm" id="txtSerieForm" class="form-control">
+                            </div>
+
+                            <div class="form-group col-md-2 col-sm-4">
+                              <label for="txtCorrelativoForm" class="label-control">Correlativo</label>
+                              <input type="text" name="txtCorrelativoForm" id="txtCorrelativoForm" class="form-control" readonly>
+                            </div>
+
                             <div class="form-group col-md-3 col-sm-4">
-                              <label for="txtFechaEntregaForm" class="label-control">Fecha Entrega</label>
-                              <input type="date" name="txtFechaEntregaForm" id="txtFechaEntregaForm"
-                                class="form-control" value="<?= date("Y-m-d"); ?>" min="<?= date("Y-m-d"); ?>">
+                              <label for="id_tipo_gasto" class="label-control">Motivo de Gasto</label>
+                              <select class="form-control" id="id_tipo_gasto" name="id_tipo_gasto">
+                                <option value="">Seleccione</option>
+                                <?php
+                                include("core/models/ClassTipoGasto.php");
+                                $resultTipoGasto = $OBJ_TIPO_GASTO->show('all', '', '');
+                                if ($resultTipoGasto['error'] == "NO") {
+                                  foreach ($resultTipoGasto["data"] as $key) {
+                                    echo '<option value="' . $key['id_tipo_gasto'] . '">' . $key['desc_gasto'] . '</option>';
+                                  }
+                                }
+                                ?>
+                              </select>
                             </div>
-                            <div class="form-group col-md-6 col-sm-6">
-                              <label for="txtObservacionesForm" class="label-control">Observaciones</label>
-                              <input type="text" name="txtObservacionesForm" id="txtObservacionesForm"
-                                class="form-control">
-                            </div>
-                            <div class="form-group col-md-3 col-sm-4">
+
+                            <div class="form-group col-md-2 col-sm-4">
                               <label for="txtEstadoForm" class="label-control">Estado</label>
-                              <input type="text" name="txtEstadoForm" id="txtEstadoForm"
-                                class="form-control" readonly>
+                              <input type="text" name="txtEstadoForm" id="txtEstadoForm" class="form-control" readonly>
                             </div>
+
                           </div>
                           <!-- END HEADER -->
 
                           <!-- STAR BODY -->
                           <div class="row">
-
                             <div class="table-responsive">
                               <table class="table table-bordered" id="table_form">
                                 <thead>
                                   <tr>
                                     <th style="width:50px; text-align: center;">#</th>
-                                    <th>Id Producto</th>
-                                    <th>Producto</th>
-                                    <th style="width:20px;">Stock</th>
-                                    <th style="width:40px; text-align:right;">Precio Compra</th>
-                                    <th style="width:100px;">Cantidad</th>
-                                    <th>Notas</th>
-                                    <th style="width:60px;">Total</th>
+                                    <th>Id Detalle</th>
+                                    <th>Descripción del Gasto</th>
+                                    <th style="width:40px; text-align:right;">Monto Gastado</th>
                                     <th style="width:20px;">Eliminar</th>
                                   </tr>
                                 </thead>
-
+                                <tbody>
+                                  <!-- Aquí se agregarán dinámicamente los gastos -->
+                                </tbody>
                               </table>
                             </div>
-
                           </div>
                           <!-- END BODY -->
 
                           <!-- START FOOTER -->
                           <div class="row">
                             <div class="form-group col-sm-5">
-                              <div class="form-group col-md-12">
-                                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                  <label class="btn btn-info active">
-                                    <input checked type="radio" name="opcion_busqueda" value="accesorio" id="opcion_accesorio" autocomplete="off"> Producto
-                                  </label>
-                                  <!-- <label class="btn btn-info">
-                                                    <input type="radio" name="opcion_busqueda" value="medicamento" id="opcion_medicamento" autocomplete="off"> Producto
-                                                  </label> -->
-                                </div>
-                                <button type="button" name="btnAgregarDetalle" id="btnAgregarDetalle" class="btn btn-success"><span class="fa fa-plus"></span></button>
-                              </div>
-                              <!--<br>
-                                              <button type="button" class="btn btn-primary" id="btnSeleccionarProducto">
-                                                 <span class="fa fa-plus"></span> Agregar Producto&nbsp;
-                                              </button>-->
+                              <button type="button" class="btn btn-success" id="btnAgregarDetalle">
+                                <span class="fa fa-plus"></span> Agregar Gasto
+                              </button>
                             </div>
                             <div class="form-group col-sm-5">
-                              <br>&nbsp;&nbsp;&nbsp;
-                              <button type="button" class="btn btn-success float-right"
-                                id="btnSaveForm">
+                              <button type="button" class="btn btn-success float-right" id="btnSaveForm">
                                 <span class="fa fa-save"></span> Guardar
                               </button>&nbsp;&nbsp;&nbsp;
-                              <button type="button" class="btn btn-danger float-right"
-                                id="btnCancelForm">
+                              <button type="button" class="btn btn-danger float-right" id="btnCancelForm">
                                 <span class="fa fa-close"></span> Cancelar
                               </button>&nbsp;&nbsp;&nbsp;
                             </div>
                             <div class="form-group col-sm-2">
-                              <label for="txtTotalForm" class="label-control">Total Orden</label>
+                              <label for="txtTotalForm" class="label-control">Total</label>
                               <input type="text" name="txtTotalForm" id="txtTotalForm"
                                 value="S/ 0.00" class="form-control" readonly>
                             </div>
@@ -360,9 +357,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                           <div class="form-group col-md-3 col-sm-4">
                             <label for="txtFechaInicioBuscarListado" class="label-control">Fecha Inicio</label>
-                            <?php
-                              $primerDiaMes = date('Y-m-01');
-                            ?>
+                            <?php $primerDiaMes = date('Y-m-01'); ?>
                             <input id="txtFechaInicioBuscarListado" type="date" name="txtFechaInicioBuscarListado"
                               class="form-control" autocomplete="off" value="<?= $primerDiaMes; ?>">
                           </div>
@@ -402,13 +397,12 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <thead>
                               <tr>
                                 <th>Num</th>
-                                <th>Id Orden</th>
+                                <th>Id Gasto</th>
                                 <th>Proveedor</th>
                                 <th>Usuario</th>
-                                <th>Fecha Orden</th>
-                                <th>Fecha Entrega</th>
-                                <!-- <th>Forma de Envío</th> -->
-                                <th># Productos</th>
+                                <th>Fecha Emisión</th>
+                                <th>Serie</th>
+                                <th>Correlativo</th>
                                 <th>Total</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
@@ -429,66 +423,6 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                       </div>
                       <!-- END CONTENT LISTADO -->
-
-                      <!-- START CONTENT PRODUCTOS -->
-                      <div class="col-md-12" id="contenedor_productos">
-
-                        <h4 id="title_modal">Productos</h4>
-
-                        <div class="row">
-
-                          <div class="col-md-10">
-                            <label for="">&nbsp;</label>
-                            <div class="input-group mb-3">
-                              <input type="text" class="form-control" placeholder="Buscar..."
-                                aria-label="Producto...." aria-describedby="basic-addon2"
-                                id="txtBuscarProducto" name="txtBuscarProducto">
-                              <div class="input-group-append">
-                                <button class="btn btn-outline-primary" id="btnSearchProducto"
-                                  type="button">Buscar</button>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="form-group col-md-2">
-                            <label for="btnSiguienteProductos">&nbsp;</label>
-                            <button type="button" class="btn btn-success float-right" id="btnSiguienteProductos">
-                              <span class="fa fa-next"></span> &nbsp; Siguiente
-                            </button>
-                          </div>
-
-                        </div>
-
-                        <div class="card-body py-0 table-responsive">
-                          <table class="table table-bordered" id="tabla_productos">
-                            <thead>
-                              <tr>
-                                <th style="width:20px;">Num</th>
-                                <th>Id Producto</th>
-                                <th>Producto</th>
-                                <th style="width:60px;">Stock</th>
-                                <th style="width:40px;">Precio Unitario</th>
-                                <th style="width:90px;">Cantidad</th>
-                                <th style="width:10px;">Seleccionar</th>
-                                <th>Nombre Producto</th>
-                              </tr>
-                            </thead>
-                            <tbody id="tbody_productos">
-
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="col-sm-12">
-                          &nbsp;
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                          <ul class="pagination pagination-split" id="paginador_productos">
-
-                          </ul>
-                        </div>
-
-                      </div>
-                      <!-- END CONTENT PRODUCTOS -->
 
                     </div>
 

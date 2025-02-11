@@ -73,10 +73,10 @@ try {
 
   switch ($accion) {
     case 'add':
-      $VD = $OBJ_GASTO_SERVICIO->insert($id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $fecha_emision, $serie, $correlativo, $detalle_gastoserv);
+      $VD = $OBJ_GASTO_SERVICIO->insert($id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, $serie, $correlativo, $detalle_gastoserv);
       break;
     case 'edit':
-      $VD = $OBJ_GASTO_SERVICIO->update($id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $fecha_emision, $serie, $correlativo, $detalle_gastoserv);
+      $VD = $OBJ_GASTO_SERVICIO->update($id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, $serie, $correlativo, $detalle_gastoserv);
       break;
     default:
       throw new Exception("No se recibió parámetro de acción.");
