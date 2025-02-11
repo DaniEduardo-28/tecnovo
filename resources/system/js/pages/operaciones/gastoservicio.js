@@ -144,15 +144,22 @@ $(document).ready(function () {
       var objeto = {};
 
       $('#table_form > tbody  > tr').each(function () {
-        var descripcion_gasto = $(this).find("td").eq(2).find("input").val();
-        var monto_gastado = $(this).find("td").eq(3).find("input").val();
-        var data = tableForm.row($(this)).data();
-
-        detalles.push({
-          "descripcion_gasto": descripcion_gasto,
-          "monto_gastado": monto_gastado
-        });
-      });
+        var descripcion_gasto = $(this).find("td").eq(2).text().trim(); // Descripción
+        var inputElement = $(this).find("td").eq(3).find("input");
+        var monto_gastado = inputElement.length > 0 ? inputElement.val().trim() : "0"; // Monto gastado
+    
+        console.log("Descripción capturada:", descripcion_gasto);
+        console.log("Monto capturado:", monto_gastado);
+    
+        if (descripcion_gasto !== "" && !isNaN(parseFloat(monto_gastado))) {
+            detalles.push({
+                "descripcion_gasto": descripcion_gasto,
+                "monto_gastado": monto_gastado
+            });
+        } else {
+            console.warn("Registro ignorado por valores inválidos:", { descripcion_gasto, monto_gastado });
+        }
+    });
 
       objeto.datos = detalles;
 
@@ -219,6 +226,64 @@ $(document).ready(function () {
 
 });
 
+$(document).ready(function () {
+
+  // Mostrar el modal al hacer clic en "Agregar Gasto"
+  $('#btnAgregarDetalle').click(function () {
+    $('#modalAgregarGasto').modal('show');
+  });
+
+  // Guardar el gasto en la tabla
+  $('#btnGuardarGasto').click(function () {
+    var descripcion = $('#descripcion_gasto').val().trim();
+    var monto = parseFloat($('#monto_gastado').val().trim());
+
+    if (descripcion === '' || isNaN(monto) || monto <= 0) {
+      Swal.fire('Error', 'Ingrese una descripción y un monto válido.', 'warning');
+      return;
+    }
+
+    var num = tableForm.data().count() + 1;
+    tableForm.row.add({
+      "num": num,
+      "id_detalle_gastoserv": "", // Se generará al guardar en la BD
+      "descripcion_gasto": descripcion,
+      "monto_gastado": monto.toFixed(2),
+      "opcion": '<button type="button" class="btn btn-danger btn-sm" id="btnDeleteProducto"><i class="fa fa-trash"></i></button>'
+    }).draw();
+
+    // Cerrar el modal y limpiar campos
+    $('#modalAgregarGasto').modal('hide');
+    $('#descripcion_gasto').val('');
+    $('#monto_gastado').val('');
+    actualizarnumeracion();
+    console.log("Llamando a calcularTotal()");
+    calcularTotal();
+  });
+
+  // Eliminar gasto de la tabla
+  $('#table_form tbody').on('click', '#btnDeleteProducto', function () {
+    var fila = $(this).parents('tr');
+    var montoEliminado = fila.find("td").eq(3).find("input").val();
+    
+    console.log("Eliminando fila con monto:", montoEliminado);
+
+    tableForm.row(fila).remove().draw();
+    actualizarnumeracion();
+    
+    console.log("Llamando a calcularTotal() después de eliminar");
+    setTimeout(calcularTotal, 100);
+});
+
+});
+
+function actualizarnumeracion() {
+  var rows = tableForm.rows().data();
+  for (var i = 0; i < rows.length; i++) {
+    tableForm.cell(i, 0).data(i + 1).draw();
+  }
+}
+
 function cancelarForm() {
   $("#contenedor_formulario").addClass("d-none");
   $("#contenedor_listado").removeClass("d-none");
@@ -232,20 +297,40 @@ function cancelarForm() {
   $("#name_proveedor").html("No Seleccionado");
   $("#form_datos")[0].reset();
   tableForm.rows().remove().draw();
+  console.log("Llamando a calcularTotal()");
   calcularTotal();
 }
 
 
 function calcularTotal() {
   var suma_total = 0.00;
-  $('#table_form > tbody  > tr').each(function () {
-    var monto_gastado = $(this).find("td").eq(3).find("input").val();
-    suma_total += parseFloat(monto_gastado);
+
+  console.log("Ejecutando calcularTotal()...");
+
+  $('#table_form tbody tr').each(function () {
+      var inputElement = $(this).find("td").eq(3).find("input");
+      
+      if (inputElement.length > 0) {
+          var monto_gastado = inputElement.val();
+          monto_gastado = monto_gastado ? monto_gastado.replace(/,/g, '') : '0';
+          var monto = parseFloat(monto_gastado);
+
+          console.log("Fila procesada - Monto capturado:", monto_gastado, "Monto convertido:", monto);
+
+          if (!isNaN(monto)) {
+              suma_total += monto;
+          }
+      } else {
+          console.warn("No se encontró el input en esta fila:", $(this));
+      }
   });
 
-  suma_total = (Math.round(suma_total * 100) / 100).toFixed(2);
-  $("#txtTotalForm").val(suma_total);
+  console.log("Suma total calculada antes de mostrar:", suma_total);
+
+  suma_total = suma_total.toFixed(2);
+  $("#txtTotalForm").val(`S/ ${suma_total}`);
 }
+
 
 
 function showDataProveedor() {

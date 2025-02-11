@@ -683,6 +683,30 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showDetalleParaOrdenCompra.php");
         break;
+      case 'deleteGastoServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/deleteGastoServicio.php");
+        break;
+      case 'eliminarGastoServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/eliminarGastoServicio.php");
+        break;
+      case 'getDataEditGastoServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/getDataEditGastoServicio.php");
+        break;
+      case 'getDataVerGastoServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/getDataVerGastoServicio.php");
+        break;
+      case 'goGastoServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/goGastoServicio.php");
+        break;
+      case 'showGastoServicio':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/showGastoServicio.php");
+        break;
       case 'showOrdenCompra':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showOrdenCompra.php");

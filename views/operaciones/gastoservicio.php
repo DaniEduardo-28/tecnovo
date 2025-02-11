@@ -424,6 +424,34 @@ if (!isset($_SESSION['id_trabajador'])) {
                       </div>
                       <!-- END CONTENT LISTADO -->
 
+                      <!-- Modal para Agregar Gasto -->
+                      <div class="modal fade" id="modalAgregarGasto" tabindex="-1" role="dialog" aria-labelledby="modalAgregarGastoLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalAgregarGastoLabel">Agregar Detalle</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="form-group">
+                                <label for="descripcion_gasto">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion_gasto" placeholder="Ingrese la descripción">
+                              </div>
+                              <div class="form-group">
+                                <label for="monto_gastado">Total</label>
+                                <input type="number" class="form-control" id="monto_gastado" step="0.01" placeholder="S/">
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                              <button type="button" class="btn btn-primary" id="btnGuardarGasto">Agregar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
 
                   </div>
