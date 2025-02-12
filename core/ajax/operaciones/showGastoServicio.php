@@ -86,7 +86,7 @@ try {
         "id_gasto_servicio" => $key['id_gasto_servicio'],
         "name_proveedor" => $key['nombre_proveedor'],
         "name_usuario" => $key['nombres_trabajador'],
-        "fecha_emision" => date('d/m/Y H:i', strtotime($key['fecha_emision'])),
+        "fecha_emision" => date('d/m/Y', strtotime($key['fecha_emision'])),
         "numero_documento" => $key['numero_documento'],
         "total" => $key['signo_moneda'] . ' ' . $key['total'],
         "estado" => $estado,

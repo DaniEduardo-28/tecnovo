@@ -27,25 +27,26 @@ try {
   $Resultado = $OBJ_GASTO_SERVICIO->getDataVerGastoServicio($id_gasto_servicio);
 
   if ($Resultado["error"] == "NO") {
-    $retorno_array = [];
-    foreach ($Resultado["data"] as $key) {
-      $retorno_array[] = array(
-        "id_gasto_servicio" => $key['id_gasto_servicio'],
-        "id_proveedor" => $key['id_proveedor'],
-        "name_proveedor" => $key['nombre_proveedor'],
-        "src_imagen_proveedor" => $key['src_imagen_proveedor'],
-        "fecha_emision" => date('Y-m-d', strtotime($key['fecha_emision'])),
-        "observaciones" => $key['observaciones'],
-        "estado" => $key['estado'],
-        "id_moneda" => $key['id_moneda'],
-        "total" => $key['total']
-      );
-    }
+    $key = $Resultado["data"];
 
     $response = [
       "error" => "NO",
       "message" => "Success",
-      "data" => $retorno_array
+      "data" => [
+        "id_gasto_servicio" => isset($key['id_gasto_servicio']) ? $key['id_gasto_servicio'] : "",
+        "id_proveedor" => isset($key['id_proveedor']) ? $key['id_proveedor'] : "",
+        "name_proveedor" => isset($key['nombre_proveedor']) ? $key['nombre_proveedor'] : "No disponible",
+        "src_imagen_proveedor" => isset($key['src_imagen_proveedor']) ? $key['src_imagen_proveedor'] : "resources/global/images/sin_imagen.png",
+        "fecha_emision" => isset($key['fecha_emision']) ? date('Y-m-d', strtotime($key['fecha_emision'])) : "",
+        "id_tipo_gasto" => isset($key['id_tipo_gasto']) ? $key['id_tipo_gasto'] : "",
+        "id_documento_venta" => isset($key['id_documento_venta']) ? $key['id_documento_venta'] : "",
+        "serie" => isset($key['serie']) ? $key['serie'] : "",
+        "correlativo" => isset($key['correlativo']) ? $key['correlativo'] : "",
+        "estado" => isset($key['estado']) ? $key['estado'] : "0",
+        "id_moneda" => isset($key['id_moneda']) ? $key['id_moneda'] : "",
+        "total" => isset($key['total']) ? $key['total'] : "0.00",
+        "detalles" => isset($key['detalles']) ? $key['detalles'] : []
+      ]
     ];
     echo json_encode($response);
   } else {

@@ -62,6 +62,7 @@ $(document).ready(function () {
     $("#panelOptions").addClass("d-none");
     $("#accion").val("add");
     $("#txtEstadoForm").val("En proceso ...");
+    $("#btnAgregarDetalle").removeClass("d-none");
   });
 
   $("#btnCancelForm").click(function () {
@@ -132,6 +133,7 @@ $(document).ready(function () {
       var codigo_moneda = $("#codigo_moneda").val();
 
       var countRows = tableForm.data().count();
+      console.log("ID enviado al servidor:", id_gasto_servicio);
       console.log("ID Tipo Gasto:", id_tipo_gasto); // <-- Verificar en consola
       console.log("ID Documento Venta:", id_documento_venta); // <-- Verificar en consola
 
@@ -180,10 +182,10 @@ $(document).ready(function () {
 
       objeto.datos = detalles;
 
-      var form = 'id_proveedor=' + id_proveedor + '&fecha_emision=' + fecha_emision +
-      '&accion=' + accion + '&serie=' + serie + '&correlativo=' + correlativo +
-      "&total=" + total + "&codigo_moneda=" + codigo_moneda + "&id_tipo_gasto=" + id_tipo_gasto +
-      "&id_documento_venta=" + id_documento_venta + "&array_detalle=" + JSON.stringify(objeto);
+      var form = 'id_gasto_servicio=' + id_gasto_servicio + '&id_proveedor=' + id_proveedor + '&fecha_emision=' + fecha_emision +
+        '&accion=' + accion + '&serie=' + serie + '&correlativo=' + correlativo +
+        "&total=" + total + "&codigo_moneda=" + codigo_moneda + "&id_tipo_gasto=" + id_tipo_gasto +
+        "&id_documento_venta=" + id_documento_venta + "&array_detalle=" + JSON.stringify(objeto);
 
       Swal.fire({
         title: '¿Seguro de confirmar la operación?',
@@ -201,6 +203,7 @@ $(document).ready(function () {
             datatype: "json",
             data: form,
             success: function (data) {
+              console.log("datos", data);
               try {
                 var response = JSON.parse(data);
                 if (response['error'] == "SI") {
@@ -537,28 +540,38 @@ function getDataEdit(id_gasto_servicio) {
       url: "ajax.php?accion=getDataEditGastoServicio",
       success: function (data) {
         try {
-          var data1 = JSON.parse(data);
-          if (data1["error"] == "NO") {
-            var o = data1["data"];
-            $("#id_gasto_servicio").val(o[0].id_gasto_servicio);
-            $("#id_proveedor").val(o[0].id_proveedor);
-            $("#name_proveedor").html(o[0].name_proveedor);
-            $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
-            $("#txtFechaOrdenForm").val(o[0].fecha_emision);
-            $("#txtSerieForm").val(o[0].serie);
-            $("#txtCorrelativoForm").val(o[0].correlativo);
-            $("#txtObservacionesForm").val(o[0].observaciones);
-            $("#txtEstadoForm").val(o[0].estado);
-            $("#codigo_moneda").val(o[0].id_moneda);
+          var response = JSON.parse(data);
+          if (response["error"] === "NO") {
+            var o = response["data"];
+            console.log("Respuesta del servidor:", o);
 
-            for (var i = 0; i < o.length; i++) {
-              tableForm.row.add({
-                "num": i + 1,
-                "id_detalle_gastoserv": o[i].id_detalle_gastoserv,
-                "descripcion_gasto": o[i].descripcion_gasto,
-                "monto_gastado": '<input class="form-control" value="' + o[i].monto_gastado + '" step="0.10" type="number" min="0">',
-                "opcion": '<button type="button" class="btn btn-danger" id="btnDeleteProducto"><span class="fa fa-close"></span></button>',
-              }).draw();
+            $("#btnAgregarDetalle").removeClass("d-none");
+
+            $("#id_gasto_servicio").val(o.id_gasto_servicio);
+            $("#id_proveedor").val(o.id_proveedor);
+            $("#name_proveedor").html(o.name_proveedor);
+            $('#img_proveedor').attr('src', o.src_imagen_proveedor);
+            $("#txtFechaOrdenForm").val(o.fecha_emision);
+            $("#txtSerieForm").val(o.serie);
+            $("#txtCorrelativoForm").val(o.correlativo);
+            $("#txtEstadoForm").val(o.estado == "0" ? "En proceso ..." : o.estado);
+            $("#codigo_moneda").val(o.id_moneda);
+            $("#txtTotalForm").val(o.total);
+            $("#id_tipo_gasto").val(o.id_tipo_gasto);
+            $("#id_documento_venta").val(o.id_documento_venta);
+
+            tableForm.clear().draw();
+
+            if (o.detalles && o.detalles.length > 0) {
+              o.detalles.forEach((detalle, index) => {
+                tableForm.row.add({
+                  "num": index + 1,
+                  "id_detalle_gastoserv": detalle.id_detalle_gastoserv,
+                  "descripcion_gasto": detalle.descripcion_gasto,
+                  "monto_gastado": '<input class="form-control" value="' + detalle.monto_gastado + '" step="0.10" type="number" min="0">',
+                  "opcion": '<button type="button" class="btn btn-danger btn-sm" id="btnDeleteProducto"><i class="fa fa-trash"></i></button>',
+                }).draw();
+              });
             }
 
             $("#contenedor_formulario").removeClass("d-none");
@@ -601,28 +614,35 @@ function verRegistro(id_gasto_servicio) {
       url: "ajax.php?accion=getDataVerGastoServicio",
       success: function (data) {
         try {
-          var data1 = JSON.parse(data);
-          if (data1["error"] == "NO") {
-            var o = data1["data"];
-            $("#id_gasto_servicio").val(o[0].id_gasto_servicio);
-            $("#id_proveedor").val(o[0].id_proveedor);
-            $("#name_proveedor").html(o[0].name_proveedor);
-            $('#img_proveedor').attr('src', o[0].src_imagen_proveedor);
-            $("#txtFechaOrdenForm").val(o[0].fecha_emision);
-            $("#txtSerieForm").val(o[0].serie);
-            $("#txtCorrelativoForm").val(o[0].correlativo);
-            $("#txtObservacionesForm").val(o[0].observaciones);
-            $("#txtEstadoForm").val(o[0].estado);
-            $("#codigo_moneda").val(o[0].id_moneda);
+          var response = JSON.parse(data);
+          if (response["error"] === "NO") {
+            var o = response["data"];
+            console.log("Respuesta del servidor:", o);
+            $("#id_gasto_servicio").val(o.id_gasto_servicio);
+            $("#id_proveedor").val(o.id_proveedor);
+            $("#name_proveedor").html(o.name_proveedor);
+            $('#img_proveedor').attr('src', o.src_imagen_proveedor);
+            $("#txtFechaOrdenForm").val(o.fecha_emision);
+            $("#txtSerieForm").val(o.serie);
+            $("#txtCorrelativoForm").val(o.correlativo);
+            $("#txtEstadoForm").val(o.estado == "0" ? "En proceso ..." : o.estado);
+            $("#codigo_moneda").val(o.id_moneda);
+            $("#txtTotalForm").val(o.total);
+            $("#id_tipo_gasto").val(o.id_tipo_gasto);
+            $("#id_documento_venta").val(o.id_documento_venta);
 
-            for (var i = 0; i < o.length; i++) {
-              tableForm.row.add({
-                "num": i + 1,
-                "id_detalle_gastoserv": o[i].id_detalle_gastoserv,
-                "descripcion_gasto": o[i].descripcion_gasto,
-                "monto_gastado": '<input class="form-control" value="' + o[i].monto_gastado + '" step="0.10" type="number" min="0" disabled>',
-                "opcion": '',
-              }).draw();
+            tableForm.clear().draw();
+
+            if (o.detalles && o.detalles.length > 0) {
+              o.detalles.forEach((detalle, index) => {
+                tableForm.row.add({
+                  "num": index + 1,
+                  "id_detalle_gastoserv": detalle.id_detalle_gastoserv,
+                  "descripcion_gasto": detalle.descripcion_gasto,
+                  "monto_gastado": `<input class="form-control" value="${detalle.monto_gastado}" step="0.10" type="number" min="0" disabled>`,
+                  "opcion": ''
+                }).draw();
+              });
             }
 
             $("#contenedor_formulario").removeClass("d-none");
@@ -632,9 +652,10 @@ function verRegistro(id_gasto_servicio) {
 
             $("#btnSaveForm").addClass("d-none");
             $("#btnSeleccionarProveedor").addClass("d-none");
+            $("#btnAgregarDetalle").addClass("d-none");
 
           } else {
-            runAlert("Message", data1["message"], "warning");
+            runAlert("Message", response["message"], "warning");
           }
         } catch (e) {
           runAlert("Oh No...!!!", "Error en TryCatch: " + e + data, "error");

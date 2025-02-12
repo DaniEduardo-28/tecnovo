@@ -436,11 +436,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <div class="modal-body">
                               <div class="form-group">
                                 <label for="descripcion_gasto">Descripción</label>
-                                <input type="text" class="form-control" id="descripcion_gasto" placeholder="Ingrese la descripción">
+                                <input type="text" class="form-control" id="descripcion_gasto" placeholder=" ">
                               </div>
                               <div class="form-group">
                                 <label for="monto_gastado">Total</label>
-                                <input type="number" class="form-control" id="monto_gastado" step="0.01" placeholder="S/">
+                                <input type="number" class="form-control" id="monto_gastado" step="0.01" placeholder=" ">
                               </div>
                             </div>
                             <div class="modal-footer">

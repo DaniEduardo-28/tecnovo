@@ -293,14 +293,47 @@ class ClassGastoServicio extends Conexion
 		$VD = "";
 
 		try {
+			$sql = "SELECT 
+						gs.id_gasto_servicio, 
+						gs.id_proveedor,
+						p.nombre_proveedor,
+						p.src_imagen_proveedor,
+						gs.fecha_emision,
+						gs.id_tipo_gasto,
+						gs.id_documento_venta,
+						gs.serie,
+						gs.correlativo,
+						gs.estado,
+						gs.id_moneda,
+						COALESCE(SUM(dg.monto_gastado), 0) AS total
+					FROM tb_gasto_servicio gs
+					LEFT JOIN vw_proveedor p ON gs.id_proveedor = p.id_proveedor
+					LEFT JOIN tb_detalle_gastoserv dg ON gs.id_gasto_servicio = dg.id_gasto_servicio
+					WHERE gs.id_gasto_servicio = ?
+					GROUP BY gs.id_gasto_servicio";
 
-			$stmt = $conexion->prepare("SELECT * FROM `tb_gasto_servicio` WHERE id_gasto_servicio = ? AND estado = '0'");
+			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_gasto_servicio]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-			if (count($result) == 0) {
-				throw new Exception("No se encontró la orden a editar, o ya fue cambiada de estado.");
+			if (!$result) {
+				throw new Exception("No se encontraron datos.");
 			}
+
+			$sql_detalle = "SELECT id_detalle_gastoserv, descripcion_gasto, monto_gastado 
+                        FROM tb_detalle_gastoserv 
+                        WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql_detalle);
+			$stmt->execute([$id_gasto_servicio]);
+			$detalles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if (!$detalles) {
+				$detalles = [];
+			}
+
+			error_log("Detalles obtenidos: " . print_r($detalles, true));
+
+			$result["detalles"] = $detalles;
 
 			$VD1['error'] = "NO";
 			$VD1['message'] = "Success";
@@ -325,34 +358,62 @@ class ClassGastoServicio extends Conexion
 
 	public function getDataVerGastoServicio($id_gasto_servicio)
 	{
-
 		$conexionClass = new Conexion();
 		$conexion = $conexionClass->Open();
 		$VD = "";
 
 		try {
+			$sql = "SELECT 
+						gs.id_gasto_servicio, 
+						gs.id_proveedor,
+						p.nombre_proveedor,
+						p.src_imagen_proveedor,
+						gs.fecha_emision,
+						gs.id_tipo_gasto,
+						gs.id_documento_venta,
+						gs.serie,
+						gs.correlativo,
+						gs.estado,
+						gs.id_moneda,
+						COALESCE(SUM(dg.monto_gastado), 0) AS total
+					FROM tb_gasto_servicio gs
+					LEFT JOIN vw_proveedor p ON gs.id_proveedor = p.id_proveedor
+					LEFT JOIN tb_detalle_gastoserv dg ON gs.id_gasto_servicio = dg.id_gasto_servicio
+					WHERE gs.id_gasto_servicio = ?
+					GROUP BY gs.id_gasto_servicio";
 
-			$sql = "SELECT * FROM `tb_gasto_servicio`
-								WHERE id_gasto_servicio = ? ";
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_gasto_servicio]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-			if (count($result) == 0) {
+			if (!$result) {
 				throw new Exception("No se encontraron datos.");
 			}
+
+			$sql_detalle = "SELECT id_detalle_gastoserv, descripcion_gasto, monto_gastado 
+                        FROM tb_detalle_gastoserv 
+                        WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql_detalle);
+			$stmt->execute([$id_gasto_servicio]);
+			$detalles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if (!$detalles) {
+				$detalles = [];
+			}
+
+			error_log("Detalles obtenidos: " . print_r($detalles, true));
+
+			$result["detalles"] = $detalles;
 
 			$VD1['error'] = "NO";
 			$VD1['message'] = "Success";
 			$VD1['data'] = $result;
 			$VD = $VD1;
 		} catch (PDOException $e) {
-
 			$VD1['error'] = "SI";
 			$VD1['message'] = $e->getMessage();
 			$VD = $VD1;
 		} catch (Exception $exception) {
-
 			$VD1['error'] = "SI";
 			$VD1['message'] = $exception->getMessage();
 			$VD = $VD1;
@@ -424,12 +485,13 @@ class ClassGastoServicio extends Conexion
 		$VD = "";
 		try {
 			$conexion->beginTransaction();
-
-			$stmt = $conexion->prepare("SELECT id_gasto_servicio FROM `tb_gasto_servicio` WHERE id_gasto_servicio = ? AND estado = '0'");
+			
+			$stmt = $conexion->prepare("SELECT * FROM `tb_gasto_servicio` WHERE id_gasto_servicio = ?");
 			$stmt->execute([$id_gasto_servicio]);
-			if ($stmt->rowCount() == 0) {
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			/* if (count($result)==0) {
 				throw new Exception("No se encontró la orden a editar, o ya fue cambiada de estado.");
-			}
+			} */
 
 			$sql = "UPDATE tb_gasto_servicio SET 
                 id_tipo_gasto = ?, id_proveedor = ?, id_trabajador = ?, 
