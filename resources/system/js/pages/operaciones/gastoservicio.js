@@ -120,99 +120,107 @@ $(document).ready(function () {
 
   $("#btnSaveForm").click(function (e) {
     try {
-      var id_gasto_servicio = $("#id_gasto_servicio").val();
-      var accion = $('#accion').val();
-      var id_proveedor = $("#id_proveedor").val();
-      var fecha_emision = $("#txtFechaOrdenForm").val();
-      var serie = $("#txtSerieForm").val();
-      var correlativo = $("#txtCorrelativoForm").val();
-      var observaciones = $("#txtObservacionesForm").val();
-      var total = $("#txtTotalForm").val();
+        var id_gasto_servicio = $("#id_gasto_servicio").val();
+        var id_documento_venta = $("#id_documento_venta").val();
+        var accion = $('#accion').val();
+        var id_proveedor = $("#id_proveedor").val();
+        var fecha_emision = $("#txtFechaOrdenForm").val();
+        var serie = $("#txtSerieForm").val();
+        var correlativo = $("#txtCorrelativoForm").val() || "AUTO";
+        var total = $("#txtTotalForm").val();
+        var codigo_moneda = $("#codigo_moneda").val(); // Obtiene el valor de la moneda
 
-      var countRows = tableForm.data().count();
+        var countRows = tableForm.data().count();
 
-      if (id_proveedor == "0" || id_proveedor == "") {
-        runAlert("Faltan Datos", "Debe seleccionar un proveedor.", "warning");
-        return;
-      }
-
-      if (countRows == 0) {
-        runAlert("Faltan Datos", "Debe agregar al menos un gasto.", "warning");
-        return;
-      }
-      var detalles = [];
-      var objeto = {};
-
-      $('#table_form > tbody  > tr').each(function () {
-        var descripcion_gasto = $(this).find("td").eq(2).text().trim(); // Descripción
-        var inputElement = $(this).find("td").eq(3).find("input");
-        var monto_gastado = inputElement.length > 0 ? inputElement.val().trim() : "0"; // Monto gastado
-    
-        console.log("Descripción capturada:", descripcion_gasto);
-        console.log("Monto capturado:", monto_gastado);
-    
-        if (descripcion_gasto !== "" && !isNaN(parseFloat(monto_gastado))) {
-            detalles.push({
-                "descripcion_gasto": descripcion_gasto,
-                "monto_gastado": monto_gastado
-            });
-        } else {
-            console.warn("Registro ignorado por valores inválidos:", { descripcion_gasto, monto_gastado });
+        if (id_proveedor == "0" || id_proveedor == "") {
+            runAlert("Faltan Datos", "Debe seleccionar un proveedor.", "warning");
+            return;
         }
-    });
 
-      objeto.datos = detalles;
+        if (codigo_moneda == "" || codigo_moneda == "0") { // Verifica si el campo de moneda está vacío
+            runAlert("Error", "Campo obligatorio: Moneda.", "warning");
+            return;
+        }
 
-      var form = 'id_proveedor=' + id_proveedor + '&fecha_emision=' + fecha_emision +
-        '&accion=' + accion + '&serie=' + serie + '&correlativo=' + correlativo +
-        "&total=" + total + "&array_detalle=" + JSON.stringify(objeto);
+        if (countRows == 0) {
+            runAlert("Faltan Datos", "Debe agregar al menos un gasto.", "warning");
+            return;
+        }
 
-      Swal.fire({
-        title: '¿Seguro de confirmar la operación?',
-        text: "No podrás revertir esta operación.",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#22c63b',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, realizar ahora!'
-      }).then(function (result) {
-        if (result.value) {
-          $.ajax({
-            type: "POST",
-            url: "ajax.php?accion=goGastoServicio",
-            datatype: "json",
-            data: form,
-            success: function (data) {
-              try {
-                var response = JSON.parse(data);
-                if (response['error'] == "SI") {
-                  runAlert("Error", response['message'], "warning");
-                } else {
-                  cancelarForm();
-                  runAlert("Éxito", response['message'], "success");
-                }
-              } catch (e) {
-                runAlert("Error", data + e, "error");
-              }
-            },
-            error: function (data) {
-              runAlert("Error", data, "error");
-            },
-            beforeSend: function (xhr) {
-              showHideLoader('block');
-            },
-            complete: function (jqXHR, textStatus) {
-              showHideLoader('none');
-              showData();
+        var detalles = [];
+        var objeto = {};
+
+        $('#table_form > tbody  > tr').each(function () {
+            var descripcion_gasto = $(this).find("td").eq(1).text().trim();
+            var inputElement = $(this).find("td").eq(2).find("input");
+            var monto_gastado = inputElement.length > 0 ? inputElement.val().trim() : "0";
+
+            console.log("Descripción capturada:", descripcion_gasto);
+            console.log("Monto capturado:", monto_gastado);
+
+            if (descripcion_gasto !== "" && !isNaN(parseFloat(monto_gastado))) {
+                detalles.push({
+                    "descripcion_gasto": descripcion_gasto,
+                    "monto_gastado": monto_gastado
+                });
+            } else {
+                console.warn("Registro ignorado por valores inválidos:", { descripcion_gasto, monto_gastado });
             }
-          });
-        }
-      });
+        });
+
+        objeto.datos = detalles;
+
+        var form = 'id_proveedor=' + id_proveedor + '&fecha_emision=' + fecha_emision +
+            '&accion=' + accion + '&serie=' + serie + '&correlativo=' + correlativo + // Ahora enviará "AUTO" si está vacío
+            "&total=" + total + "&codigo_moneda=" + codigo_moneda + "&array_detalle=" + JSON.stringify(objeto);
+
+        Swal.fire({
+            title: '¿Seguro de confirmar la operación?',
+            text: "No podrás revertir esta operación.",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#22c63b',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, realizar ahora!'
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: "ajax.php?accion=goGastoServicio",
+                    datatype: "json",
+                    data: form,
+                    success: function (data) {
+                        try {
+                            var response = JSON.parse(data);
+                            if (response['error'] == "SI") {
+                                runAlert("Error", response['message'], "warning");
+                            } else {
+                                cancelarForm();
+                                runAlert("Éxito", response['message'], "success");
+                            }
+                        } catch (e) {
+                            runAlert("Error", data + e, "error");
+                        }
+                    },
+                    error: function (data) {
+                        runAlert("Error", data, "error");
+                    },
+                    beforeSend: function (xhr) {
+                        showHideLoader('block');
+                    },
+                    complete: function (jqXHR, textStatus) {
+                        showHideLoader('none');
+                        showData();
+                    }
+                });
+            }
+        });
 
     } catch (e) {
-      runAlert("Error", "Error en Try Catch: " + e, "error");
+        runAlert("Error", "Error en Try Catch: " + e, "error");
     }
-  });
+});
+
 
   $('#btnBuscarListado').click(function () {
     showData();
@@ -248,7 +256,7 @@ $(document).ready(function () {
       "num": num,
       "id_detalle_gastoserv": "", // Se generará al guardar en la BD
       "descripcion_gasto": descripcion,
-      "monto_gastado": monto.toFixed(2),
+      "monto_gastado": `<input class="form-control" value="${monto.toFixed(2)}" type="number" min="0" step="0.01">`,
       "opcion": '<button type="button" class="btn btn-danger btn-sm" id="btnDeleteProducto"><i class="fa fa-trash"></i></button>'
     }).draw();
 
@@ -308,7 +316,7 @@ function calcularTotal() {
   console.log("Ejecutando calcularTotal()...");
 
   $('#table_form tbody tr').each(function () {
-      var inputElement = $(this).find("td").eq(3).find("input");
+      var inputElement = $(this).find("td").eq(2).find("input");
       
       if (inputElement.length > 0) {
           var monto_gastado = inputElement.val();
