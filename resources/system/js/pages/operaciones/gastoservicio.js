@@ -843,7 +843,6 @@ function savePago() {
               limpiarCamposNuevoPago();
               cargarPagosExistentes($("#id_gasto_servicio_pago").val());
               runAlert("Bien hecho...!!!", response["message"], "success");
-              showLista();
             }
           } catch (e) {
             runAlert("Oh No...!!!", e, "error");
@@ -864,22 +863,22 @@ function savePago() {
 }
 
 
-function showModalPagos(id_gasto_servicio_pago, monto_total, signo) {
-  if (!monto_total || isNaN(monto_total)) {
-    console.warn("monto_total es inválido, buscando en el input oculto...");
-    monto_total = parseFloat($("#total_ingreso").val()) || 0;
+function showModalPagos(id_gasto_servicio_pago, total_monto, signo) {
+  if (!total_monto || isNaN(total_monto)) {
+    console.warn("total es inválido, buscando en el input oculto...");
+    total_monto = parseFloat($("#total_ingreso").val()) || 0;
 }
 
   $("#id_gasto_servicio_pago").val(id_gasto_servicio_pago);
-  $("#total_ingreso").val(monto_total);
+  $("#total_ingreso").val(total_monto);
   $("#codigo_moneda").val(signo);
-  $("#lblTotalPagar").html(`<strong>Total a Pagar:</strong> ${signo} ${monto_total.toFixed(2)}`);
+  $("#lblTotalPagar").html(`<strong>Total a Pagar:</strong> ${signo} ${total_monto.toFixed(2)}`);
   cargarPagosExistentes(id_gasto_servicio_pago);
   $("#modalPagos").modal("show");
 }
 
 
-function deleteRegistro(id_gasto_servicio_pago) {
+function deleteRegistroPago(id_gasto_servicio_pago) {
   try {
     var parametros = {
       id_gasto_servicio_pago: id_gasto_servicio_pago,
@@ -952,11 +951,14 @@ function cargarPagosExistentes(id_gasto_servicio_pago) {
 }
 
 function llenarTablaPagos(pagos) {
+  console.log("pagos",pagos);
   const tablaPagos = $("#tablaPagos tbody");
   tablaPagos.empty();
   let total_pagado = 0;
-  let monto_total = parseFloat($("#total_ingreso").val());
-  let signo = $("#codigo_moneda").val();
+  let total_monto = parseFloat($("#total_ingreso").val());
+  console.log("new total mont", total_monto);
+  let signo_moneda = $("#moneda_ingreso").val();
+  console.log("new signo", signo_moneda);
   if (pagos && pagos.length > 0) {
     pagos.forEach((pago) => {
       const fila = `
@@ -971,12 +973,14 @@ function llenarTablaPagos(pagos) {
         </tr>
       `;
       total_pagado += parseFloat(pago.monto);
+      console.log("Pago hecho", total_pagado);
       tablaPagos.append(fila);
     });
   }
-  let pendiente = monto_total - total_pagado;
-  $("#lblTotalPagado").html(`<strong>Total Pagado:</strong> ${signo} ${total_pagado.toFixed(2)}`);
-  $("#lblPendientePago").html(`<strong>Pendiente de Pago:</strong> ${signo} ${pendiente.toFixed(2)}`);
+  let pendiente = total_monto - total_pagado;
+  console.log("Pendiente resultante", pendiente);
+  $("#lblTotalPagado").html(`<strong>Total Pagado:</strong> ${signo_moneda} ${total_pagado.toFixed(2)}`);
+  $("#lblPendientePago").html(`<strong>Pendiente de Pago:</strong> ${signo_moneda} ${pendiente.toFixed(2)}`);
   $("#total_pendiente").val(pendiente);
   if (pendiente <= 0) {
     $("#nuevoPagoContainer").hide();

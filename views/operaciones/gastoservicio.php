@@ -15,6 +15,12 @@ if (!isset($_SESSION['id_trabajador'])) {
       display: inline-block;
     }
 
+    .modal-lg-custom {
+      max-width: 70%;
+      /* Ajusta el ancho a tu necesidad */
+    }
+
+
     .pagination li {
       color: black;
       float: left;
@@ -468,7 +474,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                               <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
                                 <form id="frmPago" name="frmPago" enctype="multipart/form-data">
-                                  <input type="hidden" name="id_cronograma_pago" id="id_cronograma_pago" value="0">
+                                  <input type="hidden" name="id_gasto_servicio_pago" id="id_gasto_servicio_pago" value="0">
                                   <input type="hidden" name="total_ingreso" id="total_ingreso" value="0">
                                   <input type="hidden" name="total_pendiente" id="total_pendiente" value="0">
                                   <input type="hidden" name="total_pagado" id="total_pagado" value="0">

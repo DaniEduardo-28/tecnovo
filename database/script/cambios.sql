@@ -66,3 +66,6 @@ CREATE TABLE tb_pagos_gastos (
     monto DECIMAL(10,2) NULL,
     metodo_pago INT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+ALTER TABLE tb_gasto_servicio ADD COLUMN total_monto DECIMAL(18,2) NOT NULL DEFAULT 0;
+

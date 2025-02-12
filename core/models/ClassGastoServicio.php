@@ -297,8 +297,8 @@ class ClassGastoServicio extends Conexion
 
 
 			$sql = "INSERT INTO tb_gasto_servicio 
-                (`id_sucursal`, `id_tipo_gasto`, `id_proveedor`, `id_trabajador`, `fecha_emision`, `serie`, `correlativo`, `estado`, `id_moneda`, `id_documento_venta`) 
-                VALUES (?, ?, ?, ?, NOW(), ?, ?, '0', ?, ?)";
+                (`id_sucursal`, `id_tipo_gasto`, `id_proveedor`, `id_trabajador`, `fecha_emision`, `serie`, `correlativo`, `estado`, `id_moneda`, `id_documento_venta`, `total_monto`) 
+                VALUES (?, ?, ?, ?, NOW(), ?, ?, '0', ?, ?, 0)";
 
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$id_sucursal, $id_tipo_gasto, $id_proveedor, $id_trabajador, $serie, $correlativo, $codigo_moneda, $id_documento_venta]);
@@ -309,6 +309,8 @@ class ClassGastoServicio extends Conexion
 				throw new Exception("1. Error al registrar la orden en la base de datos.");
 			}
 
+			$total_monto = 0;
+
 			foreach ($detalle_gastoserv->datos as $detalle) {
 				$sql = "INSERT INTO tb_detalle_gastoserv (`id_gasto_servicio`, `descripcion_gasto`, `monto_gastado`) VALUES (?, ?, ?)";
 				$stmt = $conexion->prepare($sql);
@@ -317,7 +319,13 @@ class ClassGastoServicio extends Conexion
 				if ($stmt->rowCount() == 0) {
 					throw new Exception("2. Error al registrar el detalle de la orden en la base de datos.");
 				}
+
+				$total_monto += $detalle->monto_gastado;
 			}
+			$sql = "UPDATE tb_gasto_servicio SET total_monto = ? WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$total_monto, $id_gasto_servicio]);
+
 
 			$VD = "OK";
 			$conexion->commit();
@@ -340,7 +348,7 @@ class ClassGastoServicio extends Conexion
 		$VD = "";
 		try {
 			$conexion->beginTransaction();
-			
+
 			$stmt = $conexion->prepare("SELECT * FROM `tb_gasto_servicio` WHERE id_gasto_servicio = ?");
 			$stmt->execute([$id_gasto_servicio]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -365,6 +373,8 @@ class ClassGastoServicio extends Conexion
 				throw new Exception("2. Ocurrió un error al eliminar el detalle anterior de la orden.");
 			}
 
+			$total_monto = 0;
+
 			foreach ($detalle_gastoserv->datos as $detalle) {
 				$sql = "INSERT INTO tb_detalle_gastoserv (`id_gasto_servicio`, `descripcion_gasto`, `monto_gastado`) VALUES (?, ?, ?)";
 				$stmt = $conexion->prepare($sql);
@@ -373,7 +383,13 @@ class ClassGastoServicio extends Conexion
 				if ($stmt->rowCount() == 0) {
 					throw new Exception("3. Error al registrar la orden en la base de datos.");
 				}
+
+				$total_monto += $detalle->monto_gastado;
 			}
+			$sql = "UPDATE tb_gasto_servicio SET total_monto = ? WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$total_monto, $id_gasto_servicio]);
+
 
 			$VD = "OK";
 			$conexion->commit();
@@ -463,206 +479,203 @@ class ClassGastoServicio extends Conexion
 		return $VD;
 	}
 
-	
+
 	public function getCountPagos($id_gasto_servicio)
 	{
-  
-	  $conexionClass = new Conexion();
-	  $conexion = $conexionClass->Open();
-	  $VD = "";
-  
-	  try {
-  
-		$parametros = null;
-		$sql = "SELECT COUNT(*) as cantidad 
+
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+
+			$parametros = null;
+			$sql = "SELECT COUNT(*) as cantidad 
 			  FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
-  
-		$parametros[] = $id_gasto_servicio;
-  
-		$stmt = $conexion->prepare($sql);
-		$stmt->execute($parametros);
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  
-		if (count($result) == 0) {
-		  throw new Exception("No se encontraron datos");
+
+			$parametros[] = $id_gasto_servicio;
+
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos");
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
 		}
-  
-		$VD1['error'] = "NO";
-		$VD1['message'] = "Success";
-		$VD1['data'] = $result;
-		$VD = $VD1;
-	  } catch (PDOException $e) {
-  
-		$VD1['error'] = "SI";
-		$VD1['message'] = $e->getMessage();
-		$VD = $VD1;
-	  } catch (Exception $exception) {
-  
-		$VD1['error'] = "SI";
-		$VD1['message'] = $exception->getMessage();
-		$VD = $VD1;
-	  } finally {
-		$conexionClass->Close();
-	  }
-  
-	  return $VD;
+
+		return $VD;
 	}
-  
+
 	public function getPagos($id_gasto_servicio)
 	{
-	  $conexionClass = new Conexion();
-	  $conexion = $conexionClass->Open();
-	  $VD = "";
-  
-	  try {
-  
-		$sql = "SELECT p.id_gasto_servicio, p.id_pago_gasto, p.fecha_pago, f.name_forma_pago, p.monto ,
-				(SELECT SUM(dc.monto_gastado) FROM tb_detalle_gastoserv dc WHERE dc.id_gasto_servicio = c.id_gasto_servicio) AS total 
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+
+			$sql = "SELECT p.id_gasto_servicio, p.id_pago_gasto, p.fecha_pago, f.name_forma_pago, p.monto , c.total_monto 
 				  FROM tb_gasto_servicio c
 				  LEFT JOIN tb_pagos_gastos p ON c.id_gasto_servicio = p.id_gasto_servicio
 				  LEFT JOIN tb_forma_pago f ON p.metodo_pago = f.id_forma_pago
 				  WHERE c.id_gasto_servicio = ?";
-		$stmt = $conexion->prepare($sql);
-		$stmt->execute([$id_gasto_servicio]);
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-  
-		error_log("Datos obtenidos: " . print_r($result, true));
-  
-		if (empty($result)) {
-            $stmt = $conexion->prepare("SELECT 
-                (SELECT SUM(monto_gastado) FROM tb_detalle_gastoserv WHERE id_gasto_servicio = ?) AS total
-            ");
-            $stmt->execute([$id_gasto_servicio]);
-            $monto_total = $stmt->fetchColumn();
-  
-		  $result = [
-			[
-			  "id_gasto_servicio" => $id_gasto_servicio,
-              "monto_total" => $monto_total ?? 0,
-			  "id_pago_cliente" => null,
-			  "fecha_pago" => null,
-			  "name_forma_pago" => null,
-			  "monto" => 0
-			]
-		  ];
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_gasto_servicio]);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			error_log("Datos obtenidos: " . print_r($result, true));
+
+			if (empty($result)) {
+				$stmt = $conexion->prepare("SELECT total_monto FROM tb_gasto_servicio WHERE id_gasto_servicio = ?");
+				$stmt->execute([$id_gasto_servicio]);
+				$total_monto = $stmt->fetchColumn();
+
+				$result = [
+					[
+						"id_gasto_servicio" => $id_gasto_servicio,
+						"total_monto" => $total_monto,
+						"id_pago_cliente" => null,
+						"fecha_pago" => null,
+						"name_forma_pago" => null,
+						"monto" => 0
+					]
+				];
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
 		}
-  
-		$VD1['error'] = "NO";
-		$VD1['message'] = "Success";
-		$VD1['data'] = $result;
-		$VD = $VD1;
-	  } catch (PDOException $e) {
-		$VD1['error'] = "SI";
-		$VD1['message'] = $e->getMessage();
-		$VD = $VD1;
-	  } catch (Exception $exception) {
-		$VD1['error'] = "SI";
-		$VD1['message'] = $exception->getMessage();
-		$VD = $VD1;
-	  } finally {
-		$conexionClass->Close();
-	  }
-  
-	  return $VD;
+
+		return $VD;
 	}
-  
-  
+
+
 	public function addPagos($id_gasto_servicio, $metodo_pago, $fecha_pago, $monto)
 	{
-	  $conexionClass = new Conexion();
-	  $conexion = $conexionClass->Open();
-	  $VD = "";
-  
-	  try {
-  
-		$conexion->beginTransaction();
-  
-		$sql = "INSERT INTO tb_pagos_gastos (id_pago_servicio, metodo_pago, fecha_pago, monto) VALUES (?, ?, ?, ?)";
-		$stmt = $conexion->prepare($sql);
-		$stmt->execute([$id_gasto_servicio, $metodo_pago, $fecha_pago, $monto]);
-  
-		if ($stmt->rowCount() == 0) {
-		  throw new Exception("Ocurrió un error al registrar pago.");
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+
+			$conexion->beginTransaction();
+
+			$sql = "INSERT INTO tb_pagos_gastos (id_gasto_servicio, metodo_pago, fecha_pago, monto) VALUES (?, ?, ?, ?)";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_gasto_servicio, $metodo_pago, $fecha_pago, $monto]);
+
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Ocurrió un error al registrar pago.");
+			}
+
+			$sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_gasto_servicio]);
+			$total_pagado = $stmt->fetchColumn();
+
+			$sql = "SELECT total_monto FROM tb_gasto_servicio WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_gasto_servicio]);
+			$total_monto = $stmt->fetchColumn();
+
+			$nuevo_estado = ($total_pagado >= $total_monto) ? 2 : 0;
+			$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$nuevo_estado, $id_gasto_servicio]);
+
+			$VD = "OK";
+			$conexion->commit();
+		} catch (PDOException $e) {
+			$conexion->rollBack();
+			$VD = $e->getMessage();
+		} catch (Exception $exception) {
+			$conexion->rollBack();
+			$VD = $exception->getMessage();
+		} finally {
+			$conexionClass->Close();
 		}
-  
-		$sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_gasto_servicio]);
-        $total_pagado = $stmt->fetchColumn();
-  
-		$sql = "SELECT COALESCE(SUM(monto_gastado), 0) FROM tb_detalle_gastoserv WHERE id_gasto_servicio = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_gasto_servicio]);
-        $total_gasto = $stmt->fetchColumn();
-  
-		$nuevo_estado = ($total_pagado >= $total_gasto) ? 2 : 0;
-		$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$nuevo_estado, $id_gasto_servicio]);
-  
-		$VD = "OK";
-		$conexion->commit();
-	  } catch (PDOException $e) {
-		$conexion->rollBack();
-		$VD = $e->getMessage();
-	  } catch (Exception $exception) {
-		$conexion->rollBack();
-		$VD = $exception->getMessage();
-	  } finally {
-		$conexionClass->Close();
-	  }
-	  return $VD;
+		return $VD;
 	}
-  
+
 	public function deletePago($id_pago_gasto)
 	{
-	  $conexionClass = new Conexion();
-	  $conexion = $conexionClass->Open();
-	  $VD = "";
-	  try {
-  
-		$conexion->beginTransaction();
-  
-		$sql = "SELECT id_gasto_servicio FROM tb_pagos_gastos WHERE id_pago_gasto = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_pago_gasto]);
-        $id_gasto_servicio = $stmt->fetchColumn();
-  
-		$stmt = $conexion->prepare("DELETE FROM tb_pagos_gastos WHERE id_pago_gasto = ?");
-        $stmt->execute([$id_pago_gasto]);
-        if ($stmt->rowCount() == 0) {
-            throw new Exception("Ocurrió un error al eliminar el pago.");
-        }
-  
-		$sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_gasto_servicio]);
-        $total_pagado = $stmt->fetchColumn();
-  
-		$sql = "SELECT COALESCE(SUM(monto_gastado), 0) FROM tb_detalle_gastoserv WHERE id_gasto_servicio = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id_gasto_servicio]);
-        $total_gasto = $stmt->fetchColumn();
-  
-		$nuevo_estado_pago = ($total_pagado >= $total_gasto) ? 2 : 0;
-		$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$nuevo_estado_pago, $id_gasto_servicio]);
-  
-		$VD = "OK";
-		$conexion->commit();
-	  } catch (PDOException $e) {
-		$conexion->rollBack();
-		$VD = $e->getMessage();
-	  } catch (Exception $exception) {
-		$conexion->rollBack();
-		$VD = $exception->getMessage();
-	  } finally {
-		$conexionClass->Close();
-	  }
-	  return $VD;
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+		try {
+
+			$conexion->beginTransaction();
+
+			$sql = "SELECT id_gasto_servicio FROM tb_pagos_gastos WHERE id_pago_gasto = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_pago_gasto]);
+			$id_gasto_servicio = $stmt->fetchColumn();
+
+			$stmt = $conexion->prepare("DELETE FROM tb_pagos_gastos WHERE id_pago_gasto = ?");
+			$stmt->execute([$id_pago_gasto]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Ocurrió un error al eliminar el pago.");
+			}
+
+			$sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_gasto_servicio]);
+			$total_pagado = $stmt->fetchColumn();
+
+			$sql = "SELECT total_monto FROM tb_gasto_servicio WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$id_gasto_servicio]);
+			$total_monto = $stmt->fetchColumn();
+
+			$nuevo_estado_pago = ($total_pagado >= $total_monto) ? 2 : 0;
+			$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$nuevo_estado_pago, $id_gasto_servicio]);
+
+			$VD = "OK";
+			$conexion->commit();
+		} catch (PDOException $e) {
+			$conexion->rollBack();
+			$VD = $e->getMessage();
+		} catch (Exception $exception) {
+			$conexion->rollBack();
+			$VD = $exception->getMessage();
+		} finally {
+			$conexionClass->Close();
+		}
+		return $VD;
 	}
-  
+
 }
 
 $OBJ_GASTO_SERVICIO = new ClassGastoServicio();

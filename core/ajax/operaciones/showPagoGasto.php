@@ -22,14 +22,14 @@ try {
     $Resultado = $OBJ_GASTO_SERVICIO->getPagos($id_gasto_servicio);
     $count = 1;
     foreach ($Resultado["data"] as $key) {
-      $flag_eliminar = '<a href="javascript:deleteRegistro(' . $key['id_pago_gasto'] . ",'" . str_replace('"', ' ', str_replace("'", ' ', $key['name_forma_pago'])) . "'" . ')" class="btn btn-icon btn-outline-danger btn-round"><i class="ti ti-close"></i></a>';
+      $flag_eliminar = '<a href="javascript:deleteRegistroPago(' . $key['id_pago_gasto'] . ",'" . str_replace('"', ' ', str_replace("'", ' ', $key['name_forma_pago'])) . "'" . ')" class="btn btn-icon btn-outline-danger btn-round"><i class="ti ti-close"></i></a>';
       $retorno_array[] = array(
         "num" => "$count",
         "id_pago_gasto" => $key['id_pago_gasto'],
         "fecha_pago" => $key['fecha_pago'],
         "name_forma_pago" => $key['name_forma_pago'],
         "monto" => $key['monto'],
-        "monto_total" => $key['monto_total'],
+        "total_monto" => $key['total_monto'],
         "flag_eliminar" => "$flag_eliminar"
       );
       $count++;

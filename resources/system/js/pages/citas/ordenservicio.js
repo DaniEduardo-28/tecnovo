@@ -1162,7 +1162,9 @@ function llenarTablaPagos(pagos) {
   tablaPagos.empty();
   let total_pagado = 0;
   let monto_total = parseFloat($("#total_ingreso").val());
+  console.log("new total mont", monto_total);
   let signo = $("#moneda_ingreso").val();
+  console.log("new signo", signo);
   if (pagos && pagos.length > 0) {
     pagos.forEach((pago) => {
       const fila = `
