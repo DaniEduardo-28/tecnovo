@@ -36,3 +36,26 @@ INSERT INTO `tb_acceso_opcion` (`id`, `id_grupo`, `id_opcion`, `flag_agregar`, `
 
 --Nueva opción
 UPDATE `tb_opcion` SET `name_opcion` = 'Gastos de Servicios', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 606;
+
+CREATE TABLE tb_gasto_servicio (
+    id_gasto_servicio INT AUTO_INCREMENT PRIMARY KEY,
+    id_proveedor INT NOT NULL,
+    id_trabajador INT NOT NULL,
+    id_sucursal INT NOT NULL,
+    fecha_emision DATETIME NOT NULL,
+    id_moneda INT NOT NULL,
+    estado CHAR(1) NOT NULL,
+    id_tipo_gasto INT NOT NULL,
+    id_documento_venta INT NOT NULL,
+    serie VARCHAR(10) NOT NULL,
+    correlativo VARCHAR(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE tb_detalle_gastoserv (
+    id_detalle_gastoserv BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_gasto_servicio INT NOT NULL,
+    descripcion_gasto VARCHAR(500) NOT NULL,
+    monto_gastado DECIMAL(18,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
