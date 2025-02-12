@@ -457,6 +457,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                         </div>
                       </div>
 
+                      <!-- Modal de Pagos -->
+
                       <div class="modal fade" id="modalPagos" tabindex="-1" role="dialog"
                         aria-labelledby="modalPagosLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg-custom" role="document">

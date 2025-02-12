@@ -957,8 +957,8 @@ function llenarTablaPagos(pagos) {
   let total_pagado = 0;
   let total_monto = parseFloat($("#total_ingreso").val());
   console.log("new total mont", total_monto);
-  let signo_moneda = $("#moneda_ingreso").val();
-  console.log("new signo", signo_moneda);
+  let signo = $("#moneda_ingreso").val();
+  console.log("new signo", signo);
   if (pagos && pagos.length > 0) {
     pagos.forEach((pago) => {
       const fila = `
@@ -979,8 +979,8 @@ function llenarTablaPagos(pagos) {
   }
   let pendiente = total_monto - total_pagado;
   console.log("Pendiente resultante", pendiente);
-  $("#lblTotalPagado").html(`<strong>Total Pagado:</strong> ${signo_moneda} ${total_pagado.toFixed(2)}`);
-  $("#lblPendientePago").html(`<strong>Pendiente de Pago:</strong> ${signo_moneda} ${pendiente.toFixed(2)}`);
+  $("#lblTotalPagado").html(`<strong>Total Pagado:</strong> ${signo} ${total_pagado.toFixed(2)}`);
+  $("#lblPendientePago").html(`<strong>Pendiente de Pago:</strong> ${signo} ${pendiente.toFixed(2)}`);
   $("#total_pendiente").val(pendiente);
   if (pendiente <= 0) {
     $("#nuevoPagoContainer").hide();
