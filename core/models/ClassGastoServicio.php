@@ -140,151 +140,6 @@ class ClassGastoServicio extends Conexion
 		return $VD;
 	}
 
-
-	public function getCount1($id_sucursal, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda)
-	{
-
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
-
-		try {
-
-			$fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
-
-			$valor = "%$valor%";
-			$parametros = null;
-			$sql = "SELECT COUNT(*) as cantidad FROM `tb_gasto_servicio` o
-								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								WHERE o.fecha_emision >= ? AND o.fecha_emision < ? AND o.estado in ('0','1')
-								AND o.id_sucursal = ? ";
-
-			$parametros[] = $fecha_inicio;
-			$parametros[] = $fecha_fin;
-			$parametros[] = $id_sucursal;
-
-			if ($tipo_busqueda != '') {
-				switch ($tipo_busqueda) {
-					case "1":
-						$sql .= " AND p.num_documento_proveedor LIKE ? ";
-						$parametros[] = $valor;
-						break;
-					case "2":
-						$sql .= " AND p.nombre_proveedor LIKE ? ";
-						$parametros[] = $valor;
-						break;
-					default:
-						break;
-				}
-			}
-
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos");
-			} else {
-				if ($result[0]['cantidad'] == 0) {
-					throw new Exception("No se encontraron datos.");
-				}
-			}
-
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-		} catch (PDOException $e) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-		} catch (Exception $exception) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-	}
-
-	public function show1($id_sucursal, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda, $offset, $limit)
-	{
-
-		$conexionClass = new Conexion();
-		$conexion = $conexionClass->Open();
-		$VD = "";
-
-		try {
-
-			$fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
-
-			$valor = "%$valor%";
-			$parametros = null;
-			$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.desc_gasto,dv.nombre,mon.signo as signo_moneda,
-								(SELECT SUM(dc.monto_gastado) FROM tb_detalle_gastoserv dc WHERE dc.id_gasto_servicio = o.id_gasto_servicio) AS total
-								FROM `tb_gasto_servicio` o
-								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda
-								INNER JOIN vw_proveedor p ON p.id_proveedor = o.id_proveedor
-								INNER JOIN vw_trabajadores t ON t.id_trabajador = o.id_trabajador
-								INNER JOIN tb_tipo_gasto m ON m.id_tipo_gasto = o.id_tipo_gasto 
-                                INNER JOIN tb_documento_venta dv ON dv.id_documento_venta = o.id_documento_venta
-								WHERE o.fecha_emision >= ? AND o.fecha_emision < ? AND o.estado in ('0','1')
-								AND o.id_sucursal = ? ";
-
-			$parametros[] = $fecha_inicio;
-			$parametros[] = $fecha_fin;
-			$parametros[] = $id_sucursal;
-
-			if ($tipo_busqueda != '') {
-				switch ($tipo_busqueda) {
-					case 1:
-						$sql .= " AND p.num_documento_proveedor LIKE ? ";
-						$parametros[] = $valor;
-						break;
-					case 2:
-						$sql .= " AND p.nombre_proveedor LIKE ? ";
-						$parametros[] = $valor;
-						break;
-					default:
-						break;
-				}
-			}
-
-			$sql .= " LIMIT $offset, $limit";
-
-			$stmt = $conexion->prepare($sql);
-			$stmt->execute($parametros);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (count($result) == 0) {
-				throw new Exception("No se encontraron datos.");
-			}
-
-			$VD1['error'] = "NO";
-			$VD1['message'] = "Success";
-			$VD1['data'] = $result;
-			$VD = $VD1;
-		} catch (PDOException $e) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $e->getMessage();
-			$VD = $VD1;
-		} catch (Exception $exception) {
-
-			$VD1['error'] = "SI";
-			$VD1['message'] = $exception->getMessage();
-			$VD = $VD1;
-		} finally {
-			$conexionClass->Close();
-		}
-
-		return $VD;
-	}
-
 	public function getDataEditGastoServicio($id_gasto_servicio)
 	{
 
@@ -607,6 +462,207 @@ class ClassGastoServicio extends Conexion
 		}
 		return $VD;
 	}
+
+	
+	public function getCountPagos($id_gasto_servicio)
+	{
+  
+	  $conexionClass = new Conexion();
+	  $conexion = $conexionClass->Open();
+	  $VD = "";
+  
+	  try {
+  
+		$parametros = null;
+		$sql = "SELECT COUNT(*) as cantidad 
+			  FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
+  
+		$parametros[] = $id_gasto_servicio;
+  
+		$stmt = $conexion->prepare($sql);
+		$stmt->execute($parametros);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  
+		if (count($result) == 0) {
+		  throw new Exception("No se encontraron datos");
+		}
+  
+		$VD1['error'] = "NO";
+		$VD1['message'] = "Success";
+		$VD1['data'] = $result;
+		$VD = $VD1;
+	  } catch (PDOException $e) {
+  
+		$VD1['error'] = "SI";
+		$VD1['message'] = $e->getMessage();
+		$VD = $VD1;
+	  } catch (Exception $exception) {
+  
+		$VD1['error'] = "SI";
+		$VD1['message'] = $exception->getMessage();
+		$VD = $VD1;
+	  } finally {
+		$conexionClass->Close();
+	  }
+  
+	  return $VD;
+	}
+  
+	public function getPagos($id_gasto_servicio)
+	{
+	  $conexionClass = new Conexion();
+	  $conexion = $conexionClass->Open();
+	  $VD = "";
+  
+	  try {
+  
+		$sql = "SELECT p.id_gasto_servicio, p.id_pago_gasto, p.fecha_pago, f.name_forma_pago, p.monto ,
+				(SELECT SUM(dc.monto_gastado) FROM tb_detalle_gastoserv dc WHERE dc.id_gasto_servicio = c.id_gasto_servicio) AS total 
+				  FROM tb_gasto_servicio c
+				  LEFT JOIN tb_pagos_gastos p ON c.id_gasto_servicio = p.id_gasto_servicio
+				  LEFT JOIN tb_forma_pago f ON p.metodo_pago = f.id_forma_pago
+				  WHERE c.id_gasto_servicio = ?";
+		$stmt = $conexion->prepare($sql);
+		$stmt->execute([$id_gasto_servicio]);
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+  
+		error_log("Datos obtenidos: " . print_r($result, true));
+  
+		if (empty($result)) {
+            $stmt = $conexion->prepare("SELECT 
+                (SELECT SUM(monto_gastado) FROM tb_detalle_gastoserv WHERE id_gasto_servicio = ?) AS total
+            ");
+            $stmt->execute([$id_gasto_servicio]);
+            $monto_total = $stmt->fetchColumn();
+  
+		  $result = [
+			[
+			  "id_gasto_servicio" => $id_gasto_servicio,
+              "monto_total" => $monto_total ?? 0,
+			  "id_pago_cliente" => null,
+			  "fecha_pago" => null,
+			  "name_forma_pago" => null,
+			  "monto" => 0
+			]
+		  ];
+		}
+  
+		$VD1['error'] = "NO";
+		$VD1['message'] = "Success";
+		$VD1['data'] = $result;
+		$VD = $VD1;
+	  } catch (PDOException $e) {
+		$VD1['error'] = "SI";
+		$VD1['message'] = $e->getMessage();
+		$VD = $VD1;
+	  } catch (Exception $exception) {
+		$VD1['error'] = "SI";
+		$VD1['message'] = $exception->getMessage();
+		$VD = $VD1;
+	  } finally {
+		$conexionClass->Close();
+	  }
+  
+	  return $VD;
+	}
+  
+  
+	public function addPagos($id_gasto_servicio, $metodo_pago, $fecha_pago, $monto)
+	{
+	  $conexionClass = new Conexion();
+	  $conexion = $conexionClass->Open();
+	  $VD = "";
+  
+	  try {
+  
+		$conexion->beginTransaction();
+  
+		$sql = "INSERT INTO tb_pagos_gastos (id_pago_servicio, metodo_pago, fecha_pago, monto) VALUES (?, ?, ?, ?)";
+		$stmt = $conexion->prepare($sql);
+		$stmt->execute([$id_gasto_servicio, $metodo_pago, $fecha_pago, $monto]);
+  
+		if ($stmt->rowCount() == 0) {
+		  throw new Exception("Ocurrió un error al registrar pago.");
+		}
+  
+		$sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_gasto_servicio]);
+        $total_pagado = $stmt->fetchColumn();
+  
+		$sql = "SELECT COALESCE(SUM(monto_gastado), 0) FROM tb_detalle_gastoserv WHERE id_gasto_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_gasto_servicio]);
+        $total_gasto = $stmt->fetchColumn();
+  
+		$nuevo_estado = ($total_pagado >= $total_gasto) ? 2 : 0;
+		$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$nuevo_estado, $id_gasto_servicio]);
+  
+		$VD = "OK";
+		$conexion->commit();
+	  } catch (PDOException $e) {
+		$conexion->rollBack();
+		$VD = $e->getMessage();
+	  } catch (Exception $exception) {
+		$conexion->rollBack();
+		$VD = $exception->getMessage();
+	  } finally {
+		$conexionClass->Close();
+	  }
+	  return $VD;
+	}
+  
+	public function deletePago($id_pago_gasto)
+	{
+	  $conexionClass = new Conexion();
+	  $conexion = $conexionClass->Open();
+	  $VD = "";
+	  try {
+  
+		$conexion->beginTransaction();
+  
+		$sql = "SELECT id_gasto_servicio FROM tb_pagos_gastos WHERE id_pago_gasto = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_pago_gasto]);
+        $id_gasto_servicio = $stmt->fetchColumn();
+  
+		$stmt = $conexion->prepare("DELETE FROM tb_pagos_gastos WHERE id_pago_gasto = ?");
+        $stmt->execute([$id_pago_gasto]);
+        if ($stmt->rowCount() == 0) {
+            throw new Exception("Ocurrió un error al eliminar el pago.");
+        }
+  
+		$sql = "SELECT COALESCE(SUM(monto), 0) FROM tb_pagos_gastos WHERE id_gasto_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_gasto_servicio]);
+        $total_pagado = $stmt->fetchColumn();
+  
+		$sql = "SELECT COALESCE(SUM(monto_gastado), 0) FROM tb_detalle_gastoserv WHERE id_gasto_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id_gasto_servicio]);
+        $total_gasto = $stmt->fetchColumn();
+  
+		$nuevo_estado_pago = ($total_pagado >= $total_gasto) ? 2 : 0;
+		$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$nuevo_estado_pago, $id_gasto_servicio]);
+  
+		$VD = "OK";
+		$conexion->commit();
+	  } catch (PDOException $e) {
+		$conexion->rollBack();
+		$VD = $e->getMessage();
+	  } catch (Exception $exception) {
+		$conexion->rollBack();
+		$VD = $exception->getMessage();
+	  } finally {
+		$conexionClass->Close();
+	  }
+	  return $VD;
+	}
+  
 }
 
 $OBJ_GASTO_SERVICIO = new ClassGastoServicio();

@@ -707,6 +707,18 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showGastoServicio.php");
         break;
+      case 'deletePagoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/deletePagoGasto.php");
+        break;
+      case 'goPagoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/goPagoGasto.php");
+        break;
+      case 'showPagoGasto':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/operaciones/showPagoGasto.php");
+        break;
       case 'showOrdenCompra':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showOrdenCompra.php");

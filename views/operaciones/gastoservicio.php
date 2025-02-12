@@ -451,6 +451,99 @@ if (!isset($_SESSION['id_trabajador'])) {
                         </div>
                       </div>
 
+                      <div class="modal fade" id="modalPagos" tabindex="-1" role="dialog"
+                        aria-labelledby="modalPagosLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg-custom" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="modalPagosLabel">Pagos de los Gastos</h5>
+                              <div class="col text-right">
+                                <button id="btnNuevoPago" class="btn btn-success">+ Nuevo</button>
+                              </div>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+
+                              <div id="nuevoPagoContainer" class="mt-3" style="display: none;">
+                                <form id="frmPago" name="frmPago" enctype="multipart/form-data">
+                                  <input type="hidden" name="id_cronograma_pago" id="id_cronograma_pago" value="0">
+                                  <input type="hidden" name="total_ingreso" id="total_ingreso" value="0">
+                                  <input type="hidden" name="total_pendiente" id="total_pendiente" value="0">
+                                  <input type="hidden" name="total_pagado" id="total_pagado" value="0">
+                                  <input type="hidden" name="moneda_ingreso" id="moneda_ingreso" value="">
+                                  <div class="row">
+                                    <div class="col-md-1 d-none">
+                                      <label>#</label>
+                                      <input type="text" class="form-control" readonly value="AUTO">
+                                    </div>
+                                    <div class="col-md-2">
+                                      <label>Fecha de Pago</label>
+                                      <input type="date" id="fecha_pago" name="fecha_pago" class="form-control"
+                                        value="<?= date("Y-m-d", strtotime(date("Y-m-d"))); ?>">
+                                    </div>
+                                    <div class="col-md-3">
+                                      <label>Método de Pago</label>
+                                      <select id="metodo_pago" name="metodo_pago" class="form-control">
+                                        <?php
+                                        include("core/models/ClassMetodoPago.php");
+                                        $dataPago = $OBJ_METODO_PAGO->show(1);
+                                        if ($dataPago["error"] == "NO") {
+                                          foreach ($dataPago["data"] as $key) {
+                                            echo '<option value="' . $key['id_forma_pago'] . '">' . $key['name_forma_pago'] . '</option>';
+                                          }
+                                        }
+                                        ?>
+                                      </select>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                      <label>Monto</label>
+                                      <input type="number" id="monto" name="monto" class="form-control"
+                                        min="0" step="1.00">
+                                    </div>
+                                    <div class="col-md-1 text-center mt-4">
+                                      <button type="submit" class="btn btn-success btn-sm btnGuardarPago"><i
+                                          class="fa fa-check"></i></button>
+                                      <button type="reset" class="btn btn-danger btn-sm btnCancelarPago"><i
+                                          class="fa fa-trash"></i></button>
+                                    </div>
+                                  </div>
+                                </form>
+                              </div>
+                              <!-- Tablas de pagos -->
+                              <div class="table-responsive">
+                                <table class="table table-bordered" id="tablaPagos">
+                                  <thead>
+                                    <tr>
+                                      <th>#</th>
+                                      <th>Fecha de Pago</th>
+                                      <th>Método de Pago</th>
+                                      <th>Monto</th>
+                                      <th>Acción</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <!-- <tr>
+                                      <td colspan="6" class="text-center">No hay pagos registrados aún.</td>
+                                    </tr> -->
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="row mt-3 text-right">
+                                <div class="col-md-12">
+                                  <label id="lblTotalPagar"><strong>Total a Pagar:</strong> S/ 0.00</label><br>
+                                  <label id="lblTotalPagado"><strong>Total Pagado:</strong> S/ 0.00</label><br>
+                                  <label id="lblPendientePago"><strong>Pendiente de Pago:</strong> S/ 0.00</label>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
 
                   </div>

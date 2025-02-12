@@ -51,7 +51,7 @@ try {
           $estado = '<span class="badge badge-info-inverse px-2 py-1 mt-1"> En espera...</span>';
           break;
         case '2':
-          $estado = '<span class="badge badge-success-inverse px-2 py-1 mt-1"> Recibido</span>';
+          $estado = '<span class="badge badge-success-inverse px-2 py-1 mt-1"> Completado</span>';
           break;
         case '3':
           $estado = '<span class="badge badge-danger-inverse px-2 py-1 mt-1"> Anulado</span>';
@@ -64,6 +64,10 @@ try {
 
       if ($access_options[0]['flag_ver']) {
         $options .= '<a href="javascript:verRegistro(' . $key['id_gasto_servicio'] . ')" class="btn btn-icon btn-outline-primary btn-round mr-0 mb-1 mb-sm-0"><i class="ti ti-eye"></i></a>';
+        $options .= '&nbsp;<a href="javascript:showModalPagos(' 
+        . $key['id_gasto_servicio'] . ','
+            . $key['total'] . ',\''
+            . $key['signo_moneda'] . '\')"class="btn btn-icon btn-outline-success btn-round mr-0 mb-1 mb-sm-0"><i class="fa fa-money"></i></a>';
       }
 
       if ($tipo != 'reporte') {
