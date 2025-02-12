@@ -59,3 +59,10 @@ CREATE TABLE tb_detalle_gastoserv (
     monto_gastado DECIMAL(18,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE tb_pagos_gastos (
+    id_pago_gasto BIGINT AUTO_INCREMENT PRIMARY KEY,
+    id_gasto_servicio INT NOT NULL,
+    fecha_pago DATE NOT NULL,
+    monto DECIMAL(10,2) NULL,
+    metodo_pago INT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
