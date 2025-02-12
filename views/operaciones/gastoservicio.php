@@ -401,8 +401,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th>Proveedor</th>
                                 <th>Usuario</th>
                                 <th>Fecha Emisión</th>
-                                <th>Serie</th>
-                                <th>Correlativo</th>
+                                <th>Número de Documento</th>
                                 <th>Total</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>

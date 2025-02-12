@@ -9,6 +9,8 @@ $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : "";
 $observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
 $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
 $detalle_gastoserv = json_decode($array_detalle);
+$id_tipo_gasto = isset($_POST["id_tipo_gasto"]) ? $_POST["id_tipo_gasto"] : "0";
+$id_documento_venta = isset($_POST["id_documento_venta"]) ? $_POST["id_documento_venta"] : "0";
 $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
 $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : "";
@@ -56,10 +58,6 @@ try {
     throw new Exception("Campo obligatorio: Serie.");
   }
 
-  if (empty(trim($correlativo))) {
-    throw new Exception("Campo obligatorio: Correlativo.");
-  }
-
   if ($array_detalle == null) {
     throw new Exception("1. No se recibió los detalles del gasto.");
   }
@@ -73,10 +71,18 @@ try {
 
   switch ($accion) {
     case 'add':
-      $VD = $OBJ_GASTO_SERVICIO->insert($id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, $serie, $correlativo, $detalle_gastoserv);
+      $VD = $OBJ_GASTO_SERVICIO->insert(
+        $id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, 
+        $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, 
+        $serie, $correlativo, $detalle_gastoserv
+      );
       break;
     case 'edit':
-      $VD = $OBJ_GASTO_SERVICIO->update($id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, $serie, $correlativo, $detalle_gastoserv);
+      $VD = $OBJ_GASTO_SERVICIO->update(
+        $id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, 
+        $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, 
+        $serie, $correlativo, $detalle_gastoserv
+      );
       break;
     default:
       throw new Exception("No se recibió parámetro de acción.");
