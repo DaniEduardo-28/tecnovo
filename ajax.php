@@ -655,6 +655,14 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showClienteReporte.php");
         break;
+      case 'showReportePagar':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/reportes/showReportePagar.php");
+        break;
+      case 'showReporteCobrar':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/reportes/showReporteCobrar.php");
+        break;
       case 'goPromocionCliente':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/goPromocionCliente.php");

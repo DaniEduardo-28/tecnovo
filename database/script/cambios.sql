@@ -69,3 +69,4 @@ CREATE TABLE tb_pagos_gastos (
 
 ALTER TABLE tb_gasto_servicio ADD COLUMN total_monto DECIMAL(18,2) NOT NULL DEFAULT 0;
 
+UPDATE `tb_opcion` SET `name_opcion` = 'Registros por Pagar', `estado` = 'activo' WHERE `tb_opcion`.`id_opcion` = 709;

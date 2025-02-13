@@ -676,6 +676,173 @@ class ClassGastoServicio extends Conexion
 		return $VD;
 	}
 
+	public function showReportePendientes($valor, $fecha_inicio, $fecha_fin, $tipo_busqueda)
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+			// Ajustar fecha de fin para incluir el día completo
+			$fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
+
+			$valor = "%$valor%";
+			$parametros = [$fecha_inicio, $fecha_fin, $fecha_inicio, $fecha_fin];
+			$sql = "
+            SELECT 
+                'Gasto Servicio' AS tipo_registro,
+                gs.id_gasto_servicio AS id,
+                gs.fecha_emision AS fecha,
+                vp.nombre_proveedor,
+                gs.total_monto AS total,
+                COALESCE(SUM(pg.monto), 0) AS pagado,
+                (gs.total_monto - COALESCE(SUM(pg.monto), 0)) AS pendiente
+            FROM tb_gasto_servicio gs
+            LEFT JOIN tb_pagos_gastos pg ON gs.id_gasto_servicio = pg.id_gasto_servicio
+            LEFT JOIN vw_proveedor vp ON gs.id_proveedor = vp.id_proveedor
+            WHERE gs.fecha_emision BETWEEN ? AND ?
+        ";
+
+			if ($tipo_busqueda != '') {
+				switch ($tipo_busqueda) {
+					case 1:
+						$sql .= " AND vp.nombre_proveedor LIKE ? ";
+						$parametros[] = $valor;
+						break;
+					default:
+						break;
+				}
+			}
+
+			$sql .= " GROUP BY gs.id_gasto_servicio HAVING pendiente > 0 ";
+
+			$sql .= " UNION ";
+
+			$sql .= "
+            SELECT 
+                'Ingreso' AS tipo_registro,
+                i.id_ingreso AS id,
+                i.fecha AS fecha,
+                vp.nombre_proveedor,
+                i.total_ing AS total,
+                COALESCE(SUM(p.monto_pagado), 0) AS pagado,
+                (i.total_ing - COALESCE(SUM(p.monto_pagado), 0)) AS pendiente
+            FROM tb_ingreso i
+            LEFT JOIN tb_pago p ON i.id_ingreso = p.id_ingreso
+            LEFT JOIN tb_orden_compra oc ON i.id_orden_compra = oc.id_orden_compra
+            LEFT JOIN vw_proveedor vp ON oc.id_proveedor = vp.id_proveedor
+            WHERE i.fecha BETWEEN ? AND ?
+        ";
+
+			if ($tipo_busqueda != '') {
+				switch ($tipo_busqueda) {
+					case 1:
+						$sql .= " AND vp.nombre_proveedor LIKE ? ";
+						$parametros[] = $valor;
+						break;
+					default:
+						break;
+				}
+			}
+
+			$sql .= " GROUP BY i.id_ingreso HAVING pendiente > 0 ";
+
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
+
+		return $VD;
+	}
+
+	public function showReporteCobrar($valor, $fecha_inicio, $fecha_fin, $tipo_busqueda)
+	{
+		$conexionClass = new Conexion();
+		$conexion = $conexionClass->Open();
+		$VD = "";
+
+		try {
+			// Ajustar fecha de fin para incluir el día completo
+			$fecha_fin = date("Y-m-d", strtotime($fecha_fin . "+ 1 days"));
+
+			$valor = "%$valor%";
+			$parametros = [$fecha_inicio, $fecha_fin];
+			$sql = "
+            SELECT 
+                
+                c.id_cronograma AS id,
+				CONCAT(ts.serie, LPAD(c.codigo, 5, '0')) AS codigo,
+                c.fecha_ingreso AS fecha,
+				CONCAT(p.nombres, ' ', p.apellidos) AS nombre_cliente, 
+                c.monto_total AS total,
+                COALESCE(SUM(pg.monto), 0) AS pagado,
+                (c.monto_total - COALESCE(SUM(pg.monto), 0)) AS pendiente
+            FROM tb_cronograma c
+			LEFT JOIN tb_pagos_clientes pg ON pg.id_cronograma = c.id_cronograma 
+            LEFT JOIN tb_cliente cl ON c.id_cliente = cl.id_cliente 
+			LEFT JOIN tb_persona p ON cl.id_persona = p.id_persona 
+			 LEFT JOIN tb_servicio s ON c.id_servicio = s.id_servicio 
+			LEFT JOIN tb_tipo_servicio ts ON s.id_tipo_servicio = ts.id_tipo_servicio 
+            WHERE c.fecha_ingreso BETWEEN ? AND ?
+        ";
+
+		if (!empty($tipo_busqueda)) {
+            switch ($tipo_busqueda) {
+                case 1:
+                    $sql .= " AND (p.nombres LIKE ? OR p.apellidos LIKE ?) ";
+                    $parametros[] = $valor;
+                    $parametros[] = $valor;
+                    break;
+            }
+        }
+
+			$sql .= " GROUP BY c.id_cronograma HAVING pendiente > 0 ";
+
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute($parametros);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+			if (count($result) == 0) {
+				throw new Exception("No se encontraron datos.");
+			}
+
+			$VD1['error'] = "NO";
+			$VD1['message'] = "Success";
+			$VD1['data'] = $result;
+			$VD = $VD1;
+		} catch (PDOException $e) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $e->getMessage();
+			$VD = $VD1;
+		} catch (Exception $exception) {
+			$VD1['error'] = "SI";
+			$VD1['message'] = $exception->getMessage();
+			$VD = $VD1;
+		} finally {
+			$conexionClass->Close();
+		}
+
+		return $VD;
+	}
 }
 
 $OBJ_GASTO_SERVICIO = new ClassGastoServicio();

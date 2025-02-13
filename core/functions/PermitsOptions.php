@@ -172,6 +172,13 @@ function printCodeOption($controller)
       case 'vistareportecliente':
         $VD = 708;
         break;
+      case 'vistareportepagar':
+        $VD = 709;
+        break;
+      case 'vistareportecobrar':
+        $VD = 710;
+        break;
+
 
       default:
         $VD = 0;

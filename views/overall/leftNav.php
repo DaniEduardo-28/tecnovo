@@ -293,7 +293,10 @@
       $flag_observacionesproveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("observacionesproveedor"));
       $flag_vistareportecliente = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportecliente"));
       $flag_vistareporteproveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteproveedor"));
-      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor || $flag_vistareportecliente || $flag_vistareporteproveedor) {
+      $flag_vistareportepagar = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportepagar"));
+      $flag_vistareportecobrar = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareportecobrar"));
+
+      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios || $flag_vistareportemedicamentos || $flag_observacionesproveedor || $flag_vistareportecliente || $flag_vistareporteproveedor || $flag_vistareportepagar || $flag_vistareportecobrar ) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -323,6 +326,12 @@
             <?php endif; ?>
             <?php if ($flag_vistareporteproveedor): ?>
               <li id="submenureporteproveedor"><a href="?view=vistareporteproveedor">Reporte de proveedores</a></li>
+            <?php endif; ?>
+            <?php if ($flag_vistareportepagar): ?>
+              <li id="submenureportepagar"><a href="?view=vistareportepagar">Cuentas por pagar</a></li>
+            <?php endif; ?>
+            <?php if ($flag_vistareportecobrar): ?>
+              <li id="submenureportecobrar"><a href="?view=vistareportecobrar">Clientes por cobrar</a></li>
             <?php endif; ?>
           </ul>
         </li>
