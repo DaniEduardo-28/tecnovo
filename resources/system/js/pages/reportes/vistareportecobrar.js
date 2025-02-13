@@ -135,7 +135,7 @@ $('#btnReporteExcel').click(function () {
     const filterTable = $("#filterTable").val();
 
     // Generar link con parámetros
-    const link = `?view=reportepagarexcel&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&filterUser=${filterUser}&filterTable=${filterTable}`;
+    const link = `?view=reportecobrarexcel&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&filterUser=${filterUser}&filterTable=${filterTable}`;
     window.open(link, '_blank');
   } catch (e) {
     console.error("Error al generar el reporte Excel:", e);
@@ -150,7 +150,7 @@ $('#btnReportePdf').click(function () {
     const filterTable = $("#filterTable").val();
 
     // Generar link con parámetros
-    const link = `?view=reportepagarpdf&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&filterUser=${filterUser}&filterTable=${filterTable}`;
+    const link = `?view=reportecobrarpdf&fecha_inicio=${fecha_inicio}&fecha_fin=${fecha_fin}&filterUser=${filterUser}&filterTable=${filterTable}`;
     window.open(link, '_blank');
   } catch (e) {
     console.error("Error al generar el reporte PDF:", e);

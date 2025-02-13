@@ -80,14 +80,14 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                       if ($access_options[0]['flag_descargar']) {
                         ?>
-                        <!-- <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
+                        <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
                           data-original-title="Descargar reporte en pdf" id="btnReportePdf">
                           <i class="fa fa-file-pdf-o btn btn-icon text-danger"></i>
                         </a>
                         <a href="#" class="tooltip-wrapper" data-toggle="tooltip" data-placement="top" title=""
                           data-original-title="Descargar reporte en excel" id="btnReporteExcel">
                           <i class="fa fa-file-excel-o btn btn-icon text-success"></i>
-                        </a> -->
+                        </a>
                         <?php
                       }
                     }
