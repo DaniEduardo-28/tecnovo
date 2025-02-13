@@ -7,10 +7,9 @@ $codigo_moneda = isset($_POST["codigo_moneda"]) ? $_POST["codigo_moneda"] : "";
 $fecha_emision = isset($_POST["fecha_emision"]) ? $_POST["fecha_emision"] : "";
 $serie = isset($_POST["serie"]) ? $_POST["serie"] : "";
 $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : "";
-$observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
 $array_detalle = isset($_POST["array_detalle"]) ? $_POST["array_detalle"] : null;
 $detalle_gastoserv = json_decode($array_detalle);
-$id_tipo_gasto = isset($_POST["id_tipo_gasto"]) ? $_POST["id_tipo_gasto"] : "0";
+$observaciones = isset($_POST["observaciones"]) ? $_POST["observaciones"] : "";
 $id_documento_venta = isset($_POST["id_documento_venta"]) ? $_POST["id_documento_venta"] : "0";
 $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
 $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
@@ -63,9 +62,11 @@ try {
     throw new Exception("1. No se recibió los detalles del gasto.");
   }
 
-  if (count($detalle_gastoserv->datos) == 0) {
-    throw new Exception("2. No se recibió los detalles del gasto.");
-  }
+  foreach ($detalle_gastoserv->datos as $detalle) {
+    if (!isset($detalle->id_tipo_gasto) || intval($detalle->id_tipo_gasto) <= 0) {
+        throw new Exception("Uno o más registros del detalle no tienen un id_tipo_gasto válido.");
+    }
+}
 
   require_once "core/models/ClassGastoServicio.php";
   $VD = "";
@@ -73,15 +74,15 @@ try {
   switch ($accion) {
     case 'add':
       $VD = $OBJ_GASTO_SERVICIO->insert(
-        $id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, 
-        $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, 
+        $id_sucursal, $id_proveedor, $id_trabajador, 
+        $observaciones, $codigo_moneda, $id_documento_venta, $fecha_emision, 
         $serie, $correlativo, $detalle_gastoserv
       );
       break;
     case 'edit':
       $VD = $OBJ_GASTO_SERVICIO->update(
         $id_sucursal, $id_gasto_servicio, $id_proveedor, $id_trabajador, 
-        $id_tipo_gasto, $codigo_moneda, $id_documento_venta, $fecha_emision, 
+        $observaciones, $codigo_moneda, $id_documento_venta, $fecha_emision, 
         $serie, $correlativo, $detalle_gastoserv
       );
       break;

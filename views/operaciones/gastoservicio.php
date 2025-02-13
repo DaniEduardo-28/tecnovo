@@ -208,23 +208,12 @@ if (!isset($_SESSION['id_trabajador'])) {
 
                             <div class="form-group col-md-2 col-sm-4">
                               <label for="txtCorrelativoForm" class="label-control">Correlativo</label>
-                              <input type="text" name="txtCorrelativoForm" id="txtCorrelativoForm" class="form-control" readonly>
+                              <input type="text" name="txtCorrelativoForm" id="txtCorrelativoForm" class="form-control">
                             </div>
 
                             <div class="form-group col-md-3 col-sm-4">
-                              <label for="id_tipo_gasto" class="label-control">Motivo de Gasto</label>
-                              <select class="form-control" id="id_tipo_gasto" name="id_tipo_gasto">
-                                <option value="">Seleccione</option>
-                                <?php
-                                include("core/models/ClassTipoGasto.php");
-                                $resultTipoGasto = $OBJ_TIPO_GASTO->show('all', '', '');
-                                if ($resultTipoGasto['error'] == "NO") {
-                                  foreach ($resultTipoGasto["data"] as $key) {
-                                    echo '<option value="' . $key['id_tipo_gasto'] . '">' . $key['desc_gasto'] . '</option>';
-                                  }
-                                }
-                                ?>
-                              </select>
+                              <label for="txtObervaciones" class="label-control">Observaciones</label>
+                              <input type="text" name="txtObervaciones" id="txtObervaciones" class="form-control">
                             </div>
 
                             <div class="form-group col-md-2 col-sm-4">
@@ -243,7 +232,11 @@ if (!isset($_SESSION['id_trabajador'])) {
                                   <tr>
                                     <th style="width:50px; text-align: center;">#</th>
                                     <th>Id Detalle</th>
+                                    <th>Id Tipo Gasto</th>
+                                    <th>Tipo de Gasto</th>
                                     <th>Descripción del Gasto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
                                     <th style="width:40px; text-align:right;">Monto Gastado</th>
                                     <th style="width:20px;">Eliminar</th>
                                   </tr>
@@ -441,12 +434,35 @@ if (!isset($_SESSION['id_trabajador'])) {
                             </div>
                             <div class="modal-body">
                               <div class="form-group">
+                                <label for="tipo_gasto">Tipo de Gasto</label>
+                                <select class="form-control" id="tipo_gasto">
+                                  <option value="">Seleccione</option>
+                                  <?php
+                                  include("core/models/ClassTipoGasto.php");
+                                  $resultTipoGasto = $OBJ_TIPO_GASTO->show('all', '', '');
+                                  if ($resultTipoGasto['error'] == "NO") {
+                                    foreach ($resultTipoGasto["data"] as $key) {
+                                      echo '<option value="' . $key['id_tipo_gasto'] . '">' . $key['desc_gasto'] . '</option>';
+                                    }
+                                  }
+                                  ?>
+                                </select>
+                              </div>
+                              <div class="form-group">
                                 <label for="descripcion_gasto">Descripción</label>
-                                <input type="text" class="form-control" id="descripcion_gasto" placeholder=" ">
+                                <input type="text" class="form-control" id="descripcion_gasto">
+                              </div>
+                              <div class="form-group">
+                                <label for="cantidad_gasto">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad_gasto" min="1" step="1" oninput="calcularMonto()">
+                              </div>
+                              <div class="form-group">
+                                <label for="precio_unitario_gasto">Precio Unitario</label>
+                                <input type="number" class="form-control" id="precio_unitario_gasto" step="0.01" oninput="calcularMonto()">
                               </div>
                               <div class="form-group">
                                 <label for="monto_gastado">Total</label>
-                                <input type="number" class="form-control" id="monto_gastado" step="0.01" placeholder=" ">
+                                <input type="number" class="form-control" id="monto_gastado" step="0.01" readonly>
                               </div>
                             </div>
                             <div class="modal-footer">

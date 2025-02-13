@@ -9,7 +9,11 @@ var tableForm = $('#table_form').DataTable({
   columns: [
     { 'data': 'num' },
     { 'data': 'id_detalle_gastoserv' },
+    { 'data': 'id_tipo_gasto' },
+    { 'data': 'desc_gasto' },
     { 'data': 'descripcion_gasto' },
+    { 'data': 'cantidad' },
+    { 'data': 'precio_unitario' },
     { 'data': 'monto_gastado' },
     { 'data': 'opcion' }
   ],
@@ -138,7 +142,7 @@ $(document).ready(function () {
     try {
       var id_gasto_servicio = $("#id_gasto_servicio").val();
       var id_documento_venta = $("#id_documento_venta").val();
-      var id_tipo_gasto = $("#id_tipo_gasto").val();  // <-- Agregar captura
+      var observaciones = $("#txtObservaciones").val();  // <-- Agregar captura
       var accion = $('#accion').val();
       var id_proveedor = $("#id_proveedor").val();
       console.log("ID Proveedor antes de enviar:", id_proveedor);
@@ -149,25 +153,15 @@ $(document).ready(function () {
       var codigo_moneda = $("#codigo_moneda").val();
 
       var countRows = tableForm.data().count();
-      console.log("ID enviado al servidor:", id_gasto_servicio);
-      console.log("ID Tipo Gasto:", id_tipo_gasto); // <-- Verificar en consola
-      console.log("ID Documento Venta:", id_documento_venta); // <-- Verificar en consola
-
-      if (!id_tipo_gasto || id_tipo_gasto == "0") {
-        runAlert("Error", "Debe seleccionar un motivo de gasto.", "warning");
-        return;
-      }
 
       if (!id_documento_venta || id_documento_venta == "0") {
         runAlert("Error", "Debe seleccionar un tipo de comprobante.", "warning");
         return;
       }
-
       if (id_proveedor == "0" || id_proveedor == "") {
         runAlert("Faltan Datos", "Debe seleccionar un proveedor.", "warning");
         return;
       }
-
       if (codigo_moneda == "" || codigo_moneda == "0") { // Verifica si el campo de moneda está vacío
         runAlert("Error", "Campo obligatorio: Moneda.", "warning");
         return;
@@ -181,26 +175,45 @@ $(document).ready(function () {
       var detalles = [];
       var objeto = {};
 
-      $('#table_form > tbody  > tr').each(function () {
-        var descripcion_gasto = $(this).find("td").eq(1).text().trim();
-        var inputElement = $(this).find("td").eq(2).find("input");
-        var monto_gastado = inputElement.length > 0 ? inputElement.val().trim() : "0";
-
-        if (descripcion_gasto !== "" && !isNaN(parseFloat(monto_gastado))) {
-          detalles.push({
-            "descripcion_gasto": descripcion_gasto,
-            "monto_gastado": monto_gastado
-          });
+      $('#table_form tbody tr').each(function () {
+        var id_tipo_gasto = $(this).find("td").eq(1).text().trim();
+        var desc_gasto = $(this).find("td").eq(2).text().trim();
+        var descripcion_gasto = $(this).find("td").eq(3).text().trim();
+        
+        var cantidadElement = $(this).find("td").eq(4).find("input");
+        var cantidad = cantidadElement.length ? cantidadElement.val().trim() : $(this).find("td").eq(4).text().trim();
+    
+        var precioElement = $(this).find("td").eq(5).find("input");
+        var precio_unitario = precioElement.length ? precioElement.val().trim() : $(this).find("td").eq(5).text().trim();
+    
+        var montoElement = $(this).find("td").eq(6).find("input");
+        var monto_gastado = montoElement.length ? montoElement.val().trim() : $(this).find("td").eq(6).text().trim();
+    
+        console.log("Fila procesada:", {
+            id_tipo_gasto, desc_gasto, descripcion_gasto, cantidad, precio_unitario, monto_gastado
+        });
+    
+        if (id_tipo_gasto !== "" && descripcion_gasto !== "" && !isNaN(parseFloat(monto_gastado))) {
+            detalles.push({
+                "id_tipo_gasto": id_tipo_gasto,
+                "desc_gasto": desc_gasto,
+                "descripcion_gasto": descripcion_gasto,
+                "cantidad": cantidad,
+                "precio_unitario": precio_unitario,
+                "monto_gastado": monto_gastado
+            });
         } else {
-          console.warn("Registro ignorado por valores inválidos:", { descripcion_gasto, monto_gastado });
+            console.warn("Registro ignorado por valores inválidos:", { id_tipo_gasto, descripcion_gasto, monto_gastado });
         }
-      });
+    });
+      console.log("Formato de table: ",$("#table_form tbody tr").html());
 
       objeto.datos = detalles;
+      console.log("Datos enviados:", JSON.stringify(objeto));
 
       var form = 'id_gasto_servicio=' + id_gasto_servicio + '&id_proveedor=' + id_proveedor + '&fecha_emision=' + fecha_emision +
         '&accion=' + accion + '&serie=' + serie + '&correlativo=' + correlativo +
-        "&total=" + total + "&codigo_moneda=" + codigo_moneda + "&id_tipo_gasto=" + id_tipo_gasto +
+        "&total=" + total + "&codigo_moneda=" + codigo_moneda + "&observaciones=" + observaciones +
         "&id_documento_venta=" + id_documento_venta + "&array_detalle=" + JSON.stringify(objeto);
 
       Swal.fire({
@@ -273,43 +286,59 @@ $(document).ready(function () {
 
 
   $('#btnGuardarGasto').click(function () {
+    var id_tipo_gasto = $("#tipo_gasto").val();
+    var desc_gasto = $("#tipo_gasto option:selected").text();
     var descripcion = $('#descripcion_gasto').val().trim();
-    var monto = parseFloat($('#monto_gastado').val().trim());
+    var cantidad = parseFloat($('#cantidad_gasto').val().trim());
+    var precio_unitario = parseFloat($('#precio_unitario_gasto').val().trim());
+    var monto_gastado = cantidad * precio_unitario;
 
-    if (descripcion === '' || isNaN(monto) || monto <= 0) {
-      Swal.fire('Error', 'Ingrese una descripción y un monto válido.', 'warning');
-      return;
+    if (id_tipo_gasto === '' || descripcion === '' || isNaN(cantidad) || cantidad <= 0 || isNaN(precio_unitario) || precio_unitario <= 0) {
+        Swal.fire('Error', 'Ingrese todos los datos correctamente.', 'warning');
+        return;
     }
 
     var num = tableForm.data().count() + 1;
     tableForm.row.add({
-      "num": num,
-      "id_detalle_gastoserv": "",
-      "descripcion_gasto": descripcion,
-      "monto_gastado": `<input class="form-control" value="${monto.toFixed(2)}" type="number" min="0" step="0.01">`,
-      "opcion": '<button type="button" class="btn btn-danger btn-sm" id="btnDeleteProducto"><i class="fa fa-trash"></i></button>'
+        "num": num,
+        "id_detalle_gastoserv": "",
+        "id_tipo_gasto": id_tipo_gasto,  // Aquí corregimos
+        "desc_gasto": desc_gasto,
+        "descripcion_gasto": descripcion,
+        "cantidad": `<input class='form-control cantidad-input' type='number' min='1' step='1' value='${cantidad}'>`,
+        "precio_unitario": `<input class='form-control precio-input' type='number' min='0.01' step='0.01' value='${precio_unitario}'>`,
+        "monto_gastado": `<input class='form-control monto-input' type='number' value='${monto_gastado.toFixed(2)}' readonly>`,
+        "opcion": '<button type="button" class="btn btn-danger btn-sm" id="btnDeleteProducto"><i class="fa fa-trash"></i></button>'
     }).draw();
 
     $('#modalAgregarGasto').modal('hide');
     $('#descripcion_gasto').val('');
     $('#monto_gastado').val('');
     actualizarnumeracion();
-    console.log("Llamando a calcularTotal()");
     calcularTotal();
   });
 
   $('#table_form tbody').on('click', '#btnDeleteProducto', function () {
-    var fila = $(this).parents('tr');
-    var montoEliminado = fila.find("td").eq(3).find("input").val();
-
-    console.log("Eliminando fila con monto:", montoEliminado);
-
-    tableForm.row(fila).remove().draw();
-    actualizarnumeracion();
-
-    console.log("Llamando a calcularTotal() después de eliminar");
-    setTimeout(calcularTotal, 100);
+    tableForm.row($(this).parents('tr')).remove().draw();
+    calcularTotal();
   });
+
+  $('#table_form tbody').on('input', '.cantidad-input, .precio-input', function () {
+    var row = $(this).closest('tr');
+    var cantidad = parseFloat(row.find('.cantidad-input').val()) || 0;
+    var precio = parseFloat(row.find('.precio-input').val()) || 0;
+    var total = cantidad * precio;
+    row.find('.monto-input').val(total.toFixed(2));
+    calcularTotal();
+  });
+
+  function calcularTotal() {
+    var total = 0;
+    $('#table_form tbody .monto-input').each(function () {
+      total += parseFloat($(this).val()) || 0;
+    });
+    $('#txtTotalForm').val(`S/ ${total.toFixed(2)}`);
+  }
 
 });
 
@@ -326,7 +355,7 @@ function cancelarForm() {
   $("#panelOptions").removeClass("d-none");
   $("#accion").val("");
   $("#txtTotalForm").val("S/ 0.00");
-  $("#txtObservacionesForm").val("");
+  $("#txtObservaciones").val("");
   $("#id_proveedor").val("0");
   $("#id_gasto_servicio").val("0");
   $('#img_proveedor').attr('src', "resources/global/images/sin_imagen.png");
@@ -573,7 +602,7 @@ function getDataEdit(id_gasto_servicio) {
             $("#txtEstadoForm").val(o.estado == "0" ? "En proceso ..." : o.estado);
             $("#codigo_moneda").val(o.id_moneda);
             $("#txtTotalForm").val(o.total);
-            $("#id_tipo_gasto").val(o.id_tipo_gasto);
+            $("#txtObservaciones").val(o.observaciones);
             $("#id_documento_venta").val(o.id_documento_venta);
 
             tableForm.clear().draw();
@@ -583,7 +612,11 @@ function getDataEdit(id_gasto_servicio) {
                 tableForm.row.add({
                   "num": index + 1,
                   "id_detalle_gastoserv": detalle.id_detalle_gastoserv,
+                  "id_tipo_gasto": detalle.id_tipo_gasto,
+                  "desc_gasto": detalle.desc_gasto,
                   "descripcion_gasto": detalle.descripcion_gasto,
+                  "cantidad": '<input class="form-control" value="' + detalle.cantidad + '" step="0.10" type="number" min="0">',
+                  "precio_unitario": '<input class="form-control" value="' + detalle.precio_unitario + '" step="0.10" type="number" min="0">',
                   "monto_gastado": '<input class="form-control" value="' + detalle.monto_gastado + '" step="0.10" type="number" min="0">',
                   "opcion": '<button type="button" class="btn btn-danger btn-sm" id="btnDeleteProducto"><i class="fa fa-trash"></i></button>',
                 }).draw();
@@ -644,7 +677,7 @@ function verRegistro(id_gasto_servicio) {
             $("#txtEstadoForm").val(o.estado == "0" ? "En proceso ..." : o.estado);
             $("#codigo_moneda").val(o.id_moneda);
             $("#txtTotalForm").val(o.total);
-            $("#id_tipo_gasto").val(o.id_tipo_gasto);
+            $("#txtObservaciones").val(o.observaciones);
             $("#id_documento_venta").val(o.id_documento_venta);
 
             tableForm.clear().draw();
@@ -654,7 +687,11 @@ function verRegistro(id_gasto_servicio) {
                 tableForm.row.add({
                   "num": index + 1,
                   "id_detalle_gastoserv": detalle.id_detalle_gastoserv,
+                  "id_tipo_gasto": detalle.id_tipo_gasto,
+                  "desc_gasto": detalle.desc_gasto,
                   "descripcion_gasto": detalle.descripcion_gasto,
+                  "cantidad": `<input class="form-control" value="${detalle.cantidad}" step="0.10" type="number" min="0" disabled>`,
+                  "precio_unitario": `<input class="form-control" value="${detalle.precio_unitario}" step="0.10" type="number" min="0" disabled>`,
                   "monto_gastado": `<input class="form-control" value="${detalle.monto_gastado}" step="0.10" type="number" min="0" disabled>`,
                   "opcion": ''
                 }).draw();
@@ -793,10 +830,10 @@ function eliminarRegistro(id_gasto_servicio) {
   } catch (e) {
     runAlert("Error de Sistema", "Ocurrió un error inesperado: " + e, "error");
   }
-  
+
 }
 
-function cancelarFormPago() {}
+function cancelarFormPago() { }
 
 function limpiarCamposNuevoPago() {
   const today = new Date().toISOString().split("T")[0];
@@ -867,7 +904,7 @@ function showModalPagos(id_gasto_servicio_pago, total_monto, signo) {
   if (!total_monto || isNaN(total_monto)) {
     console.warn("total es inválido, buscando en el input oculto...");
     total_monto = parseFloat($("#total_ingreso").val()) || 0;
-}
+  }
 
   $("#id_gasto_servicio_pago").val(id_gasto_servicio_pago);
   $("#total_ingreso").val(total_monto);
@@ -877,6 +914,13 @@ function showModalPagos(id_gasto_servicio_pago, total_monto, signo) {
   $("#modalPagos").modal("show");
 }
 
+function calcularMonto() {
+  let cantidad = parseFloat(document.getElementById("cantidad_gasto").value) || 0;
+  let precioUnitario = parseFloat(document.getElementById("precio_unitario_gasto").value) || 0;
+
+  let total = cantidad * precioUnitario;
+  document.getElementById("monto_gastado").value = total.toFixed(2);
+}
 
 function deleteRegistroPago(id_gasto_servicio_pago) {
   try {
@@ -951,7 +995,7 @@ function cargarPagosExistentes(id_gasto_servicio_pago) {
 }
 
 function llenarTablaPagos(pagos) {
-  console.log("pagos",pagos);
+  console.log("pagos", pagos);
   const tablaPagos = $("#tablaPagos tbody");
   tablaPagos.empty();
   let total_pagado = 0;

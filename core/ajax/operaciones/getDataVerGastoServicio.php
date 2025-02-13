@@ -38,7 +38,7 @@ try {
         "name_proveedor" => isset($key['nombre_proveedor']) ? $key['nombre_proveedor'] : "No disponible",
         "src_imagen_proveedor" => isset($key['src_imagen_proveedor']) ? $key['src_imagen_proveedor'] : "resources/global/images/sin_imagen.png",
         "fecha_emision" => isset($key['fecha_emision']) ? date('Y-m-d', strtotime($key['fecha_emision'])) : "",
-        "id_tipo_gasto" => isset($key['id_tipo_gasto']) ? $key['id_tipo_gasto'] : "",
+        "observaciones" => isset($key['observaciones']) ? $key['observaciones'] : "",
         "id_documento_venta" => isset($key['id_documento_venta']) ? $key['id_documento_venta'] : "",
         "serie" => isset($key['serie']) ? $key['serie'] : "",
         "correlativo" => isset($key['correlativo']) ? $key['correlativo'] : "",
