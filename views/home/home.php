@@ -98,26 +98,21 @@
                               <div class="card card-statistics">
                                 <div class="card-header d-flex justify-content-between">
                                   <div class="card-heading">
-                                    <h4 class="card-title">Resumen de Ventas</h4>
+                                    <h4 class="card-title">Total de Ingresos <?=" - " . date("Y");?></h4>
                                   </div>
                                 </div>
                                 <div class="card-body">
-                                  <h4 class="card-title"><?=numbertomes(date("m")) . " - " . date("Y");?></h4>
                                   <div class="row">
                                     <?php
-                                      include("core/models/ClassMoneda.php");
-                                      $Resultado = $OBJ_MONEDA->show("1");
+                                      include("core/models/ClassTipoServicio.php");
+                                      $Resultado = $OBJ_TIPO_SERVICIO->show("activo");
                                       if ($Resultado["error"]=="NO") {
                                         $x = 0;
                                         foreach ($Resultado['data'] as $key) {
                                           $color = ['bg-success','bg-danger','bg-warning','bg-default'];
-                                          $mes = date("m");
-                                          $anio = date("Y");
-                                          $id_moneda = $key['id_moneda'];
-                                          $monto = $OBJ_MONEDA->getMontoReporte($id_moneda,$mes,$anio);
                                             ?>
                                             <div class="col-12 col-md-3">
-                                              <span><?=$key['abreviatura'];?> <b><?=$key['signo'];?> <?=$monto;?></b></span>
+                                              <span><b><?=$key['name_tipo'] . ": ";?></b></span>
                                               <div class="progress my-3" style="height: 4px;">
                                                 <div class="progress-bar <?=$color[$x];?>" role="progressbar"
                                                   style="width: 100%;" aria-valuenow="100" aria-valuemin="0"
@@ -142,25 +137,20 @@
                               <div class="card card-statistics">
                                 <div class="card-header d-flex justify-content-between">
                                   <div class="card-heading">
-                                    <h4 class="card-title">Resumen de Compras</h4>
+                                    <h4 class="card-title">Total de Compras <?=" - " . date("Y");?></h4>
                                   </div>
                                 </div>
                                 <div class="card-body">
-                                  <h4 class="card-title"><?=numbertomes(date("m")) . " - " . date("Y");?></h4>
                                   <div class="row">
                                     <?php
-                                      $Resultado = $OBJ_MONEDA->show("1");
+                                      $Resultado = $OBJ_TIPO_SERVICIO->show("activo"); 
                                       if ($Resultado["error"]=="NO") {
                                         $x = 0;
                                         foreach ($Resultado['data'] as $key) {
                                           $color = ['bg-success','bg-danger','bg-warning','bg-default'];
-                                          $mes = date("m");
-                                          $anio = date("Y");
-                                          $id_moneda = $key['id_moneda'];
-                                          $monto = $OBJ_MONEDA->getMontoReporteCompras($id_moneda,$mes,$anio);
-                                            ?>
+                                          ?>
                                             <div class="col-12 col-md-3">
-                                              <span><?=$key['abreviatura'];?> <b><?=$key['signo'];?> <?=$monto;?></b></span>
+                                              <span><b><?=$key['name_tipo'] . ": ";?></b></span>
                                               <div class="progress my-3" style="height: 4px;">
                                                 <div class="progress-bar <?=$color[$x];?>" role="progressbar"
                                                   style="width: 100%;" aria-valuenow="100" aria-valuemin="0"
@@ -263,7 +253,7 @@
                                       <div class="card-body d-flex align-itemes-center">
                                           <div class="media align-items-center w-100">
                                               <div class="text-left">
-                                                  <h3 class="mb-0"><?=$Resultado['data'][0]['total_medicamentos'];?></h3>
+                                                  <h3 class="mb-0"><?=$Resultado['data'][0]['total_operadores'];?></h3>
                                                   <span>Operadores</span>
                                               </div>
                                               <div class="img-icon bg-info ml-auto">

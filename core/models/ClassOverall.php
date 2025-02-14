@@ -419,6 +419,7 @@
 																		(SELECT COUNT(*) FROM tb_trabajador t) as total_trabajadores,
 																	  (SELECT COUNT(*) FROM tb_cliente c) as total_clientes,
 																	  (SELECT COUNT(*) FROM tb_accesorio a WHERE a.id_sucursal = ?) as total_accesorios,
+																	  (SELECT COUNT(*) FROM tb_trabajador t WHERE t.flag_medico = 1) as total_operadores,
 																	  (SELECT COUNT(*) FROM tb_medicamento m WHERE m.id_sucursal = ?) as total_medicamentos");
 				$stmt->execute([$id_sucursal,$id_sucursal]);
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -9,5 +9,9 @@ UPDATE `tb_acceso_opcion` SET `flag_agregar` = '1', `flag_buscar` = '1', `flag_e
 ALTER TABLE tb_detalle_gastoserv
 ADD COLUMN id_tipo_gasto INT NULL,
 ADD COLUMN cantidad DECIMAL(10,2) NULL,
-ADD COLUMN precio_unitario DECIMAL(10,2) NULL,
+ADD COLUMN precio_unitario DECIMAL(10,2) NULL
 
+--Quitar id_tipo_gasto de la tabla tb_gasto_servicio
+ALTER TABLE tb_gasto_servicio 
+DROP COLUMN id_tipo_gasto, 
+ADD COLUMN observaciones VARCHAR(500) NULL;
