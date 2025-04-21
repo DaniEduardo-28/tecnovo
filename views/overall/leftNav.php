@@ -1,7 +1,7 @@
 <aside class="app-navbar">
   <div class="sidebar-nav scrollbar scroll_light">
     <ul class="metismenu " id="sidebarNav">
-      <li class="nav-static-title" style="color:#f2dff0;">Menú de Navegación</li>
+      <li class="nav-static-title" style="color:#f7440c;">Menú de Navegación</li>
       <br>
       <li id="menuinicio">
         <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -203,50 +203,11 @@
       <?php
 
       $flag_mostar_menu = false;
-      $flag_citas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("citas"));
-      $flag_atencioncitas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("atencioncitas"));
-      $flag_historialclinico = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("historialclinico"));
-      if ($flag_citas || $flag_atencioncitas || $flag_historialclinico) {
-        $flag_mostar_menu = true;
-      } else {
-        $flag_mostar_menu = false;
-      }
-
-      ?>
-
-      <?php if ($flag_mostar_menu): ?>
-
-        <li id="menucitas">
-          <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-            <i class="nav-icon fa fa-calendar"></i>
-            <span class="nav-title">Cronogramas de Trabajo</span>
-          </a>
-          <ul aria-expanded="false">
-            <?php if ($flag_citas): ?>
-              <li id="submenucitas"> <a href="?view=citas">Gestionar Cronograma</a></li>
-            <?php endif; ?>
-            <?php if ($flag_atencioncitas): ?>
-              <li id="submenuatencioncitas"> <a href="?view=atencioncitas">Aprobación de Cronograma</a></li>
-            <?php endif; ?>
-            <?php if ($flag_citas): ?>
-              <li id="submenuordenservicio"> <a href="?view=ordenservicio">Orden de Servicios</a></li>
-            <?php endif; ?>
-          </ul>
-        </li>
-
-      <?php endif; ?>
-
-
-
-      <?php
-
-      $flag_mostar_menu = false;
       $flag_fichamascota = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("fichamascota"));
       $flag_ordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordenventa"));
       $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordencompra"));
       $flag_promocion = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("promocion"));
       $flag_ingreso = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ingreso"));
-      $flag_gastoservicio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("gastoservicio"));
 
       if ($flag_fichamascota || $flag_ordenventa || $flag_ordencompra || $flag_promocion || $flag_ingreso || $flag_gastoservicio) {
         $flag_mostar_menu = true;
@@ -272,9 +233,6 @@
             <?php endif; ?>
             <?php if ($flag_ordenventa): ?>
               <li id="submenuordenventa"><a href="?view=ordenventa">Salida de Productos</a></li>
-            <?php endif; ?>
-            <?php if ($flag_gastoservicio): ?>
-              <li id="submenugastoservicio"><a href="?view=gastoservicio">Gastos de Servicios</a></li>
             <?php endif; ?>
           </ul>
         </li>
@@ -320,18 +278,6 @@
             <?php endif; ?>
             <?php if ($flag_vistareporteaccesorios): ?>
               <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>
-            <?php endif; ?>
-            <?php if ($flag_vistareportecliente): ?>
-              <li id="submenureportecliente"><a href="?view=vistareportecliente">Reporte de clientes</a></li>
-            <?php endif; ?>
-            <?php if ($flag_vistareporteproveedor): ?>
-              <li id="submenureporteproveedor"><a href="?view=vistareporteproveedor">Reporte de proveedores</a></li>
-            <?php endif; ?>
-            <?php if ($flag_vistareportepagar): ?>
-              <li id="submenureportepagar"><a href="?view=vistareportepagar">Cuentas por pagar</a></li>
-            <?php endif; ?>
-            <?php if ($flag_vistareportecobrar): ?>
-              <li id="submenureportecobrar"><a href="?view=vistareportecobrar">Clientes por cobrar</a></li>
             <?php endif; ?>
           </ul>
         </li>
