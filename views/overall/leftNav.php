@@ -54,15 +54,6 @@
             <?php if ($flag_identitydocuments): ?>
               <li id="menuidentitydocuments"> <a href="?view=identitydocuments">Documentos de Identidad</a> </li>
             <?php endif; ?>
-            <?php if ($flag_especialidad): ?>
-              <li id="menuespecialidad"> <a href="?view=especialidad">Cargos usuarios</a> </li>
-            <?php endif; ?>
-            <?php if ($flag_categoriaaccesorio): ?>
-              <li id="menucategoriaaccesorio"> <a href="?view=categoriaaccesorio">Categorias de Productos</a> </li>
-            <?php endif; ?>
-            <?php if ($flag_tiposervicio): ?>
-              <li id="menutiposervicio"> <a href="?view=tiposervicio">Unidad de Negocio</a> </li>
-            <?php endif; ?>
             <?php if ($flag_formapago): ?>
               <li id="menuformapago"> <a href="?view=formapago">Métodos de Pago</a> </li>
             <?php endif; ?>
@@ -159,11 +150,10 @@
       <?php
 
       $flag_mostar_menu = false;
-      $flag_ordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordenventa"));
       $flag_ordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ordencompra"));
       $flag_ingreso = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("ingreso"));
 
-      if ($flag_ordenventa || $flag_ordencompra || $flag_ingreso) {
+      if ($flag_ordencompra || $flag_ingreso) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -185,9 +175,6 @@
             <?php if ($flag_ingreso): ?>
               <li id="submenuingreso"> <a href="?view=ingreso">Ingreso de Productos</a></li>
             <?php endif; ?>
-            <?php if ($flag_ordenventa): ?>
-              <li id="submenuordenventa"><a href="?view=ordenventa">Salida de Productos</a></li>
-            <?php endif; ?>
           </ul>
         </li>
 
@@ -199,9 +186,8 @@
 
       $flag_mostar_menu = false;
       $flag_vistareporteordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteordencompra"));
-      $flag_vistareporteordenventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteordenventa"));
       $flag_vistareporteaccesorios = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteaccesorios"));
-      if ($flag_vistareporteordencompra || $flag_vistareporteordenventa || $flag_vistareporteaccesorios) {
+      if ($flag_vistareporteordencompra || $flag_vistareporteaccesorios) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -219,9 +205,6 @@
           <ul aria-expanded="false">
             <?php if ($flag_vistareporteordencompra): ?>
               <li id="submenureporteordencompra"><a href="?view=vistareporteordencompra">Compras</a></li>
-            <?php endif; ?>
-            <?php if ($flag_vistareporteordenventa): ?>
-              <li id="submenureporteordenventa"><a href="?view=vistareporteordenventa">Salida de Productos</a></li>
             <?php endif; ?>
             <?php if ($flag_vistareporteaccesorios): ?>
               <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>

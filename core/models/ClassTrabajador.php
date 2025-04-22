@@ -458,14 +458,6 @@ class ClassTrabajador extends Conexion
 		try {
 			$conexion->beginTransaction();
 
-			$stmt = $conexion->prepare("SELECT * FROM `tb_cita` WHERE id_trabajador = ?");
-			$stmt->execute([$id_trabajador]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (count($result) > 0) {
-				throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Cronograma.");
-			}
-
 			$stmt = $conexion->prepare("DELETE FROM tb_trabajador WHERE id_trabajador = ?");
 			$stmt->execute([$id_trabajador]);
 			if ($stmt->rowCount() == 0) {
