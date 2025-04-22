@@ -21,12 +21,12 @@
       $flag_mybusiness = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("mybusiness"));
       $flag_sucursales = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("sucursales"));
       $flag_monedas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("monedas"));
+      $flag_accesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesorio"));
       $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("identitydocuments"));
       $flag_formapago = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("formapago"));
       $flag_tipocambio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipocambio"));
-      $flag_documentoventa = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("documentoventa"));
       $flag_unidadmedida = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("unidadmedida"));
-      if ($flag_mybusiness || $flag_sucursales || $flag_monedas || $flag_identitydocuments ||  $flag_formapago || $flag_tipocambio || $flag_documentoventa || $flag_unidadmedida) {
+      if ($flag_mybusiness || $flag_sucursales || $flag_monedas || $flag_identitydocuments ||  $flag_formapago || $flag_tipocambio || $flag_unidadmedida || $flag_accesorio ) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -49,7 +49,7 @@
               <li id="menusucursales"><a href="?view=sucursales">Sucursales</a></li>
             <?php endif; ?>
             <?php if ($flag_monedas): ?>
-              <li id="menumonedas"><a href="?view=monedas">Monedas</a></li>
+              <li id="menumonedas"><a href="?view=monedas">Tipo de Moneda</a></li>
             <?php endif; ?>
             <?php if ($flag_identitydocuments): ?>
               <li id="menuidentitydocuments"> <a href="?view=identitydocuments">Documentos de Identidad</a> </li>
@@ -60,11 +60,11 @@
             <?php if ($flag_tipocambio): ?>
               <li id="menutipocambio"> <a href="?view=tipocambio">Tipo de Cambio</a> </li>
             <?php endif; ?>
-            <?php if ($flag_documentoventa): ?>
-              <li id="menudocumentoventa"> <a href="?view=documentoventa">Documentos de Salida</a></li>
-            <?php endif; ?>
             <?php if ($flag_unidadmedida): ?>
               <li id="menuunidadmedida"> <a href="?view=unidadmedida">Unidades de Medida</a></li>
+            <?php endif; ?>
+            <?php if ($flag_accesorio): ?>
+              <li id="menuaccesorio"> <a href="?view=accesorio">Productos</a> </li>
             <?php endif; ?>
           </ul>
         </li>
@@ -76,10 +76,9 @@
 
       $flag_mostar_menu = false;
       $flag_proveedor = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("proveedor"));
-      $flag_accesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesorio"));
       $flag_accesofundo = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesofundo"));
       $flag_trabajador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("trabajador"));
-      if ($flag_proveedor || $flag_accesorio || $flag_trabajador ) {
+      if ($flag_proveedor || $flag_trabajador ) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -100,9 +99,6 @@
             <?php endif; ?>
             <?php if ($flag_proveedor): ?>
               <li id="menuproveedor"> <a href="?view=proveedor">Proveedores</a> </li>
-            <?php endif; ?>
-            <?php if ($flag_accesorio): ?>
-              <li id="menuaccesorio"> <a href="?view=accesorio">Productos</a> </li>
             <?php endif; ?>
           </ul>
         </li>

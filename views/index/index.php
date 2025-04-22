@@ -41,7 +41,6 @@ if (isset($_COOKIE['flag_save'])) {
                             <div class="col-sm-6 col-lg-6 col-xxl-4 align-self-center order-1 order-sm-1">
                                 <div class="d-flex align-items-center h-100-vh">
                                     <div class="login p-50" style="background-color:rgb(255, 255, 255);">
-                                        <img src=" " alt="">
                                         <h1 class="mb-2" style="color: #000000; font-family: Arial, sans-serif;"><?= APP_TITLE; ?> Login</h1> <!-- Título azul, fuente Arial -->
                                         <p style="color: #000000">Bienvenido, por favor inicie sesión en su cuenta.</p>
                                         <form class="mt-3 mt-sm-5" id="frmLogin" onsubmit="goLogin(event);">
