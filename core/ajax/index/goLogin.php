@@ -15,9 +15,9 @@ try {
     throw new Exception("Campo contraseña, obligatorio.");
   }
 
-  if (empty($id_sucursal)) {
+  /* if (empty($id_sucursal)) {
     throw new Exception("Seleccionar una sucursal.");
-  }
+  } */
 
   require_once "core/models/ClassUsuario.php";
   $Resultado = $OBJ_USUARIO->getLogin($name_user);
