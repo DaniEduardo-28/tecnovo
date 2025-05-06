@@ -15,7 +15,7 @@
         </button>
         <!-- end navbar-header -->
         <!-- begin navigation -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="color = orange;">
             <div class="navigation d-flex">
                 <ul class="navbar-nav nav-left">
                   <li class="nav-item">
@@ -27,7 +27,7 @@
                 <ul class="navbar-nav nav-left">
                   <li class="nav-item">
                     <a href="#" class="nav-link expand">
-                      <h4><?=strtoupper($_SESSION['nombre_sucursal']);?></h4>
+                      <h4>BIENVENIDO <?=strtoupper($_SESSION['nombres']) . ' ' . strtoupper($_SESSION['apellidos']);?></h4>
                     </a>
                   </li>
                 </ul>

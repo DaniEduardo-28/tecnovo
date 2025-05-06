@@ -78,7 +78,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <!-- begin page title -->
                 <div class="d-block d-lg-flex flex-nowrap align-items-center">
                   <div class="page-title mr-4 pr-4 border-right">
-                    <h1>Tablero</h1>
+                     
                   </div>
                   <div class="breadcrumb-bar align-items-center">
                     <nav>
@@ -165,8 +165,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                               <div class="form-group col-sm-6">
 
                                 <div class="form-group col-xs-12">
-                                  <label for="id_categoria" class="label-control">Categoria de Producto, Servicios y
-                                    Gastos</label>
+                                  <label for="id_categoria" class="label-control">Categoría de Producto</label>
                                   <select name="id_categoria" id="id_categoria" class="form-control" required>
                                     <option value="">Seleccione...</option>
                                     <?php
@@ -201,7 +200,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                             <div class="row">
 
                               <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                                <label for="stock" class="label-control">Stock</label>
+                                <label for="stock" class="label-control">Cantidad</label>
                                 <input id="stock" type="number" name="stock" value="0" class="form-control"
                                   autocomplete="off" required>
                               </div>
@@ -222,8 +221,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 </select>
                               </div>
 
-                              <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                                <label for="stock_minimo" class="label-control">Stock Mínimo</label>
+                              <div class="form-group col-md-3 col-sm-6 col-xs-12 d-none">
+                                <label for="stock_minimo" class="label-control">Cantidad Mínima</label>
                                 <input id="stock_minimo" type="number" name="stock_minimo" class="form-control"
                                   autocomplete="off" required value="1" min="1">
                               </div>
@@ -266,7 +265,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 </div>
                               </div>
 
-                              <div class="form-group col-md-3 col-sm-4">
+                              <div class="form-group col-md-3 col-sm-4 d-none">
                                 <label for="">&nbsp;</label>
                                 <div class="form-check">
                                   <input id="flag_consumo" name="flag_consumo" type="checkbox" class="form-check-input"
@@ -303,8 +302,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                         <div class="row">
                           <div class="col-md-4 col-sm-4">
                             <div class="form-group">
-                              <label for="cboCategoriaBuscar" class="label-control">Categoria de Producto, Servicios y
-                                Gastos</label>
+                              <label for="cboCategoriaBuscar" class="label-control">Categoria de Producto</label>
                               <select class="form-control" name="cboCategoriaBuscar" id="cboCategoriaBuscar">
                                 <option value="">Todos...</option>
                                 <?php

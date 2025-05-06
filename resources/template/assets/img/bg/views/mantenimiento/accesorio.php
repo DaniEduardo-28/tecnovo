@@ -63,7 +63,7 @@
                           <!-- begin page title -->
                             <div class="d-block d-lg-flex flex-nowrap align-items-center">
                               <div class="page-title mr-4 pr-4 border-right">
-                                <h1>Tablero</h1>
+                                 
                               </div>
                               <div class="breadcrumb-bar align-items-center">
                                 <nav>
@@ -150,7 +150,7 @@
                                             <div class="form-group col-sm-6">
 
                                               <div class="form-group col-xs-12">
-                                                <label for="id_categoria" class="label-control">Categoria de Producto, Servicios y Gastos</label>
+                                                <label for="id_categoria" class="label-control">Categoría</label>
                                                 <select name="id_categoria" id="id_categoria" class="form-control" required>
                                                   <option value="">Seleccione...</option>
                                                   <?php
@@ -276,7 +276,7 @@
                                       <div class="row">
                                         <div class="col-md-4 col-sm-4">
                                           <div class="form-group">
-                                            <label for="cboCategoriaBuscar" class="label-control">Categoria de Producto, Servicios y Gastos</label>
+                                            <label for="cboCategoriaBuscar" class="label-control">Categorías</label>
                                             <select class="form-control" name="cboCategoriaBuscar" id="cboCategoriaBuscar">
                                               <option value="">Todos...</option>
                                               <?php

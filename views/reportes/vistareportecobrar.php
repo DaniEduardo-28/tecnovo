@@ -54,7 +54,7 @@ if (!isset($_SESSION['id_trabajador'])) {
               <div class="col-md-12 m-b-30">
                 <div class="d-block d-lg-flex flex-nowrap align-items-center">
                   <div class="page-title mr-4 pr-4 border-right">
-                    <h1>Tablero</h1>
+                     
                   </div>
                   <div class="breadcrumb-bar align-items-center">
                     <nav>

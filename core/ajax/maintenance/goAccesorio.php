@@ -42,7 +42,7 @@
     }
 
     if (empty(trim($id_categoria))) {
-      throw new Exception("Campo obligatorio : Categoria de Producto, Servicios y Gastos.");
+      throw new Exception("Campo obligatorio : Categoria de Producto.");
     }
 
     if (empty(trim($id_sucursal))) {

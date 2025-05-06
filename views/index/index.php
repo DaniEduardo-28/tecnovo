@@ -59,16 +59,22 @@ if (isset($_COOKIE['flag_save'])) {
                                                             placeholder="Contraseña..." required value="<?= $pass_user; ?>" autocomplete="off" />
                                                     </div>
                                                 </div>
-                                                <?php
-include("core/models/ClassSucursal.php");
-$dataSucursal = $OBJ_SUCURSAL->show(ID_EMPRESA,"1");
-if ($dataSucursal["error"] == "NO") {
-    foreach ($dataSucursal["data"] as $key) {
-        $selected = ($key['id_sucursal'] == 1) ? 'selected' : '';
-        echo '<option value="' . $key['id_sucursal'] . '" ' . $selected . '>' . $key['nombre'] . '</option>';
-    }
-}
-?>
+                                                <div class="col-12 d-none">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Sucursal*</label>
+                                                        <select class="form-control" name="id_sucursal" id="id_sucursal" required>
+                                                          <?php
+                                                            include("core/models/ClassSucursal.php");
+                                                            $dataSucursal = $OBJ_SUCURSAL->show(ID_EMPRESA,"1");
+                                                            if ($dataSucursal["error"]=="NO") {
+                                                              foreach ($dataSucursal["data"] as $key) {
+                                                                echo '<option value="' . $key['id_sucursal'] . '">' . $key['nombre'] . '</option>';
+                                                              }
+                                                            }
+                                                          ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-12">
                                                     <div class="d-block d-sm-flex align-items-center">

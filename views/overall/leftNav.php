@@ -19,14 +19,14 @@
 
       $flag_mostar_menu = false;
       $flag_mybusiness = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("mybusiness"));
-      $flag_sucursales = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("sucursales"));
       $flag_monedas = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("monedas"));
+      $flag_categoriaaccesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("categoriaaccesorio"));
       $flag_accesorio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesorio"));
       $flag_identitydocuments = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("identitydocuments"));
       $flag_formapago = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("formapago"));
       $flag_tipocambio = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("tipocambio"));
       $flag_unidadmedida = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("unidadmedida"));
-      if ($flag_mybusiness || $flag_sucursales || $flag_monedas || $flag_identitydocuments ||  $flag_formapago || $flag_tipocambio || $flag_unidadmedida || $flag_accesorio ) {
+      if ($flag_mybusiness || $flag_monedas || $flag_identitydocuments ||  $flag_formapago || $flag_tipocambio || $flag_unidadmedida || $flag_categoriaaccesorio || $flag_accesorio ) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -45,9 +45,6 @@
             <?php if ($flag_mybusiness): ?>
               <li id="menumybusiness"><a href="?view=mybusiness">Mi Empresa</a></li>
             <?php endif; ?>
-            <?php if ($flag_sucursales): ?>
-              <li id="menusucursales"><a href="?view=sucursales">Sucursales</a></li>
-            <?php endif; ?>
             <?php if ($flag_monedas): ?>
               <li id="menumonedas"><a href="?view=monedas">Tipo de Moneda</a></li>
             <?php endif; ?>
@@ -62,6 +59,9 @@
             <?php endif; ?>
             <?php if ($flag_unidadmedida): ?>
               <li id="menuunidadmedida"> <a href="?view=unidadmedida">Unidades de Medida</a></li>
+            <?php endif; ?>
+            <?php if ($flag_categoriaaccesorio): ?>
+              <li id="menucategoriaaccesorio"> <a href="?view=categoriaaccesorio">Categoría de Productos</a> </li>
             <?php endif; ?>
             <?php if ($flag_accesorio): ?>
               <li id="menuaccesorio"> <a href="?view=accesorio">Productos</a> </li>
