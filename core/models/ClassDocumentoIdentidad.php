@@ -105,6 +105,17 @@
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al registrar un nuevo documento.");
 				}
+
+				$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Documento de Identidad", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 				$VD = "OK";
 				$conexion->commit();
 			} catch(PDOException $e) {
@@ -129,6 +140,17 @@
 				if ($stmt->execute([$name_documento,$estado,$size,$codigo_sunat,$flag_exacto,$flag_numerico,$id_documento])==false) {
 					throw new Exception("Error al actualizar los datos.");
 				}
+
+				$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Documento de Identidad", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 				$VD = "OK";
 				$conexion->commit();
 			} catch(PDOException $e) {
@@ -179,6 +201,16 @@
 				if ($stmt->rowCount()==0) {
 					throw new Exception("Error al eliminar el registro.");
 				}
+
+				$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Documento de Identidad", "Eliminar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 				$VD = "OK";
 				$conexion->commit();

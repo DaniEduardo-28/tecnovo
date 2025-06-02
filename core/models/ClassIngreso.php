@@ -466,6 +466,16 @@ class ClassIngreso extends Conexion
 				}
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Cotización", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 		} catch (PDOException $e) {
@@ -537,6 +547,16 @@ class ClassIngreso extends Conexion
 				if ($stmt->rowCount() == 0) {
 					throw new Exception("Ocurrió un error al anular el ingreso.");
 				}
+			}
+
+			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Cotización", "Eliminar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
 			$VD = "OK";
@@ -652,6 +672,16 @@ class ClassIngreso extends Conexion
 				throw new Exception("Ocurrió un error al registrar pago.");
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Pago Cotización", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 		} catch (PDOException $e) {
@@ -679,6 +709,16 @@ class ClassIngreso extends Conexion
 			$stmt->execute([$id_pago]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Ocurrió un error al eliminar el registro.");
+			}
+
+			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_usuario'], "Pago Cotización", "Eliminar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
 			$VD = "OK";
