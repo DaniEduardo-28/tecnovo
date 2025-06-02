@@ -41,6 +41,9 @@ if (isset($_COOKIE['flag_save'])) {
                             <div class="col-sm-6 col-lg-6 col-xxl-4 align-self-center order-1 order-sm-1">
                                 <div class="d-flex align-items-center h-100-vh">
                                     <div class="login p-50" style="background-color:rgb(255, 255, 255);">
+                                        <div class="text-center mb-3">
+                                            <img src="resources/template/assets/img/tecno_logo.png" alt="Logo Tecnovo" style="max-width: 300px; height: auto;">
+                                        </div>
                                         <h1 class="mb-2" style="color: #000000; font-family: Arial, sans-serif;"><?= APP_TITLE; ?> Login</h1> <!-- Título azul, fuente Arial -->
                                         <p style="color: #000000">Bienvenido, por favor inicie sesión en su cuenta.</p>
                                         <form class="mt-3 mt-sm-5" id="frmLogin" onsubmit="goLogin(event);">
@@ -100,13 +103,15 @@ if (isset($_COOKIE['flag_save'])) {
                             </div>
 
                             <!-- Imagen a la derecha -->
-                            <div class="col-sm-6 col-xxl-8 col-lg-6 o-hidden order-2 order-sm-2" style="background-color: #E65000;">
-                                <div class="row align-items-center h-100">
-                                    <div class="col-10 mx-auto">
-                                        <img class="img-fluid" src="resources/template/assets/img/bg/" alt="">
+                            <div class="col-sm-6 col-xxl-8 col-lg-6 o-hidden order-2 order-sm-2" style="background-color: #E65000; position: relative;">
+                                <!-- Línea negra al borde izquierdo -->
+                                <div style="position: absolute; top: 0; left: 0; width: 30px; height: 100%; background-color: black;"></div>
+                                    <div class="row align-items-center h-100">
+                                        <div class="col-10 mx-auto">
+                                            <img class="img-fluid" src="resources/template/assets/img/bg/fondo_tecnologin.png" alt="" style="max-width: 50%; height: auto;">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
 
                     </div>
