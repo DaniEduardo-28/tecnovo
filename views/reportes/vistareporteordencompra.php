@@ -9,7 +9,7 @@
 
   <head>
     <?php include("views/overall/header.php"); ?>
-    <title>Reporte Ordenes de Compra | <?=APP_TITLE;?> </title>
+    <title>Reporte Orden de Compra | <?=APP_TITLE;?> </title>
     <style media="screen">
       .pagination {
         display: inline-block;
@@ -74,7 +74,7 @@
                                       Reportes
                                     </li>
                                     <li class="breadcrumb-item active text-primary" aria-current="page">
-                                      Ordenes de Compra
+                                      Orden de Compra
                                     </li>
                                   </ol>
                                 </nav>
@@ -112,7 +112,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header">
                                     <div class="card-heading">
-                                        <h4 class="card-title">Reporte Ordenes de Compra</h4>
+                                        <h4 class="card-title">Reporte Orden de Compra</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">

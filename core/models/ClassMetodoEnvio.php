@@ -121,7 +121,7 @@
 				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 				if (count($result)>0) {
-					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Ordenes de Compra.");
+					throw new Exception("No se puede eliminar este registro, se encuentra relacionado con la tabla Orden de Compra.");
 				}
 
 				$stmt = $conexion->prepare("DELETE FROM tb_metodo_envio WHERE id_metodo_envio = ?");

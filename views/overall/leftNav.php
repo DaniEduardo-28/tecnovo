@@ -91,7 +91,7 @@
         <li id="menumantenimiento">
           <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
             <i class="nav-icon fa fa-database"></i>
-            <span class="nav-title">Mantenimiento</span>
+            <span class="nav-title">Usuarios</span>
           </a>
           <ul aria-expanded="false">
             <?php if ($flag_trabajador): ?>
@@ -111,9 +111,8 @@
       $flag_mostar_menu = false;
       $flag_grupousuario = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("grupousuario"));
       $flag_accesogrupo = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesogrupo"));
-      $flag_accesosucursal = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("accesosucursal"));
       $flag_trabajador = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("trabajador"));
-      if ($flag_grupousuario || $flag_accesogrupo || $flag_accesosucursal || $flag_trabajador) {
+      if ($flag_grupousuario || $flag_accesogrupo || $flag_trabajador) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -134,9 +133,6 @@
             <?php endif; ?>
             <?php if ($flag_accesogrupo): ?>
               <li id="menuaccesogrupo"> <a href="?view=accesogrupo">Acceos a Opciones</a> </li>
-            <?php endif; ?>
-            <?php if ($flag_accesosucursal): ?>
-              <li id="menuaccesosucursal"> <a href="?view=accesosucursal">Acceos a Sucursales</a> </li>
             <?php endif; ?>
           </ul>
         </li>
@@ -166,7 +162,7 @@
           </a>
           <ul aria-expanded="false">
             <?php if ($flag_ordencompra): ?>
-              <li id="submenuordencompra"><a href="?view=ordencompra">Ordenes de Compra</a></li>
+              <li id="submenuordencompra"><a href="?view=ordencompra">Orden de Compra</a></li>
             <?php endif; ?>
             <?php if ($flag_ingreso): ?>
               <li id="submenuingreso"> <a href="?view=ingreso">Ingreso de Productos</a></li>
