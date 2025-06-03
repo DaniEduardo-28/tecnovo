@@ -128,6 +128,16 @@ class ClassUsuario extends Conexion {
 				throw new Exception("Ocurrió un error al actualizar los datos de perfil.");
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Usuario", "Actualizar Perfil"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 
@@ -154,6 +164,16 @@ class ClassUsuario extends Conexion {
 			$stmt = $conexion->prepare("UPDATE tb_persona SET direccion = ? , fecha_nacimiento = ? , sexo = ? , telefono = ? WHERE id_persona = ?");
 			if ($stmt->execute([$txtAddress,$txtDateNac,$sexo,$txtPhone,$id_persona])==false) {
 				throw new Exception("Ocurrió un error al actualizar los datos de perfil.");
+			}
+
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Usuario", "Actualizar Perfil Cliente"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
 			$VD = "OK";
@@ -186,6 +206,16 @@ class ClassUsuario extends Conexion {
 				throw new Exception("Ocurrió un error al actualizar la imagen de perfil.");
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Usuario", "Actualizar Perfil Img"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 
@@ -214,6 +244,16 @@ class ClassUsuario extends Conexion {
 			$stmt->execute([$src,$id_cliente]);
 			if ($stmt->rowCount()==0) {
 				throw new Exception("Ocurrió un error al actualizar la imagen de perfil.");
+			}
+
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Usuario", "Actualizar Perfil Cliente"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
 			$VD = "OK";
@@ -252,6 +292,16 @@ class ClassUsuario extends Conexion {
 				throw new Exception("Ocurrió un error al actualizar la contraseña.");
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Usuario", "Actualizar Clave"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 
@@ -286,6 +336,16 @@ class ClassUsuario extends Conexion {
 			$stmt = $conexion->prepare("UPDATE tb_cliente SET pass_user = ? WHERE id_cliente = ?");
 			if ($stmt->execute([$txtNewPass,$id_cliente])==false) {
 				throw new Exception("Ocurrió un error al actualizar la contraseña.");
+			}
+
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Usuario", "Actualizar Clave Cliente"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
 			$VD = "OK";

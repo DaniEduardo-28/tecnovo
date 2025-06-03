@@ -809,6 +809,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/showCronograma.php");
         break;
+        case 'showAuditoria':
+          require("core/models/ClassAccesoOpcion.php");
+          require("core/ajax/reportes/showAuditoria.php");
+          break;
       case 'registrarCronograma':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/citas/registrarCronograma.php");

@@ -66,12 +66,12 @@
 					throw new Exception("Ocurrió un error al insertar el registro.");
 				}
 
-				$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Método de Envìo", "Insertar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Método de Envìo", "Insertar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -104,12 +104,12 @@
 					throw new Exception("Error al actualizar los datos.");
 				}
 
-				$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Método de Envío", "Actualizar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Método de Envío", "Actualizar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -150,12 +150,12 @@
 					throw new Exception("Ocurrió un error al eliminar el registro.");
 				}
 
-				$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Método de Envío", "Eliminar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Método de Envío", "Eliminar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}

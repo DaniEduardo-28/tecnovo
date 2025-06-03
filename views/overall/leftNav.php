@@ -179,7 +179,8 @@
       $flag_mostar_menu = false;
       $flag_vistareporteordencompra = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteordencompra"));
       $flag_vistareporteaccesorios = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'], printCodeOption("vistareporteaccesorios"));
-      if ($flag_vistareporteordencompra || $flag_vistareporteaccesorios) {
+      $flag_vistareporteauditoria = $OBJ_ACCESO_OPCION->checkOptionController($_SESSION['id_grupo'],printCodeOption("vistareporteauditoria"));
+      if ($flag_vistareporteordencompra || $flag_vistareporteaccesorios || $flag_vistareporteauditoria) {
         $flag_mostar_menu = true;
       } else {
         $flag_mostar_menu = false;
@@ -201,6 +202,9 @@
             <?php if ($flag_vistareporteaccesorios): ?>
               <li id="submenureporteaccesorio"><a href="?view=vistareporteaccesorios">Productos</a></li>
             <?php endif; ?>
+            <?php if ($flag_vistareporteauditoria): ?>
+                    <li id="submenureporteauditoria"><a href="?view=vistareporteauditoria">Reporte de Auditoria</a></li>
+                  <?php endif; ?>
           </ul>
         </li>
 

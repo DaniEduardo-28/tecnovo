@@ -166,12 +166,12 @@ class ClassCita extends Conexion
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cita", "Insertar Cita Cliente"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cita", "Insertar Cita Cliente"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -224,12 +224,12 @@ class ClassCita extends Conexion
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cita", "Insertar Cita Admin"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cita", "Insertar Cita Admin"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -274,12 +274,12 @@ class ClassCita extends Conexion
 				throw new Exception("Ocurrió un error al canclar la cita en el sistema.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cita", "Cancelar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cita", "Cancelar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -324,12 +324,12 @@ class ClassCita extends Conexion
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cita", "Actualizar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cita", "Actualizar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -366,12 +366,12 @@ class ClassCita extends Conexion
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cita", "Actualizar Fecha Cita"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cita", "Actualizar Fecha Cita"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}

@@ -330,12 +330,12 @@ if ($tipo_busqueda === "nombre") {
 				throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cliente", "Insertar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cliente", "Insertar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -470,12 +470,12 @@ if ($tipo_busqueda === "nombre") {
 				}
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cliente", "Actualizar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cliente", "Actualizar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -522,12 +522,12 @@ if ($tipo_busqueda === "nombre") {
 				throw new Exception("Ocurrió un error al actualizar los datos de parametros generales.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cliente", "Eliminar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cliente", "Eliminar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}

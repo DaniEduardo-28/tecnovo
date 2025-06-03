@@ -466,12 +466,12 @@ class ClassIngreso extends Conexion
 				}
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cotización", "Insertar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cotización", "Insertar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -549,12 +549,12 @@ class ClassIngreso extends Conexion
 				}
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Cotización", "Eliminar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Cotización", "Eliminar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -672,12 +672,12 @@ class ClassIngreso extends Conexion
 				throw new Exception("Ocurrió un error al registrar pago.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Pago Cotización", "Insertar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Pago Cotización", "Insertar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
@@ -711,12 +711,12 @@ class ClassIngreso extends Conexion
 				throw new Exception("Ocurrió un error al eliminar el registro.");
 			}
 
-			$sql = "INSERT INTO tb_auditoria (`id_usuario`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
 			$sql .= "(";
 			$sql .= "?,?,?,now()";
 			$sql .= ")";
 			$stmt = $conexion->prepare($sql);
-			$stmt->execute([$_SESSION['id_usuario'], "Pago Cotización", "Eliminar"]);
+			$stmt->execute([$_SESSION['id_trabajador'], "Pago Cotización", "Eliminar"]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("Error al realizar el registro en la base de datos.");
 			}

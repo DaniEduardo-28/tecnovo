@@ -647,6 +647,16 @@
 					}
 				}
 
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Orden de Compra", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 				$VD = "OK";
 				$conexion->commit();
 
@@ -711,6 +721,16 @@
 					}
 				}
 
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Orden de Compra", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 				$VD = "OK";
 				$conexion->commit();
 
@@ -747,6 +767,16 @@
 				if ($stmt->rowCount()==0) {
 					throw new Exception("2. Ocurrió un error al anular la orden de Compra.");
 				}
+
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Orden de Compra", "Anular"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 				$VD = "OK";
 				$conexion->commit();
@@ -786,6 +816,16 @@
 				// Eliminar la orden de compra
 				$stmt = $conexion->prepare("DELETE FROM tb_orden_compra WHERE id_orden_compra = ?");
 				$stmt->execute([$id_orden_compra]);
+
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Orden de Compra", "Eliminar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 		
 				$VD = "OK";
 				$conexion->commit();

@@ -317,6 +317,16 @@ class ClassGastoServicio extends Conexion
 			$stmt->execute([$id_gasto_servicio, $id_gasto_servicio]);
 
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Gasto de Servicio", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 		} catch (PDOException $e) {
@@ -370,6 +380,16 @@ class ClassGastoServicio extends Conexion
         $stmt = $conexion->prepare($sql);
         $stmt->execute([$id_gasto_servicio, $id_gasto_servicio]);
 
+
+		$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Gasto Servicio", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 			$VD = "OK";
 			$conexion->commit();
@@ -444,6 +464,16 @@ class ClassGastoServicio extends Conexion
 			// Eliminar la orden de compra
 			$stmt = $conexion->prepare("DELETE FROM tb_gasto_servicio WHERE id_gasto_servicio = ?");
 			$stmt->execute([$id_gasto_servicio]);
+
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Gasto Servicio", "Eliminar Orden"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 			$VD = "OK";
 			$conexion->commit();
@@ -593,6 +623,16 @@ class ClassGastoServicio extends Conexion
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$nuevo_estado, $id_gasto_servicio]);
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Pagos - Gasto Servicio", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 		} catch (PDOException $e) {
@@ -641,6 +681,16 @@ class ClassGastoServicio extends Conexion
 			$sql = "UPDATE tb_gasto_servicio SET estado = ? WHERE id_gasto_servicio = ?";
 			$stmt = $conexion->prepare($sql);
 			$stmt->execute([$nuevo_estado_pago, $id_gasto_servicio]);
+
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Pagos - Gasto Servicio", "Eliminar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 			$VD = "OK";
 			$conexion->commit();

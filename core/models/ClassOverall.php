@@ -179,6 +179,16 @@
 					throw new Exception("Ocurrió un error al actualizar el enlace 3.");
 				}
 
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Parámetros cabezera", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 				$VD = "OK";
 				$conexion->commit();
 
@@ -233,6 +243,16 @@
 				if ($stmt->execute([$link_4])==false) {
 					throw new Exception("Ocurrió un error al actualizar los datos.");
 				}
+
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Parametros Redes", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 				$VD = "OK";
 				$conexion->commit();
@@ -392,6 +412,16 @@
 				if ($stmt->execute([$mapa])==false) {
 					throw new Exception("Ocurrió un error al actualizar los datos.");
 				}
+
+				$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Parámetros Contacto", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
 
 				$VD = "OK";
 				$conexion->commit();

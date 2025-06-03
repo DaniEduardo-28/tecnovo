@@ -332,6 +332,16 @@ class ClassTrabajador extends Conexion
 				throw new Exception("Error al registrar el trabajador en la base de datos.");
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Trabajador", "Insertar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 		} catch (PDOException $e) {
@@ -436,6 +446,16 @@ class ClassTrabajador extends Conexion
 				}
 			}
 
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Trabajador", "Actualizar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
+			}
+
 			$VD = "OK";
 			$conexion->commit();
 		} catch (PDOException $e) {
@@ -462,6 +482,16 @@ class ClassTrabajador extends Conexion
 			$stmt->execute([$id_trabajador]);
 			if ($stmt->rowCount() == 0) {
 				throw new Exception("2. Ocurrió un error al eliminar el registro.");
+			}
+
+			$sql = "INSERT INTO tb_auditoria (`id_trabajador`, `nombre_tabla`, `tipo_transaccion`, `fecha`) VALUES ";
+			$sql .= "(";
+			$sql .= "?,?,?,now()";
+			$sql .= ")";
+			$stmt = $conexion->prepare($sql);
+			$stmt->execute([$_SESSION['id_trabajador'], "Trabajador", "Eliminar"]);
+			if ($stmt->rowCount() == 0) {
+				throw new Exception("Error al realizar el registro en la base de datos.");
 			}
 
 			$VD = "OK";

@@ -27,7 +27,7 @@ class ClassAuditoria extends Conexion {
                     a.fecha
                 FROM
                     tb_auditoria a
-                    INNER JOIN tb_trabajador u ON a.id_usuario = u.id_trabajador
+                    INNER JOIN tb_trabajador u ON a.id_trabajador = u.id_trabajador
                     INNER JOIN tb_persona p ON u.id_persona = p.id_persona 
                     INNER JOIN tb_grupo_usuario gu ON gu.id_grupo = u.id_grupo
                 WHERE
