@@ -165,7 +165,7 @@
               <li id="submenuordencompra"><a href="?view=ordencompra">Orden de Compra</a></li>
             <?php endif; ?>
             <?php if ($flag_ingreso): ?>
-              <li id="submenuingreso"> <a href="?view=ingreso">Ingreso de Productos</a></li>
+              <li id="submenuingreso"> <a href="?view=ingreso">Cotización</a></li>
             <?php endif; ?>
           </ul>
         </li>

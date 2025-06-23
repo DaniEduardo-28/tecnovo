@@ -98,7 +98,7 @@
                               <div class="card card-statistics">
                                 <div class="card-header d-flex justify-content-between">
                                   <div class="card-heading">
-                                    <h4 class="card-title">Total de Ingresos <?=" - " . date("Y");?></h4>
+                                    <h4 class="card-title">Total de Ingresos Cotizados <?=" - " . date("Y");?></h4>
                                   </div>
                                 </div>
                                 <div class="card-body">

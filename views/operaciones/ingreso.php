@@ -9,7 +9,7 @@ if (!isset($_SESSION['id_trabajador'])) {
 
 <head>
   <?php include("views/overall/header.php"); ?>
-  <title>Ingresos | <?= APP_TITLE; ?> </title>
+  <title>Cotizaciones | <?= APP_TITLE; ?> </title>
   <style media="screen">
     .pagination {
       display: inline-block;
@@ -103,7 +103,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                           Operaciones
                         </li>
                         <li class="breadcrumb-item active text-primary" aria-current="page">
-                          Ingresos
+                          Cotizaciones
                         </li>
                       </ol>
                     </nav>
@@ -146,7 +146,7 @@ if (!isset($_SESSION['id_trabajador'])) {
                 <div class="card card-statistics">
                   <div class="card-header">
                     <div class="card-heading">
-                      <h4 class="card-title">Ingresos</h4>
+                      <h4 class="card-title">Cotizaciones</h4>
                     </div>
                   </div>
                   <div class="card-body">

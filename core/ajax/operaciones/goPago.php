@@ -11,7 +11,7 @@ try {
   $access_options = $OBJ_ACCESO_OPCION->getPermitsOptions($_SESSION['id_grupo'], printCodeOption("ingreso"));
   if ($access_options[0]['error'] == "NO") {
     if ($access_options[0]['flag_agregar'] == false) {
-      throw new Exception("No tienes permisos para registrar ingresos.");
+      throw new Exception("No tienes permisos para registrar las cotizaciones.");
     }
   } else {
     throw new Exception("Error al verificar los permisos.");

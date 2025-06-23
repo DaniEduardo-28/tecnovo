@@ -29,8 +29,10 @@ try {
     $cantidad = $DataCantidad["data"][0]["cantidad"];
     $Resultado = $OBJ_INGRESO->show($id_sucursal, $valor, $fecha_inicio, $fecha_fin, $tipo_busqueda, $offset, $limit);
 
+    $retorno_array = [];
     $count = 1;
 
+     if (isset($Resultado["data"]) && is_array($Resultado["data"])) {
     foreach ($Resultado["data"] as $key) {
       $estado = '';
 
@@ -82,6 +84,7 @@ try {
       );
       $count++;
     }
+  }
 
     $data["error"] = "NO";
     $data["message"] = "Success";

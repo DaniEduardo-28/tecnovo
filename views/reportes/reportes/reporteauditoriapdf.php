@@ -48,7 +48,7 @@ $pdf->AddPage();
 // Configuración de encabezados y título
 $pdf->SetY(20);
 $pdf->SetFont('Arial', '', 13);
-$pdf->Cell(0, 8, 'ESMAR', 0, 1, 'C'); // Encabezado centrado
+$pdf->Cell(0, 8, 'TECNOVO PERU', 0, 1, 'C'); // Encabezado centrado
 $pdf->SetFont('Arial', 'U', 11);
 $pdf->Cell(0, 8, 'REPORTE DE AUDITORIA', 0, 1, 'C'); // Título centrado
 
@@ -60,7 +60,7 @@ $pdf->SetX($startX);
 // Dibujar encabezados de la tabla
 $pdf->SetFont('Arial', 'B', 9);
 $pdf->Cell(10, 5, '#', 1, 0, 'C');
-$pdf->Cell(50, 5, 'Nombre Usuario', 1, 0, 'C');
+$pdf->Cell(80, 5, 'Nombre Usuario', 1, 0, 'C');
 $pdf->Cell(40, 5, 'Tipo Usuario', 1, 0, 'C');
 $pdf->Cell(50, 5, 'Nombre Tabla', 1, 0, 'C');
 $pdf->Cell(50, 5, 'Tipo Transacción', 1, 0, 'C');
@@ -71,7 +71,7 @@ $pdf->SetFont('Arial', '', 9);
 foreach ($arrayresultado as $key => $row) {
     $pdf->SetX($startX); // Asegurar que cada fila comienza en la misma posición
     $pdf->Cell(10, 5, $key + 1, 1, 0, 'C');
-    $pdf->Cell(50, 5, utf8_decode($row['nombres']), 1, 0, 'C');
+    $pdf->Cell(80, 5, utf8_decode($row['nombres']), 1, 0, 'C');
     $pdf->Cell(40, 5, utf8_decode($row['name_grupo']), 1, 0, 'C');
     $pdf->Cell(50, 5, utf8_decode($row['nombre_tabla']), 1, 0, 'C');
     $pdf->Cell(50, 5, utf8_decode($row['tipo_transaccion']), 1, 0, 'C');
