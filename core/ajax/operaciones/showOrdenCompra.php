@@ -93,7 +93,13 @@
           "estado" => $estado,
           "serie" => $key['serie'],
           "correlativo" => $key['correlativo'],
-          "evidencia" => $key['evidencia'],
+          "tipo_orden" => $key['tipo_orden'],
+          "evidencia" => !empty($key['evidencia'])
+    ? '<a href="uploads/evidencias/' . $key['evidencia'] . '" target="_blank" class="btn btn-outline-secondary btn-sm">
+          <i class="ti ti-download"></i> Ver
+       </a>'
+    : '<span class="text-muted">No disponible</span>',
+
           "options" => "$options"
         );
         $count++;

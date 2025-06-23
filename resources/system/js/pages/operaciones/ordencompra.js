@@ -69,6 +69,8 @@ var tableListado = $('#tabla_listado').DataTable({
     { 'data': 'name_usuario' },
     { 'data': 'fecha_orden' },
     { 'data': 'fecha_entrega' },
+    { 'data': 'tipo_orden' },
+    { 'data': 'evidencia' },
     { 'data': 'num_registros' },
     { 'data': 'total' },
     { 'data': 'estado' },
@@ -267,11 +269,26 @@ $(document).ready(function(){
 
       objeto.datos = datos;
 
-      var form = 'id_proveedor=' + id_proveedor + '&id_metodo_envio=' + id_metodo_envio + '&id_orden_compra=' + id_orden_compra +
-              '&fecha_orden=' + fecha_orden + '&fecha_entrega=' + fecha_entrega + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
-              '&observaciones=' + observaciones +  "&array_detalle=" + '&serie=' + serie +
-            '&correlativo=' + correlativo +
-            '&evidencia=' + evidencia + JSON.stringify(objeto);
+var form = new FormData();
+
+form.append("id_proveedor", id_proveedor);
+form.append("id_metodo_envio", id_metodo_envio);
+form.append("id_orden_compra", id_orden_compra);
+form.append("fecha_orden", fecha_orden);
+form.append("fecha_entrega", fecha_entrega);
+form.append("accion", accion);
+form.append("codigo_moneda", codigo_moneda);
+form.append("observaciones", observaciones);
+form.append("serie", serie);
+form.append("correlativo", correlativo);
+form.append("array_detalle", JSON.stringify(objeto));
+
+// Archivo evidencia (si hay)
+var fileInput = document.getElementById('fileInputEvidencia');
+if (fileInput && fileInput.files.length > 0) {
+  form.append("file_evidencia", fileInput.files[0]);
+}
+
 
       Swal.fire({
         title: '¿Seguro de confirmar la operación?',
@@ -283,35 +300,37 @@ $(document).ready(function(){
         confirmButtonText: 'Si, Realizar ahora!'
       }).then(function(result) {
         if (result.value) {
-          $.ajax({
-            type: "POST",
-            url: "ajax.php?accion=goOrdenCompra",
-            datatype: "json",
-            data: form,
-            success: function(data){
-      			  try {
-                var response = JSON.parse(data);
-                if (response['error']=="SI") {
-                  runAlert("Oh No...!!!",response['message'],"warning");
-                } else {
-                  cancelarForm();
-                  runAlert("Bien hecho...!!!",response['message'],"success");
-                }
-              } catch (e) {
-                runAlert("Oh No...!!!",data + e,"error");
-              }
-            },
-            error: function(data){
-              runAlert("Oh No...!!!",data,"error");
-            },
-            beforeSend: function (xhr) {
-              showHideLoader('block');
-            },
-            complete: function (jqXHR, textStatus) {
-              showHideLoader('none');
-              showData();
-            }
-          });
+$.ajax({
+  type: "POST",
+  url: "ajax.php?accion=goOrdenCompra",
+  data: form,
+  processData: false,
+  contentType: false,
+  success: function(data){
+    try {
+      var response = JSON.parse(data);
+      if (response['error']=="SI") {
+        runAlert("Oh No...!!!",response['message'],"warning");
+      } else {
+        cancelarForm();
+        runAlert("Bien hecho...!!!",response['message'],"success");
+      }
+    } catch (e) {
+      runAlert("Oh No...!!!",data + e,"error");
+    }
+  },
+  error: function(data){
+    runAlert("Oh No...!!!",data,"error");
+  },
+  beforeSend: function (xhr) {
+    showHideLoader('block');
+  },
+  complete: function (jqXHR, textStatus) {
+    showHideLoader('none');
+    showData();
+  }
+});
+
         }
       });
 
@@ -699,6 +718,8 @@ function get_data_callback2(){
             "name_usuario": o[i].name_usuario,
             "fecha_orden": o[i].fecha_orden,
             "fecha_entrega": o[i].fecha_entrega,
+             "tipo_orden": o[i].tipo_orden,
+            "evidencia": o[i].evidencia,
             "num_registros": o[i].num_registros,
             "total": o[i].total,
             "estado": o[i].estado,

@@ -176,14 +176,15 @@ if (!isset($_SESSION['id_trabajador'])) {
                             </div>
 
                             <div class="form-group col-md-2 col-sm-4">
-  <label for="txtCorrelativo" class="label-control">Correlativo</label>
-  <input type="text" name="txtCorrelativo" id="txtCorrelativo" class="form-control">
-</div>
+                              <label for="txtCorrelativo" class="label-control">Correlativo</label>
+                              <input type="text" name="txtCorrelativo" id="txtCorrelativo" class="form-control">
+                            </div>
 
-<div class="form-group col-md-3 col-sm-6">
-  <label for="txtEvidencia" class="label-control">Evidencia</label>
-  <input type="text" name="txtEvidencia" id="txtEvidencia" class="form-control">
-</div>
+                            <div class="form-group col-md-3 col-sm-6">
+                              <label for="fileInputEvidencia" class="label-control">Evidencia</label>
+                              <input type="file" id="fileInputEvidencia" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                              <input type="hidden" name="txtEvidencia" id="txtEvidencia">
+                            </div>
 
                             <div class="form-group col-md-2 col-sm-4">
                               <label for="codigo_moneda">Moneda(*)</label>
@@ -423,6 +424,8 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 <th>Fecha Orden</th>
                                 <th>Fecha Entrega</th>
                                 <!-- <th>Forma de Envío</th> -->
+                                 <th>Serie-Correlativo</th> <!-- NUEVO -->
+                                <th>Evidencia</th>
                                 <th># Productos</th>
                                 <th>Total</th>
                                 <th>Estado</th>

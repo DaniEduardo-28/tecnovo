@@ -91,7 +91,7 @@
 				$valor = "%$valor%";
 				$parametros = null;
 				$sql = "SELECT o.*,p.nombre_proveedor,t.nombres_trabajador,m.name_metodo,mon.signo as signo_moneda,
-								(SELECT COUNT(*) FROM tb_detalle_compra dc WHERE dc.id_orden_compra = o.id_orden_compra) AS num_registros,
+								(SELECT COUNT(*) FROM tb_detalle_compra dc WHERE dc.id_orden_compra = o.id_orden_compra) AS num_registros, o.serie, o.correlativo, CONCAT(o.serie, ' - ', o.correlativo) AS tipo_orden, o.evidencia,
 								(SELECT SUM(dc.precio_unitario*dc.cantidad_solicitada) FROM tb_detalle_compra dc WHERE dc.id_orden_compra = o.id_orden_compra) AS total
 								FROM `tb_orden_compra` o
 								INNER JOIN tb_moneda mon ON mon.id_moneda = o.id_moneda

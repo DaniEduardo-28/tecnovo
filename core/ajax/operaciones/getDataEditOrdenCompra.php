@@ -43,7 +43,10 @@
           "id_moneda" => $key['id_moneda'],
           "notas" => $key['notas'],
           "total" => $key['total'],
-          "src_imagen_producto" => $key['src_imagen_producto']
+          "src_imagen_producto" => $key['src_imagen_producto'],
+          "serie" => $key['serie'],
+          "correlativo" => $key['correlativo'],
+          "evidencia" => $key['evidencia']
         );
       }
 

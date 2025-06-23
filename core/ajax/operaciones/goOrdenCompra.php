@@ -14,7 +14,30 @@
   $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : "";
   $serie = isset($_POST["serie"]) ? $_POST["serie"] : null;
   $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : null;
-  $evidencia = isset($_POST["evidencia"]) ? $_POST["evidencia"] : null;
+
+  // Procesamiento del archivo de evidencia
+$evidencia = null;
+
+if (isset($_FILES['file_evidencia']) && $_FILES['file_evidencia']['error'] === 0) {
+  $nombreArchivo = $_FILES['file_evidencia']['name'];
+  $rutaTemporal = $_FILES['file_evidencia']['tmp_name'];
+  
+  // Carpeta de destino (ajústalo según tu estructura real)
+  $carpetaDestino = "uploads/evidencias/";
+  if (!file_exists($carpetaDestino)) {
+    mkdir($carpetaDestino, 0775, true);
+  }
+
+  $nombreUnico = uniqid("evidencia_") . "_" . basename($nombreArchivo);
+  $rutaDestino = $carpetaDestino . $nombreUnico;
+
+  if (move_uploaded_file($rutaTemporal, $rutaDestino)) {
+    $evidencia = $nombreUnico; // Solo guarda el nombre del archivo
+  } else {
+    throw new Exception("No se pudo guardar el archivo de evidencia.");
+  }
+}
+
 
 
   try {
