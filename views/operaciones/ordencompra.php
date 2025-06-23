@@ -170,7 +170,22 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 ?>
                               </select>
                             </div>
-                            <div class="form-group col-md-3 col-sm-4">
+                            <div class="form-group col-md-1 col-sm-4">
+                              <label for="txtSerie" class="label-control">Serie</label>
+                              <input type="text" name="txtSerie" id="txtSerie" class="form-control">
+                            </div>
+
+                            <div class="form-group col-md-2 col-sm-4">
+  <label for="txtCorrelativo" class="label-control">Correlativo</label>
+  <input type="text" name="txtCorrelativo" id="txtCorrelativo" class="form-control">
+</div>
+
+<div class="form-group col-md-3 col-sm-6">
+  <label for="txtEvidencia" class="label-control">Evidencia</label>
+  <input type="text" name="txtEvidencia" id="txtEvidencia" class="form-control">
+</div>
+
+                            <div class="form-group col-md-2 col-sm-4">
                               <label for="codigo_moneda">Moneda(*)</label>
                               <select class="form-control" name="codigo_moneda"
                                 id="codigo_moneda" required>
@@ -190,22 +205,22 @@ if (!isset($_SESSION['id_trabajador'])) {
                                 ?>
                               </select>
                             </div>
-                            <div class="form-group col-md-3 col-sm-4">
+                            <div class="form-group col-md-2 col-sm-4">
                               <label for="txtFechaOrdenForm" class="label-control">Fecha Orden</label>
                               <input type="date" name="txtFechaOrdenForm" id="txtFechaOrdenForm"
                                 class="form-control" readonly value="<?= date("Y-m-d"); ?>">
                             </div>
-                            <div class="form-group col-md-3 col-sm-4">
+                            <div class="form-group col-md-2 col-sm-4">
                               <label for="txtFechaEntregaForm" class="label-control">Fecha Entrega</label>
                               <input type="date" name="txtFechaEntregaForm" id="txtFechaEntregaForm"
                                 class="form-control" value="<?= date("Y-m-d"); ?>" min="<?= date("Y-m-d"); ?>">
                             </div>
-                            <div class="form-group col-md-6 col-sm-6">
+                            <div class="form-group col-md-4 col-sm-6">
                               <label for="txtObservacionesForm" class="label-control">Observaciones</label>
                               <input type="text" name="txtObservacionesForm" id="txtObservacionesForm"
                                 class="form-control">
                             </div>
-                            <div class="form-group col-md-3 col-sm-4">
+                            <div class="form-group col-md-2 col-sm-4">
                               <label for="txtEstadoForm" class="label-control">Estado</label>
                               <input type="text" name="txtEstadoForm" id="txtEstadoForm"
                                 class="form-control" readonly>

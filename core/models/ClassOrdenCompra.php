@@ -612,7 +612,7 @@
 			return $VD;
 		}
 
-		public function insert($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
+		public function insert($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra, $serie = null, $correlativo = null, $evidencia = null) {
 
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
@@ -621,13 +621,13 @@
 
 				$conexion->beginTransaction();
 
-				$sql = "INSERT INTO tb_orden_compra (`id_orden_compra`, `id_sucursal`, `id_metodo_envio`, `id_proveedor`, `id_trabajador`, `fecha_orden`, `fecha_entrega`, `observaciones`, `estado`, `id_moneda`) VALUES ";
+				$sql = "INSERT INTO tb_orden_compra (`id_orden_compra`, `id_sucursal`, `id_metodo_envio`, `id_proveedor`, `id_trabajador`, `fecha_orden`, `fecha_entrega`, `observaciones`, `estado`, `id_moneda`, `serie`, `correlativo`, `evidencia`) VALUES ";
 				$sql .= "(";
 				$sql .= "(SELECT CASE COUNT(o.id_orden_compra) WHEN 0 THEN 1 ELSE (MAX(o.id_orden_compra) + 1) end FROM `tb_orden_compra` o),";
-				$sql .= "?,?,?,?,NOW(),?,?,?,?";
+				$sql .= "?,?,?,?,NOW(),?,?,?,?,?,?,?";
 				$sql .= ")";
 				$stmt = $conexion->prepare($sql);
-				$stmt->execute([$id_sucursal,$id_metodo_envio,$id_proveedor,$id_trabajador,$fecha_entrega,$observaciones,'0',$codigo_moneda]);
+				$stmt->execute([$id_sucursal,$id_metodo_envio,$id_proveedor,$id_trabajador,$fecha_entrega,$observaciones,'0',$codigo_moneda, $serie, $correlativo, $evidencia]);
 				if ($stmt->rowCount()==0) {
 					throw new Exception("1. Error al registrar la orden de compra en la base de datos.");
 				}
@@ -672,7 +672,7 @@
 			return $VD;
 		}
 
-		public function update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra) {
+		public function update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra, $serie = null, $correlativo = null, $evidencia = null) {
 			$conexionClass = new Conexion();
 			$conexion = $conexionClass->Open();
 			$VD="";
@@ -694,10 +694,13 @@
 				$sql .=" id_trabajador = ?, ";
 				$sql .=" fecha_entrega = ?, ";
 				$sql .=" id_moneda = ?, ";
-				$sql .=" observaciones = ? ";
+				$sql .=" observaciones = ?, ";
+				$sql .=" serie = ?, ";
+                $sql .=" correlativo = ?, ";
+                $sql .=" evidencia = ? ";
 				$sql .=" WHERE id_orden_compra = ? ";
 				$stmt = $conexion->prepare($sql);
-				if ($stmt->execute([$id_metodo_envio,$id_proveedor,$id_trabajador,$fecha_entrega,$codigo_moneda,$observaciones,$id_orden_compra])==false) {
+				if ($stmt->execute([$id_metodo_envio,$id_proveedor,$id_trabajador,$fecha_entrega,$codigo_moneda,$observaciones,$serie, $correlativo, $evidencia,$id_orden_compra])==false) {
 					throw new Exception("1. Error al actualizar los datos de la orden de compra.");
 				}
 

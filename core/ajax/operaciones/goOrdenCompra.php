@@ -12,6 +12,10 @@
   $accion = isset($_POST["accion"]) ? $_POST["accion"] : "";
   $id_trabajador = isset($_SESSION["id_trabajador"]) ? $_SESSION["id_trabajador"] : "";
   $id_sucursal = isset($_SESSION["id_sucursal"]) ? $_SESSION["id_sucursal"] : "";
+  $serie = isset($_POST["serie"]) ? $_POST["serie"] : null;
+  $correlativo = isset($_POST["correlativo"]) ? $_POST["correlativo"] : null;
+  $evidencia = isset($_POST["evidencia"]) ? $_POST["evidencia"] : null;
+
 
   try {
 
@@ -76,10 +80,13 @@
     $VD = "";
     switch ($accion) {
       case 'add':
-        $VD = $OBJ_ORDEN_COMPRA->insert($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra);
+        $VD = $OBJ_ORDEN_COMPRA->insert($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra,$serie,$correlativo,
+      $evidencia);
         break;
       case 'edit':
-        $VD = $OBJ_ORDEN_COMPRA->update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra);
+        $VD = $OBJ_ORDEN_COMPRA->update($id_sucursal,$id_orden_compra,$id_proveedor,$id_trabajador,$id_metodo_envio,$codigo_moneda,$fecha_orden,$fecha_entrega,$observaciones,$detalle_compra, $serie,
+      $correlativo,
+      $evidencia);
         break;
       default:
         $VD = "No se recibió parametro de acción.";

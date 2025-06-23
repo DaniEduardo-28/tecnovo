@@ -218,6 +218,10 @@ $(document).ready(function(){
       var fecha_entrega = $("#txtFechaEntregaForm").val();
       var observaciones = $("#txtObservacionesForm").val();
       var codigo_moneda = $("#codigo_moneda").val();
+      var serie = $("#txtSerie").val();
+      var correlativo = $("#txtCorrelativo").val();
+      var evidencia = $("#txtEvidencia").val();
+
 
       var countRows = tableForm.data().count();
 
@@ -265,7 +269,9 @@ $(document).ready(function(){
 
       var form = 'id_proveedor=' + id_proveedor + '&id_metodo_envio=' + id_metodo_envio + '&id_orden_compra=' + id_orden_compra +
               '&fecha_orden=' + fecha_orden + '&fecha_entrega=' + fecha_entrega + '&accion=' + accion + '&codigo_moneda=' + codigo_moneda +
-              '&observaciones=' + observaciones +  "&array_detalle=" + JSON.stringify(objeto);
+              '&observaciones=' + observaciones +  "&array_detalle=" + '&serie=' + serie +
+            '&correlativo=' + correlativo +
+            '&evidencia=' + evidencia + JSON.stringify(objeto);
 
       Swal.fire({
         title: '¿Seguro de confirmar la operación?',
@@ -745,6 +751,9 @@ function getDataEdit(id_orden_compra){
             $("#txtObservacionesForm").val(o[0].observaciones);
             $("#txtEstadoForm").val(o[0].estado);
             $("#codigo_moneda").val(o[0].id_moneda);
+            $("#txtSerie").val(o[0].serie);
+            $("#txtCorrelativo").val(o[0].correlativo);
+            $("#txtEvidencia").val(o[0].evidencia);
 
             for (var i = 0; i < o.length; i++) {
 
@@ -830,6 +839,10 @@ function verRegistro(id_orden_compra){
             $("#txtObservacionesForm").val(o[0].observaciones);
             $("#txtEstadoForm").val(o[0].estado);
             $("#codigo_moneda").val(o[0].id_moneda);
+            $("#txtSerie").val(o[0].serie);
+            $("#txtCorrelativo").val(o[0].correlativo);
+            $("#txtEvidencia").val(o[0].evidencia);
+
 
             for (var i = 0; i < o.length; i++) {
 

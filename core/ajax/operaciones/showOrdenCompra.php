@@ -91,6 +91,9 @@
           "num_registros" => '&nbsp;&nbsp;&nbsp;' . $key['num_registros'],
           "total" => $key['signo_moneda'] . ' ' . $key['total'],
           "estado" => $estado,
+          "serie" => $key['serie'],
+          "correlativo" => $key['correlativo'],
+          "evidencia" => $key['evidencia'],
           "options" => "$options"
         );
         $count++;
