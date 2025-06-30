@@ -755,6 +755,10 @@ try {
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/showOrdenCompraIngreso.php");
         break;
+      case 'showOrdenCompraReporte':
+        require("core/models/ClassAccesoOpcion.php");
+        require("core/ajax/reportes/showOrdenCompraReporte.php");
+        break;
       case 'getDataEditOrdenCompraIngreso':
         require("core/models/ClassAccesoOpcion.php");
         require("core/ajax/operaciones/getDataEditOrdenCompraIngreso.php");

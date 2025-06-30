@@ -106,7 +106,7 @@ class ClassIngreso extends Conexion
 					FROM 
 						tb_ingreso i
 					INNER JOIN 
-						tb_orden_compra o ON o.id_orden_compra = i.id_ingreso
+						tb_orden_compra o ON o.id_orden_compra = i.id_orden_compra
 					INNER JOIN 
 						tb_documento_venta td ON td.id_documento_venta = i.id_tipo_docu
 					INNER JOIN 
